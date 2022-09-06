@@ -51,5 +51,5 @@ jobs:
           push: true
           tags: ${{ steps.api-meta.outputs.tags }}-alpine, ${{ steps.api-meta.outputs.tags }}-alpine3.15
           labels: ${{ steps.api-meta.outputs.labels }}
-          file: alpine.Dockerfile
+          file: Dockerfile
       

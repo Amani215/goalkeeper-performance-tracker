@@ -1,0 +1,1 @@
+yarn run clean-install && yarn start

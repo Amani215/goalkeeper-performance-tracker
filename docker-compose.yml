@@ -2,6 +2,15 @@
 version: '3'
 
 services:
+  web-ui:
+    image: node:16.17.0-alpine3.15
+    depends_on:
+      - backend
+    working_dir: /var/www/app
+    volumes:
+      - ./web-ui:/var/www/app
+    expose: [3000]
+    command: sh -c ./run.sh
   backend:
     image: python:3.9-alpine3.15
     depends_on:

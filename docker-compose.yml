@@ -1,0 +1,46 @@
+---
+version: '3'
+
+services:
+  backend:
+    image: python:3.9-alpine3.15
+    depends_on:
+      - db
+    working_dir: /var/www/app
+    volumes:
+      - ./api:/var/www/app
+      # - ./cache:/root/.m2
+    environment:
+      - FLASK_APP=__init__.py
+    ports:
+      - 5000:5000
+    expose: [5000]
+    command: sh -c ./run.sh
+    # env_file:
+    #   - .env.dev
+
+  # db:
+  #   image: postgres:14-alpine3.16
+  #   restart: always
+  #   ports:
+  #     - 5432:5432
+  #   expose: [5432]
+  #   env_file:
+  #     - .env.dev
+  #   volumes:
+  #     # - ./db/initializer:/setup
+  #     - pg-data:/var/lib/postgresql/data
+  #     # - ./db/initializer/init.sh:/docker-entrypoint-initdb.d/init.sh
+  
+  # adminer:
+  #   image: michalhosna/adminer
+  #   container_name: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+  #   env_file:
+  #     - .env.dev
+  #   links:
+  #     - db
+  #   depends_on:
+  #     - db

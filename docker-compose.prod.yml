@@ -1,0 +1,17 @@
+---
+version: '3'
+
+services:
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    working_dir: /var/www/app
+    volumes:
+      - ./api:/var/www/app
+      # - ./cache:/root/.m2
+    environment:
+      - FLASK_APP=__init__.py
+    ports:
+      - 5000:5000
+    expose: [5000]

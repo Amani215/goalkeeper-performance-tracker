@@ -47,9 +47,8 @@ jobs:
       - name: Build and push API image
         uses: docker/build-push-action@v3
         with:
-          context: ./api
+          context: "{{defaultContext}}:api"
           push: true
           tags: ${{ steps.api-meta.outputs.tags }}-alpine, ${{ steps.api-meta.outputs.tags }}-alpine3.15
           labels: ${{ steps.api-meta.outputs.labels }}
-          file: Dockerfile
       

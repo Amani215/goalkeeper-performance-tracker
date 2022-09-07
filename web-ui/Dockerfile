@@ -10,5 +10,3 @@ FROM nginx:stable-alpine
 WORKDIR /usr/share/nginx/html
 COPY --from=build /app/build/ .
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-

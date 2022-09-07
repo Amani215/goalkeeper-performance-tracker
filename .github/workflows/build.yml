@@ -14,11 +14,11 @@ env:
 jobs:
   test-api:
     runs-on: ubuntu-latest
-    steps:    
+    steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.9' 
+          python-version: '3.9'
       - name: install apt packages (make, gcc, g++)
         run: sudo apt install -y build-essential
       - name: install pip dependencies

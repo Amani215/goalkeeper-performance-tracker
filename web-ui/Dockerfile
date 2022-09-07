@@ -6,6 +6,9 @@ RUN yarn install --production
 COPY . .
 RUN yarn build
 
-FROM nginx:1.15
-COPY --from=build /app/build/ /usr/share/nginx/html
+FROM nginx:stable-alpine
+WORKDIR /usr/share/nginx/html
+COPY --from=build /app/build/ .
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
 

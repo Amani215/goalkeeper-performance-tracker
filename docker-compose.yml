@@ -51,7 +51,6 @@ services:
   #     # - ./db/initializer:/setup
   #     - pg-data:/var/lib/postgresql/data
   #     # - ./db/initializer/init.sh:/docker-entrypoint-initdb.d/init.sh
-  
   adminer:
     image: michalhosna/adminer
     container_name: adminer

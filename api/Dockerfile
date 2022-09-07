@@ -1,10 +1,10 @@
 FROM python:3.9-alpine3.15
-RUN apk add build-base
+RUN apk add --no-cache build-base
 
 WORKDIR /var/www/app
 
 COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install  --no-cache-dir -r requirements.txt
 # RUN \
 #  apk add --no-cache postgresql-libs && \
 #  apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \

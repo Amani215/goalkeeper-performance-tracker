@@ -1,3 +1,4 @@
+---
 name: build
 on:
   push:
@@ -44,7 +45,7 @@ jobs:
           yamllint_file_or_dir: '.'
           yamllint_strict: false
           yamllint_comment: true
-          
+
   build:
     runs-on: ubuntu-latest
     needs: test-config
@@ -63,13 +64,15 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}-api
-      
+
       - name: Build and push API image
         uses: docker/build-push-action@v3
         with:
           context: api
           push: true
-          tags: ${{ steps.api-meta.outputs.tags }}-alpine, ${{ steps.api-meta.outputs.tags }}-alpine3.15
+          tags: |
+            ${{ steps.api-meta.outputs.tags }}-alpine,
+            ${{ steps.api-meta.outputs.tags }}-alpine3.15
           labels: ${{ steps.api-meta.outputs.labels }}
           file: api/Dockerfile
       ###### UI ######
@@ -78,7 +81,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}-web-ui
-      
+
       - name: Build and push Web-UI image
         uses: docker/build-push-action@v3
         with:
@@ -87,4 +90,3 @@ jobs:
           tags: ${{ steps.web-ui-meta.outputs.tags }}-alpine
           labels: ${{ steps.web-ui-meta.outputs.labels }}
           file: web-ui/Dockerfile
-          

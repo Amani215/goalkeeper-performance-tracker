@@ -37,7 +37,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
+      ###### API ######
       - name: Extract metadata (tags, labels) for API
         id: api-meta
         uses: docker/metadata-action@v4
@@ -52,3 +52,19 @@ jobs:
           tags: ${{ steps.api-meta.outputs.tags }}-alpine, ${{ steps.api-meta.outputs.tags }}-alpine3.15
           labels: ${{ steps.api-meta.outputs.labels }}
           file: api/Dockerfile
+      ###### UI ######
+      - name: Extract metadata (tags, labels) for Web-UI
+        id: web-ui-meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}-web-ui
+      
+      - name: Build and push Web-UI image
+        uses: docker/build-push-action@v3
+        with:
+          context: web-ui
+          push: true
+          tags: ${{ steps.web-ui-meta.outputs.tags }}-alpine
+          labels: ${{ steps.web-ui-meta.outputs.labels }}
+          file: web-ui/Dockerfile
+          

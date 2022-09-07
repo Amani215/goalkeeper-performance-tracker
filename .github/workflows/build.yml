@@ -25,9 +25,29 @@ jobs:
         run: pip install -r requirements.txt
       - name: tests
         run: echo tests go here
-  build:
+
+  test-config:
     runs-on: ubuntu-latest
     needs: test-api
+    steps:
+      - uses: actions/checkout@v3
+      - name: dockerfiles lint
+        uses: hadolint/hadolint-action@v2.0.0
+        if: always()
+        with:
+          dockerfile: "**Dockerfile"
+          recursive: true
+      - name: lint yaml
+        uses: karancode/yamllint-github-action@master
+        if: always()
+        with:
+          yamllint_file_or_dir: '.'
+          yamllint_strict: false
+          yamllint_comment: true
+          
+  build:
+    runs-on: ubuntu-latest
+    needs: test-config
     steps:
       - uses: actions/checkout@v3
 

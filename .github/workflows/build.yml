@@ -37,7 +37,7 @@ jobs:
         run: yarn
 
       - name: Run ESLint
-        run: eslint --ext .ts,.tsx .
+        run: yarn run eslint --ext .ts,.tsx .
 
   test-config:
     runs-on: ubuntu-latest

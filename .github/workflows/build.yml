@@ -27,9 +27,21 @@ jobs:
       - name: tests
         run: echo tests go here
 
-  test-config:
+  test-web-ui:
     runs-on: ubuntu-latest
     needs: test-api
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install modules
+        run: yarn
+
+      - name: Run ESLint
+        run: eslint --ext .ts,.tsx .
+
+  test-config:
+    runs-on: ubuntu-latest
+    needs: test-web-ui
     steps:
       - uses: actions/checkout@v3
       - name: dockerfiles lint

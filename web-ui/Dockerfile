@@ -4,6 +4,7 @@ COPY package*.json .
 COPY yarn.lock .
 RUN yarn install --production
 COPY . .
+ENV DISABLE_ESLINT_PLUGIN=true
 RUN yarn build
 
 FROM nginx:stable-alpine

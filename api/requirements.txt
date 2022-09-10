@@ -1,2 +1,6 @@
 # Framework
 Flask==2.0.2
+
+# For ORM in Postgress
+psycopg2-binary>=2.8.4
+Flask-SQLAlchemy>=2.4.1

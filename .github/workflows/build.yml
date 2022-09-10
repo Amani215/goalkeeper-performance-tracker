@@ -20,10 +20,10 @@ jobs:
         with:
           python-version: '3.9'
       - name: install apt packages (make, gcc, g++)
-        run: sudo apt install -y build-essential pylint
+        run: sudo apt install -y build-essential
       - name: install pip dependencies
         working-directory: ./api
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt; pip install pylint
       - name: Run PyLint
         run: pylint api/
       - name: tests

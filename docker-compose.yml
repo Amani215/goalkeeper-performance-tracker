@@ -1,6 +1,9 @@
 ---
 version: '3'
 
+volumes:
+  pg-data: {}
+
 services:
   web-ui:
     container_name: web-ui
@@ -12,6 +15,7 @@ services:
       - ./web-ui:/var/www/app
     command: sh -c ./run.sh
     restart: always
+  
   backend:
     container_name: backend
     image: python:3.9-alpine3.15
@@ -26,6 +30,7 @@ services:
       - FLASK_APP=__init__.py
 
     command: sh -c ./run.sh
+  
   nginx:
     image: nginx:stable-alpine
     ports:
@@ -37,7 +42,19 @@ services:
       - backend
     restart: always
 
+  db:
+    image: postgres:14-alpine3.16
+    restart: always
+    env_file:
+      - .env.dev
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
   adminer:
     image: michalhosna/adminer
     container_name: adminer
     restart: always
+    links:
+      - db
+    depends_on:
+      - db

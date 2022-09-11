@@ -15,7 +15,7 @@ services:
       - ./web-ui:/var/www/app
     command: sh -c ./run.sh
     restart: always
-  
+
   backend:
     container_name: backend
     image: python:3.9-alpine3.15
@@ -30,7 +30,7 @@ services:
       - FLASK_APP=__init__.py
 
     command: sh -c ./run.sh
-  
+
   nginx:
     image: nginx:stable-alpine
     ports:

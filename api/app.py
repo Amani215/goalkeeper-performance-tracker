@@ -1,9 +1,30 @@
-"""Import flask"""
+"""Imports"""
+import os.path
+from dotenv import load_dotenv
 from flask import Flask
+from model import db
 
-APP = Flask(__name__)
+def create_app():
+    """Create the app"""
+    app = Flask(__name__)
 
-@APP.route("/")
-def hello_world():
-    """Hello world function"""
-    return "<p>Hello, World!</p>"
+    load_dotenv()
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
+    app.config['SECRET_KEY']=os.getenv('SECRET_KEY')
+
+    db.init_app(app)
+    # app.register_blueprint()
+    return app
+
+def setup_database(_app):
+    """Create the postgres database"""
+    with _app.app_context():
+        db.create_all()
+
+if __name__ == '__main__':
+    _app = create_app()
+    # Because this is just a demonstration we set up the database like this.
+    if not os.path.isfile('/tmp/test.db'):
+        setup_database(_app)
+    _app.run()

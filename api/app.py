@@ -3,6 +3,7 @@ import os.path
 from dotenv import load_dotenv
 from flask import Flask
 from model import db
+from model.user import User
 
 def create_app():
     """Create the app"""
@@ -21,10 +22,10 @@ def setup_database(_app):
     """Create the postgres database"""
     with _app.app_context():
         db.create_all()
+        user = User(username="test",password="test")
+        db.session.add(user)
+        db.session.commit()
 
-if __name__ == '__main__':
-    _app = create_app()
-    # Because this is just a demonstration we set up the database like this.
-    if not os.path.isfile('/tmp/test.db'):
-        setup_database(_app)
-    _app.run()
+_app = create_app()
+setup_database(_app)
+_app.run()

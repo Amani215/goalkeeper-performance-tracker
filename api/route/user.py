@@ -5,7 +5,7 @@ import service.user as user_service
 
 user_api = Blueprint('user_api', __name__)
 
-@user_api.route('/api/user/', methods = ['GET'])
+@user_api.route('/user', methods = ['GET'])
 def get_users() -> str:
     """Get all users
 
@@ -16,7 +16,7 @@ def get_users() -> str:
     return jsonify([i.serialize for i in users])
 
 
-@user_api.route('/api/user/', methods=['POST'])
+@user_api.route('/user', methods=['POST'])
 def add_user():
     """Add a new user
 

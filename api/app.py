@@ -3,6 +3,7 @@ import os.path
 from dotenv import load_dotenv
 from flask import Flask
 from model import db
+from route.user import user_api
 
 def create_app():
     """Create the app"""
@@ -14,7 +15,7 @@ def create_app():
     app.config['SECRET_KEY']=os.getenv('SECRET_KEY')
 
     db.init_app(app)
-    # app.register_blueprint()
+    app.register_blueprint(user_api)
     return app
 
 def setup_database(_app):

@@ -2,7 +2,8 @@
 import uuid
 from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import UUID
-from app import db
+# from app import db
+from model import db
 
 class User(db.Model):
     """Base class for all types of available users"""

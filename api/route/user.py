@@ -3,18 +3,19 @@ from flask import jsonify, request
 from flask.blueprints import Blueprint
 import service.user as user_service
 from middleware.token_required import token_required
-# from model.user import User
+from model.user import User
 
 user_api = Blueprint('user_api', __name__)
 
 @user_api.route('/user', methods = ['GET'])
 @token_required
-def get_users() -> str:
+def get_users(current_user:User) -> str:
     """Get all users
 
     Returns all the users in the database
     """
-
+    if current_user=={}:
+        return {"error":"Could not verify user"}, 401
     users = user_service.get_users()
     return jsonify([i.serialize for i in users])
 

@@ -29,9 +29,12 @@ def get_by_username(name:str)->User:
     user:User = User.query.filter_by(username=name).one()
     return user
 
-def get_by_id(user_id)->User:
+def get_by_id(user_id):
     """get user by id"""
-    return User.query.filter_by(id=user_id).one()
+    user = User.query.filter_by(id=user_id).one()
+    if not user:
+        raise ValueError("Invalid user ID")
+    return user
 
 def verify_user(username, password):
     """Verify if the user exists and has the correct password"""

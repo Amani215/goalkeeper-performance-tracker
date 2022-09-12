@@ -15,7 +15,7 @@ def authenticate_user(username, password):
         load_dotenv()
         token_schema = TokenSchema(str(result.id)).serialize
         token = jwt.encode(token_schema, os.getenv('SECRET_KEY'), "HS256")
-        return jsonify({'token': token})
+        return jsonify({'token': token.decode('utf-8')})
     return result
 
 def get_authorized_user(bearer_token: str) -> User:

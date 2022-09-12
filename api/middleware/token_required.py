@@ -7,16 +7,16 @@ import service.auth as auth_service
 def token_required(func):
     """decorator for required JWT. This will be used in routes that require an authorized user"""
     @wraps(func)
-    def decorator(*args, **kwargs):
+    def decorator():
         try:
             if ('Authorization' not in request.headers) or (not request.headers['Authorization']):
                 raise ValueError("A valid token is missing")
 
             token = request.headers['Authorization']
 
-            current_user = auth_service.get_authorized_user(token)
+            auth_service.get_authorized_user(token)
         except ValueError as err:
             return jsonify({'message': str(err)}), UNAUTHORIZED
 
-        return func(current_user, *args, **kwargs)
+        return func()
     return decorator

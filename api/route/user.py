@@ -2,10 +2,13 @@
 from flask import jsonify, request
 from flask.blueprints import Blueprint
 import service.user as user_service
+from middleware.token_required import token_required
+# from model.user import User
 
 user_api = Blueprint('user_api', __name__)
 
 @user_api.route('/user', methods = ['GET'])
+@token_required
 def get_users() -> str:
     """Get all users
 

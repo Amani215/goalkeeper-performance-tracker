@@ -5,4 +5,8 @@ Flask==2.0.2
 psycopg2-binary==2.8.4
 Flask-SQLAlchemy==2.5.1
 
+# For authentication
+bcrypt==4.0.0
+
+# For environment variables
 python-dotenv==0.19.0

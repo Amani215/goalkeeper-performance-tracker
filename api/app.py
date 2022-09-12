@@ -21,6 +21,7 @@ def setup_database(_app):
     """Create the postgres database"""
     with _app.app_context():
         db.create_all()
+
 _app = create_app()
 setup_database(_app)
 _app.run()

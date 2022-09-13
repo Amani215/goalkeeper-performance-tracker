@@ -25,6 +25,4 @@ def get_authorized_user(user: User):
 
     Returns the user object without the pasword according to the JWT
     """
-    if user=={}:
-        return {"error":"could not get authorized user"} , 401
     return jsonify(user.serialize)

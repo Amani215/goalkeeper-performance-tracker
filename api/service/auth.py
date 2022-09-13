@@ -29,7 +29,6 @@ def get_authorized_user(bearer_token: str):
         token_dict: dict = jwt.decode(token, os.getenv('SECRET_KEY'), "HS256")
         token_schema: TokenSchema = TokenSchema().from_dict(token_dict)
     except (jwt.InvalidSignatureError, jwt.exceptions.DecodeError) as err:
-        # error = str(err)
         return {"error":err}
 
     user_id = token_schema.public_id

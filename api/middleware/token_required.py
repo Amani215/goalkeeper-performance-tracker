@@ -17,7 +17,8 @@ def token_required(func):
 
             current_user = auth_service.get_authorized_user(token)
             if not isinstance(current_user, User):
-                current_user = {}
+                raise ValueError("The provided token is invalid.")
+
         except ValueError as err:
             return jsonify({'message': str(err)}), UNAUTHORIZED
 

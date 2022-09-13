@@ -28,8 +28,8 @@ def add_user():
     If the username already exists the user is not added.
     """
 
-    username = request.form.get('username')
-    password = request.form.get('password')
+    username = request.json['username']
+    password = request.json['password']
     user_response = user_service.create_user(username=username, password=password)
     if "error" in user_response:
         return user_response, 409

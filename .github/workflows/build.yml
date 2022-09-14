@@ -19,32 +19,11 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - uses: actions/checkout@v2
-        with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
       - name: install apt packages (make, gcc, g++)
         run: sudo apt install -y build-essential
       - name: install pip dependencies
         working-directory: ./api
-        run: pip install -r requirements.txt; pip install pylint
-      # - name: Run PyLint
-      #   run: pylint api/
-      # - name: SonarCloud Scan
-      #   uses: sonarsource/sonarcloud-github-action@master
-      #   with:
-      #     projectBaseDir: .
-      #     args: >
-      #       -Dsonar.organization=amani215
-      #       -Dsonar.projectKey=Amani215_goalkeeper-performance-tracker
-      #       -Dsonar.python.coverage.reportPaths=coverage.xml
-      #       -Dsonar.sources=.
-      #       -Dsonar.test.exclusions=tests/**
-      #       -Dsonar.tests=tests/
-      #       -Dsonar.verbose=true
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: pip install -r requirements.txt
       - name: tests
         run: echo tests go here
 

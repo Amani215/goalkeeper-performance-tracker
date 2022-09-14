@@ -33,10 +33,10 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          projectBaseDir: ./api
+          projectBaseDir: .
           args: >
-            -Dsonar.organization=bme
-            -Dsonar.projectKey=develop
+            -Dsonar.organization=amani215
+            -Dsonar.projectKey=Amani215_goalkeeper-performance-tracker
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.sources=.
             -Dsonar.test.exclusions=tests/**

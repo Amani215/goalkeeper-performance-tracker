@@ -38,7 +38,7 @@ jobs:
             -Dsonar.organization=bme
             -Dsonar.projectKey=develop
             -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.sources=lib/
+            -Dsonar.sources=.
             -Dsonar.test.exclusions=tests/**
             -Dsonar.tests=tests/
             -Dsonar.verbose=true

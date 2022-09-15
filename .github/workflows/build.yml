@@ -27,14 +27,12 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          projectBaseDir: api
+          projectBaseDir: .
           args: >
             -Dsonar.organization=amani215
             -Dsonar.projectKey=Amani215_goalkeeper-performance-tracker
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.sources=.
-            -Dsonar.test.exclusions=tests/**
-            -Dsonar.tests=tests/
             -Dsonar.verbose=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

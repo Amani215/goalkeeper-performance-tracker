@@ -27,7 +27,7 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
-          projectBaseDir: .
+          projectBaseDir: api
           args: >
             -Dsonar.organization=amani215
             -Dsonar.projectKey=Amani215_goalkeeper-performance-tracker

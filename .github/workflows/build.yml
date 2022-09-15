@@ -24,7 +24,7 @@ jobs:
       - name: install pip dependencies
         working-directory: ./api
         run: pip install -r requirements.txt
-            - name: SonarCloud Scan
+      - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
           projectBaseDir: .

@@ -24,6 +24,21 @@ jobs:
       - name: install pip dependencies
         working-directory: ./api
         run: pip install -r requirements.txt
+            - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization=amani215
+            -Dsonar.projectKey=Amani215_goalkeeper-performance-tracker
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.sources=.
+            -Dsonar.test.exclusions=tests/**
+            -Dsonar.tests=tests/
+            -Dsonar.verbose=true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: tests
         run: echo tests go here
 

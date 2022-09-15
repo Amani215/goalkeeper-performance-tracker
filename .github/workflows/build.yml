@@ -24,13 +24,13 @@ jobs:
       - name: install pip dependencies
         working-directory: ./api
         run: pip install -r requirements.txt
-      - name: SonarCloud Scan
+      - name: SonarCloud Scan API
         uses: sonarsource/sonarcloud-github-action@master
         with:
           projectBaseDir: api
           args: >
             -Dsonar.organization=amani215
-            -Dsonar.projectKey=Amani215_goalkeeper-performance-tracker
+            -Dsonar.projectKey=amani215_goalkeeper-performance-tracker-api
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.sources=.
             -Dsonar.test.exclusions=tests/**
@@ -38,7 +38,7 @@ jobs:
             -Dsonar.verbose=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_API }}
       - name: tests
         run: echo tests go here
 
@@ -51,6 +51,20 @@ jobs:
       - name: Install modules
         working-directory: ./web-ui
         run: yarn install
+
+      - name: SonarCloud Scan API
+        uses: sonarsource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: web-ui
+          args: >
+            -Dsonar.organization=amani215
+            -Dsonar.projectKey=amani215_goalkeeper-performance-tracker-webui
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.sources=.
+            -Dsonar.verbose=true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_WEBUI }}
 
       - name: Run ESLint
         working-directory: ./web-ui

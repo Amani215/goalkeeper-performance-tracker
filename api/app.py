@@ -1,21 +1,18 @@
 """Imports"""
-import os.path
-from dotenv import load_dotenv
+import imp
 from flask import Flask
+from model import db
+from config.config import config_by_name
 
-def create_app():
+def create_app(config_name):
     """Create the app 
     
     (Application factory: https://flask.palletsprojects.com/en/2.2.x/patterns/appfactories/)
     """
     app = Flask(__name__)
 
-    load_dotenv()
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
-    app.config['SECRET_KEY']=os.getenv('SECRET_KEY')
+    app.config.from_object(config_by_name[config_name])
 
-    from model import db
     db.init_app(app)
     setup_database(db, app)
     
@@ -26,12 +23,13 @@ def create_app():
     
     return app
 
-def setup_database(db, _app):
+def setup_database(_db, _app):
     """Create the postgres database"""
     with _app.app_context():
+        from model.user import User
         # db.drop_all()
-        db.create_all()
-        return db
+        _db.create_all()
+        return _db
 
-_app = create_app()
+_app = create_app('dev')
 _app.run()

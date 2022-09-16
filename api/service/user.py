@@ -3,7 +3,6 @@ from bcrypt import checkpw, gensalt, hashpw
 from flask import make_response
 from sqlalchemy.exc import SQLAlchemyError
 from model.user import User
-# from app import db
 from model import db
 
 def create_user(username, password):

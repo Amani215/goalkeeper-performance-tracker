@@ -13,10 +13,6 @@ class User(db.Model):
     def __init__(self, username, password):
         self.username = username
         self.password  = password
-
-    @property
-    def password(self):
-        raise AttributeError('password: write-only field')
     
     @property
     def serialize(self):

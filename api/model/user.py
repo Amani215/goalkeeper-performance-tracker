@@ -2,7 +2,6 @@
 import uuid
 from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import UUID
-# from app import db
 from model import db
 
 class User(db.Model):
@@ -15,6 +14,10 @@ class User(db.Model):
         self.username = username
         self.password  = password
 
+    @property
+    def password(self):
+        raise AttributeError('password: write-only field')
+    
     @property
     def serialize(self):
         """Return object data in easily serializable format"""

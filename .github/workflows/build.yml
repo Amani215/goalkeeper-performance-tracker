@@ -66,6 +66,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_API }}
+      - name: SonarCloud Fetch API Scan Results
+        id: api-quality-gate-response
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: |
+            https://sonarcloud.io/api/qualitygates/project_status?projectKey=amani215_goalkeeper-performance-tracker-api
+          method: GET
+      - name: Fail If Quality Gate Is Not Met
+        run: exit 1
+        if: fromJson(steps.api-quality-gate-response.outputs.response).projectStatus.status == ERROR
 
   test-web-ui:
     runs-on: ubuntu-latest

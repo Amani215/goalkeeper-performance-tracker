@@ -37,7 +37,8 @@ jobs:
         working-directory: ./api
         run: pip install -r requirements.txt
       - name: Test coverage
-        run: make backend-test
+        working-directory: ./api
+        run: python3 -m pytest --cov-report=xml --cov=. tests/
         env:
           POSTGRES_USER: db
           POSTGRES_PASSWORD: pass

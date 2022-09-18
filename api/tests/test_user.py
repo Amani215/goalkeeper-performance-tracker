@@ -23,3 +23,6 @@ def test_add_user():
     user:User = user_service.get_by_id(user_response['user_id'])
     
     assert user.username == username
+
+def test_fail():
+    assert 1==2

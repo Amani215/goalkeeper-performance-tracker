@@ -26,6 +26,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -42,7 +44,7 @@ jobs:
         env:
           POSTGRES_USER: db
           POSTGRES_PASSWORD: pass
-          POSTGRES_HOST: db
+          POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
           POSTGRES_DB: db
           SECRET_KEY: secret

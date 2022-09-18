@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./api"
+    ],
+    "python.formatting.provider": "yapf"
+}

@@ -26,9 +26,8 @@ services:
     volumes:
       - ./api:/var/www/app
       - ./cache:/root/.m2
-    environment:
-      - FLASK_APP=__init__.py
-
+    env_file:
+      - .env.dev
     command: sh -c ./run.sh
 
   nginx:
@@ -49,6 +48,14 @@ services:
       - .env.dev
     volumes:
       - pg-data:/var/lib/postgresql/data
+
+  db-test:
+    image: postgres:14-alpine3.16
+    restart: always
+    env_file:
+      - .env.dev
+    ports:
+      - 5432:5432
 
   adminer:
     image: michalhosna/adminer

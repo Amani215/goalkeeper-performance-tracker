@@ -5,19 +5,19 @@ import unittest
 from flask import Flask
 
 from model import db
-from config.config import config_by_name
+from config import Config
 
-def create_app(config_name):
+def create_app():
     """Create the app 
     
     (Application factory: https://flask.palletsprojects.com/en/2.2.x/patterns/appfactories/)
     """
     app = Flask(__name__)
 
-    app.config.from_object(config_by_name[config_name])
+    app.config.from_mapping(Config)
 
     db.init_app(app)
-    # setup_database(db, app)
+    setup_database(db, app)
     
     from route.user import user_api
     from route.auth import auth_api
@@ -34,7 +34,7 @@ def setup_database(_db, _app):
         _db.create_all()
         return _db
 
-app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
+app = create_app()
 app.app_context().push()
 
 def run():

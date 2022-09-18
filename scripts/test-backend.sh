@@ -10,4 +10,4 @@ export SQLALCHEMY_TRACK_MODIFICATIONS='True'
 export DEBUG='True'
 export FLASK_APP='__init__.py'
 
-cd api && python3 -m pytest
+cd api && python3 -m pytest --cov-report term --cov=. tests/

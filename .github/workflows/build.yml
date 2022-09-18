@@ -39,15 +39,15 @@ jobs:
       - name: Test coverage
         run: make backend-test
         env:
-          POSTGRES_USER=db
-          POSTGRES_PASSWORD=pass
-          POSTGRES_HOST=db
-          POSTGRES_PORT=5432
-          POSTGRES_DB=db
-          SECRET_KEY=secret
-          SQLALCHEMY_TRACK_MODIFICATIONS=True
-          DEBUG=True
-          FLASK_APP=__init__.py
+          POSTGRES_USER: db
+          POSTGRES_PASSWORD: pass
+          POSTGRES_HOST: db
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: db
+          SECRET_KEY: secret
+          SQLALCHEMY_TRACK_MODIFICATIONS: True
+          DEBUG: True
+          FLASK_APP: __init__.py
       - name: SonarCloud Scan API
         uses: sonarsource/sonarcloud-github-action@master
         with:

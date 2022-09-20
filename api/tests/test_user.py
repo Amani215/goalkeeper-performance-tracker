@@ -5,10 +5,15 @@ from helper import random_string
 import uuid
 
 
-def test_add_user(app, user):
+def test_add_user(app):
+    """ Test adding user """
+    
     users = user_service.get_users()
     user_count = len([i.serialize for i in users])
-    
+    user = {
+        "username": random_string.generate(12),
+        "password": random_string.generate(12)
+    }
     user_response=user_service.add_user(user["username"],user["password"])
     
     users = user_service.get_users()
@@ -37,14 +42,12 @@ def test_add_user(app, user):
 def test_get_users(app,user):
     """ Test getting all the users in the database"""
     
-    user_service.add_user(user["username"],user["password"])
     users = user_service.get_users()
     assert len([i.serialize for i in users]) == 1
 
 def test_get_by_username(app, user):
     """ Test getting a user by its username """
     
-    user_service.add_user(user["username"],user["password"])
     _user = user_service.get_by_username(user["username"])
     assert _user.username == user["username"]
     
@@ -54,7 +57,6 @@ def test_get_by_username(app, user):
 def test_get_by_id(app, user):
     """ Test getting a user by its id """
     
-    user_service.add_user(user["username"],user["password"])
     user_id = user_service.get_by_username(user["username"]).id
     _user = user_service.get_by_id(user_id)
     
@@ -66,7 +68,6 @@ def test_get_by_id(app, user):
 def test_verify_user(app, user):
     """ Test user verification (login) """
     
-    user_service.add_user(user["username"],user["password"])
     response = user_service.verify_user(user["username"], user["password"])
     assert response.username == user["username"]
     

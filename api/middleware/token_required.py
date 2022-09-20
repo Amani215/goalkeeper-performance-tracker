@@ -15,7 +15,7 @@ def token_required(func):
 
             token = request.headers['Authorization']
 
-            current_user = auth_service.get_authorized_user(token)
+            current_user = auth_service.get_authenticated_user(token)
             if not isinstance(current_user, User):
                 raise ValueError("The provided token is invalid.")
 

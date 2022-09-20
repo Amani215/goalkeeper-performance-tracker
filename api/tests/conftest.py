@@ -3,6 +3,7 @@ import pytest
 from app import create_app
 from model import db
 from helper import random_string
+import service.user as user_service
 
 
 @pytest.fixture()
@@ -13,7 +14,7 @@ def app():
     _app = create_app()
 
     yield _app
-    
+
     db.session.remove()
     db.drop_all()
 
@@ -21,7 +22,10 @@ def app():
 @pytest.fixture()
 def user():
     """ Create a mock user """
-    return {
+    user_credentials = {
         "username": random_string.generate(12),
         "password": random_string.generate(12)
     }
+    user_service.add_user(user_credentials["username"],
+                          user_credentials["password"])
+    return user_credentials

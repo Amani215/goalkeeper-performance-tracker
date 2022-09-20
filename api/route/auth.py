@@ -16,11 +16,11 @@ def authenticate():
 
     username = request.json['username']
     password = request.json['password']
-    return auth_service.authenticate_user(username=username, password=password)
+    return jsonify(auth_service.authenticate_user(username=username, password=password))
 
 @auth_api.route('/auth', methods=['GET'])
 @token_required
-def get_authorized_user(user: User):
+def get_authenticated_user(user: User):
     """Get the current authenticated user
 
     Returns the user object without the pasword according to the JWT

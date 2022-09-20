@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: ghcr.io   # GitHub Container Registry
+  REGISTRY: ghcr.io # GitHub Container Registry
 
 jobs:
   test-api:
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: "3.9"
       - name: install apt packages (make, gcc, g++)
         run: sudo apt install -y build-essential
       - name: install pip dependencies
@@ -75,7 +75,10 @@ jobs:
           method: GET
       - name: Fail If Quality Gate Is Not Met
         run: exit 1
-        if: ${{ contains(fromJson(steps.api-quality-gate-response.outputs.response).projectStatus.status, 'ERROR')}}
+        if: |
+          ${{ contains(
+          fromJson(steps.api-quality-gate-response.outputs.response).projectStatus.status,
+          'ERROR')}}
 
   test-web-ui:
     runs-on: ubuntu-latest
@@ -120,7 +123,7 @@ jobs:
         uses: karancode/yamllint-github-action@master
         if: always()
         with:
-          yamllint_file_or_dir: '.'
+          yamllint_file_or_dir: "."
           yamllint_strict: false
           yamllint_comment: true
 

@@ -30,10 +30,9 @@ def setup_database(_db, _app):
     """Create the postgres database"""
     with _app.app_context():
         from model.user import User
-        # db.drop_all()
         _db.create_all()
         return _db
-
+    
 app = create_app()
 app.app_context().push()
 

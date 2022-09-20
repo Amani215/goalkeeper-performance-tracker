@@ -30,7 +30,7 @@ def add_user():
 
     username = request.json['username']
     password = request.json['password']
-    user_response = user_service.create_user(username=username, password=password)
+    user_response = user_service.add_user(username=username, password=password)
     if "error" in user_response:
         return user_response, 409
     return user_response

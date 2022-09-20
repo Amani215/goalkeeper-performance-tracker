@@ -5,8 +5,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from model.user import User
 from model import db
 
-def create_user(username, password):
-    """create a new user"""
+def add_user(username, password):
+    """adds a new user to the database"""
     password = hashpw(password.encode('utf-8'), gensalt())
     password = password.decode('utf8')
     user = User(username, password)

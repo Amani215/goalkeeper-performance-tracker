@@ -1,6 +1,9 @@
 # Framework
 Flask==2.0.2
 
+# For protection from CSRF attacks
+Flask-WTF==1.0.1
+
 # For ORM in Postgress
 psycopg2-binary==2.8.4
 Flask-SQLAlchemy==2.5.1

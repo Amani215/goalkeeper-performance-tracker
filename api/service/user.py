@@ -52,7 +52,8 @@ def get_by_id(user_id):
     
 def verify_user(username, password):
     """Verify if the user exists and has the correct password"""
+    
     user: User = get_by_username(username)
     if checkpw(password.encode('utf-8'), user.password.encode('utf-8')) is True:
         return user
-    return make_response('Could not verify',  401, {'Authentication': '"login required"'})
+    return {"error":"Could not verify"}

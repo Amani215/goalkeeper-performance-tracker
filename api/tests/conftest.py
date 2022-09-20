@@ -7,19 +7,20 @@ from helper import random_string
 
 @pytest.fixture()
 def app():
+    """Create a mock app instance"""
     db.session.remove()
     db.drop_all()
-    """Create a mock db instance"""
     _app = create_app()
 
     yield _app
+    
     db.session.remove()
     db.drop_all()
-    # clean up / reset resources here
 
 
 @pytest.fixture()
 def user():
+    """ Create a mock user """
     return {
         "username": random_string.generate(12),
         "password": random_string.generate(12)

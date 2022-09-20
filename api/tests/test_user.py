@@ -63,6 +63,12 @@ def test_get_by_id(app, user):
     _user = user_service.get_by_id(str(uuid.uuid4()))
     assert "error" in _user
 
-def test_verify_user():
-    # TODO
-    pass
+def test_verify_user(app, user):
+    """ Test user verification (login) """
+    
+    user_service.add_user(user["username"],user["password"])
+    response = user_service.verify_user(user["username"], user["password"])
+    assert response.username == user["username"]
+    
+    response = user_service.verify_user(user["username"], random_string.generate(50))
+    assert "Could not verify" in response["error"]

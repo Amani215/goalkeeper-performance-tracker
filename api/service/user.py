@@ -34,18 +34,22 @@ def get_users():
     """get all users"""
     return User.query.all()
 
-def get_by_username(name:str)->User:
+def get_by_username(name:str):
     """get user by username"""
-    user:User = User.query.filter_by(username=name).one()
-    return user
+    try:
+        user:User = User.query.filter_by(username=name).one()
+        return user
+    except SQLAlchemyError as err:
+        return {"error": str(err)}
 
 def get_by_id(user_id):
     """get user by id"""
-    user = User.query.filter_by(id=user_id).one()
-    if not user:
-        raise ValueError("Invalid user ID")
-    return user
-
+    try:
+        user: User = User.query.filter_by(id=user_id).one()
+        return user
+    except SQLAlchemyError as err:
+        return {"error": str(err)}
+    
 def verify_user(username, password):
     """Verify if the user exists and has the correct password"""
     user: User = get_by_username(username)

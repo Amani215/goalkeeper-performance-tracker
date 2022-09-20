@@ -15,7 +15,7 @@ do
     rm -rf $file;
     done
 rm -rf ./api/coverage.xml
-cd api && python3 -m pytest --cov-report=xml --cov=. tests/
+cd api && python3 -m pytest --cov-report=term --cov=. tests/
 
 for file in ./api/.coverage*
 do

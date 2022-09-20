@@ -14,7 +14,7 @@ def create_app():
     app = Flask(__name__)
 
     app.config.from_mapping(Config)
-
+    app.config['WTF_CSRF_ENABLED'] = False
     db.init_app(app)
     setup_database(db, app)
     

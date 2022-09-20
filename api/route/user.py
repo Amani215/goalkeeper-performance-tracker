@@ -9,7 +9,7 @@ user_api = Blueprint('user_api', __name__)
 
 @user_api.route('/user', methods = ['GET'])
 @token_required
-def get_users(current_user:User) -> str:
+def get_users(current_user:User):
     """Get all users
 
     Returns all the users in the database

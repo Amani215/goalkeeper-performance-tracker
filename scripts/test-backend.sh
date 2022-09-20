@@ -10,4 +10,14 @@ export SQLALCHEMY_TRACK_MODIFICATIONS='True'
 export DEBUG='True'
 export FLASK_APP='__init__.py'
 
+for file in ./api/.coverage*
+do
+    rm -rf $file;
+    done
+rm -rf ./api/coverage.xml
 cd api && python3 -m pytest --cov-report=xml --cov=. tests/
+
+for file in ./api/.coverage*
+do
+    rm -rf $file;
+    done

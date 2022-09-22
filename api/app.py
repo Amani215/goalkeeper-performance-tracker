@@ -1,11 +1,8 @@
 """Imports"""
 import unittest
 from flask import Flask
-# from flask_wtf.csrf import CSRFProtect
-from model import db
+from model import db, migrate
 from config import Config
-
-# csrf = CSRFProtect()
 
 def create_app():
     """Create the app 
@@ -16,9 +13,8 @@ def create_app():
     
     app.config.from_mapping(Config)
     
-    # Preventing CSRF
-    # csrf.init_app(app)
     db.init_app(app)
+    migrate.init_app(app, db)
     setup_database(db, app)
     
     from route.user import user_api

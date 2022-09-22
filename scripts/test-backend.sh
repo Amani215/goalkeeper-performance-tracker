@@ -11,8 +11,8 @@ export DEBUG='True'
 export FLASK_APP='__init__.py'
 
 rm -rf ./api/coverage.xml
-# cd api && python3 -m pytest --cov-report=term --cov=. tests/
-cd api && python3 -m pytest tests/
+cd api && python3 -m pytest --cov-report=term --cov=. tests/
+# cd api && python3 -m pytest tests/
 
 for file in ./api/.coverage.*
 do

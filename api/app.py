@@ -1,11 +1,11 @@
 """Imports"""
 import unittest
 from flask import Flask
-from flask_wtf.csrf import CSRFProtect
+# from flask_wtf.csrf import CSRFProtect
 from model import db
 from config import Config
 
-csrf = CSRFProtect()
+# csrf = CSRFProtect()
 
 def create_app():
     """Create the app 
@@ -14,10 +14,10 @@ def create_app():
     """
     app = Flask(__name__)
     
-    # Preventing CSRF
-    csrf.init_app(app)
-    
     app.config.from_mapping(Config)
+    
+    # Preventing CSRF
+    # csrf.init_app(app)
     db.init_app(app)
     setup_database(db, app)
     

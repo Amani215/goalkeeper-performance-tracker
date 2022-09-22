@@ -14,10 +14,14 @@ def get_users(current_user:User):
 
     Returns all the users in the database
     """
-    if current_user=={}:
-        return {"error":"Could not verify user"}, 401
-    users = user_service.get_users()
-    return jsonify([i.serialize for i in users])
+    try:
+        if current_user=={}:
+            raise PermissionError("Could not verify user")
+        
+        users = user_service.get_users()
+        return jsonify([i.serialize for i in users])
+    except PermissionError as err:
+        return {"error":str(err)}, 401
 
 
 @user_api.route('/user', methods=['POST'])

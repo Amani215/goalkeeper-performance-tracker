@@ -13,10 +13,17 @@ def authenticate():
 
     Returns a json web token if the user is authenticated successfully
     """
-
-    username = request.json['username']
-    password = request.json['password']
-    return jsonify(auth_service.authenticate_user(username=username, password=password))
+    try:
+        if not request.json:
+            raise ValueError("No data was provided")
+        
+        username = request.json['username']
+        password = request.json['password']
+        return jsonify(auth_service.authenticate_user(username=username, password=password))
+    except PermissionError as err:
+        return {"error":str(err)}, 401
+    except Exception as err:
+        return {"error":str(err)}, 400
 
 @auth_api.route('/auth', methods=['GET'])
 @token_required

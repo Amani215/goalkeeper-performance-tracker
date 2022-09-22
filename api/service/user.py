@@ -30,12 +30,12 @@ def get_users():
     return User.query.all()
 
 def get_by_username(name:str):
-    """get user by username"""
-    try:
-        user:User = User.query.filter_by(username=name).one()
-        return user
-    except SQLAlchemyError as err:
-        return {"error": str(err)}
+    """get user by username
+    
+    Possible exceptions: SQLAlchemyError
+    """
+    user:User = User.query.filter_by(username=name).one()
+    return user
 
 def get_by_id(user_id):
     """get user by id"""
@@ -46,9 +46,12 @@ def get_by_id(user_id):
         return {"error": str(err)}
     
 def verify_user(username, password):
-    """Verify if the user exists and has the correct password"""
+    """Verify if the user exists and has the correct password
+    
+    Possible exceptions: SQLAlchemyError, PermissionError"""
     
     user: User = get_by_username(username)
     if checkpw(password.encode('utf-8'), user.password.encode('utf-8')) is True:
         return user
-    return {"error":"Could not verify"}
+    
+    raise PermissionError("Could not verify")

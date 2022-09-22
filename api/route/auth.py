@@ -20,6 +20,7 @@ def authenticate():
         username = request.json['username']
         password = request.json['password']
         return jsonify(auth_service.authenticate_user(username=username, password=password))
+    
     except PermissionError as err:
         return {"error":str(err)}, 401
     except Exception as err:

@@ -7,28 +7,23 @@ from model import db
 
 def add_user(username, password):
     """adds a new user to the database"""
-    try:
-        if len(username)<4:
-            raise ValueError("username too short")
-        elif len(username)>50:
-            raise ValueError("username too long")
+    if len(username)<4:
+        raise ValueError("username too short")
+    elif len(username)>50:
+        raise ValueError("username too long")
 
-        elif len(password)<6:
-            raise ValueError("password too short")
-        elif len(password)>50:
-            raise ValueError("password too long")
-        
-        password = hashpw(password.encode('utf-8'), gensalt())
-        password = password.decode('utf8')
-        user = User(username, password)
+    elif len(password)<6:
+        raise ValueError("password too short")
+    elif len(password)>50:
+        raise ValueError("password too long")
+    
+    password = hashpw(password.encode('utf-8'), gensalt())
+    password = password.decode('utf8')
+    user = User(username, password)
 
-    
-        db.session.add(user)
-        db.session.commit()
-        return {"user_id":user.id}
-    
-    except (SQLAlchemyError, ValueError) as err:
-        return {"error":str(err)}
+    db.session.add(user)
+    db.session.commit()
+    return {"user_id":user.id}
 
 def get_users():
     """get all users"""

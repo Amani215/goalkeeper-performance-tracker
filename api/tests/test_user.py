@@ -1,4 +1,5 @@
 """Testing the user endpoints"""
+import pytest
 from model.user import User
 import service.user as user_service
 from helper import random_string
@@ -24,20 +25,22 @@ def test_add_user(app):
     assert _user.username == user["username"]
     
     ### DUPLICATE USERNAME
-    
-    user_response=user_service.add_user(user["username"],user["password"])
-    assert "duplicate key value" in user_response["error"]
-    
+    with pytest.raises(Exception):
+        user_service.add_user(user["username"],user["password"])
+        
     ### MIN - MAX FIELDS
     
-    user_response=user_service.add_user(random_string.generate(4),random_string.generate(5))
-    assert "password too short" in user_response["error"]
-    user_response=user_service.add_user(random_string.generate(3),random_string.generate(6))
-    assert "username too short" in user_response["error"]
-    user_response=user_service.add_user(random_string.generate(50),random_string.generate(51))
-    assert "password too long" in user_response["error"]
-    user_response=user_service.add_user(random_string.generate(51),random_string.generate(50))
-    assert "username too long" in user_response["error"]
+    with pytest.raises(ValueError, match="password too short"):
+        user_service.add_user(random_string.generate(4),random_string.generate(5))
+
+    with pytest.raises(ValueError, match="username too short"):
+        user_service.add_user(random_string.generate(3),random_string.generate(6))
+   
+    with pytest.raises(ValueError, match="password too long"): 
+        user_service.add_user(random_string.generate(50),random_string.generate(51))
+    
+    with pytest.raises(ValueError, match="username too long"): 
+        user_service.add_user(random_string.generate(51),random_string.generate(50))
 
 def test_get_users(app,user):
     """ Test getting all the users in the database"""
@@ -51,8 +54,8 @@ def test_get_by_username(app, user):
     _user = user_service.get_by_username(user["username"])
     assert _user.username == user["username"]
     
-    _user = user_service.get_by_username(random_string.generate(4))
-    assert "error" in _user
+    with pytest.raises(Exception):
+        user_service.get_by_username(random_string.generate(4))
 
 def test_get_by_id(app, user):
     """ Test getting a user by its id """
@@ -71,5 +74,5 @@ def test_verify_user(app, user):
     response = user_service.verify_user(user["username"], user["password"])
     assert response.username == user["username"]
     
-    response = user_service.verify_user(user["username"], random_string.generate(50))
-    assert "Could not verify" in response["error"]
+    with pytest.raises(PermissionError, match="Could not verify"):
+        user_service.verify_user(user["username"], random_string.generate(50))

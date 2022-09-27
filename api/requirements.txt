@@ -8,6 +8,9 @@ Flask-WTF==1.0.1
 psycopg2-binary==2.8.4
 Flask-SQLAlchemy==2.5.1
 
+# For S3
+flask-s3 == 0.3.3
+
 # For dealing with the database
 flask-migrate==3.1.0
 

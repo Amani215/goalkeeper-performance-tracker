@@ -1,9 +1,11 @@
 """Imports"""
 import unittest
 from flask import Flask
+from flask_s3 import FlaskS3
 from model import db, migrate
 from config import Config
 
+s3 = FlaskS3()
 def create_app():
     """Create the app 
     
@@ -14,6 +16,7 @@ def create_app():
     app.config.from_mapping(Config)
     
     db.init_app(app)
+    s3.init_app(app)
     migrate.init_app(app, db)
     setup_database(db, app)
     

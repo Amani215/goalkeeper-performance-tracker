@@ -1,11 +1,10 @@
-"""Imports"""
+"""Entry point of the API"""
 import unittest
 from flask import Flask
-from flask_s3 import FlaskS3
-from model import db, migrate
+import flask_s3
+from model import db, s3, migrate
 from config import Config
 
-s3 = FlaskS3()
 def create_app():
     """Create the app 
     
@@ -17,7 +16,7 @@ def create_app():
     
     db.init_app(app)
     s3.init_app(app)
-    migrate.init_app(app, db)
+    # flask_s3.create_all(app)
     setup_database(db, app)
     
     from route.user import user_api
@@ -31,6 +30,7 @@ def setup_database(_db, _app):
     """Create the postgres database"""
     with _app.app_context():
         from model.user import User
+        from model.category import Category
         _db.create_all()
         return _db
     

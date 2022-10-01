@@ -3,7 +3,7 @@ default:
 
 .PHONY: up
 up:
-	docker compose --env-file .env.dev up -d
+	docker compose --env-file .env up -d
 
 .PHONY: down
 down:
@@ -20,3 +20,7 @@ test-backend-ci:
 .PHONY: lint-web-ui
 lint-web-ui:
 	cd web-ui && yarn lint
+
+.PHONY: clear
+clear:
+	docker system prune -a -f --volumes

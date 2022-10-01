@@ -20,17 +20,18 @@ services:
 
   backend:
     container_name: backend
-    image: python:3.9-alpine3.15
+    build:
+      context: api
+      dockerfile: Dockerfile
     restart: always
     depends_on:
       - db
     working_dir: /var/www/app
     volumes:
       - ./api:/var/www/app
-      - ./cache:/root/.m2
     env_file:
-      - .env.dev
-    command: sh -c ./run.sh
+      - .env
+    command: python3 -m flask run --host=0.0.0.0
 
   nginx:
     image: nginx:stable-alpine
@@ -47,7 +48,7 @@ services:
     image: postgres:14-alpine3.16
     restart: always
     env_file:
-      - .env.dev
+      - .env
     volumes:
       - pg-data:/var/lib/postgresql/data
 
@@ -55,7 +56,7 @@ services:
     image: postgres:14-alpine3.16
     restart: always
     env_file:
-      - .env.dev
+      - .env
     ports:
       - 5432:5432
 
@@ -75,7 +76,7 @@ services:
     restart: always
     ports:
       - 6379:6379
-    command: ["redis-server", "--appendonly", "yes"]
+    command: [ "redis-server", "--appendonly", "yes" ]
     volumes:
       - redis-data:/var/lib/redis/data
     environment:
@@ -108,11 +109,3 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     command: server --console-address ":9001" /data
-
-  s3-cli:
-    image: amazon/aws-cli:2.7.35
-    environment:
-      - AWS_ACCESS_KEY_ID=${MINIO_ROOT_USER}
-      - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
-      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
-    command: tail -f /dev/null

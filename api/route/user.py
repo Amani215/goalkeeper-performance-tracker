@@ -1,4 +1,6 @@
 """User routes (get, post, etc.)"""
+from queue import Empty
+from sqlalchemy.exc import SQLAlchemyError
 from flask import jsonify, request
 from flask.blueprints import Blueprint
 import service.user as user_service
@@ -18,12 +20,20 @@ def get_users(current_user:User):
         if current_user=={}:
             raise PermissionError("Could not verify user")
         
-        users = user_service.get_users()
-        return jsonify([i.serialize for i in users])
+        if 'id' in request.json:
+            user = user_service.get_by_id(request.json['id'])
+        elif 'username' in request.json:
+            user = user_service.get_by_username(request.json['username'])
+        else:
+            users = user_service.get_users()
+            return jsonify([i.serialize for i in users])
+        
+        return user.serialize
     except PermissionError as err:
         return {"error":str(err)}, 401
-
-
+    except Exception as err:
+        return {"error":str(err)}, 400
+    
 @user_api.route('/user', methods=['POST'])
 def add_user():
     """Add a new user

@@ -1,7 +1,7 @@
 """User services (add, update, etc.)"""
 from bcrypt import checkpw, gensalt, hashpw
-from flask import make_response
 from sqlalchemy.exc import SQLAlchemyError
+from model.category import Category
 from model.user import User
 from model import db
 
@@ -55,3 +55,14 @@ def verify_user(username, password):
         return user
     
     raise PermissionError("Could not verify")
+
+def add_category(user: User, category: Category):
+    """Add a category to the trainer"""
+    user.categories.append(category)
+    db.session.commit()
+
+def remove_category(user: User, category: Category):
+    """Remove a category from the trainer's list"""
+    user.categories.remove(category)
+    db.session.commit()
+    

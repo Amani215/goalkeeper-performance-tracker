@@ -9,16 +9,22 @@ from model.user import User
 
 user_api = Blueprint('user_api', __name__)
 
+def check_permission(current_user: User):
+    """Checks if the current user is authorized"""
+    if current_user=={}:
+            raise PermissionError("Could not verify user")
+        
 @user_api.route('/user', methods = ['GET'])
 @token_required
 def get_users(current_user:User):
-    """Get all users
+    """Get all requested users
 
-    Returns all the users in the database
+    If id is provided then then only the user with that id is returned
+    If a username is provided then only the user with that username is returned
+    If nothing is provided then all the users are returned
     """
     try:
-        if current_user=={}:
-            raise PermissionError("Could not verify user")
+        check_permission(current_user)
         
         if 'id' in request.json:
             user = user_service.get_by_id(request.json['id'])
@@ -52,3 +58,44 @@ def add_user():
     except Exception as err:
         return {"error":str(err)}, 400
     
+@user_api.route('/user', methods=['PUT'])
+@token_required
+# @admin_required
+def add_category(current_user:User):
+    try:
+        check_permission(current_user)
+        if not request.json:
+            raise ValueError("No data was provided")
+        
+        trainer_id = request.json['trainer_id']
+        # category_id = request.json['category_id']
+        
+        trainer = user_service.get_by_id(trainer_id)
+        # category = category_service.get_by_id(category_id)
+        # user_service.add_category(trainer, category)
+        
+    except PermissionError as err:
+        return {"error":str(err)}, 401
+    except Exception as err:
+        return {"error":str(err)}, 400
+
+@user_api.route('/user', methods=['DELETE'])
+@token_required
+# @admin_required
+def remove_category(current_user:User):
+    try:
+        check_permission(current_user)
+        if not request.json:
+            raise ValueError("No data was provided")
+        
+        trainer_id = request.json['trainer_id']
+        # category_id = request.json['category_id']
+        
+        trainer = user_service.get_by_id(trainer_id)
+        # category = category_service.get_by_id(category_id)
+        # user_service.remove_category(trainer, category)
+        
+    except PermissionError as err:
+        return {"error":str(err)}, 401
+    except Exception as err:
+        return {"error":str(err)}, 400

@@ -1,6 +1,6 @@
 """imports"""
 from sqlalchemy import Column, String, Integer
-from model import db
+from config.postgres import db
 
 class Category(db.Model):
     """Class that represents the categories of the goalkeepers"""

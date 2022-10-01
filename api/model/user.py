@@ -2,7 +2,7 @@
 from uuid import uuid4
 from sqlalchemy import Column, String, BOOLEAN
 from sqlalchemy.dialects.postgresql import UUID
-from model import db
+from config.postgres import db
 from model.category import Category
 
 trainer_categories = db.Table('category_trainers',

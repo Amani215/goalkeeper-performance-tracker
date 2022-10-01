@@ -3,7 +3,7 @@ from bcrypt import checkpw, gensalt, hashpw
 from sqlalchemy.exc import SQLAlchemyError
 from model.category import Category
 from model.user import User
-from model import db
+from config.postgres import db
 
 def add_user(username, password):
     """adds a new user to the database"""

@@ -1,7 +1,7 @@
 """Reusable test items"""
 import pytest
 from app import create_app
-from model import db
+from config.postgres import db
 from helper import random_string
 import service.user as user_service
 

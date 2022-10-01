@@ -1,8 +1,8 @@
 """Entry point of the API"""
 import unittest
 from flask import Flask
-import flask_s3
-from model import db, s3, migrate
+from config.postgres import db, migrate
+from config.s3 import s3
 from config import Config
 
 def create_app():
@@ -15,9 +15,9 @@ def create_app():
     app.config.from_mapping(Config)
     
     db.init_app(app)
-    s3.init_app(app)
-    # flask_s3.create_all(app)
     setup_database(db, app)
+    
+    s3.create_bucket(Bucket="profiles")
     
     from route.user import user_api
     from route.auth import auth_api

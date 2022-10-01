@@ -70,8 +70,11 @@ jobs:
         id: api-quality-gate-response
         uses: fjogeleit/http-request-action@v1
         with:
-          url: |
-            https://sonarcloud.io/api/qualitygates/project_status?projectKey=amani215_goalkeeper-performance-tracker-api
+          url:
+            "https://sonarcloud.io/api/\
+            qualitygates/project_status?\
+            projectKey=amani215_goalkeeper\
+            -performance-tracker-api"
           method: GET
       - name: Fail If Quality Gate Is Not Met
         run: exit 1

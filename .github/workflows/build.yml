@@ -75,7 +75,11 @@ jobs:
           method: GET
       - name: Fail If Quality Gate Is Not Met
         run: exit 1
-        if: ${{contains(fromJson(steps.api-quality-gate-response.outputs.response).projectStatus.status,'ERROR')}}
+        if:
+          "${{contains(fromJson(\
+          steps.api-quality-gate-\
+          response.outputs.response)\
+          .projectStatus.status,'ERROR')}}"
 
   test-web-ui:
     runs-on: ubuntu-latest

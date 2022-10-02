@@ -2,6 +2,7 @@
 import unittest
 from flask import Flask
 from config.postgres import db, migrate
+from init import load_redis
 from config.s3 import s3
 from config import Config
 
@@ -16,8 +17,8 @@ def create_app():
     
     db.init_app(app)
     setup_database(db, app)
-    
-    s3.create_bucket(Bucket="profiles")
+    load_redis()
+    # s3.create_bucket(Bucket="profiles")
     
     from route.user import user_api
     from route.auth import auth_api

@@ -1,6 +1,4 @@
 """User services (add, update, etc.)"""
-from asyncio.windows_events import NULL
-from queue import Empty
 from bcrypt import checkpw, gensalt, hashpw
 from sqlalchemy.exc import SQLAlchemyError
 from model.category import Category
@@ -77,5 +75,5 @@ def update_profile_pic(user: User, pic_url: str):
 
 def delete_profile_pic(user: User):
     """Removes the profile picture of the user"""
-    user.profile_pic = NULL
+    user.profile_pic = ''
     db.session.commit()

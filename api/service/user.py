@@ -1,9 +1,12 @@
 """User services (add, update, etc.)"""
+from asyncio.windows_events import NULL
+from queue import Empty
 from bcrypt import checkpw, gensalt, hashpw
 from sqlalchemy.exc import SQLAlchemyError
 from model.category import Category
 from model.user import User
 from config.postgres import db
+
 
 def add_user(username, password):
     """adds a new user to the database"""
@@ -65,4 +68,14 @@ def remove_category(user: User, category: Category):
     """Remove a category from the trainer's list"""
     user.categories.remove(category)
     db.session.commit()
-    
+
+def update_profile_pic(user: User, pic_url: str):
+    """Set or change the link to the profile pic of the user"""
+    if pic_url != '':
+        user.profile_pic = pic_url
+    db.session.commit()
+
+def delete_profile_pic(user: User):
+    """Removes the profile picture of the user"""
+    user.profile_pic = NULL
+    db.session.commit()

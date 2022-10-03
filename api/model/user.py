@@ -16,6 +16,7 @@ class User(db.Model):
     username = Column(String(80), unique=True, nullable=False)
     password = Column(String(128), nullable=False)
     admin = Column(BOOLEAN, nullable=False, default=False)
+    profile_pic = Column(String(128), unique=False, nullable=True)
     categories = db.relationship('Category',
                                  secondary=trainer_categories, 
                                  lazy='subquery',
@@ -32,7 +33,3 @@ class User(db.Model):
             'id'  : self.id,
             'username': self.username
         }
-
-    def check_password(self, _password):
-        """Check if password is good enough"""
-        return False

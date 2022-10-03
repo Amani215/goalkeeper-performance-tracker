@@ -17,6 +17,7 @@ def create_app():
     
     db.init_app(app)
     setup_database(db, app)
+    migrate.init_app(app, db)
     load_redis()
     # s3.create_bucket(Bucket="profiles")
     

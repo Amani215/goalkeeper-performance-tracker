@@ -2,7 +2,7 @@
 import unittest
 from flask import Flask
 from config.postgres import db, migrate
-from init import load_redis
+from init.redis_init import load_redis
 from config.s3 import s3
 from config import Config
 

@@ -1,10 +1,10 @@
 """Entry point of the API"""
 import unittest
 from flask import Flask
+from config import Config
 from config.postgres import db, migrate
 from init.redis_init import load_redis
-from config.s3 import s3
-from config import Config
+import init.s3_init
 
 def create_app():
     """Create the app 
@@ -12,20 +12,19 @@ def create_app():
     (Application factory: https://flask.palletsprojects.com/en/2.2.x/patterns/appfactories/)
     """
     app = Flask(__name__)
-    
+
     app.config.from_mapping(Config)
-    
+
     db.init_app(app)
     setup_database(db, app)
     migrate.init_app(app, db)
     load_redis()
-    # s3.create_bucket(Bucket="profiles")
     
     from route.user import user_api
     from route.auth import auth_api
     app.register_blueprint(user_api)
     app.register_blueprint(auth_api)
-    
+
     return app
 
 def setup_database(_db, _app):
@@ -35,7 +34,7 @@ def setup_database(_db, _app):
         from model.category import Category
         _db.create_all()
         return _db
-    
+
 app = create_app()
 app.app_context().push()
 

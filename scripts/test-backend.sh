@@ -9,6 +9,10 @@ export SECRET_KEY='903900a2865fbcc43f5752851729f6ef'
 export SQLALCHEMY_TRACK_MODIFICATIONS='True'
 export DEBUG='True'
 export FLASK_APP='__init__.py'
+export AWS_DEFAULT_REGION='eu-central-1'
+export AWS_DOMAIN='http://localhost:9000'
+export AWS_ACCESS_KEY_ID='myminioadmin'
+export AWS_SECRET_ACCESS_KEY='minio-secret-key-change-me'
 
 rm -rf ./api/coverage.xml
 cd api && python3 -m pytest --cov-report=term --cov=. tests/

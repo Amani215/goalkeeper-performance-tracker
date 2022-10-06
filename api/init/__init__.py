@@ -2,7 +2,8 @@
 from botocore.client import ClientError
 from config.s3 import s3_client
 
-try:
-    s3_client.create_bucket(Bucket="profile-pics")
-except ClientError as err:
-    print('error:', err)
+def create_buckets():
+    try:
+        s3_client.create_bucket(Bucket="profile-pics")
+    except ClientError as err:
+        print('error:', err)

@@ -4,7 +4,6 @@ from flask import Flask
 from config import Config
 from config.postgres import db, migrate
 from init.redis_init import load_redis
-import init.s3_init
 
 def create_app():
     """Create the app 

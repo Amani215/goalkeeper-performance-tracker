@@ -23,7 +23,7 @@ jobs:
       DEBUG: True
       FLASK_APP: __init__.py
       AWS_DEFAULT_REGION: eu-central-1
-      AWS_DOMAIN: s3://minio:9000
+      AWS_DOMAIN: http://minio:9000
       AWS_ACCESS_KEY_ID: myminioadmin
       AWS_SECRET_ACCESS_KEY: minio-secret-key-change-me
       REDIS_HOST: localhost
@@ -50,6 +50,7 @@ jobs:
         env:
           MINIO_ROOT_USER: myminioadmin
           MINIO_ROOT_PASSWORD: minio-secret-key-change-me
+        options: server --console-address ":9001" /data
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4

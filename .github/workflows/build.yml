@@ -47,19 +47,20 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-      - run: |
+      - name: Deploy Minio
+        run: |
           docker run -dt \
             -p 9000:9000 -p 9001:9001 \
             --name "minio" \
             -e "MINIO_ROOT_USER=myminioadmin" \
             -e "MINIO_ROOT_PASSWORD=minio-secret-key-change-me" \
             minio/minio:RELEASE.2022-09-25T15-44-53Z.fips server --console-address ":9001" /data
-      - name: install apt packages (make, gcc, g++)
+      - name: Install APT Packages and Redis Server
         run: sudo apt install -y build-essential redis-server
-      - name: install pip dependencies
+      - name: Install pip Dependencies
         working-directory: ./api
         run: pip install -r requirements.txt
-      - name: Test coverage
+      - name: Test Coverage
         working-directory: ./api
         run: python3 -m pytest --cov-report=xml --cov=. tests/
       - name: SonarCloud Scan API
@@ -101,7 +102,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install modules
+      - name: Install Modules
         working-directory: ./web-ui
         run: yarn install
 
@@ -130,7 +131,7 @@ jobs:
         with:
           dockerfile: "**Dockerfile"
           recursive: true
-      - name: lint yaml
+      - name: Lint YAML
         uses: karancode/yamllint-github-action@master
         if: always()
         with:
@@ -144,20 +145,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Log in to the Container registry
+      - name: Log into the Container Registry
         uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       ###### API ######
-      - name: Extract metadata (tags, labels) for API
+      - name: Extract Metadata (tags, labels) for API
         id: api-meta
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}-api
 
-      - name: Build and push API image
+      - name: Build and Push API Image
         uses: docker/build-push-action@v3
         with:
           context: api
@@ -168,13 +169,13 @@ jobs:
           labels: ${{ steps.api-meta.outputs.labels }}
           file: api/Dockerfile
       ###### UI ######
-      - name: Extract metadata (tags, labels) for Web-UI
+      - name: Extract Metadata (tags, labels) for Web-UI
         id: web-ui-meta
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}-web-ui
 
-      - name: Build and push Web-UI image
+      - name: Build and Push Web-UI Image
         uses: docker/build-push-action@v3
         with:
           context: web-ui

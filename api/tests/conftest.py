@@ -21,6 +21,10 @@ def app():
     db.drop_all()
 
 @pytest.fixture()
+def client(app):
+    return app.test_client()
+
+@pytest.fixture()
 def bucket():
     """Create a test bucket"""
     bucket_name = 'test-bucket'

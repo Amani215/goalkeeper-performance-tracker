@@ -53,7 +53,7 @@ jobs:
             --name "minio" \
             -e "MINIO_ROOT_USER=myminioadmin" \
             -e "MINIO_ROOT_PASSWORD=minio-secret-key-change-me" \
-            minio:RELEASE.2022-09-25T15-44-53Z.fips server --console-address ":9001" /data
+            minio/minio:RELEASE.2022-09-25T15-44-53Z.fips server --console-address ":9001" /data
       - name: install apt packages (make, gcc, g++)
         run: sudo apt install -y build-essential redis-server
       - name: install pip dependencies

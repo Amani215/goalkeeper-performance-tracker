@@ -1,10 +1,11 @@
 """User services (add, update, etc.)"""
 from bcrypt import checkpw, gensalt, hashpw
 from sqlalchemy.exc import SQLAlchemyError
+from werkzeug.datastructures import FileStorage
 from model.category import Category
 from model.user import User
 from config.postgres import db
-
+from service.s3 import upload_file
 
 def add_user(username, password):
     """adds a new user to the database"""
@@ -67,11 +68,12 @@ def remove_category(user: User, category: Category):
     user.categories.remove(category)
     db.session.commit()
 
-def update_profile_pic(user: User, pic_url: str):
+def update_profile_pic(user: User, pic:FileStorage):
     """Set or change the link to the profile pic of the user"""
-    if pic_url != '':
-        user.profile_pic = pic_url
+    pic_url = upload_file(pic, "profile-pics")
+    user.profile_pic = pic_url
     db.session.commit()
+    return pic_url
 
 def delete_profile_pic(user: User):
     """Removes the profile picture of the user"""

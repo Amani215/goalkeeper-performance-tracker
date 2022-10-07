@@ -17,6 +17,9 @@ def token_required(func):
             token = request.headers['Authorization']
             current_user = auth_service.get_authenticated_user(token)
 
+            if current_user == {}:
+                raise PermissionError("Could not verify user")
+            
         except ValueError as err:
             return {'error': str(err)}, 401
         except Exception as err:

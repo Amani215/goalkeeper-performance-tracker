@@ -1,6 +1,4 @@
 """User routes (get, post, etc.)"""
-from queue import Empty
-from sqlalchemy.exc import SQLAlchemyError
 from flask import jsonify, request
 from flask.blueprints import Blueprint
 import service.user as user_service
@@ -8,11 +6,6 @@ from middleware.token_required import token_required
 from model.user import User
 
 user_api = Blueprint('user_api', __name__)
-
-def check_permission(current_user: User):
-    """Checks if the current user is authorized"""
-    if current_user=={}:
-            raise PermissionError("Could not verify user")
         
 @user_api.route('/user', methods = ['GET'])
 @token_required
@@ -24,8 +17,6 @@ def get_users(current_user:User):
     If nothing is provided then all the users are returned
     """
     try:
-        check_permission(current_user)
-        
         if 'id' in request.json:
             user = user_service.get_by_id(request.json['id'])
         elif 'username' in request.json:
@@ -63,7 +54,6 @@ def add_user():
 # @admin_required
 def add_category(current_user:User):
     try:
-        check_permission(current_user)
         if not request.json:
             raise ValueError("No data was provided")
         
@@ -84,7 +74,6 @@ def add_category(current_user:User):
 # @admin_required
 def remove_category(current_user:User):
     try:
-        check_permission(current_user)
         if not request.json:
             raise ValueError("No data was provided")
         
@@ -94,6 +83,27 @@ def remove_category(current_user:User):
         trainer = user_service.get_by_id(trainer_id)
         # category = category_service.get_by_id(category_id)
         # user_service.remove_category(trainer, category)
+        
+    except PermissionError as err:
+        return {"error":str(err)}, 401
+    except Exception as err:
+        return {"error":str(err)}, 400
+    
+@user_api.route('/user/profile_pic', methods=['PUT'])
+@token_required
+def add_profile_pic(current_user:User):
+    """Add a profile pic for the user
+    
+    A file has to be passed in request.files
+    A token is required for the user to be able to upload the image
+    The image is automatically uploaded to the logged in user"""
+    try:
+        if request.files.get("profile_pic") is None:
+            raise ValueError("No data was provided")
+        
+        pic = request.files["profile_pic"]
+        pic_url = user_service.update_profile_pic(current_user, pic)
+        return {"url": pic_url}
         
     except PermissionError as err:
         return {"error":str(err)}, 401

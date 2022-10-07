@@ -4,6 +4,7 @@ from flask import Flask
 from config import Config
 from config.postgres import db, migrate
 from init.redis_init import load_redis
+from init import create_buckets
 
 def create_app():
     """Create the app 
@@ -18,6 +19,7 @@ def create_app():
     setup_database(db, app)
     migrate.init_app(app, db)
     load_redis()
+    create_buckets()
     
     from route.user import user_api
     from route.auth import auth_api

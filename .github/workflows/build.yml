@@ -23,7 +23,7 @@ jobs:
       DEBUG: True
       FLASK_APP: __init__.py
       AWS_DEFAULT_REGION: eu-central-1
-      AWS_DOMAIN: http://minio:9000
+      AWS_DOMAIN: http://loalhost:9000
       AWS_ACCESS_KEY_ID: myminioadmin
       AWS_SECRET_ACCESS_KEY: minio-secret-key-change-me
       REDIS_HOST: localhost
@@ -42,21 +42,18 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-      minio:
-        image: minio/minio:RELEASE.2022-09-25T15-44-53Z.fips
-        ports:
-          - 9000:9000
-          - 9001:9001
-        env:
-          MINIO_ROOT_USER: myminioadmin
-          MINIO_ROOT_PASSWORD: minio-secret-key-change-me
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: "3.9"
       - run: |
-          docker exec -i ${{ job.services.minio.id }} sh -c 'server  --console-address ":9001" /data'
+          docker run -dt
+            -p 9000:9000 -p 9001:9001
+            --name "minio"
+            -e "MINIO_ROOT_USER=myminioadmin"
+            -e "MINIO_ROOT_PASSWORD=minio-secret-key-change-me"
+            minio:RELEASE.2022-09-25T15-44-53Z.fips server --console-address ":9001" /data
       - name: install apt packages (make, gcc, g++)
         run: sudo apt install -y build-essential redis-server
       - name: install pip dependencies

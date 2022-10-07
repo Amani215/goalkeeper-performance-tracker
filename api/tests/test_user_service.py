@@ -1,4 +1,4 @@
-"""Testing the user endpoints"""
+"""Testing the user services"""
 import pytest
 from model.user import User
 import service.user as user_service

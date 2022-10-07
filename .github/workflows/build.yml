@@ -8,12 +8,26 @@ on:
 
   workflow_dispatch:
 
-env:
-  REGISTRY: ghcr.io   # GitHub Container Registry
-
 jobs:
   test-api:
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io   # GitHub Container Registry
+      POSTGRES_USER: db
+      POSTGRES_PASSWORD: pass
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: db
+      SECRET_KEY: secret
+      SQLALCHEMY_TRACK_MODIFICATIONS: True
+      DEBUG: True
+      FLASK_APP: __init__.py
+      AWS_DEFAULT_REGION: eu-central-1
+      AWS_DOMAIN: http://minio:9000
+      AWS_ACCESS_KEY_ID: myminioadmin
+      AWS_SECRET_ACCESS_KEY: minio-secret-key-change-me
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
     services:
       db:
         image: postgres:14-alpine3.16
@@ -49,22 +63,6 @@ jobs:
       - name: Test coverage
         working-directory: ./api
         run: python3 -m pytest --cov-report=xml --cov=. tests/
-        env:
-          POSTGRES_USER: db
-          POSTGRES_PASSWORD: pass
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-          POSTGRES_DB: db
-          SECRET_KEY: secret
-          SQLALCHEMY_TRACK_MODIFICATIONS: True
-          DEBUG: True
-          FLASK_APP: __init__.py
-          AWS_DEFAULT_REGION: eu-central-1
-          AWS_DOMAIN: http://minio:9000
-          AWS_ACCESS_KEY_ID: myminioadmin
-          AWS_SECRET_ACCESS_KEY: minio-secret-key-change-me
-          REDIS_HOST: localhost
-          REDIS_PORT: 6379
       - name: SonarCloud Scan API
         uses: sonarsource/sonarcloud-github-action@master
         with:

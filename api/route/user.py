@@ -49,7 +49,7 @@ def add_user():
     except Exception as err:
         return {"error":str(err)}, 400
     
-@user_api.route('/user', methods=['PUT'])
+@user_api.route('/user/category', methods=['PUT'])
 @token_required
 # @admin_required
 def add_category(current_user:User):
@@ -69,7 +69,7 @@ def add_category(current_user:User):
     except Exception as err:
         return {"error":str(err)}, 400
 
-@user_api.route('/user', methods=['DELETE'])
+@user_api.route('/user/category', methods=['DELETE'])
 @token_required
 # @admin_required
 def remove_category(current_user:User):

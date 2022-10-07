@@ -50,12 +50,13 @@ jobs:
         env:
           MINIO_ROOT_USER: myminioadmin
           MINIO_ROOT_PASSWORD: minio-secret-key-change-me
-        options: server --console-address ":9001" /data
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: "3.9"
+      - run: |
+          docker exec -it ${{ job.services.minio.id }} sh 'server /data'
       - name: install apt packages (make, gcc, g++)
         run: sudo apt install -y build-essential redis-server
       - name: install pip dependencies

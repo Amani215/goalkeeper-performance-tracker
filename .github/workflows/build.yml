@@ -56,7 +56,7 @@ jobs:
         with:
           python-version: "3.9"
       - run: |
-          docker exec -it ${{ job.services.minio.id }} sh 'server /data'
+          docker exec ${{ job.services.minio.id }} sh 'server /data'
       - name: install apt packages (make, gcc, g++)
         run: sudo apt install -y build-essential redis-server
       - name: install pip dependencies

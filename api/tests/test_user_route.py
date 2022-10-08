@@ -6,19 +6,20 @@ import uuid
 from helper import random_string
 from tests.conftest import content_type
 
-url = '/user'
+URL = '/user'
+PROFILE_PIC_URL = '/user/profile_pic'
 
 def test_no_token(client):
     """Test protected routes when no token is provided"""
     headers = {'Accept': '*/*'}
     ### GET USERS ROUTE
-    assert client.get(url, headers=headers).status_code == 401
+    assert client.get(URL, headers=headers).status_code == 401
     
     ### ADD IMAGE ROUTE
     test_data = {
         'profile_pic': (io.BytesIO(b'test_profile_pic'), 'tests/assets/image.jpeg'),
     }
-    response = client.put(url+'/profile_pic', data = test_data, headers=headers)
+    response = client.put(PROFILE_PIC_URL, data = test_data, headers=headers)
     assert response.status_code == 401
 
 def test_get_users(client, authenticated_user):
@@ -28,7 +29,7 @@ def test_get_users(client, authenticated_user):
         'Accept': content_type,
         'Authorization': authenticated_user['token']
     }
-    response = client.get(url, json={}, headers=headers)
+    response = client.get(URL, json={}, headers=headers)
     assert sum(1 for _ in range(len(response.json))) == 1
     assert response.status_code == 200
     
@@ -36,14 +37,14 @@ def test_get_users(client, authenticated_user):
     test_json = {
         'username': authenticated_user['username']
     }
-    response = client.get(url, json=test_json, headers=headers)
+    response = client.get(URL, json=test_json, headers=headers)
     assert response.status_code == 200
     assert response.json['username'] == authenticated_user['username']
     
     test_json = {
         'username': random_string.generate(4)
     }
-    response = client.get(url, json=test_json, headers=headers)
+    response = client.get(URL, json=test_json, headers=headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -51,14 +52,14 @@ def test_get_users(client, authenticated_user):
     test_json = {
         'id': authenticated_user['id']
     }
-    response = client.get(url, json=test_json, headers=headers)
+    response = client.get(URL, json=test_json, headers=headers)
     assert response.status_code == 200
     assert response.json['id'] == authenticated_user['id']
     
     test_json = {
         'id': str(uuid.uuid4)
     }
-    response = client.get(url, json=test_json, headers=headers)
+    response = client.get(URL, json=test_json, headers=headers)
     assert response.status_code == 400
     assert 'error' in response.json
     
@@ -73,18 +74,18 @@ def test_add_user(client):
         'username': random_string.generate(12),
         'password': random_string.generate(12)
     }
-    response = client.post(url, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 200
     assert 'user_id' in response.json 
     
     ### DUPLICATE USERNAME
-    response = client.post(url, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert 'error' in response.json 
     
     ### BAD JSON
     test_json = {}
-    response = client.post(url, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert response.json == {'error': 'No data was provided'} 
     
@@ -92,7 +93,7 @@ def test_add_user(client):
         'user': random_string.generate(4),
         'password': random_string.generate(5)
     }
-    response = client.post(url, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert 'error' in response.json
     
@@ -100,7 +101,7 @@ def test_add_user(client):
         'username': random_string.generate(4),
         'pass': random_string.generate(5)
     }
-    response = client.post(url, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert 'error' in response.json
     
@@ -109,7 +110,7 @@ def test_add_user(client):
         'username': random_string.generate(4),
         'password': random_string.generate(5)
     }
-    response = client.post(url, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert response.json == {'error': 'password too short'}
 
@@ -117,7 +118,7 @@ def test_add_user(client):
         'username': random_string.generate(3),
         'password': random_string.generate(6)
     }
-    response = client.post(url, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert response.json == {'error': 'username too short'}
     
@@ -125,7 +126,7 @@ def test_add_user(client):
         'username': random_string.generate(50),
         'password': random_string.generate(51)
     }
-    response = client.post(url, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert response.json == {'error': 'password too long'}
 
@@ -133,7 +134,7 @@ def test_add_user(client):
         'username': random_string.generate(51),
         'password': random_string.generate(50)
     }
-    response = client.post(url, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert response.json == {'error': 'username too long'}
 
@@ -146,10 +147,10 @@ def test_add_profile_pic(client, authenticated_user):
     test_data = {
         'profile_pic': (io.BytesIO(b'test_profile_pic'), 'tests/assets/image.jpeg'),
     }
-    response = client.put(url+'/profile_pic', data = test_data, headers=headers)
+    response = client.put(PROFILE_PIC_URL, data = test_data, headers=headers)
     assert response.status_code == 200
     assert 'url' in response.json
     
-    response = client.put(url+'/profile_pic', data = {}, headers=headers)
+    response = client.put(PROFILE_PIC_URL, data = {}, headers=headers)
     assert response.status_code == 400
     assert 'No data was provided' in response.json['error']

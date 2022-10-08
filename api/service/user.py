@@ -1,11 +1,13 @@
 """User services (add, update, etc.)"""
 import os
+import jwt
 from bcrypt import checkpw, gensalt, hashpw
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.datastructures import FileStorage
 from model.category import Category
 from model.user import User
 from config.postgres import db
+from schema.token import TokenSchema
 from service.s3 import upload_file
 
 def add_user(username, password):
@@ -26,7 +28,13 @@ def add_user(username, password):
 
     db.session.add(user)
     db.session.commit()
-    return {"user_id":user.id}
+    
+    token_schema = TokenSchema(str(user.id)).serialize
+    token = jwt.encode(token_schema, os.getenv('SECRET_KEY'), "HS256")
+    return {
+        'user_id':user.id,
+        'token': token.decode('utf-8')
+    }
 
 def get_users():
     """get all users"""

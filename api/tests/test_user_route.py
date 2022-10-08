@@ -1,4 +1,5 @@
 """Testing the user endpoints"""
+import io
 import json
 import uuid
 
@@ -9,7 +10,16 @@ url = '/user'
 
 def test_no_token(client):
     """Test protected routes when no token is provided"""
-    assert client.get(url).status_code == 401
+    headers = {'Accept': '*/*'}
+    ### GET USERS ROUTE
+    assert client.get(url, headers=headers).status_code == 401
+    
+    ### ADD IMAGE ROUTE
+    test_data = {
+        'profile_pic': (io.BytesIO(b'test_profile_pic'), 'tests/assets/image.jpeg'),
+    }
+    response = client.put(url+'/profile_pic', data = test_data, headers=headers)
+    assert response.status_code == 401
 
 def test_get_users(client, authenticated_user):
     """Test getting user routes"""
@@ -126,3 +136,20 @@ def test_add_user(client):
     response = client.post(url, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert response.json == {'error': 'username too long'}
+
+def test_add_profile_pic(client, authenticated_user):
+    """Test adding a profile pic to the current user route"""
+    headers = {
+        'Accept': '*/*',
+        'Authorization': authenticated_user['token']
+    }
+    test_data = {
+        'profile_pic': (io.BytesIO(b'test_profile_pic'), 'tests/assets/image.jpeg'),
+    }
+    response = client.put(url+'/profile_pic', data = test_data, headers=headers)
+    assert response.status_code == 200
+    assert 'url' in response.json
+    
+    response = client.put(url+'/profile_pic', data = {}, headers=headers)
+    assert response.status_code == 400
+    assert 'No data was provided' in response.json['error']

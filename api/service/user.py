@@ -1,4 +1,5 @@
 """User services (add, update, etc.)"""
+import os
 from bcrypt import checkpw, gensalt, hashpw
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.datastructures import FileStorage
@@ -70,7 +71,7 @@ def remove_category(user: User, category: Category):
 
 def update_profile_pic(user: User, pic:FileStorage):
     """Set or change the link to the profile pic of the user"""
-    pic_url = upload_file(pic, "profile-pics")
+    pic_url = upload_file(pic, os.getenv('PROFILE_PICS_BUCKET'))
     user.profile_pic = pic_url
     db.session.commit()
     return pic_url

@@ -6,7 +6,9 @@ from middleware.token_required import token_required
 from model.user import User
 
 user_api = Blueprint('user_api', __name__)
-        
+
+NO_DATA_PROVIDED_MESSAGE = 'No data was provided'
+   
 @user_api.route('/user', methods = ['GET'])
 @token_required
 def get_users(current_user:User):
@@ -40,7 +42,7 @@ def add_user():
     """
     try:
         if not request.json:
-            raise ValueError("No data was provided")
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
         
         username = request.json['username']
         password = request.json['password']
@@ -55,7 +57,7 @@ def add_user():
 def add_category(current_user:User):
     try:
         if not request.json:
-            raise ValueError("No data was provided")
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
         
         trainer_id = request.json['trainer_id']
         # category_id = request.json['category_id']
@@ -75,7 +77,7 @@ def add_category(current_user:User):
 def remove_category(current_user:User):
     try:
         if not request.json:
-            raise ValueError("No data was provided")
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
         
         trainer_id = request.json['trainer_id']
         # category_id = request.json['category_id']
@@ -99,7 +101,7 @@ def add_profile_pic(current_user:User):
     The image is automatically uploaded to the logged in user"""
     try:
         if request.files.get("profile_pic") is None:
-            raise ValueError("No data was provided")
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
         
         pic = request.files["profile_pic"]
         pic_url = user_service.update_profile_pic(current_user, pic)

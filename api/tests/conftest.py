@@ -66,19 +66,10 @@ def authenticated_user(client):
         'username': random_string.generate(12),
         'password': random_string.generate(12)
     }
-    client.post('/user', data=json.dumps(test_json), headers=headers)
-    response = client.post('/auth', data=json.dumps(test_json), headers=headers)
-    
-    token = 'bearer '+ response.json['token']
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': token
-    }
-    user = client.get('/auth', json ={}, headers=headers)
+    response = client.post('/user', data=json.dumps(test_json), headers=headers)
     
     return {
-        'id': user.json['id'],
-        'username': user.json['username'],
-        'token': token
+        'id': response.json['user_id'],
+        'username': test_json['username'],
+        'token': 'bearer '+ response.json['token']
     }

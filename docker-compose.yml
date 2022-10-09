@@ -15,7 +15,7 @@ services:
     working_dir: /var/www/app
     volumes:
       - ./web-ui:/var/www/app
-    command: sh -c ./run.sh
+    command: yarn start
     restart: always
 
   backend:

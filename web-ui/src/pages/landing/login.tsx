@@ -11,7 +11,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import BgImage from '../../assets/signInBackground.jpg';
 
 function Copyright(props: any): JSX.Element {
   return (
@@ -52,7 +51,7 @@ export default function SignInSide(): JSX.Element {
           sm={4}
           md={7}
           sx={{ 
-            backgroundImage: `url(https://i.ytimg.com/vi/_o-rHZSr1i0/maxresdefault.jpg)`,
+            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/signInBackground.jpg)`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) => t.palette.mode === 'light'
                 ? t.palette.grey[50]

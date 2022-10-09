@@ -1,4 +1,4 @@
-"""Testing the user endpoints"""
+'''Testing the user endpoints'''
 import io
 import json
 import uuid
@@ -10,7 +10,7 @@ URL = '/user'
 PROFILE_PIC_URL = '/user/profile_pic'
 
 def test_no_token(client):
-    """Test protected routes when no token is provided"""
+    '''Test protected routes when no token is provided'''
     headers = {'Accept': '*/*'}
     ### GET USERS ROUTE
     assert client.get(URL, headers=headers).status_code == 401
@@ -23,7 +23,7 @@ def test_no_token(client):
     assert response.status_code == 401
 
 def test_get_users(client, authenticated_user):
-    """Test getting user routes"""
+    '''Test getting user routes'''
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
@@ -63,8 +63,8 @@ def test_get_users(client, authenticated_user):
     assert response.status_code == 400
     assert 'error' in response.json
     
-def test_add_user(client):
-    """Test add a user"""
+def test_add_user(client, authenticated_admin):
+    '''Test add a user'''
     headers = {
         'Content-Type': content_type,
         'Accept': content_type
@@ -72,7 +72,8 @@ def test_add_user(client):
     
     test_json = {
         'username': random_string.generate(12),
-        'password': random_string.generate(12)
+        'password': random_string.generate(12),
+        'admin': False
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 201
@@ -91,7 +92,8 @@ def test_add_user(client):
     
     test_json = {
         'user': random_string.generate(4),
-        'password': random_string.generate(5)
+        'password': random_string.generate(5),
+        'admin': False
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
@@ -99,7 +101,17 @@ def test_add_user(client):
     
     test_json = {
         'username': random_string.generate(4),
-        'pass': random_string.generate(5)
+        'pass': random_string.generate(5),
+        'admin': False
+    }
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    assert response.status_code == 400
+    assert 'error' in response.json
+    
+    test_json = {
+        'username': random_string.generate(4),
+        'pass': random_string.generate(5),
+        'ad': False
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
@@ -108,7 +120,8 @@ def test_add_user(client):
     ### MIN - MAX FIELDS
     test_json = {
         'username': random_string.generate(4),
-        'password': random_string.generate(5)
+        'password': random_string.generate(5),
+        'admin': False
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
@@ -116,7 +129,8 @@ def test_add_user(client):
 
     test_json = {
         'username': random_string.generate(3),
-        'password': random_string.generate(6)
+        'password': random_string.generate(6),
+        'admin': False
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
@@ -124,7 +138,8 @@ def test_add_user(client):
     
     test_json = {
         'username': random_string.generate(50),
-        'password': random_string.generate(51)
+        'password': random_string.generate(51),
+        'admin': False
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
@@ -132,14 +147,15 @@ def test_add_user(client):
 
     test_json = {
         'username': random_string.generate(51),
-        'password': random_string.generate(50)
+        'password': random_string.generate(50),
+        'admin': False
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
     assert response.json == {'error': 'username too long'}
 
 def test_add_profile_pic(client, authenticated_user):
-    """Test adding a profile pic to the current user route"""
+    '''Test adding a profile pic to the current user route'''
     headers = {
         'Accept': '*/*',
         'Authorization': authenticated_user['token']

@@ -75,7 +75,7 @@ def test_add_user(client):
         'password': random_string.generate(12)
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert 'user_id' in response.json 
     
     ### DUPLICATE USERNAME

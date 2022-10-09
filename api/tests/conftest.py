@@ -2,7 +2,7 @@
 import json
 import pytest
 from botocore.client import ClientError
-from app import create_app
+from app import create_app, test
 from config.postgres import db
 from config.s3 import s3_client, s3_resource
 from helper import random_string
@@ -66,10 +66,19 @@ def authenticated_user(client):
         'username': random_string.generate(12),
         'password': random_string.generate(12)
     }
-    response = client.post('/user', data=json.dumps(test_json), headers=headers)
+    client.post('/user', data=json.dumps(test_json), headers=headers)
+    response = client.post('/auth', data=json.dumps(test_json), headers=headers)
+    
+    token = 'bearer '+ response.json['token']
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': token
+    }
+    user = client.get('/auth', json ={}, headers=headers)
     
     return {
-        'id': response.json['user_id'],
-        'username': test_json['username'],
-        'token': 'bearer '+ response.json['token']
+        'id': user.json['id'],
+        'username': user.json['username'],
+        'token': token
     }

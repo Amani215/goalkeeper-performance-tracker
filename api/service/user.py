@@ -29,12 +29,7 @@ def add_user(username, password):
     db.session.add(user)
     db.session.commit()
     
-    token_schema = TokenSchema(str(user.id)).serialize
-    token = jwt.encode(token_schema, os.getenv('SECRET_KEY'), "HS256")
-    return {
-        'user_id':user.id,
-        'token': token.decode('utf-8')
-    }
+    return {'user_id':user.id}
 
 def get_users():
     """get all users"""

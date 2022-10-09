@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { green, indigo } from '@mui/material/colors';
 
 function Copyright(props: any): JSX.Element {
   return (
@@ -29,7 +30,13 @@ function Copyright(props: any): JSX.Element {
   );
 }
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    secondary: {
+      main: green[700],
+    },
+  },
+});
 
 export default function SignInSide(): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -39,6 +46,8 @@ export default function SignInSide(): JSX.Element {
       email: data.get('email'),
       password: data.get('password'),
     });
+
+
   };
 
   return (
@@ -51,7 +60,8 @@ export default function SignInSide(): JSX.Element {
           sm={4}
           md={7}
           sx={{ 
-            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/signInBackground.jpg)`,
+            // Photo by Omar Ramadan: https://www.pexels.com/photo/team-playing-football-on-sports-field-6507967/
+            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/loginBg.jpg)`,
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) => t.palette.mode === 'light'
                 ? t.palette.grey[50]

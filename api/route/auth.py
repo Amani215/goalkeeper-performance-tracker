@@ -27,7 +27,7 @@ def authenticate():
         return {"error":str(err)}, 400
 
 @auth_api.route('/auth', methods=['GET'])
-@token_required
+@token_required(admin=False)
 def get_authenticated_user(user: User):
     """Get the current authenticated user
 

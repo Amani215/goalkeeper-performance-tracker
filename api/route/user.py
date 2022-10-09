@@ -10,7 +10,7 @@ user_api = Blueprint('user_api', __name__)
 NO_DATA_PROVIDED_MESSAGE = 'No data was provided'
    
 @user_api.route('/user', methods = ['GET'])
-@token_required
+@token_required(admin=False)
 def get_users(current_user:User):
     """Get all requested users
 
@@ -52,7 +52,7 @@ def add_user():
         return {"error":str(err)}, 400
     
 @user_api.route('/user/category', methods=['PUT'])
-@token_required
+@token_required(admin=True)
 # @admin_required
 def add_category(current_user:User):
     try:
@@ -72,8 +72,7 @@ def add_category(current_user:User):
         return {"error":str(err)}, 400
 
 @user_api.route('/user/category', methods=['DELETE'])
-@token_required
-# @admin_required
+@token_required(admin=True)
 def remove_category(current_user:User):
     try:
         if not request.json:
@@ -92,7 +91,7 @@ def remove_category(current_user:User):
         return {"error":str(err)}, 400
     
 @user_api.route('/user/profile_pic', methods=['PUT'])
-@token_required
+@token_required(admin=False)
 def add_profile_pic(current_user:User):
     """Add a profile pic for the user
     

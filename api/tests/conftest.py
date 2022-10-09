@@ -60,7 +60,7 @@ def user():
     return user_credentials
 
 @pytest.fixture()
-def authenticated_user(client):
+def authenticated_user(client, admin: bool):
     headers = {
         'Content-Type': content_type,
         'Accept': content_type
@@ -68,35 +68,7 @@ def authenticated_user(client):
     test_json = {
         'username': random_string.generate(12),
         'password': random_string.generate(12),
-        'admin': False
-    }
-    client.post('/user', data=json.dumps(test_json), headers=headers)
-    response = client.post(AUTH_ROUTE, data=json.dumps(test_json), headers=headers)
-    
-    token = 'bearer '+ response.json['token']
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': token
-    }
-    user = client.get(AUTH_ROUTE, json ={}, headers=headers)
-    
-    return {
-        'id': user.json['id'],
-        'username': user.json['username'],
-        'token': token
-    }
-
-@pytest.fixture()
-def authenticated_admin(client):
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type
-    }
-    test_json = {
-        'username': random_string.generate(12),
-        'password': random_string.generate(12),
-        'admin': True
+        'admin': admin
     }
     client.post('/user', data=json.dumps(test_json), headers=headers)
     response = client.post(AUTH_ROUTE, data=json.dumps(test_json), headers=headers)

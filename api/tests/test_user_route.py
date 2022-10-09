@@ -2,6 +2,7 @@
 import io
 import json
 import uuid
+import pytest
 
 from helper import random_string
 from tests.conftest import content_type
@@ -22,6 +23,7 @@ def test_no_token(client):
     response = client.put(PROFILE_PIC_URL, data = test_data, headers=headers)
     assert response.status_code == 401
 
+@pytest.mark.parametrize(['admin'], [[False]])
 def test_get_users(client, authenticated_user):
     '''Test getting user routes'''
     headers = {
@@ -62,8 +64,9 @@ def test_get_users(client, authenticated_user):
     response = client.get(URL, json=test_json, headers=headers)
     assert response.status_code == 400
     assert 'error' in response.json
-    
-def test_add_user(client, authenticated_admin):
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_add_user(client, authenticated_user):
     '''Test add a user'''
     headers = {
         'Content-Type': content_type,
@@ -154,6 +157,7 @@ def test_add_user(client, authenticated_admin):
     assert response.status_code == 400
     assert response.json == {'error': 'username too long'}
 
+@pytest.mark.parametrize(['admin'], [[False]])
 def test_add_profile_pic(client, authenticated_user):
     '''Test adding a profile pic to the current user route'''
     headers = {

@@ -22,9 +22,10 @@ class User(db.Model):
                                  lazy='subquery',
                                  backref=db.backref('trainers', lazy=True))
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, admin):
         self.username = username
         self.password  = password
+        self.admin = admin
     
     @property
     def serialize(self):

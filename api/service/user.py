@@ -8,7 +8,7 @@ from model.user import User
 from config.postgres import db
 from service.s3 import upload_file
 
-def add_user(username: str, password: str):
+def add_user(username: str, password: str, admin: bool):
     """adds a new user to the database"""
     if len(username)<4:
         raise ValueError("username too short")
@@ -22,7 +22,7 @@ def add_user(username: str, password: str):
     
     password = hashpw(password.encode('utf-8'), gensalt())
     password = password.decode('utf8')
-    user = User(username, password)
+    user = User(username, password, admin)
 
     db.session.add(user)
     db.session.commit()

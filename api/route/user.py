@@ -22,7 +22,8 @@ def add_user():
         
         username = request.json['username']
         password = request.json['password']
-        user_response = user_service.add_user(username=username, password=password)
+        admin = request.json['admin']
+        user_response = user_service.add_user(username=username, password=password, admin=admin)
         return user_response, 201
     except Exception as err:
         return {"error":str(err)}, 400

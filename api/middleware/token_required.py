@@ -1,5 +1,4 @@
 """Decorator"""
-from functools import wraps
 from flask import request
 import service.auth as auth_service
 

@@ -30,7 +30,7 @@ def test_get_users(client, authenticated_user):
         'Authorization': authenticated_user['token']
     }
     response = client.get(URL, json={}, headers=headers)
-    assert sum(1 for _ in range(len(response.json))) == 1
+    assert sum(1 for _ in range(len(response.json))) == 2   # Because the default admin should exist too
     assert response.status_code == 200
     
     ### GET BY USERNAME

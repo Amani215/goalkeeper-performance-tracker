@@ -47,7 +47,7 @@ def test_get_users(app,user):
     ''' Test getting all the users in the database'''
     
     users = user_service.get_users()
-    assert len([i.serialize for i in users]) == 1
+    assert len([i.serialize for i in users]) == 2   # Because the default admin should exist too
 
 def test_get_by_username(app, user):
     ''' Test getting a user by its username '''

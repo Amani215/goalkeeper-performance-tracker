@@ -26,6 +26,8 @@ env:
   PROFILE_PICS_BUCKET: build-profile-pics
   REDIS_HOST: localhost
   REDIS_PORT: 6379
+  ADMIN_USERNAME: build
+  ADMIN_PASSWORD: buildbuild
 
 jobs:
   test-api:

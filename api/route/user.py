@@ -8,7 +8,25 @@ from model.user import User
 user_api = Blueprint('user_api', __name__)
 
 NO_DATA_PROVIDED_MESSAGE = 'No data was provided'
-   
+
+@user_api.route('/user', methods=['POST'])
+def add_user():
+    """Add a new user
+
+    Takes a username and a password and returns the new user ID.
+    If the username already exists the user is not added.
+    """
+    try:
+        if not request.json:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+        
+        username = request.json['username']
+        password = request.json['password']
+        user_response = user_service.add_user(username=username, password=password)
+        return user_response, 201
+    except Exception as err:
+        return {"error":str(err)}, 400
+  
 @user_api.route('/user', methods = ['GET'])
 @token_required(admin=False)
 def get_users(current_user:User):
@@ -32,28 +50,30 @@ def get_users(current_user:User):
         return {"error":str(err)}, 401
     except Exception as err:
         return {"error":str(err)}, 400
-    
-@user_api.route('/user', methods=['POST'])
-def add_user():
-    """Add a new user
 
-    Takes a username and a password and returns the new user ID.
-    If the username already exists the user is not added.
-    """
-    try:
+@user_api.route('/user/admin', methods = ['PUT'])
+@token_required(admin=True)
+def set_admin(current_user: User):
+    """Update the admin status of a given user
+    
+    Only the admin has this right and the admin's default status cannot be changed"""
+    
+    try: 
         if not request.json:
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
-        
         username = request.json['username']
-        password = request.json['password']
-        user_response = user_service.add_user(username=username, password=password)
-        return user_response, 201
-    except Exception as err:
-        return {"error":str(err)}, 400
+        admin = request.json['admin']
+        
+        user_response = user_service.set_admin(username, admin)
+        return user_response, 200
     
+    except PermissionError as err:
+        return {"error":str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400
+
 @user_api.route('/user/category', methods=['PUT'])
 @token_required(admin=True)
-# @admin_required
 def add_category(current_user:User):
     try:
         if not request.json:

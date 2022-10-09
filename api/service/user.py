@@ -1,16 +1,14 @@
 """User services (add, update, etc.)"""
 import os
-import jwt
 from bcrypt import checkpw, gensalt, hashpw
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.datastructures import FileStorage
 from model.category import Category
 from model.user import User
 from config.postgres import db
-from schema.token import TokenSchema
 from service.s3 import upload_file
 
-def add_user(username, password):
+def add_user(username: str, password: str):
     """adds a new user to the database"""
     if len(username)<4:
         raise ValueError("username too short")
@@ -51,7 +49,7 @@ def get_by_id(user_id):
     except SQLAlchemyError as err:
         return {"error": str(err)}
     
-def verify_user(username, password):
+def verify_user(username: str, password: str):
     """Verify if the user exists and has the correct password
     
     Possible exceptions: SQLAlchemyError, PermissionError"""
@@ -62,6 +60,12 @@ def verify_user(username, password):
     
     raise PermissionError("Could not verify")
 
+def set_admin(username: str, admin: bool):
+    """Update the admin status of the user"""
+    user = get_by_username(username)
+    user.admin = admin
+    db.session.commit()
+    
 def add_category(user: User, category: Category):
     """Add a category to the trainer"""
     user.categories.append(category)

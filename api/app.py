@@ -1,16 +1,17 @@
-"""Entry point of the API"""
+'''Entry point of the API'''
 import unittest
 from flask import Flask
 from config import Config
 from config.postgres import db, migrate
+from init.postgres_init import set_default_user
 from init.redis_init import load_redis
-from init import create_buckets
+from init.s3_init import create_buckets
 
 def create_app():
-    """Create the app 
+    '''Create the app 
     
     (Application factory: https://flask.palletsprojects.com/en/2.2.x/patterns/appfactories/)
-    """
+    '''
     app = Flask(__name__)
 
     app.config.from_mapping(Config)
@@ -29,11 +30,12 @@ def create_app():
     return app
 
 def setup_database(_db, _app):
-    """Create the postgres database"""
+    '''Create the postgres database'''
     with _app.app_context():
         from model.user import User
         from model.category import Category
         _db.create_all()
+        set_default_user()
         return _db
 
 app = create_app()
@@ -43,7 +45,7 @@ def run():
     app.run()
 
 def test():
-    """Runs the unit tests."""
+    '''Runs the unit tests.'''
     tests = unittest.TestLoader().discover('api/tests', pattern='test*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():

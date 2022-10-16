@@ -17,6 +17,5 @@ def load_table (name):
         
 def load_redis():
   """Load all the redis tables"""
-  load_table("cards")
-  load_table("teams")
-  load_table("locations")
+  for key, value in defaults.items():
+    load_table(key)

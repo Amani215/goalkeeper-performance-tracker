@@ -1,5 +1,8 @@
 {
   "cards": ["red", "yellow"],
   "teams": ["EST", "CA", "ASM"],
-  "locations": ["Tunis", "Sousse", "Jerba"]
+  "locations": ["Tunis", "Sousse", "Jerba"],
+  "results": ["Won", "Defeat", "Null"],
+  "match_types": ["Friendly", "Tournament", "Training"],
+  "category_names": ["Seniors", "Juniors", "Academy", "Cadets A", "Cadets B"]
 }

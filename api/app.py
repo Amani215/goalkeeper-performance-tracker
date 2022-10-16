@@ -24,9 +24,11 @@ def create_app():
     
     from route.user import user_api
     from route.auth import auth_api
+    from route.category import category_api
     app.register_blueprint(user_api)
     app.register_blueprint(auth_api)
-
+    app.register_blueprint(category_api)
+    
     return app
 
 def setup_database(_db, _app):

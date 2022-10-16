@@ -1,5 +1,6 @@
 """This file initializes all the redis parameter tables to their default values"""
 import init.redis_init.cards as cards
+import init.redis_init.teams as teams
 import json
 import os
 
@@ -12,3 +13,4 @@ default_file.close()
 def load_redis():
   """Load all the redis tables"""
   cards.load(defaults)
+  teams.load(defaults)

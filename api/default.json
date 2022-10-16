@@ -1,3 +1,4 @@
 {
-  "cards": ["red", "yellow"]
+  "cards": ["red", "yellow"],
+  "teams": ["EST", "CA", "ASM"]
 }

@@ -1,6 +1,5 @@
 """This file initializes all the redis parameter tables to their default values"""
-import init.redis_init.cards as cards
-import init.redis_init.teams as teams
+from config.redis import redis_db
 import json
 import os
 
@@ -10,7 +9,14 @@ default_file_content = default_file.read()
 defaults = json.loads(default_file_content)
 default_file.close()
 
+def load_table (name):
+    """Initialize the table with the given name with the default values"""
+    table = defaults[name]
+    for item in table:
+        redis_db.sadd(name,item)
+        
 def load_redis():
   """Load all the redis tables"""
-  cards.load(defaults)
-  teams.load(defaults)
+  load_table("cards")
+  load_table("teams")
+  load_table("locations")

@@ -1,4 +1,5 @@
 {
   "cards": ["red", "yellow"],
-  "teams": ["EST", "CA", "ASM"]
+  "teams": ["EST", "CA", "ASM"],
+  "locations": ["Tunis", "Sousse", "Jerba"]
 }

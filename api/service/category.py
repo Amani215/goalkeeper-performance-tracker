@@ -11,6 +11,8 @@ def add_category(name: str, season: int):
     db.session.add(category)
     db.session.commit()
     
+    return {'category_id':category.id}
+    
 def get_categories():
     '''Get all categories'''
     return Category.query.all()

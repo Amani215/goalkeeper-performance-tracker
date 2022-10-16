@@ -37,7 +37,7 @@ def test_get_by_id(app):
     _category = category_service.get_by_id(str(uuid.uuid4()))
     assert 'error' in _category
 
-def test_get_by_id(app):
+def test_get_by_name(app):
     ''' Test getting categories by their name '''
     name1=random_string.generate(12)
     name2=random_string.generate(12)

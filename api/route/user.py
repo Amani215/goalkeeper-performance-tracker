@@ -1,7 +1,9 @@
 '''User routes (get, post, etc.)'''
 from flask import jsonify, request
 from flask.blueprints import Blueprint
+from model.category import Category
 import service.user as user_service
+import service.category as category_service
 from middleware.token_required import token_required
 from model.user import User
 
@@ -76,16 +78,17 @@ def set_admin(current_user: User):
 @user_api.route('/user/category', methods=['PUT'])
 @token_required(admin=True)
 def add_category(current_user:User):
+    '''Add the given category to the list of categories of the given trainer'''
     try:
         if not request.json:
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
         
         trainer_id = request.json['trainer_id']
-        # category_id = request.json['category_id']
+        category_id = request.json['category_id']
         
-        trainer = user_service.get_by_id(trainer_id)
-        # category = category_service.get_by_id(category_id)
-        # user_service.add_category(trainer, category)
+        trainer: User = user_service.get_by_id(trainer_id)
+        category: Category = category_service.get_by_id(category_id)
+        user_service.add_category(trainer, category)
         
     except PermissionError as err:
         return {'error':str(err)}, 401
@@ -95,16 +98,17 @@ def add_category(current_user:User):
 @user_api.route('/user/category', methods=['DELETE'])
 @token_required(admin=True)
 def remove_category(current_user:User):
+    '''Remove the given category from the list of categories of the given trainer'''
     try:
         if not request.json:
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
         
         trainer_id = request.json['trainer_id']
-        # category_id = request.json['category_id']
+        category_id = request.json['category_id']
         
-        trainer = user_service.get_by_id(trainer_id)
-        # category = category_service.get_by_id(category_id)
-        # user_service.remove_category(trainer, category)
+        trainer: User = user_service.get_by_id(trainer_id)
+        category: Category = category_service.get_by_id(category_id)
+        user_service.remove_category(trainer, category)
         
     except PermissionError as err:
         return {'error':str(err)}, 401

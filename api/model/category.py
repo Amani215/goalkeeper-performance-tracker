@@ -8,7 +8,7 @@ class Category(db.Model):
     name = Column(String(30), unique=False, nullable=False)
     season = Column(Integer, unique=False, nullable=False)
 
-    def __init__(self, name, season):
+    def __init__(self, name: str, season: int):
         self.id = name + str(season)
         self.name = name
         self.season  = season

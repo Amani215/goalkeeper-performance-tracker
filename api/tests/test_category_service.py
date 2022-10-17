@@ -44,23 +44,9 @@ def test_get_by_name(app):
     season1=random.randint(1500,2500)
     season2=random.randint(1500,2500)
     
-    category11 = {
-        'name': name1,
-        'season': season1
-    }
-    category_service.add_category(category11['name'], category11['season'])
-    
-    category12 = {
-        'name': name1,
-        'season': season2
-    }
-    category_service.add_category(category12['name'], category12['season'])
-    
-    category21 = {
-        'name': name2,
-        'season': season1
-    }
-    category_service.add_category(category21['name'], category21['season'])
+    category_service.add_category(name1, season1)
+    category_service.add_category(name1, season2)
+    category_service.add_category(name2, season1)
     
     categories_name1 = category_service.get_by_name(name1)
     assert len([i.serialize for i in categories_name1]) == 2
@@ -70,3 +56,24 @@ def test_get_by_name(app):
     
     categories_no_name = category_service.get_by_name(random_string.generate(12))
     assert len([i.serialize for i in categories_no_name]) == 0
+
+def test_get_by_season(app):
+    ''' Test getting categories by their season '''
+    name1=random_string.generate(12)
+    name2=random_string.generate(12)
+    season1=random.randint(1500,2500)
+    season2=random.randint(1500,2500)
+ 
+    category_service.add_category(name1, season1)
+    category_service.add_category(name1, season2)
+    category_service.add_category(name2, season1)
+    
+    categories_season1 = category_service.get_by_season(season1)
+    assert len([i.serialize for i in categories_season1]) == 2
+    
+    categories_season2 = category_service.get_by_season(season2)
+    assert len([i.serialize for i in categories_season2]) == 1
+    
+    categories_no_season = category_service.get_by_season(random.randint(1500,2500))
+    assert len([i.serialize for i in categories_no_season]) == 0
+

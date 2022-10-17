@@ -11,7 +11,7 @@ NO_DATA_PROVIDED_MESSAGE = 'No data was provided'
 
 @category_api.route('/category', methods=['POST'])
 @token_required(admin=True)
-def add_category():
+def add_category(current_user:User):
     '''Add a new category
 
     Takes a category name and a season and returns the new category ID.
@@ -41,15 +41,15 @@ def get_categories(current_user:User):
     try:
         if 'id' in request.json:
             category = category_service.get_by_id(request.json['id'])
+            return category.serialize
         elif 'name' in request.json:
-            category = category_service.get_by_name(request.json['name'])
+            categories = category_service.get_by_name(request.json['name'])
         elif 'season' in request.json:
-            category = category_service.get_by_season(request.json['season'])
+            categories = category_service.get_by_season(request.json['season'])
         else:
             categories = category_service.get_categories()
-            return jsonify([i.serialize for i in categories])
         
-        return category.serialize
+        return jsonify([i.serialize for i in categories])
     except PermissionError as err:
         return {'error':str(err)}, 401
     except Exception as err:

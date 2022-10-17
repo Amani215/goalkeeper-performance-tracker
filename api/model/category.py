@@ -18,6 +18,6 @@ class Category(db.Model):
         """Return object data in easily serializable format"""
         return {
             'id'  : self.id,
-            'category name': self.name,
+            'name': self.name,
             'season': self.season
         }

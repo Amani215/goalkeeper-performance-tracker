@@ -22,6 +22,10 @@ export PROFILE_PICS_BUCKET='test-profile-pics'
 export REDIS_HOST='localhost'
 export REDIS_PORT=6379
 
+### DEFAULT USER ###
+export ADMIN_USERNAME='test_user'
+export ADMIN_PASSWORD='test_password'
+
 rm -rf ./api/coverage.xml
 cd api && python3 -m pytest --cov-report=term --cov=. tests/
 # cd api && python3 -m pytest tests/

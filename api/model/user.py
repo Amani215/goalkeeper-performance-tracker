@@ -32,5 +32,6 @@ class User(db.Model):
         """Return object data in easily serializable format"""
         return {
             'id'  : self.id,
-            'username': self.username
+            'username': self.username,
+            'admin': self.admin
         }

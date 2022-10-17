@@ -68,7 +68,7 @@ def set_admin(current_user: User):
         admin = request.json['admin']
         
         user_response = user_service.set_admin(username, admin)
-        return user_response, 200
+        return user_response.serialize, 200
     
     except PermissionError as err:
         return {'error':str(err)}, 401

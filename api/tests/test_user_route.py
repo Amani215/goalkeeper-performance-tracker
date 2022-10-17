@@ -1,6 +1,7 @@
 '''Testing the user endpoints'''
 import io
 import json
+import os
 import uuid
 import pytest
 
@@ -9,6 +10,7 @@ from tests.conftest import content_type
 
 URL = '/user'
 PROFILE_PIC_URL = '/user/profile_pic'
+ADMIN_URL = '/user/admin'
 
 def test_no_token(client):
     '''Test protected routes when no token is provided'''
@@ -157,6 +159,58 @@ def test_add_user(client, authenticated_user):
     assert response.status_code == 400
     assert response.json == {'error': 'username too long'}
 
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_set_admin(client, authenticated_user, user):
+    '''Test setting a user to admin'''
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+    test_data = {
+        'username': user['username'],
+        'admin': True
+    }
+    response = client.put(ADMIN_URL, data = json.dumps(test_data), headers=headers)
+    assert response.status_code == 200
+    test_data = {'username':user['username']}
+    response = client.get(URL, data = json.dumps(test_data), headers=headers)
+    assert response.json['admin'] == True
+    
+    ### BAD JSON
+    response = client.put(ADMIN_URL, data = json.dumps({}), headers=headers)
+    assert response.status_code == 400
+    
+    test_data = {
+        'name': user['username'],
+        'admin': True
+    }
+    response = client.put(ADMIN_URL, data = json.dumps(test_data), headers=headers)
+    assert response.status_code == 400
+    
+    test_data = {
+        'username': user['username'],
+        'ad': True
+    }
+    response = client.put(ADMIN_URL, data = json.dumps(test_data), headers=headers)
+    assert response.status_code == 400
+    
+    test_data = {
+        'username': random_string.generate(4),
+        'admin': True
+    }
+    response = client.put(ADMIN_URL, data = json.dumps(test_data), headers=headers)
+    assert response.status_code == 400
+    
+    ### UPDATE DEFAULT ADMIN
+    test_data = {
+        'username': os.environ['ADMIN_USERNAME'],
+        'admin': False
+    }
+    response = client.put(ADMIN_URL, data = json.dumps(test_data), headers=headers)
+    assert response.status_code == 401
+    assert 'Default admin cannot be changed' in response.json['error']
+ 
 @pytest.mark.parametrize(['admin'], [[False]])
 def test_add_profile_pic(client, authenticated_user):
     '''Test adding a profile pic to the current user route'''

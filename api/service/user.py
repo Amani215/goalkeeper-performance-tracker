@@ -68,7 +68,9 @@ def set_admin(username: str, admin: bool):
     user = get_by_username(username)
     user.admin = admin
     db.session.commit()
-    
+
+    return user
+
 def add_category(user: User, category: Category):
     '''Add a category to the trainer'''
     user.categories.append(category)

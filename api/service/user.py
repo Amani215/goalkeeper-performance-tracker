@@ -75,6 +75,10 @@ def add_category(user: User, category: Category):
     '''Add a category to the trainer'''
     user.categories.append(category)
     db.session.commit()
+    return {
+        'user_id': user.id,
+        'category_id': category.id
+    }
 
 def remove_category(user: User, category: Category):
     '''Remove a category from the trainer's list'''

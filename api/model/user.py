@@ -6,7 +6,7 @@ from config.postgres import db
 from model.category import Category
 
 trainer_categories = db.Table('category_trainers',
-    db.Column('user_id', UUID, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('user_id', UUID(as_uuid=True), db.ForeignKey('user.id'), primary_key=True),
     db.Column('category_id', String, db.ForeignKey('category.id'), primary_key=True)
 )
 

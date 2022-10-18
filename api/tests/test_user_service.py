@@ -1,9 +1,11 @@
 '''Testing the user services'''
+import uuid
+import random
 import pytest
 from model.user import User
 import service.user as user_service
+import service.category as category_service
 from helper import random_string
-import uuid
 
 
 def test_add_user(app):
@@ -77,3 +79,15 @@ def test_verify_user(app, user):
     
     with pytest.raises(PermissionError, match='Could not verify'):
         user_service.verify_user(user['username'], random_string.generate(50))
+
+def test_add_category(app, user):
+    '''Test add a category to the trainer'''
+    category = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500,2500)
+    }
+    category_response=category_service.add_category(category['name'], category['season'])
+    category = category_service.get_by_id(category_response['category_id'])
+    _user = user_service.get_by_username(user['username'])
+    response = user_service.add_category(_user, category)
+    assert response['category_id'] == category.id

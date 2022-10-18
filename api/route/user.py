@@ -89,7 +89,7 @@ def add_category(current_user:User):
         trainer: User = user_service.get_by_id(trainer_id)
         category: Category = category_service.get_by_id(category_id)
         user_service.add_category(trainer, category)
-        
+        return {}, 201
     except PermissionError as err:
         return {'error':str(err)}, 401
     except Exception as err:
@@ -110,6 +110,7 @@ def remove_category(current_user:User):
         category: Category = category_service.get_by_id(category_id)
         user_service.remove_category(trainer, category)
         
+        return {}, 204
     except PermissionError as err:
         return {'error':str(err)}, 401
     except Exception as err:

@@ -2,15 +2,18 @@
 import io
 import json
 import os
+import random
 import uuid
 import pytest
 
 from helper import random_string
+import service.category as category_service
 from tests.conftest import content_type
 
 URL = '/user'
 PROFILE_PIC_URL = '/user/profile_pic'
 ADMIN_URL = '/user/admin'
+CATEGORY_URL = '/user/category'
 
 def test_no_token(client):
     '''Test protected routes when no token is provided'''
@@ -210,7 +213,34 @@ def test_set_admin(client, authenticated_user, user):
     response = client.put(ADMIN_URL, data = json.dumps(test_data), headers=headers)
     assert response.status_code == 401
     assert 'Default admin cannot be changed' in response.json['error']
- 
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_add_remove_category(client, authenticated_user, user):
+    '''Test adding and removing a category to a trainer'''
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+    test_category = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500,2500)
+    }
+    category_service.add_category(test_category['name'], test_category['season'])
+    test_user = {'username': user['username']}
+    response = client.get(URL, json=test_user, headers=headers)
+    
+    test_data = {
+        'trainer_id': response.json['id'],
+        'category_id': test_category['name']+str(test_category['season'])
+    }
+    response = client.put(CATEGORY_URL, data = json.dumps(test_data), headers=headers)
+    assert response.status_code == 201
+    
+    ### DELETE
+    response = client.delete(CATEGORY_URL, data = json.dumps(test_data), headers=headers)
+    assert response.status_code == 204
+
 @pytest.mark.parametrize(['admin'], [[False]])
 def test_add_profile_pic(client, authenticated_user):
     '''Test adding a profile pic to the current user route'''

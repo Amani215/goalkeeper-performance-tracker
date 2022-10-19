@@ -35,7 +35,11 @@ export default function SignInSide(): JSX.Element {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (login) login('admin','default')
+    if (login){
+      const username: string = data.get('username') as string
+      const password: string = data.get('password') as string
+      login(username, password)
+    }
   };
 
   return (
@@ -82,10 +86,10 @@ export default function SignInSide(): JSX.Element {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -114,11 +118,6 @@ export default function SignInSide(): JSX.Element {
               <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Sign Up
                 </Link>
               </Grid>
             </Grid>

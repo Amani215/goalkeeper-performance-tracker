@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,7 +11,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { useLogin } from '../contexts/loginContext'
+import { useLogin } from '../contexts/loginContext';
 
 function Copyright(props: any): JSX.Element {
   return (
@@ -21,7 +22,7 @@ function Copyright(props: any): JSX.Element {
       {...props}
     >
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="https://github.com/Amani215/goalkeeper-performance-tracker">
         GPT
       </Link>
       {new Date().getFullYear()}
@@ -32,13 +33,17 @@ function Copyright(props: any): JSX.Element {
 
 export default function SignInSide(): JSX.Element {
   const login = useLogin()
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if (login){
+    if (login) {
       const username: string = data.get('username') as string
       const password: string = data.get('password') as string
-      login(username, password)
+
+      let response = await login(username, password)
+      if ('token' in response) {
+        window.location.reload()
+      }
     }
   };
 
@@ -71,6 +76,7 @@ export default function SignInSide(): JSX.Element {
             alignItems: 'center',
           }}
         >
+          {/* <Alert severity="error">This is an error alert — check it out!</Alert> */}
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           </Avatar>
           <Typography component="h1" variant="h5">

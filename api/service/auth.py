@@ -2,8 +2,9 @@
 import os.path
 from dotenv import load_dotenv
 import jwt
+from model.user import User
 from schema.token import TokenSchema
-from service.user import verify_user, get_by_id
+from service.user import verify_user, get_by_id, get_by_username
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -18,7 +19,14 @@ def authenticate_user(username, password):
         load_dotenv()
         token_schema = TokenSchema(str(result.id)).serialize
         token = jwt.encode(token_schema, os.getenv('SECRET_KEY'), "HS256")
-        return {'token': token.decode('utf-8')}
+        user: User = result
+        return {
+            'token': token.decode('utf-8'),
+            'user':{
+                'id': user.id,
+                'username': user.username,
+                'profile_pic': user.profile_pic
+            }}
 
     except SQLAlchemyError as err:
         raise SQLAlchemyError(str(err))

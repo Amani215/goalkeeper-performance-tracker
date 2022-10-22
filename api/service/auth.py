@@ -25,6 +25,7 @@ def authenticate_user(username, password):
             'user':{
                 'id': user.id,
                 'username': user.username,
+                'admin': user.admin,
                 'profile_pic': user.profile_pic
             }}
 

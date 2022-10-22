@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,7 +14,7 @@ import { useLogin } from '../contexts/loginContext';
 import { useUser } from '../contexts/userContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import { FormikValues, useFormik } from 'formik';
-
+import loginValidationSchema from "../schemas/loginValidation"
 function Copyright(props: any): JSX.Element {
   return (
     <Typography
@@ -50,6 +49,7 @@ export default function SignInSide(): JSX.Element {
       username: '',
       password: ''
     },
+    validationSchema: loginValidationSchema,
     onSubmit: handleSubmit
   })
   if (loaded && user) {
@@ -110,6 +110,8 @@ export default function SignInSide(): JSX.Element {
               value={formik.values.username}
               onChange={formik.handleChange}
               autoFocus
+              error={formik.touched.username && Boolean(formik.errors.username)}
+              helperText={formik.touched.username && formik.errors.username}
             />
             <TextField
               margin="normal"
@@ -121,6 +123,8 @@ export default function SignInSide(): JSX.Element {
               id="password"
               autoComplete="current-password"
               value={formik.values.password}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
               onChange={formik.handleChange}
             />
             <FormControlLabel

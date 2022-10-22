@@ -1,6 +1,7 @@
-import Login from './pages/landing/login';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
+import AppRoutes from './router';
+import UserProvider from './contexts/userContext';
 
 const theme = createTheme({
   palette: {
@@ -13,7 +14,9 @@ const theme = createTheme({
 function App(): JSX.Element {
   return (
   <ThemeProvider theme={theme}>
-    <Login />
+    <UserProvider>
+      <AppRoutes></AppRoutes>
+    </UserProvider>
   </ThemeProvider>
   )
 }

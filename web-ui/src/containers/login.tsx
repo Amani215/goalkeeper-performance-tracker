@@ -40,10 +40,7 @@ export default function SignInSide(): JSX.Element {
       const username: string = data.get('username') as string
       const password: string = data.get('password') as string
 
-      let response = await login(username, password)
-      if ('token' in response) {
-        window.location.reload()
-      }
+      await login(username, password)
     }
   };
 

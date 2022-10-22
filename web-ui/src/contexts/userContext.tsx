@@ -17,7 +17,7 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': token
+                'Authorization': `bearer ${token}`
             },
         }).then(response => {
             if (response.status === 200) {

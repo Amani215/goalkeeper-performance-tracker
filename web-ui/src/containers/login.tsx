@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -12,6 +12,9 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useLogin } from '../contexts/loginContext';
+import { useUser } from '../contexts/userContext';
+import { Navigate, useLocation } from 'react-router-dom';
+import { FormikValues, useFormik } from 'formik';
 
 function Copyright(props: any): JSX.Element {
   return (
@@ -30,19 +33,28 @@ function Copyright(props: any): JSX.Element {
   );
 }
 
-
 export default function SignInSide(): JSX.Element {
-  const login = useLogin()
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    if (login) {
-      const username: string = data.get('username') as string
-      const password: string = data.get('password') as string
+  const [loaded, setLoaded] = useState(false)
+  useEffect(
+    () => setLoaded(true), []
+  )
+  const user = useUser()
+  const location = useLocation()
 
-      await login(username, password)
-    }
+  const login = useLogin()
+  const handleSubmit = async ({ username, password }: FormikValues): Promise<void> => {
+    if (login) await login(username, password)
   };
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: ''
+    },
+    onSubmit: handleSubmit
+  })
+  if (loaded && user) {
+    return <Navigate to="/" state={{ from: location }} replace />
+  }
 
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
@@ -63,6 +75,7 @@ export default function SignInSide(): JSX.Element {
           backgroundPosition: 'center',
         }}
       />
+
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{
@@ -79,12 +92,13 @@ export default function SignInSide(): JSX.Element {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+
           <Box
             component="form"
-            noValidate
-            onSubmit={handleSubmit}
+            onSubmit={formik.handleSubmit}
             sx={{ mt: 1 }}
           >
+
             <TextField
               margin="normal"
               required
@@ -93,6 +107,8 @@ export default function SignInSide(): JSX.Element {
               label="Username"
               name="username"
               autoComplete="username"
+              value={formik.values.username}
+              onChange={formik.handleChange}
               autoFocus
             />
             <TextField
@@ -104,6 +120,8 @@ export default function SignInSide(): JSX.Element {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -128,6 +146,6 @@ export default function SignInSide(): JSX.Element {
           </Box>
         </Box>
       </Grid>
-    </Grid>
+    </Grid >
   );
 }

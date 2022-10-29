@@ -1,73 +1,33 @@
-import PropTypes from 'prop-types';
-// @mui
-import { styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
-// utils
-// import { bgBlur } from '../../../utils/cssStyles';
-// components
-// import Iconify from '../../../components/iconify';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import { MdMenu } from "react-icons/md";
 import AccountPopover from './AccountPopover';
-import React from 'react';
-import { VoidDelegate } from '../../interfaces/voidDelegate';
 
-// ----------------------------------------------------------------------
-
-const NAV_WIDTH = 280;
-
-const HEADER_MOBILE = 64;
-
-const HEADER_DESKTOP = 92;
-
-const StyledRoot = styled(AppBar)(({ theme }) => ({
-//   ...bgBlur({ color: theme.palette.background.default }),
-  boxShadow: 'none',
-  [theme.breakpoints.up('lg')]: {
-    width: `calc(100% - ${NAV_WIDTH + 1}px)`,
-  },
-}));
-
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
-  minHeight: HEADER_MOBILE,
-  [theme.breakpoints.up('lg')]: {
-    minHeight: HEADER_DESKTOP,
-    padding: theme.spacing(0, 5),
-  },
-}));
-
-// ----------------------------------------------------------------------
-interface HeaderProps {
-    onOpenNav: VoidDelegate
-}
-
-export default function Header({ onOpenNav }: HeaderProps) {
+export default function MenuAppBar() {
   return (
-    <StyledRoot>
-      <StyledToolbar>
-        <IconButton
-          onClick={onOpenNav}
-          sx={{
-            mr: 1,
-            color: 'text.primary',
-            display: { lg: 'none' },
-          }}
-        >
-          {/* <Iconify icon="eva:menu-2-fill" /> */}
-        </IconButton>
-
-        {/* <Searchbar /> */}
-        <Box sx={{ flexGrow: 1 }} />
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={{
-            xs: 0.5,
-            sm: 1,
-          }}
-        >
-          <AccountPopover username='admin' profile_pic=''/>
-        </Stack>
-      </StyledToolbar>
-    </StyledRoot>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <MdMenu />
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            GPT
+          </Typography>
+          <div>
+            <AccountPopover username={'admin'} profile_pic={''}/>
+          </div>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 }

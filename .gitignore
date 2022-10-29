@@ -6,3 +6,4 @@ __pycache__
 coverage.xml
 !.coveragerc
 _cache
+node_modules

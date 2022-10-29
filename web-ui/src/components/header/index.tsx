@@ -5,8 +5,11 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { MdMenu } from "react-icons/md";
 import AccountPopover from './AccountPopover';
+import { useUser } from '../../contexts/userContext';
 
 export default function MenuAppBar() {
+  const user = useUser()
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -24,7 +27,7 @@ export default function MenuAppBar() {
             GPT
           </Typography>
           <div>
-            <AccountPopover username={'admin'} profile_pic={''}/>
+            <AccountPopover username={user? user.username:""} profile_pic={user? user.profile_pic:""}/>
           </div>
         </Toolbar>
       </AppBar>

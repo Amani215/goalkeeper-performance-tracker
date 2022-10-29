@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { useLogin } from '../contexts/loginContext';
+import { useLogin, useLoginError } from '../contexts/loginContext';
 import { useUser } from '../contexts/userContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import { FormikValues, useFormik } from 'formik';
@@ -43,12 +43,13 @@ export default function SignInSide(): JSX.Element {
   )
   const user = useUser()
   const location = useLocation()
+  const loginErrorContext = useLoginError()
 
   const login = useLogin()
   const handleSubmit = async ({ username, password }: FormikValues): Promise<void> => {
     if (login) {
       await login(username, password)
-      if (!user) setLoginError(true)
+      if (loginErrorContext) setLoginError(true)
     }
   };
   const formik = useFormik({

@@ -15,6 +15,8 @@ import { useUser } from '../contexts/userContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import { FormikValues, useFormik } from 'formik';
 import loginValidationSchema from "../schemas/loginValidation"
+import Alert from '@mui/material/Alert';
+
 function Copyright(props: any): JSX.Element {
   return (
     <Typography
@@ -34,6 +36,8 @@ function Copyright(props: any): JSX.Element {
 
 export default function SignInSide(): JSX.Element {
   const [loaded, setLoaded] = useState(false)
+  let [loginError, setLoginError] = useState(false)
+
   useEffect(
     () => setLoaded(true), []
   )
@@ -42,7 +46,10 @@ export default function SignInSide(): JSX.Element {
 
   const login = useLogin()
   const handleSubmit = async ({ username, password }: FormikValues): Promise<void> => {
-    if (login) await login(username, password)
+    if (login) {
+      await login(username, password)
+      if (!user) setLoginError(true)
+    }
   };
   const formik = useFormik({
     initialValues: {
@@ -86,7 +93,13 @@ export default function SignInSide(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          {/* <Alert severity="error">This is an error alert — check it out!</Alert> */}
+          {loginError ?
+            <Alert severity="error" onClose={() => { setLoginError(false) }}>
+              Incorrect username or password.
+            </Alert> :
+            <></>
+          }
+
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -127,10 +140,6 @@ export default function SignInSide(): JSX.Element {
               helperText={formik.touched.password && formik.errors.password}
               onChange={formik.handleChange}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
@@ -139,13 +148,6 @@ export default function SignInSide(): JSX.Element {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-            </Grid>
             <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>

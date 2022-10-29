@@ -29,8 +29,11 @@ export default function LoginProvider(props: PropsWithChildren<{}>) {
             if ('token' in data) {
                 localStorage.setItem("loginDTO",JSON.stringify(data))
                 window.location.reload()
+                return data as LoginDTO
+            }else{
+                console.log(data)
+                return data as errorResponse
             }
-            return data as LoginDTO
         })
     }
     return (

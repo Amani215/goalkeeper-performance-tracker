@@ -1,10 +1,13 @@
 import React, { PropsWithChildren, useState, useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useUser } from '../contexts/userContext'
+import Header from '../components/header'
 
 //Menu, headers, footer...
 const PortalPage = ({ children }: PropsWithChildren<{}>) => {
+    const [open, setOpen] = useState(false);
     const [loaded, setLoaded] = useState(false)
+    
     useEffect(
         () => setLoaded(true), []
     )
@@ -15,7 +18,7 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
     }
     return (
         <>
-            <div>portal Page</div>
+            <Header onOpenNav={() => setOpen(true)} />
             <div>{children}</div>
         </>
     )

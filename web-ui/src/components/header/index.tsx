@@ -7,13 +7,14 @@ import { MdMenu } from "react-icons/md";
 import AccountPopover from './AccountPopover';
 import { useUser } from '../../contexts/userContext';
 
-export default function MenuAppBar() {
+export default function Header() {
   const user = useUser()
-  
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
+
           <IconButton
             size="large"
             edge="start"
@@ -23,13 +24,15 @@ export default function MenuAppBar() {
           >
             <MdMenu />
           </IconButton>
+
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             GPT
           </Typography>
+
           <div>
-            <AccountPopover username={user? user.username:""} 
-                            profile_pic={user? user.profile_pic:""}
-                            status={(user && user.admin)?"Admin":"Coach"}/>
+            <AccountPopover username={user ? user.username : ""}
+              profile_pic={user ? user.profile_pic : ""}
+              status={(user && user.admin) ? "Admin" : "Coach"} />
           </div>
         </Toolbar>
       </AppBar>

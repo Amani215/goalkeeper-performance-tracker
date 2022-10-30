@@ -5,39 +5,23 @@ import {
   Box,
   Divider,
   Typography,
-  Stack,
   MenuItem,
   Avatar,
   IconButton,
   Popover,
+  Icon,
 } from "@mui/material";
-// ----------------------------------------------------------------------
+import { MdLogout } from 'react-icons/md'
 
-const MENU_OPTIONS = [
-  {
-    label: "Home",
-    icon: "eva:home-fill",
-  },
-  {
-    label: "Profile",
-    icon: "eva:person-fill",
-  },
-  {
-    label: "Settings",
-    icon: "eva:settings-2-fill",
-  },
-];
-
-// ----------------------------------------------------------------------
-
-type PropType = {
+interface IProps{
   username: string,
-  profile_pic: string
+  profile_pic: string,
+  status: string
 }
 
-export default function AccountPopover(props: PropType) {
+export default function AccountPopover(props: IProps) {
   const [open, setOpen] = useState<boolean>(false);
-  
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -87,29 +71,34 @@ export default function AccountPopover(props: PropType) {
           },
         }}
       >
-        <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
+        <Box  sx={{ my: 1.5, px: 2.5 }}
+              display="flex"
+              flexDirection={"column"}
+              justifyContent="center"
+              alignItems="center"
+              >
+          <Avatar src={props.profile_pic} alt="photoURL"  sx={{ width: 64, height: 64 }}/>
+          <Typography sx={{fontWeight: 'bold'}} variant="subtitle1" align="center" noWrap>
             {props.username}
+          </Typography>
+          <Typography variant="subtitle2" align="center" noWrap>
+            {props.status}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Stack>
-
         <Divider sx={{ borderStyle: "dashed" }} />
-          <MenuItem sx={{ m: 1 }} onClick={()=>{
-            localStorage.removeItem('loginDTO')
-            window.location.reload()}}
-          >
-            Logout
-          </MenuItem>
+        <MenuItem sx={{ m: 1 }} onClick={() => {
+          localStorage.removeItem('loginDTO')
+          window.location.reload()
+        }}
+        >
+          <Icon sx={{mr: 1}}>
+              <MdLogout />
+          </Icon>
+          Logout
+        </MenuItem>
       </Popover>
     </>
   );

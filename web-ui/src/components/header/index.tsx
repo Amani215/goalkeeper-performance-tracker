@@ -27,7 +27,9 @@ export default function MenuAppBar() {
             GPT
           </Typography>
           <div>
-            <AccountPopover username={user? user.username:""} profile_pic={user? user.profile_pic:""}/>
+            <AccountPopover username={user? user.username:""} 
+                            profile_pic={user? user.profile_pic:""}
+                            status={(user && user.admin)?"Admin":"Coach"}/>
           </div>
         </Toolbar>
       </AppBar>

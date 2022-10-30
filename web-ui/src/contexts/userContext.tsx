@@ -22,10 +22,10 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
         }).then(response => {
             if (response.status === 200) {
                 setCurrentUser(user)
-                return
             }
+        }).catch(()=>{
             localStorage.removeItem("loginDTO")
-        })
+            setCurrentUser(null)})
     }, [])
     return (
         <userContext.Provider value={currentUser}>

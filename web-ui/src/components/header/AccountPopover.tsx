@@ -56,12 +56,12 @@ export default function AccountPopover(props: IProps) {
         open={Boolean(open)}
         // anchorEl={open}
         onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         PaperProps={{
           sx: {
             p: 0,
-            mt: 1.5,
+            mt: 5,
             ml: 0.75,
             width: 180,
             "& .MuiMenuItem-root": {

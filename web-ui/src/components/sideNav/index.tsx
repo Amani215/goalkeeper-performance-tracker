@@ -1,4 +1,4 @@
-import { styled, Theme, CSSObject } from '@mui/material/styles';
+import { styled, Theme, CSSObject, useTheme } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -9,6 +9,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useSideNavIsOpen, useToggleSideNav } from '../../contexts/pageContext';
+
 
 const drawerWidth = 240;
 
@@ -36,8 +37,9 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     padding: theme.spacing(0, 1),
+    backgroundColor: theme.palette.primary.main,
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
 }));
@@ -62,13 +64,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function MiniDrawer() {
     const sideNavIsOpen = useSideNavIsOpen();
     const toggleSideNav = useToggleSideNav();
-
+    const theme = useTheme()
     return (
 
         <Drawer variant="permanent" open={sideNavIsOpen}>
             <DrawerHeader>
                 <IconButton onClick={toggleSideNav ? toggleSideNav : () => { }}>
-                    {sideNavIsOpen ? <MdChevronLeft /> : <MdMenu />}
+                    {sideNavIsOpen ? <MdChevronLeft color={theme.palette.primary.contrastText} /> : <MdMenu color={theme.palette.primary.contrastText} />}
                 </IconButton>
             </DrawerHeader>
             <Divider />

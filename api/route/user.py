@@ -40,10 +40,12 @@ def get_users(current_user:User):
     If nothing is provided then all the users are returned
     '''
     try:
-        if 'id' in request.json:
-            user = user_service.get_by_id(request.json['id'])
-        elif 'username' in request.json:
-            user = user_service.get_by_username(request.json['username'])
+        args =request.args
+        
+        if args.get('id') is not None :
+            user = user_service.get_by_id(args.get("id"))
+        elif args.get('username') is not None:
+            user = user_service.get_by_username(args.get('username'))
         else:
             users = user_service.get_users()
             return jsonify([i.serialize for i in users])

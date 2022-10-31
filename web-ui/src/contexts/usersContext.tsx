@@ -7,6 +7,11 @@ export function useUsers() {
     return useContext(usersContext)
 }
 
+const usersReadyContext = createContext<boolean>(false)
+export function useUsersReady() {
+    return useContext(usersReadyContext)
+}
+
 export default function UsersProvider(props: PropsWithChildren<{}>) {
     const [users, setUsers] = useState<UserDTO[] | null>(null)
     const [loaded, setLoaded] = useState<boolean>(false)
@@ -37,7 +42,9 @@ export default function UsersProvider(props: PropsWithChildren<{}>) {
 
     return (
         <usersContext.Provider value={users}>
-            {props.children}
+            <usersReadyContext.Provider value={loaded}>
+                {props.children}
+            </usersReadyContext.Provider>
         </usersContext.Provider>
     )
 }

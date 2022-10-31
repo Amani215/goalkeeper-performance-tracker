@@ -1,11 +1,13 @@
-import React from 'react'
 import PortalPage from '../../containers/portalPage'
 import UsersList from '../../containers/usersList'
+import UsersProvider from '../../contexts/usersContext'
 
 const Users = () => {
   return (
     <PortalPage>
-      <UsersList />
+      <UsersProvider>
+        <UsersList />
+      </UsersProvider>
     </PortalPage>
   )
 }

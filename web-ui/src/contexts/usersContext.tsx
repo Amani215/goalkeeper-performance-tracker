@@ -2,18 +2,18 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 import { UserDTO } from "../DTOs";
 import { LoginDTO } from "../DTOs/LoginDTO";
 
-
 const usersContext = createContext<UserDTO[] | null>(null)
-
 export function useUsers() {
     return useContext(usersContext)
 }
 
 export default function UsersProvider(props: PropsWithChildren<{}>) {
     const [users, setUsers] = useState<UserDTO[] | null>(null)
-    useEffect(() => {
+    const [loaded, setLoaded] = useState<boolean>(false)
+
+    const getUsers = async () => {
         const { token, }: LoginDTO = JSON.parse(localStorage.getItem("loginDTO") || "{}")
-        fetch("/api/user", {
+        const usersArray: UserDTO[] = await fetch("/api/user", {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -21,11 +21,20 @@ export default function UsersProvider(props: PropsWithChildren<{}>) {
             }
         })
             .then(data => data.json())
-            .then(data => {
-                setUsers(data as UserDTO[])
-                return data
+            .then((data) => {
+                const dataString = JSON.stringify(data)
+                const usersDTO: UserDTO[] = JSON.parse(dataString)
+                return usersDTO
             })
-    }, [])
+
+        setUsers(usersArray)
+        setLoaded(true)
+    }
+
+    useEffect(() => {
+        getUsers()
+    }, [loaded])
+
     return (
         <usersContext.Provider value={users}>
             {props.children}

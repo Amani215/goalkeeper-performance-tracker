@@ -3,12 +3,15 @@ import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { MdChevronLeft, MdInbox, MdMail, MdMenu } from 'react-icons/md';
+import { MdChevronLeft, MdMenu } from 'react-icons/md';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 import { useSideNavIsOpen, useToggleSideNav } from '../../contexts/pageContext';
+import menuItems from "./items"
 
 
 const drawerWidth = 240;
@@ -74,55 +77,39 @@ export default function MiniDrawer() {
                 </IconButton>
             </DrawerHeader>
             <Divider />
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: sideNavIsOpen ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: sideNavIsOpen ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                {index % 2 === 0 ? <MdInbox /> : <MdMail />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} sx={{ opacity: sideNavIsOpen ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: sideNavIsOpen ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                        >
-                            <ListItemIcon
-                                sx={{
-                                    minWidth: 0,
-                                    mr: sideNavIsOpen ? 3 : 'auto',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                {index % 2 === 0 ? <MdInbox /> : <MdMail />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} sx={{ opacity: sideNavIsOpen ? 1 : 0 }} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
+            {menuItems.map(menu => (
+                <>
+                    <List>
+                        {menu.map((item, index) => (
+                            <Link component={RouterLink} to={item.link} underline="none" color="inherit">
+                                <ListItem key={item.name + "collapsed"} disablePadding sx={{ display: 'block' }}>
+                                    <ListItemButton
+                                        sx={{
+                                            minHeight: 48,
+                                            justifyContent: sideNavIsOpen ? 'initial' : 'center',
+                                            px: 2.5,
+                                        }}
+                                    >
+                                        <ListItemIcon
+                                            sx={{
+                                                minWidth: 0,
+                                                mr: sideNavIsOpen ? 3 : 'auto',
+                                                justifyContent: 'center',
+                                            }}
+                                        >
+                                            <item.MenuIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={item.name} sx={{ opacity: sideNavIsOpen ? 1 : 0 }} />
+                                    </ListItemButton>
+                                </ListItem>
+                            </Link>
+
+                        ))}
+                    </List>
+                    <Divider />
+                </>
+            ))
+            }
         </Drawer>
     );
 }

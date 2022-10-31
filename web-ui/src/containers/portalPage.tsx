@@ -1,27 +1,33 @@
 import { PropsWithChildren, useState, useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useUser } from '../contexts/userContext'
+import { useUser, useUserReady } from '../contexts/userContext'
 import Header from '../components/header'
 import SideNav from '../components/sideNav'
-import PageProvider from '../contexts/pageContext'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
 
 //Menu, headers, footer...
 const PortalPage = ({ children }: PropsWithChildren<{}>) => {
     const [loaded, setLoaded] = useState(false)
+    const [redirect, setRedirect] = useState(false)
+
+    const user = useUser()
+    const userReady = useUserReady()
+    const location = useLocation()
 
     useEffect(
         () => setLoaded(true), []
     )
-
-    const user = useUser()
-    const location = useLocation()
-    if (loaded && !user) {
+    useEffect(() => {
+        if (loaded && userReady && !user) {
+            setRedirect(true)
+        }
+    }, [loaded, userReady, user])
+    if (redirect) {
         return <Navigate to="/login" state={{ from: location }} replace />
     }
     return (
-        <PageProvider>
+        <>
             <Header />
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
@@ -30,7 +36,7 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
                     {children}
                 </Box>
             </Box>
-        </PageProvider>
+        </>
     )
 }
 

@@ -33,5 +33,6 @@ class User(db.Model):
         return {
             'id'  : self.id,
             'username': self.username,
-            'admin': self.admin
+            'admin': self.admin,
+            'profile_pic': self.profile_pic
         }

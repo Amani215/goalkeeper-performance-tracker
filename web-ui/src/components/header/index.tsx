@@ -4,7 +4,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AccountPopover from './AccountPopover';
 import { useUser } from '../../contexts/userContext';
-import { useSideNavIsOpen } from '../../contexts/pageContext';
 
 export default function Header() {
   const user = useUser()

@@ -12,8 +12,10 @@ import {
   Icon,
 } from "@mui/material";
 import { MdLogout } from 'react-icons/md'
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 
-interface IProps{
+interface IProps {
   username: string,
   profile_pic: string,
   status: string
@@ -71,14 +73,14 @@ export default function AccountPopover(props: IProps) {
           },
         }}
       >
-        <Box  sx={{ my: 1.5, px: 2.5 }}
-              display="flex"
-              flexDirection={"column"}
-              justifyContent="center"
-              alignItems="center"
-              >
-          <Avatar src={props.profile_pic} alt="photoURL"  sx={{ width: 64, height: 64 }}/>
-          <Typography sx={{fontWeight: 'bold'}} variant="subtitle1" align="center" noWrap>
+        <Box sx={{ my: 1.5, px: 2.5 }}
+          display="flex"
+          flexDirection={"column"}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Avatar src={props.profile_pic} alt="photoURL" sx={{ width: 64, height: 64 }} />
+          <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1" align="center" noWrap>
             {props.username}
           </Typography>
           <Typography variant="subtitle2" align="center" noWrap>
@@ -89,15 +91,13 @@ export default function AccountPopover(props: IProps) {
         <Divider sx={{ borderStyle: "dashed" }} />
 
         <Divider sx={{ borderStyle: "dashed" }} />
-        <MenuItem sx={{ m: 1 }} onClick={() => {
-          localStorage.removeItem('loginDTO')
-          window.location.reload()
-        }}
-        >
-          <Icon sx={{mr: 1}}>
+        <MenuItem sx={{ m: 1 }}>
+          <Link component={RouterLink} to="/logout" underline="none" color="inherit">
+            <Icon sx={{ mr: 1 }}>
               <MdLogout />
-          </Icon>
-          Logout
+            </Icon>
+            Logout
+          </Link>
         </MenuItem>
       </Popover>
     </>

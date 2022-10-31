@@ -2,7 +2,6 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { LoginDTO } from "../DTOs/LoginDTO";
 import { errorResponse } from "../interfaces/errorResponse";
 
-
 const loginErrorContext = createContext<boolean>(false);
 export function useLoginError() { return useContext(loginErrorContext) }
 

@@ -1,42 +1,44 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { UserDTO } from "../DTOs";
 import { LoginDTO } from "../DTOs/LoginDTO";
 import { VoidDelegate } from "../interfaces/voidDelegate";
 
 
-const userContext = createContext<UserDTO | null>(null)
+const authContext = createContext<LoginDTO | null>(null)
 const userReadyContext = createContext<boolean>(false)
 const logoutContext = createContext<VoidDelegate | null>(null)
+
 export function useLogout() {
     return useContext(logoutContext)
 }
-
-export function useUser() {
-    return useContext(userContext)
+export function useAuth() {
+    return useContext(authContext)
 }
 export function useUserReady() {
     return useContext(userReadyContext)
 }
 
 export default function UserProvider(props: PropsWithChildren<{}>) {
-    const [currentUser, setCurrentUser] = useState<UserDTO | null>(null)
+    const [auth, setAuth] = useState<LoginDTO | null>(null)
+
     const [userReady, setUserReady] = useState<boolean>(false)
     const logout: VoidDelegate = () => {
         localStorage.removeItem("loginDTO")
-        setCurrentUser(null)
+        setAuth(null)
+
         setUserReady(true)
     }
     useEffect(() => {
-        const { token, user }: LoginDTO = JSON.parse(localStorage.getItem("loginDTO") || "{}")
+        const localAuth: LoginDTO = JSON.parse(localStorage.getItem("loginDTO") || "{}")
+
         fetch("/api/auth", {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `bearer ${token}`
+                'Authorization': `bearer ${localAuth.token}`
             },
         }).then(response => {
             if (response.status === 200) {
-                setCurrentUser(user)
+                setAuth(localAuth)
                 setUserReady(true)
                 return
             }
@@ -45,12 +47,12 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
         })
     }, [])
     return (
-        <userContext.Provider value={currentUser}>
+        <authContext.Provider value={auth}>
             <userReadyContext.Provider value={userReady}>
                 <logoutContext.Provider value={logout}>
                     {props.children}
                 </logoutContext.Provider>
             </userReadyContext.Provider>
-        </userContext.Provider>
+        </authContext.Provider>
     )
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useLogout, useAuth, useUserReady } from '../../contexts/authContext';
+import { useLogout, useAuth, useAuthReady } from '../../contexts/authContext';
 
 const Logout = () => {
     const logout = useLogout()
@@ -8,7 +8,7 @@ const Logout = () => {
     const location = useLocation()
     const auth = useAuth()
 
-    const userReady = useUserReady()
+    const authReady = useAuthReady()
 
     useEffect(
         () => {
@@ -22,7 +22,7 @@ const Logout = () => {
         }, []
     )
 
-    if (loaded && userReady && !auth?.user) {
+    if (loaded && authReady && !auth?.user) {
         return <Navigate to="/login" state={{ from: location }} replace />
     }
 

@@ -4,7 +4,7 @@ import { VoidDelegate } from "../interfaces/voidDelegate";
 
 
 const authContext = createContext<LoginDTO | null>(null)
-const userReadyContext = createContext<boolean>(false)
+const authReadyContext = createContext<boolean>(false)
 const logoutContext = createContext<VoidDelegate | null>(null)
 
 export function useLogout() {
@@ -13,8 +13,8 @@ export function useLogout() {
 export function useAuth() {
     return useContext(authContext)
 }
-export function useUserReady() {
-    return useContext(userReadyContext)
+export function useAuthReady() {
+    return useContext(authReadyContext)
 }
 
 export default function UserProvider(props: PropsWithChildren<{}>) {
@@ -48,11 +48,11 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
     }, [])
     return (
         <authContext.Provider value={auth}>
-            <userReadyContext.Provider value={userReady}>
+            <authReadyContext.Provider value={userReady}>
                 <logoutContext.Provider value={logout}>
                     {props.children}
                 </logoutContext.Provider>
-            </userReadyContext.Provider>
+            </authReadyContext.Provider>
         </authContext.Provider>
     )
 }

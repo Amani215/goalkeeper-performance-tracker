@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState, useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth, useUserReady } from '../contexts/authContext'
+import { useAuth, useAuthReady } from '../contexts/authContext'
 import Header from '../components/header'
 import SideNav from '../components/sideNav'
 import Box from '@mui/material/Box'
@@ -12,17 +12,17 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
     const [redirect, setRedirect] = useState(false)
 
     const auth = useAuth()
-    const userReady = useUserReady()
+    const authReady = useAuthReady()
     const location = useLocation()
 
     useEffect(
         () => setLoaded(true), []
     )
     useEffect(() => {
-        if (loaded && userReady && !auth?.user) {
+        if (loaded && authReady && !auth?.user) {
             setRedirect(true)
         }
-    }, [loaded, userReady, auth?.user])
+    }, [loaded, authReady, auth?.user])
     if (redirect) {
         return <Navigate to="/login" state={{ from: location }} replace />
     }

@@ -11,11 +11,12 @@ import {
   Popover,
   Icon,
 } from "@mui/material";
-import { MdLogout } from 'react-icons/md'
+import { MdLogout, MdPerson } from 'react-icons/md'
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
 
 interface IProps {
+  id: string,
   username: string,
   profile_pic: string,
   status: string
@@ -73,6 +74,8 @@ export default function AccountPopover(props: IProps) {
           },
         }}
       >
+
+
         <Box sx={{ my: 1.5, px: 2.5 }}
           display="flex"
           flexDirection={"column"}
@@ -83,12 +86,20 @@ export default function AccountPopover(props: IProps) {
           <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1" align="center" noWrap>
             {props.username}
           </Typography>
+
           <Typography variant="subtitle2" align="center" noWrap>
             {props.status}
           </Typography>
         </Box>
 
-        <Divider sx={{ borderStyle: "dashed" }} />
+        <MenuItem sx={{ m: 1 }}>
+          <Link component={RouterLink} to={`/users/${props.id}`} underline="none" color="inherit">
+            <Icon sx={{ mr: 1 }}>
+              <MdPerson />
+            </Icon>
+            Profile
+          </Link>
+        </MenuItem>
 
         <Divider sx={{ borderStyle: "dashed" }} />
         <MenuItem sx={{ m: 1 }}>
@@ -99,6 +110,7 @@ export default function AccountPopover(props: IProps) {
             Logout
           </Link>
         </MenuItem>
+
       </Popover>
     </>
   );

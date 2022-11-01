@@ -17,7 +17,7 @@ export function useAuthReady() {
     return useContext(authReadyContext)
 }
 
-export default function UserProvider(props: PropsWithChildren<{}>) {
+export default function AuthProvider(props: PropsWithChildren<{}>) {
     const [auth, setAuth] = useState<LoginDTO | null>(null)
 
     const [authReady, setAuthReady] = useState<boolean>(false)

@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
 import AppRoutes from './router';
-import UserProvider from './contexts/authContext';
+import AuthProvider from './contexts/authContext';
 import PageProvider from './contexts/pageContext';
 
 const theme = createTheme({
@@ -15,11 +15,11 @@ const theme = createTheme({
 function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
-      <UserProvider>
+      <AuthProvider>
         <PageProvider>
           <AppRoutes></AppRoutes>
         </PageProvider>
-      </UserProvider>
+      </AuthProvider>
     </ThemeProvider>
   )
 }

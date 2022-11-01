@@ -1,6 +1,6 @@
 import { PropsWithChildren, useState, useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth, useUserReady } from '../contexts/userContext'
+import { useAuth, useUserReady } from '../contexts/authContext'
 import Header from '../components/header'
 import SideNav from '../components/sideNav'
 import Box from '@mui/material/Box'

@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useLogin, useLoginError } from '../contexts/loginContext';
-import { useAuth } from '../contexts/userContext';
+import { useAuth } from '../contexts/authContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import { FormikValues, useFormik } from 'formik';
 import loginValidationSchema from "../schemas/loginValidation"

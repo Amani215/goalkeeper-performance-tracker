@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useLogout, useAuth, useUserReady } from '../../contexts/userContext';
+import { useLogout, useAuth, useUserReady } from '../../contexts/authContext';
 
 const Logout = () => {
     const logout = useLogout()

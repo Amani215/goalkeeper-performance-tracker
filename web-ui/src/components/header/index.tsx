@@ -3,11 +3,13 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AccountPopover from './AccountPopover';
-import { useAuth } from '../../contexts/userContext';
+import { LoginDTO } from '../../DTOs/LoginDTO';
 
-export default function Header() {
-  const auth = useAuth()
+interface IProps {
+  auth: LoginDTO | null
+}
 
+export default function Header({ auth }: IProps) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

@@ -28,7 +28,7 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
     }
     return (
         <>
-            <Header />
+            <Header auth={auth} />
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <SideNav />

@@ -12,6 +12,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import { useSideNavIsOpen, useToggleSideNav } from '../../contexts/pageContext';
 import menuItems from "./items"
+import { Fragment } from 'react';
 
 
 const drawerWidth = 240;
@@ -78,11 +79,11 @@ export default function MiniDrawer() {
             </DrawerHeader>
             <Divider />
             {menuItems.map(menu => (
-                <>
+                <Fragment key={`MENU_${menu[0].name}`}>
                     <List>
                         {menu.map((item, index) => (
-                            <Link component={RouterLink} to={item.link} underline="none" color="inherit">
-                                <ListItem key={item.name + "collapsed"} disablePadding sx={{ display: 'block' }}>
+                            <Link key={item.name + "collapsed"}  component={RouterLink} to={item.link} underline="none" color="inherit">
+                                <ListItem disablePadding sx={{ display: 'block' }}>
                                     <ListItemButton
                                         sx={{
                                             minHeight: 48,
@@ -107,7 +108,7 @@ export default function MiniDrawer() {
                         ))}
                     </List>
                     <Divider />
-                </>
+                </Fragment>
             ))
             }
         </Drawer>

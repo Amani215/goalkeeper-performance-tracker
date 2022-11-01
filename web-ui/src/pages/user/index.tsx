@@ -1,13 +1,10 @@
-import { useParams } from 'react-router-dom';
 import PortalPage from '../../containers/portalPage'
-import UserProfile from '../../containers/userProfile';
+import UserDetails from '../../containers/userDetails';
 
 function User() {
-    const { id } = useParams();
-
     return (
         <PortalPage>
-            <UserProfile />
+            <UserDetails />
         </PortalPage>
     )
 }

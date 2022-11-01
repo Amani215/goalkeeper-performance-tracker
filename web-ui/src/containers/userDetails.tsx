@@ -3,8 +3,11 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
+import { useParams } from 'react-router-dom'
 
-function UserProfile() {
+function UserDetails() {
+    const { id } = useParams();
+
     return (
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             <Grid item xs={4} sm={5} md={8} order={{ xs: 2, sm: 1, md: 1 }}>
@@ -42,9 +45,16 @@ function UserProfile() {
                     />
                     <Box
                         display="flex"
+                        flexDirection="column"
                         justifyContent="center"
                         alignItems="center"
                         mb={1}>
+                        <Typography
+                            variant='subtitle2'
+                            sx={{ fontStyle: 'italic' }}
+                            ml={1} mt={1}>
+                            UID: {id}
+                        </Typography>
                         <Button  >Change Picture</Button>
                     </Box>
 
@@ -54,4 +64,4 @@ function UserProfile() {
     )
 }
 
-export default UserProfile
+export default UserDetails

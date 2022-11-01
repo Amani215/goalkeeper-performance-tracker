@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useUsers, useUsersReady } from '../contexts/usersContext';
 import { UserDTO } from '../DTOs';
 import Avatar from '@mui/material/Avatar';
+import { Link as RouterLink } from 'react-router-dom';
 
 const columns: GridColDef[] = [
     {
@@ -13,9 +14,9 @@ const columns: GridColDef[] = [
         align: "center",
         renderCell: (params) => {
             return (
-                <>
-                    <Avatar src={params.value} sx={{ width: 32, height: 32 }} />
-                </>
+                <RouterLink to={`/users/${params.id}`}>
+                    <Avatar src={params.row.profile_pic} sx={{ width: 32, height: 32 }} />
+                </RouterLink>
             );
         }
     },

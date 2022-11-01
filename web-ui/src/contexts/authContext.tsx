@@ -20,12 +20,12 @@ export function useAuthReady() {
 export default function UserProvider(props: PropsWithChildren<{}>) {
     const [auth, setAuth] = useState<LoginDTO | null>(null)
 
-    const [userReady, setUserReady] = useState<boolean>(false)
+    const [authReady, setAuthReady] = useState<boolean>(false)
     const logout: VoidDelegate = () => {
         localStorage.removeItem("loginDTO")
         setAuth(null)
 
-        setUserReady(true)
+        setAuthReady(true)
     }
     useEffect(() => {
         const localAuth: LoginDTO = JSON.parse(localStorage.getItem("loginDTO") || "{}")
@@ -39,16 +39,16 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
         }).then(response => {
             if (response.status === 200) {
                 setAuth(localAuth)
-                setUserReady(true)
+                setAuthReady(true)
                 return
             }
-            setUserReady(true)
+            setAuthReady(true)
             localStorage.removeItem("loginDTO")
         })
     }, [])
     return (
         <authContext.Provider value={auth}>
-            <authReadyContext.Provider value={userReady}>
+            <authReadyContext.Provider value={authReady}>
                 <logoutContext.Provider value={logout}>
                     {props.children}
                 </logoutContext.Provider>

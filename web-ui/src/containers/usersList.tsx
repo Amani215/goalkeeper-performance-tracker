@@ -4,6 +4,7 @@ import { useUsers, useUsersReady } from '../contexts/usersContext';
 import { UserDTO } from '../DTOs';
 import Avatar from '@mui/material/Avatar';
 import { Link as RouterLink } from 'react-router-dom';
+import { Box, Button } from '@mui/material';
 
 const columns: GridColDef[] = [
     {
@@ -53,14 +54,22 @@ export default function UsersList() {
     }, [usersReady, users])
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-                rows={rows || []}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                checkboxSelection
-            />
-        </div>
+        <>
+            <Box
+                display="flex" justifyContent="flex-end"
+                mb={2}>
+                <Button variant="contained">Add User</Button>
+            </Box>
+            <div style={{ height: 400, width: '100%' }}>
+                <DataGrid
+                    rows={rows || []}
+                    columns={columns}
+                    pageSize={5}
+                    rowsPerPageOptions={[5]}
+                    checkboxSelection
+                />
+            </div>
+        </>
+
     );
 }

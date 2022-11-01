@@ -27,7 +27,9 @@ function UserDetails() {
 
     useEffect(() => {
         if (userContext) {
-            userContext(auth ? auth.token : "", id ? id : "")
+            userContext(auth ? auth.token : "", id ? id : "").then(
+                data => setUser(data as UserDTO)
+            )
         }
         if (loaded && userReady && userError) {
             setError(true)
@@ -48,23 +50,40 @@ function UserDetails() {
                 :
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     <Grid item xs={4} sm={5} md={8} order={{ xs: 2, sm: 1, md: 1 }}>
-                        <Card >
+                        <Card sx={{ padding: 2 }}>
+                            <Box
+                                display="flex"
+                                flexDirection="row">
+                                <Typography
+                                    variant='subtitle1'
+                                    sx={{ fontWeight: 'bold' }}
+                                    mr={2}>
+                                    Name
+                                </Typography>
+                                <Typography
+                                    variant='body1'>
+                                    {user?.username}
+                                </Typography>
+                            </Box>
+                            <Box
+                                display="flex"
+                                flexDirection="row">
+                                <Typography
+                                    variant='subtitle1'
+                                    sx={{ fontWeight: 'bold' }}
+                                    mr={2}>
+                                    Status
+                                </Typography>
+                                <Typography
+                                    variant='body1'>
+                                    {user?.admin ? "Admin" : "Coach"}
+                                </Typography>
+                            </Box>
+
                             <Typography
                                 variant='subtitle1'
                                 sx={{ fontWeight: 'bold' }}
-                                ml={1} mt={1}>
-                                Name
-                            </Typography>
-                            <Typography
-                                variant='subtitle1'
-                                sx={{ fontWeight: 'bold' }}
-                                ml={1} mt={1}>
-                                Status
-                            </Typography>
-                            <Typography
-                                variant='subtitle1'
-                                sx={{ fontWeight: 'bold' }}
-                                ml={1} mt={1}>
+                                mr={2}>
                                 Associated Categories
                             </Typography>
                         </Card>

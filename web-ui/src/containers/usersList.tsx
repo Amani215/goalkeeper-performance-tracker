@@ -5,6 +5,7 @@ import { UserDTO } from '../DTOs';
 import Avatar from '@mui/material/Avatar';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
+import { ModalProp } from '../interfaces/modalProp';
 
 const columns: GridColDef[] = [
     {
@@ -41,7 +42,9 @@ const columns: GridColDef[] = [
     }
 ];
 
-export default function UsersList() {
+export default function UsersList({
+    setModalIsOpen
+}: ModalProp) {
     const [rows, setRows] = useState<UserDTO[]>([])
 
     const usersReady = useUsersReady()
@@ -58,7 +61,7 @@ export default function UsersList() {
             <Box
                 display="flex" justifyContent="flex-end"
                 mb={2}>
-                <Button variant="contained">Add User</Button>
+                <Button variant="contained" onClick={() => { setModalIsOpen() }}>Add User</Button>
             </Box>
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
@@ -70,6 +73,5 @@ export default function UsersList() {
                 />
             </div>
         </>
-
     );
 }

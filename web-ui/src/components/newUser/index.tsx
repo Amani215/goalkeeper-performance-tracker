@@ -29,11 +29,10 @@ function NewUser({
 
     const handleSubmit = async ({ username, password }: FormikValues): Promise<void> => {
         if (newUser != null) {
-            await newUser("", username, password, false, "")
+            await newUser({ username: username, password: password, admin: false, profile_pic: "" })
             if (newUserError) setError(true)
-            console.log("called")
+            else setModalIsOpen()
         }
-
     };
     const formik = useFormik({
         initialValues: {
@@ -43,8 +42,6 @@ function NewUser({
         validationSchema: userValidationSchema,
         onSubmit: handleSubmit
     })
-
-    if (!modalIsOpen) return (<></>)
     return (
         <Modal
             open={modalIsOpen}

@@ -27,7 +27,7 @@ function UserDetails() {
 
     useEffect(() => {
         if (userContext) {
-            userContext(auth ? auth.token : "", id ? id : "").then(
+            userContext(id ? id : "").then(
                 data => setUser(data as UserDTO)
             )
         }

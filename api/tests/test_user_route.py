@@ -84,7 +84,7 @@ def test_add_user(client, authenticated_user):
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 201
-    assert 'user_id' in response.json
+    assert 'id' in response.json
 
     ### DUPLICATE USERNAME
     response = client.post(URL, data=json.dumps(test_json), headers=headers)

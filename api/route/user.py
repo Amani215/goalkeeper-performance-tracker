@@ -30,7 +30,8 @@ def add_user(current_user: User):
         user_response = user_service.add_user(username=username,
                                               password=password,
                                               admin=admin)
-        return user_response, 201
+
+        return user_response.serialize, 201
     except Exception as err:
         return {'error': str(err)}, 400
 

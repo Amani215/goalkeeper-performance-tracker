@@ -71,7 +71,11 @@ def test_get_users(client, authenticated_user):
 @pytest.mark.parametrize(['admin'], [[True]])
 def test_add_user(client, authenticated_user):
     '''Test add a user'''
-    headers = {'Content-Type': content_type, 'Accept': content_type}
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
 
     test_json = {
         'username': random_string.generate(12),

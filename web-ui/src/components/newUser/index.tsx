@@ -1,4 +1,4 @@
-import { Box, Button, Modal, TextField, Typography } from '@mui/material'
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useState } from 'react';
 import { useNewUser, useNewUserError } from '../../contexts/userContext';
@@ -18,18 +18,15 @@ const style = {
     borderRadius: 2
 };
 
-function NewUser({
-    modalIsOpen,
-    setModalIsOpen
-}: ModalProp) {
+function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [error, setError] = useState(false)
 
     const newUser = useNewUser()
     const newUserError = useNewUserError()
 
-    const handleSubmit = async ({ username, password }: FormikValues): Promise<void> => {
+    const handleSubmit = async ({ username, password, admin }: FormikValues): Promise<void> => {
         if (newUser != null) {
-            await newUser({ username: username, password: password, admin: false, profile_pic: "" })
+            await newUser({ username: username, password: password, admin: admin, profile_pic: "" })
             if (newUserError) setError(true)
             else setModalIsOpen()
         }
@@ -37,11 +34,13 @@ function NewUser({
     const formik = useFormik({
         initialValues: {
             username: '',
-            password: ''
+            password: '',
+            admin: false
         },
         validationSchema: userValidationSchema,
         onSubmit: handleSubmit
     })
+
     return (
         <Modal
             open={modalIsOpen}
@@ -85,6 +84,12 @@ function NewUser({
                         value={formik.values.password}
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
+                        onChange={formik.handleChange}
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={formik.values.admin} />}
+                        label="Admin"
+                        name="admin"
                         onChange={formik.handleChange}
                     />
                     <Button

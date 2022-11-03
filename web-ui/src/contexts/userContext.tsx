@@ -22,7 +22,7 @@ export function useUserReady() {
 }
 
 // ADD USER CONTEXTS
-type NewUserDelegate = (newUserObj: NewUserDTO) => Promise<string | errorResponse>;
+type NewUserDelegate = (newUserObj: NewUserDTO) => Promise<UserDTO | errorResponse>;
 const newUserContext = createContext<NewUserDelegate | null>(null);
 export function useNewUser() {
     return useContext(newUserContext);

@@ -6,6 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import { ModalProp } from '../interfaces/modalProp';
+import { useAuth } from '../contexts/authContext';
 
 const columns: GridColDef[] = [
     {
@@ -46,6 +47,7 @@ export default function UsersList({
     setModalIsOpen
 }: ModalProp) {
     const [rows, setRows] = useState<UserDTO[]>([])
+    const auth = useAuth()
 
     const usersReady = useUsersReady()
     const users = useUsers()
@@ -58,11 +60,14 @@ export default function UsersList({
 
     return (
         <>
-            <Box
-                display="flex" justifyContent="flex-end"
-                mb={2}>
-                <Button variant="contained" onClick={() => { setModalIsOpen() }}>Add User</Button>
-            </Box>
+            {auth?.user.admin ?
+                <Box
+                    display="flex" justifyContent="flex-end"
+                    mb={2}>
+                    <Button variant="contained" onClick={() => { setModalIsOpen() }}>Add User</Button>
+                </Box> : <></>
+            }
+
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={rows || []}

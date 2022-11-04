@@ -7,6 +7,7 @@ from tests.conftest import content_type
 
 URL = '/category'
 
+
 @pytest.mark.parametrize(['admin'], [[True]])
 def test_add_category(client, authenticated_user):
     '''Test add a category route'''
@@ -15,42 +16,43 @@ def test_add_category(client, authenticated_user):
         'Accept': content_type,
         'Authorization': authenticated_user['token']
     }
-    
+
     test_json = {
         'name': random_string.generate(12),
-        'season': random.randint(1500,2500)
+        'season': random.randint(1500, 2500)
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 201
-    assert 'category_id' in response.json 
-   
+    assert 'category_id' in response.json
+
     ### DUPLICATE ID
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
-    assert 'error' in response.json 
-    
+    assert 'error' in response.json
+
     ### BAD JSON
     test_json = {}
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
-    assert response.json == {'error': 'No data was provided'} 
-    
+    assert response.json == {'error': 'No data was provided'}
+
     test_json = {
         'category_name': random_string.generate(12),
-        'season': random.randint(1500,2500)
+        'season': random.randint(1500, 2500)
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
-    assert 'error' in response.json 
-    
+    assert 'error' in response.json
+
     test_json = {
         'name': random_string.generate(12),
-        'category_season': random.randint(1500,2500)
+        'category_season': random.randint(1500, 2500)
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
-    assert 'error' in response.json 
-    
+    assert 'error' in response.json
+
+
 @pytest.mark.parametrize(['admin'], [[True]])
 def test_get_categories(client, authenticated_user):
     '''Test getting categories routes'''
@@ -61,37 +63,54 @@ def test_get_categories(client, authenticated_user):
     }
     name1 = random_string.generate(12)
     name2 = random_string.generate(12)
-    season1 = random.randint(1500,2500)
-    season2 = random.randint(1500,2500)
-    
-    client.post(URL, data=json.dumps({'name': name1,'season': season1}), headers=headers)
-    client.post(URL, data=json.dumps({'name': name2,'season': season1}), headers=headers)
-    client.post(URL, data=json.dumps({'name': name1,'season': season2}), headers=headers)
-    
-    response = client.get(URL, json = {}, headers=headers)
+    season1 = random.randint(1500, 2500)
+    season2 = random.randint(1500, 2500)
+
+    client.post(URL,
+                data=json.dumps({
+                    'name': name1,
+                    'season': season1
+                }),
+                headers=headers)
+    client.post(URL,
+                data=json.dumps({
+                    'name': name2,
+                    'season': season1
+                }),
+                headers=headers)
+    client.post(URL,
+                data=json.dumps({
+                    'name': name1,
+                    'season': season2
+                }),
+                headers=headers)
+
+    response = client.get(URL, headers=headers)
     assert sum(1 for _ in range(len(response.json))) == 3
     assert response.status_code == 200
-    
+
     ### GET BY ID
-    response = client.get(URL, data=json.dumps({'id': name1+str(season1)}), headers=headers)
+    response = client.get(URL + '?id=' + name1 + str(season1), headers=headers)
     assert response.json['name'] == name1
     assert response.json['season'] == season1
     assert response.status_code == 200
-    
+
     ### GET BY USERNAME
-    response = client.get(URL, data=json.dumps({'name': name1}), headers=headers)
+    name_url = URL + '?name='
+    response = client.get(name_url + name1, headers=headers)
     assert sum(1 for _ in range(len(response.json))) == 2
     assert response.status_code == 200
-    
-    response = client.get(URL, data=json.dumps({'name': name2}), headers=headers)
+
+    response = client.get(name_url + name2, headers=headers)
     assert sum(1 for _ in range(len(response.json))) == 1
     assert response.status_code == 200
-    
+
     ### GET BY SEASON
-    response = client.get(URL, data=json.dumps({'season': season1}), headers=headers)
+    season_url = URL + '?season='
+    response = client.get(season_url + str(season1), headers=headers)
     assert sum(1 for _ in range(len(response.json))) == 2
     assert response.status_code == 200
-    
-    response = client.get(URL, data=json.dumps({'season': season2}), headers=headers)
+
+    response = client.get(season_url + str(season2), headers=headers)
     assert sum(1 for _ in range(len(response.json))) == 1
     assert response.status_code == 200

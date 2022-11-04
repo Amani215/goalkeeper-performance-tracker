@@ -1,10 +1,10 @@
-import React from 'react'
+import CategoriesView from '../../containers/categoriesView'
 import PortalPage from '../../containers/portalPage'
 
 function Categories() {
     return (
         <PortalPage>
-            <div>Categories</div>
+            <CategoriesView />
         </PortalPage>
 
     )

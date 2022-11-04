@@ -78,16 +78,15 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             })
         })
             .then(data => data.json())
-            .then()
-        // .then(data=>{
-        //     if("error" in data){
-        //         setNewUserError(true)
-        //         return data as errorResponse
-        //     }else{
-        //         setNewUserError(false)
-        //         return data.toString()
-        //     }
-        // })
+            .then(data => {
+                if ("error" in data) {
+                    setNewUserError(true)
+                    return data as errorResponse
+                } else {
+                    setNewUserError(false)
+                    return data as UserDTO
+                }
+            })
     }
 
     return (

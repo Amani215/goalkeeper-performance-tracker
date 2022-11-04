@@ -5,7 +5,6 @@ import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useAuth } from '../contexts/authContext'
 import { useUser, useUserError, useUserReady } from '../contexts/userContext'
 import { UserDTO } from '../DTOs'
 
@@ -13,16 +12,17 @@ function UserDetails() {
     const { id } = useParams();
 
     const [user, setUser] = useState<UserDTO | null>(null)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
-    const auth = useAuth()
     const userContext = useUser()
     const userError = useUserError()
     const userReady = useUserReady()
 
     useEffect(
-        () => setLoaded(true), []
+        () => {
+            setLoaded(true)
+        }, []
     )
 
     useEffect(() => {
@@ -32,20 +32,20 @@ function UserDetails() {
             )
         }
         if (loaded && userReady && userError) {
-            setError(true)
+            setError("No user Found.")
         }
         if (loaded && userReady && !userError) {
-            setError(false)
+            setError("")
         }
     }, [loaded, userReady, userError])
 
     return (
         <>
-            {error ?
+            {error != "" ?
                 <Typography
                     variant='subtitle2'
                     ml={1} mt={1}>
-                    No user Found.
+                    {error}
                 </Typography>
                 :
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>

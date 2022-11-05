@@ -3,3 +3,8 @@ export interface CategoryDTO {
     name: string;
     season: string;
 }
+
+export interface NewCategoryDTO {
+    name: string;
+    season: string;
+}

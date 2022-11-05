@@ -13,7 +13,7 @@ export function useCategoriesReady() {
     return useContext(categoriesReadyContext)
 }
 
-export default function CategoryProvider(props: PropsWithChildren<{}>) {
+export default function CategoriesProvider(props: PropsWithChildren<{}>) {
     const [categories, setCategories] = useState<CategoryDTO[] | null>(null)
     const [loaded, setLoaded] = useState<boolean>(false)
 

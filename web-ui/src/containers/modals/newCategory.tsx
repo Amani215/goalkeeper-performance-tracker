@@ -1,5 +1,7 @@
 import { Box, Button, Modal, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
+import { useState } from 'react';
+import { useNewCategory, useNewCategoryError } from '../../contexts/categoryContext';
 import { ModalProp } from '../../interfaces/modalProp'
 import categoryValidationSchema from '../../schemas/categoryValidation';
 
@@ -17,7 +19,17 @@ const style = {
 };
 
 function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const [error, setError] = useState(false)
+
+    const newCategory = useNewCategory()
+    const newCategoryError = useNewCategoryError()
+
     const handleSubmit = async ({ name, season }: FormikValues) => {
+        if (newCategory != null) {
+            await newCategory({ name: name, season: season })
+            if (newCategoryError) setError(true)
+            else setModalIsOpen()
+        }
         console.log(name, season)
     };
 

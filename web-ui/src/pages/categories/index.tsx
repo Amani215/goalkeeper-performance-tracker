@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import CategoriesView from '../../containers/categoriesView'
 import PortalPage from '../../containers/portalPage'
-import CategoryProvider from '../../contexts/categoriesContext'
+import CategoriesProvider from '../../contexts/categoriesContext'
+import CategoryProvider from '../../contexts/categoryContext'
 import NewCategory from '../../containers/modals/newCategory'
 
 function Categories() {
@@ -12,12 +13,14 @@ function Categories() {
 
     return (
         <>
-            <NewCategory {...{ modalIsOpen, setModalIsOpen: handleClose }} />
+            <CategoryProvider>
+                <NewCategory {...{ modalIsOpen, setModalIsOpen: handleClose }} />
+            </CategoryProvider>
 
             <PortalPage>
-                <CategoryProvider>
+                <CategoriesProvider>
                     <CategoriesView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
-                </CategoryProvider>
+                </CategoriesProvider>
             </PortalPage>
         </>
     )

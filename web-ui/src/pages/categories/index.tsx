@@ -1,10 +1,13 @@
 import CategoriesView from '../../containers/categoriesView'
 import PortalPage from '../../containers/portalPage'
+import CategoryProvider from '../../contexts/categoriesContext'
 
 function Categories() {
     return (
         <PortalPage>
-            <CategoriesView />
+            <CategoryProvider>
+                <CategoriesView />
+            </CategoryProvider>
         </PortalPage>
 
     )

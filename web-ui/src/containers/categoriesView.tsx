@@ -2,13 +2,24 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import { useEffect, useState } from 'react'
 import { MdSportsSoccer } from 'react-icons/md'
+import { useCategories, useCategoriesReady } from '../contexts/categoriesContext'
+import { CategoryDTO } from '../DTOs'
 
-interface CategoryType {
-  name: string
-}
 function CategoriesView() {
-  const categories: CategoryType[] = [{ name: "categ1" }, { name: "categ2" }, { name: "categ1" }, { name: "categ2" }, { name: "categ1" }, { name: "categ2" }]
+  const [categories, setCategories] = useState<CategoryDTO[]>([])
+
+  const categoriesContext = useCategories()
+  const categoriesReady = useCategoriesReady()
+
+  useEffect(() => {
+    console.log("categories", categoriesContext)
+    if (categoriesReady && categoriesContext) {
+      setCategories(categoriesContext)
+    }
+  }, [categoriesReady, categoriesContext])
 
   return (
     <Grid container
@@ -17,8 +28,8 @@ function CategoriesView() {
       alignItems="center"
       spacing={2}
       columns={{ xs: 4, sm: 8, md: 12 }}>
-      {categories.map((c: CategoryType) => (
-        <Button>
+      {categories.map((c) => (
+        <Button key={c.id + "-item"}>
           <Card raised>
             <Grid item xs={2} sm={2} md={3}>
               <Box
@@ -28,12 +39,19 @@ function CategoriesView() {
                 alignItems="center"
                 sx={{
                   minWidth: { xs: 180, sm: 180, md: 180 },
-                }}>
+                }}
+                mt={1}>
                 <MdSportsSoccer size={70} />
-                {c.name}
+                <Typography variant="body1" >
+                  {c.name}
+                </Typography>
+                <Typography variant="body2" mb={1}>
+                  {c.season}
+                </Typography>
               </Box>
             </Grid>
-          </Card></Button>
+          </Card>
+        </Button>
       ))}
     </Grid>
   )

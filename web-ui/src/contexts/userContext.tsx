@@ -21,22 +21,9 @@ export function useUserReady() {
     return useContext(userReadyContext);
 }
 
-// ADD USER CONTEXTS
-type NewUserDelegate = (newUserObj: NewUserDTO) => Promise<UserDTO | errorResponse>;
-const newUserContext = createContext<NewUserDelegate | null>(null);
-export function useNewUser() {
-    return useContext(newUserContext);
-}
-
-const newUserErrorContext = createContext<boolean>(false);
-export function useNewUserError() {
-    return useContext(newUserErrorContext);
-}
-
 // PROVIDER
 export default function UserProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
-    const [newUserError, setNewUserError] = useState(false)
     const [userReady, setUserReady] = useState<boolean>(false)
 
     const auth = useAuth()
@@ -65,40 +52,11 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             })
     }
 
-    const newUser: NewUserDelegate = (newUserObj: NewUserDTO) => {
-        return fetch("/api/user", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `bearer ${token}`
-            },
-            body: JSON.stringify({
-                username: newUserObj.username,
-                password: newUserObj.password,
-                admin: newUserObj.admin
-            })
-        })
-            .then(data => data.json())
-            .then(data => {
-                if ("error" in data) {
-                    setNewUserError(true)
-                    return data as errorResponse
-                } else {
-                    setNewUserError(false)
-                    return data as UserDTO
-                }
-            })
-    }
-
     return (
         <userContext.Provider value={user}>
             <userErrorContext.Provider value={error}>
                 <userReadyContext.Provider value={userReady}>
-                    <newUserContext.Provider value={newUser}>
-                        <newUserErrorContext.Provider value={newUserError}>
-                            {props.children}
-                        </newUserErrorContext.Provider>
-                    </newUserContext.Provider>
+                    {props.children}
                 </userReadyContext.Provider>
             </userErrorContext.Provider>
         </userContext.Provider>

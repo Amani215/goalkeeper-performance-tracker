@@ -11,17 +11,13 @@ const Users = () => {
   const handleOpen = () => setModalIsOpen(true)
   const handleClose = () => setModalIsOpen(false)
   return (
-    <>
-      <UserProvider>
-        <NewUser {...{ modalIsOpen, setModalIsOpen: handleClose }} />
-      </UserProvider>
+    <UsersProvider>
+      <NewUser {...{ modalIsOpen, setModalIsOpen: handleClose }} />
 
       <PortalPage>
-        <UsersProvider>
-          <UsersList {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
-        </UsersProvider>
+        <UsersList {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
       </PortalPage>
-    </>
+    </UsersProvider>
   )
 }
 

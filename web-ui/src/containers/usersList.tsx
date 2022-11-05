@@ -46,7 +46,7 @@ const columns: GridColDef[] = [
 export default function UsersList({
     setModalIsOpen
 }: ModalProp) {
-    const [rows, setRows] = useState<UserDTO[]>([])
+    const [rows, setRows] = useState<UserDTO[]>([] as UserDTO[])
     const auth = useAuth()
 
     const usersReady = useUsersReady()

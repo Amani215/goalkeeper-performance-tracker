@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, FormControlLabel, Modal, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useState } from 'react';
-import { useNewUser, useNewUserError } from '../../contexts/userContext';
+import { useNewUser, useNewUserError } from '../../contexts/usersContext';
 import { ModalProp } from '../../interfaces/modalProp'
 import userValidationSchema from '../../schemas/userValidation';
 

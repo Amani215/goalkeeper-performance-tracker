@@ -2,7 +2,6 @@ import { useState } from 'react'
 import CategoriesView from '../../containers/categoriesView'
 import PortalPage from '../../containers/portalPage'
 import CategoriesProvider from '../../contexts/categoriesContext'
-import CategoryProvider from '../../contexts/categoryContext'
 import NewCategory from '../../containers/modals/newCategory'
 
 function Categories() {
@@ -12,17 +11,14 @@ function Categories() {
     const handleClose = () => setModalIsOpen(false)
 
     return (
-        <>
-            <CategoryProvider>
-                <NewCategory {...{ modalIsOpen, setModalIsOpen: handleClose }} />
-            </CategoryProvider>
+        <CategoriesProvider>
+            <NewCategory {...{ modalIsOpen, setModalIsOpen: handleClose }} />
+
 
             <PortalPage>
-                <CategoriesProvider>
-                    <CategoriesView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
-                </CategoriesProvider>
+                <CategoriesView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
             </PortalPage>
-        </>
+        </CategoriesProvider>
     )
 }
 

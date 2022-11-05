@@ -54,6 +54,7 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             .then(data => {
                 if ('id' in data) {
                     setUserReady(true)
+                    setError(false)
                     return data as UserDTO
                 }
                 else {

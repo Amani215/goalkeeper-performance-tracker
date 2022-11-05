@@ -91,13 +91,17 @@ function UserDetails() {
                     <Grid item xs={4} sm={3} md={4} order={{ xs: 1, sm: 2, md: 2 }}>
                         <Card sx={{ width: "auto" }}>
                             <Box
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                                alignItems="center"
                                 component="img"
                                 sx={{
                                     maxHeight: { xs: "100%", sm: "100%", md: 500 },
                                     maxWidth: { xs: "100%", sm: 350, md: 500 },
                                 }}
                                 alt="Example Coach"
-                                src="https://pressboxonline.com/wp-content/uploads/2021/01/dan-enos-800x445.jpg"
+                                src={user?.profile_pic}
                             />
                             <Box
                                 display="flex"

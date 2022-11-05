@@ -5,12 +5,15 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
 import { MdSportsSoccer } from 'react-icons/md'
+import { useAuth } from '../contexts/authContext'
 import { useCategories, useCategoriesReady } from '../contexts/categoriesContext'
 import { CategoryDTO } from '../DTOs'
+import { ModalProp } from '../interfaces/modalProp'
 
-function CategoriesView() {
+function CategoriesView({ setModalIsOpen }: ModalProp) {
   const [categories, setCategories] = useState<CategoryDTO[]>([])
 
+  const auth = useAuth()
   const categoriesContext = useCategories()
   const categoriesReady = useCategoriesReady()
 
@@ -22,38 +25,54 @@ function CategoriesView() {
   }, [categoriesReady, categoriesContext])
 
   return (
-    <Grid container
-      direction="row"
-      justifyContent="center"
-      alignItems="center"
-      spacing={2}
-      columns={{ xs: 4, sm: 8, md: 12 }}>
-      {categories.map((c) => (
-        <Button key={c.id + "-item"}>
-          <Card raised>
-            <Grid item xs={2} sm={2} md={3}>
-              <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                sx={{
-                  minWidth: { xs: 180, sm: 180, md: 180 },
-                }}
-                mt={1}>
-                <MdSportsSoccer size={70} />
-                <Typography variant="body1" >
-                  {c.name}
-                </Typography>
-                <Typography variant="body2" mb={1}>
-                  {c.season}
-                </Typography>
-              </Box>
-            </Grid>
-          </Card>
-        </Button>
-      ))}
-    </Grid>
+    <>
+      {auth?.user.admin ?
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          mb={3}>
+          <Button
+            variant="contained"
+            onClick={() => { setModalIsOpen() }}
+          >Add Category
+          </Button>
+        </Box> : <></>
+      }
+
+      <Grid container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+        columns={{ xs: 4, sm: 8, md: 12 }}>
+        {categories.map((c) => (
+          <Button key={c.id + "-item"}>
+            <Card raised>
+              <Grid item xs={2} sm={2} md={3}>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  sx={{
+                    minWidth: { xs: 180, sm: 180, md: 180 },
+                  }}
+                  mt={1}>
+                  <MdSportsSoccer size={70} />
+                  <Typography variant="body1" >
+                    {c.name}
+                  </Typography>
+                  <Typography variant="body2" mb={1}>
+                    {c.season}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Card>
+          </Button>
+        ))}
+      </Grid>
+    </>
+
   )
 }
 

@@ -26,7 +26,7 @@ def add_category(current_user: User):
         season = request.json['season']
         category_response = category_service.add_category(name=name,
                                                           season=season)
-        return category_response, 201
+        return category_response.serialize, 201
     except Exception as err:
         return {'error': str(err)}, 400
 

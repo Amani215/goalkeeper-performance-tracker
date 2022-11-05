@@ -100,7 +100,7 @@ def test_add_category(app, user):
     }
     category_response = category_service.add_category(category['name'],
                                                       category['season'])
-    category = category_service.get_by_id(category_response['category_id'])
+    category = category_service.get_by_id(category_response.id)
     _user = user_service.get_by_username(user['username'])
     response = user_service.add_category(_user, category)
     assert response['category_id'] == category.id

@@ -4,7 +4,7 @@ import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
-import { MdSportsSoccer } from 'react-icons/md'
+import { IoFootballOutline } from 'react-icons/io5'
 import { useAuth } from '../contexts/authContext'
 import { useCategories, useCategoriesReady } from '../contexts/categoriesContext'
 import { CategoryDTO } from '../DTOs'
@@ -58,7 +58,7 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
                     minWidth: { xs: 180, sm: 180, md: 180 },
                   }}
                   mt={1}>
-                  <MdSportsSoccer size={70} />
+                  <IoFootballOutline size={70} />
                   <Typography variant="body1" >
                     {c.name}
                   </Typography>

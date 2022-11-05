@@ -3,6 +3,8 @@ import {
   MdDashboard,
   MdLogout,
   MdSupervisorAccount,
+  MdSportsHandball,
+  MdSportsScore,
 } from "react-icons/md";
 
 export default [
@@ -18,9 +20,19 @@ export default [
       MenuIcon: MdSupervisorAccount,
     },
     {
+      name: "Goalkeepers",
+      link: "/goalkeepers",
+      MenuIcon: MdSportsHandball,
+    },
+    {
       name: "Categories",
       link: "/categories",
       MenuIcon: MdCategory,
+    },
+    {
+      name: "Matches",
+      link: "/matches",
+      MenuIcon: MdSportsScore,
     },
   ],
   [

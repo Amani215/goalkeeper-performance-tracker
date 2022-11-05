@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
+import { Box, Button, Checkbox, FormControlLabel, Modal, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useState } from 'react';
 import { useNewUser, useNewUserError } from '../../contexts/userContext';

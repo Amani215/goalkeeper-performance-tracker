@@ -1,10 +1,13 @@
 import PortalPage from '../../containers/portalPage'
 import UserDetails from '../../containers/userDetails';
+import UserProvider from '../../contexts/userContext';
 
 function User() {
     return (
         <PortalPage>
-            <UserDetails />
+            <UserProvider>
+                <UserDetails />
+            </UserProvider>
         </PortalPage>
     )
 }

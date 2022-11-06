@@ -5,16 +5,19 @@ import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAuth } from '../contexts/authContext'
 import { useUser, useUserError, useUserReady } from '../contexts/userContext'
 import { UserDTO } from '../DTOs'
 
 function UserDetails() {
     const { id } = useParams();
 
+    const [isCurrentUser, setIsCurrentUser] = useState(false)
     const [user, setUser] = useState<UserDTO | null>(null)
     const [error, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
+    const auth = useAuth()
     const userContext = useUser()
     const userError = useUserError()
     const userReady = useUserReady()
@@ -38,6 +41,12 @@ function UserDetails() {
             setError("")
         }
     }, [loaded, userReady, userError])
+
+    useEffect(() => {
+        if (auth && auth.user.id == id) {
+            setIsCurrentUser(true)
+        }
+    }, [auth, user])
 
     return (
         <>
@@ -101,7 +110,7 @@ function UserDetails() {
                                     maxWidth: { xs: "100%", sm: 350, md: 500 },
                                 }}
                                 alt="Example Coach"
-                                src={user?.profile_pic}
+                                src={user?.profile_pic ? user.profile_pic : "https://pressboxonline.com/wp-content/uploads/2021/01/dan-enos-800x445.jpg"}
                             />
                             <Box
                                 display="flex"
@@ -115,7 +124,10 @@ function UserDetails() {
                                     ml={1} mt={1}>
                                     UID: {id}
                                 </Typography>
-                                <Button  >Change Picture</Button>
+                                {isCurrentUser ?
+                                    <Button>Change Picture</Button> : <></>
+                                }
+
                             </Box>
 
                         </Card>

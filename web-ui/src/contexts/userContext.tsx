@@ -29,27 +29,25 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
     const auth = useAuth()
     const token = auth?.token
 
-    const user: UserDelegate = (id: string) => {
-        return fetch("/api/user?id=" + id, {
+    const user: UserDelegate = async (id: string) => {
+        const data = await fetch("/api/user?id=" + id, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `bearer ${token}`
             }
-        })
-            .then(data => data.json())
-            .then(data => {
-                if ('id' in data) {
-                    setUserReady(true)
-                    setError(false)
-                    return data as UserDTO
-                }
-                else {
-                    setError(true)
-                    setUserReady(true)
-                    return data as errorResponse
-                }
-            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setUserReady(true);
+            setError(false);
+            return json_data as UserDTO;
+        }
+        else {
+            setError(true);
+            setUserReady(true);
+            return json_data as errorResponse;
+        }
     }
 
     return (

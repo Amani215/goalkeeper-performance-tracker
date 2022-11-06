@@ -1,10 +1,11 @@
 import React from 'react'
+import GoalkeepersList from '../../containers/goalkeepersList'
 import PortalPage from '../../containers/portalPage'
 
 function Goalkeepers() {
   return (
     <PortalPage>
-      <div>Goalkeepers</div>
+      <GoalkeepersList />
     </PortalPage>
   )
 }

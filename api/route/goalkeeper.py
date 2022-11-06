@@ -15,7 +15,7 @@ NO_DATA_PROVIDED_MESSAGE = 'No data was provided'
 
 @goalkeeper_api.route('/goalkeeper', methods=['POST'])
 @token_required(admin=True)
-def add_user(current_user: User):
+def add_goalkeeper(current_user: User):
     '''Add a new goalkeeper
 
     Takes a name and a birthday and returns the new goalkeeper ID.
@@ -117,12 +117,14 @@ def add_picture(current_user: User):
     A token is required for the user to be able to upload the image
     The image is automatically uploaded to the given goalkeeper'''
     try:
-        if request.files.get('profile_pic') is None:
+        args = request.args
+
+        if ((request.files.get('picture') is None)
+                or (args.get('id') is None)):
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
 
-        goalkeeper: Goalkeeper = goalkeeper_service.get_by_id(
-            request.json['goalkeeper_id'])
-        pic = request.files['profile_pic']
+        goalkeeper: Goalkeeper = goalkeeper_service.get_by_id(args.get('id'))
+        pic = request.files['picture']
 
         pic_url = goalkeeper_service.update_picture(goalkeeper, pic)
         return {'url': pic_url}

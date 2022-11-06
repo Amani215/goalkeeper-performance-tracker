@@ -7,7 +7,7 @@ from botocore.client import ClientError
 from app import create_app
 from config.postgres import db
 from config.s3 import s3_client, s3_resource
-from helper import random_string
+from helper import random_string, random_date
 import service.user as user_service
 import service.goalkeeper as goalkeeper_service
 
@@ -70,11 +70,13 @@ def user():
 @pytest.fixture()
 def goalkeeper():
     ''' Create a mock goalkeeper '''
+
+    date = random_date.generate()
     goalkeeper_credentials = {
         'name': random_string.generate(12),
-        'day': random.randint(1, 31),
-        'month': random.randint(1, 12),
-        'year': random.randint(1970, 2100),
+        'day': date.day,
+        'month': date.month,
+        'year': date.year,
     }
     goalkeeper_service.add_goalkeeper(goalkeeper_credentials['name'],
                                       goalkeeper_credentials['day'],

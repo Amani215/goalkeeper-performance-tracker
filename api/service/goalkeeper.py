@@ -53,7 +53,7 @@ def remove_category(goalkeeper: Goalkeeper, category: Category):
     db.session.commit()
 
 
-def update_profile_pic(goalkeeper: Goalkeeper, pic: FieldStorage):
+def update_picture(goalkeeper: Goalkeeper, pic: FieldStorage):
     '''Set or change the link to the profile pic of the user'''
     pic_url = upload_file(pic, os.getenv('GOALKEEPER_PICS_BUCKET'))
     goalkeeper.picture = pic_url

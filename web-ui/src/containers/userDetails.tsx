@@ -125,7 +125,11 @@ function UserDetails() {
                                     UID: {id}
                                 </Typography>
                                 {isCurrentUser ?
-                                    <Button>Change Picture</Button> : <></>
+                                    <Button component="label">
+                                        Change Picture
+                                        <input hidden accept="image/*" multiple type="file" />
+                                    </Button>
+                                    : <></>
                                 }
 
                             </Box>

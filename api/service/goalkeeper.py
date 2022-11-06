@@ -1,4 +1,5 @@
 '''Goalkeeper services (add, update, etc.)'''
+import datetime
 import os
 from cgi import FieldStorage
 from sqlalchemy.exc import SQLAlchemyError
@@ -8,8 +9,9 @@ from model.goalkeeper import Goalkeeper
 from service.s3 import upload_file
 
 
-def add_goalkeeper(name: str, birthday):
+def add_goalkeeper(name: str, day: int, month: int, year: int):
     '''Add a new goalkeeper to the database'''
+    birthday = datetime.date(year, month, day)
     goalkeeper = Goalkeeper(name, birthday)
 
     db.session.add(goalkeeper)

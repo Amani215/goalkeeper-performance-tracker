@@ -5,7 +5,7 @@ import pytest
 from model.goalkeeper import Goalkeeper
 import service.category as category_service
 import service.goalkeeper as goalkeeper_service
-from helper import random_string
+from helper import random_string, random_date
 
 
 def test_add_goalkeeper(app):
@@ -13,11 +13,12 @@ def test_add_goalkeeper(app):
 
     goalkeepers = goalkeeper_service.get_goalkeepers()
     goalkeeper_count = len([i.serialize for i in goalkeepers])
+    date = random_date.generate()
     goalkeeper = {
         'name': random_string.generate(12),
-        'day': random.randint(1, 31),
-        'month': random.randint(1, 12),
-        'year': random.randint(1970, 2100)
+        'day': date.day,
+        'month': date.month,
+        'year': date.year
     }
     response = goalkeeper_service.add_goalkeeper(goalkeeper['name'],
                                                  goalkeeper['day'],

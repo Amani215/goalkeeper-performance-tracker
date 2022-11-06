@@ -1,7 +1,8 @@
 import Avatar from '@mui/material/Avatar';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useGoalkeepers, useGoalkeepersReady } from '../contexts/goalkeepersContext';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 
 const columns: GridColDef[] = [
@@ -41,6 +42,16 @@ const columns: GridColDef[] = [
 
 function GoalkeepersList() {
     const [rows, setRows] = useState<GoalkeeperDTO[]>([] as GoalkeeperDTO[])
+
+    const goalkeepersReady = useGoalkeepersReady()
+    const goalkeepers = useGoalkeepers()
+
+    useEffect(() => {
+        if (goalkeepersReady && goalkeepers) {
+            setRows(goalkeepers)
+        }
+    }, [goalkeepersReady, goalkeepers])
+
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid

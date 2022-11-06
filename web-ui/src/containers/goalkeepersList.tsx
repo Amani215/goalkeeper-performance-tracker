@@ -1,9 +1,13 @@
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 import { useGoalkeepers, useGoalkeepersReady } from '../contexts/goalkeepersContext';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
+import { ModalProp } from '../interfaces/modalProp';
 
 const columns: GridColDef[] = [
     {
@@ -40,9 +44,12 @@ const columns: GridColDef[] = [
     }
 ]
 
-function GoalkeepersList() {
+function GoalkeepersList({
+    setModalIsOpen
+}: ModalProp) {
     const [rows, setRows] = useState<GoalkeeperDTO[]>([] as GoalkeeperDTO[])
 
+    const auth = useAuth()
     const goalkeepersReady = useGoalkeepersReady()
     const goalkeepers = useGoalkeepers()
 
@@ -53,15 +60,25 @@ function GoalkeepersList() {
     }, [goalkeepersReady, goalkeepers])
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-                rows={rows || []}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                checkboxSelection
-            />
-        </div>
+        <>
+            {auth?.user.admin ?
+                <Box
+                    display="flex" justifyContent="flex-end"
+                    mb={2}>
+                    <Button variant="contained" onClick={() => { setModalIsOpen() }}>Add User</Button>
+                </Box> : <></>
+            }
+
+            <div style={{ height: 400, width: '100%' }}>
+                <DataGrid
+                    rows={rows || []}
+                    columns={columns}
+                    pageSize={5}
+                    rowsPerPageOptions={[5]}
+                    checkboxSelection
+                />
+            </div>
+        </>
     )
 }
 

@@ -1,6 +1,7 @@
 '''Reusable test items'''
 import json
 import os
+import random
 import pytest
 from botocore.client import ClientError
 from app import create_app
@@ -8,6 +9,7 @@ from config.postgres import db
 from config.s3 import s3_client, s3_resource
 from helper import random_string
 import service.user as user_service
+import service.goalkeeper as goalkeeper_service
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
@@ -63,6 +65,22 @@ def user():
                           user_credentials['password'],
                           user_credentials['admin'])
     return user_credentials
+
+
+@pytest.fixture()
+def goalkeeper():
+    ''' Create a mock goalkeeper '''
+    goalkeeper_credentials = {
+        'name': random_string.generate(12),
+        'day': random.randint(1, 31),
+        'month': random.randint(1, 12),
+        'year': random.randint(1970, 2100),
+    }
+    goalkeeper_service.add_goalkeeper(goalkeeper_credentials['name'],
+                                      goalkeeper_credentials['day'],
+                                      goalkeeper_credentials['month'],
+                                      goalkeeper_credentials['year'])
+    return goalkeeper_credentials
 
 
 @pytest.fixture()

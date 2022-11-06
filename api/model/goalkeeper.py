@@ -1,4 +1,4 @@
-"""imports"""
+'''imports'''
 from uuid import uuid4
 from sqlalchemy import Column, String, Date
 from sqlalchemy.dialects.postgresql import UUID
@@ -18,7 +18,7 @@ goalkeeper_categories = db.Table(
 
 
 class Goalkeeper(db.Model):
-    """Base class for all types of available users"""
+    '''Goalkeeper model'''
     id = Column(UUID(as_uuid=True),
                 primary_key=True,
                 default=lambda: uuid4().hex)

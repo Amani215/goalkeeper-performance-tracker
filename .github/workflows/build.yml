@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: "ghcr.io"   # GitHub Container Registry
+  REGISTRY: "ghcr.io" # GitHub Container Registry
   POSTGRES_USER: db
   POSTGRES_PASSWORD: pass
   POSTGRES_HOST: localhost
@@ -24,6 +24,7 @@ env:
   AWS_ACCESS_KEY_ID: myminioadmin
   AWS_SECRET_ACCESS_KEY: minio-secret-key-change-me
   PROFILE_PICS_BUCKET: build-profile-pics
+  GOALKEEPER_PICS_BUCKET: build-goalkeeper-pics
   REDIS_HOST: localhost
   REDIS_PORT: 6379
   ADMIN_USERNAME: build
@@ -87,16 +88,14 @@ jobs:
         id: api-quality-gate-response
         uses: fjogeleit/http-request-action@v1
         with:
-          url:
-            "https://sonarcloud.io/api/\
+          url: "https://sonarcloud.io/api/\
             qualitygates/project_status?\
             projectKey=amani215_goalkeeper\
             -performance-tracker-api"
           method: GET
       - name: Fail If Quality Gate Is Not Met
         run: exit 1
-        if:
-          "${{contains(fromJson(\
+        if: "${{contains(fromJson(\
           steps.api-quality-gate-\
           response.outputs.response)\
           .projectStatus.status,'ERROR')}}"

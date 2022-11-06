@@ -17,6 +17,7 @@ export AWS_DOMAIN='http://localhost:9000'
 export AWS_ACCESS_KEY_ID='myminioadmin'
 export AWS_SECRET_ACCESS_KEY='minio-secret-key-change-me'
 export PROFILE_PICS_BUCKET='test-profile-pics'
+export GOALKEEPER_PICS_BUCKET='test-goalkeeper-pics'
 
 # REDIS TEST ENVIRONMENT VARIABLES
 export REDIS_HOST='localhost'

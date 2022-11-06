@@ -3,10 +3,10 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../contexts/authContext'
-import { useUser, useUserError, useUserReady } from '../contexts/userContext'
+import { useUpdateProfilePic, useUser, useUserError, useUserReady } from '../contexts/userContext'
 import { UserDTO } from '../DTOs'
 
 function UserDetails() {
@@ -21,6 +21,7 @@ function UserDetails() {
     const userContext = useUser()
     const userError = useUserError()
     const userReady = useUserReady()
+    const updateProfilePic = useUpdateProfilePic()
 
     useEffect(
         () => {
@@ -47,6 +48,17 @@ function UserDetails() {
             setIsCurrentUser(true)
         }
     }, [auth, user])
+
+    const uploadPicture = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files != null) {
+            const formdata = new FormData()
+            formdata.append("profile_pic", e.target.files[0])
+            if (updateProfilePic) {
+                updateProfilePic(formdata).then((data) => { console.log(data) })
+            }
+            console.log(e.target.files[0])
+        }
+    }
 
     return (
         <>
@@ -127,7 +139,11 @@ function UserDetails() {
                                 {isCurrentUser ?
                                     <Button component="label">
                                         Change Picture
-                                        <input hidden accept="image/*" multiple type="file" />
+                                        <input
+                                            hidden
+                                            accept="image/*"
+                                            multiple type="file"
+                                            onChange={e => uploadPicture(e)} />
                                     </Button>
                                     : <></>
                                 }

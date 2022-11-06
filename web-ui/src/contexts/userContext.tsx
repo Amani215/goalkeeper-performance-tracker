@@ -21,6 +21,13 @@ export function useUserReady() {
     return useContext(userReadyContext);
 }
 
+// PROFILE PIC CONTEXT
+type PictureDelegate = (formdata: FormData) => Promise<string | errorResponse>;
+const updateProfilePicContext = createContext<PictureDelegate | null>(null);
+export function useUpdateProfilePic() {
+    return useContext(updateProfilePicContext);
+}
+
 // PROVIDER
 export default function UserProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
@@ -50,11 +57,25 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
         }
     }
 
+    const profile_pic: PictureDelegate = (formdata: FormData) => {
+        return fetch("/api/user/profile_pic", {
+            method: "PUT",
+            headers: {
+                'Accept': '*/*',
+                'Authorization': `bearer ${token}`
+            },
+            body: formdata
+        })
+            .then(data => data.json())
+    }
+
     return (
         <userContext.Provider value={user}>
             <userErrorContext.Provider value={error}>
                 <userReadyContext.Provider value={userReady}>
-                    {props.children}
+                    <updateProfilePicContext.Provider value={profile_pic}>
+                        {props.children}
+                    </updateProfilePicContext.Provider>
                 </userReadyContext.Provider>
             </userErrorContext.Provider>
         </userContext.Provider>

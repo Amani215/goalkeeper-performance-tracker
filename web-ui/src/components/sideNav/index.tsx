@@ -8,7 +8,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import { useSideNavIsOpen, useToggleSideNav } from '../../contexts/pageContext';
 import menuItems from "./items"
@@ -69,6 +69,7 @@ export default function MiniDrawer() {
     const sideNavIsOpen = useSideNavIsOpen();
     const toggleSideNav = useToggleSideNav();
     const theme = useTheme()
+    const { pathname } = useLocation();
     return (
 
         <Drawer variant="permanent" open={sideNavIsOpen}>
@@ -82,8 +83,16 @@ export default function MiniDrawer() {
                 <Fragment key={`MENU_${menu[0].name}`}>
                     <List>
                         {menu.map((item, index) => (
-                            <Link key={item.name + "collapsed"}  component={RouterLink} to={item.link} underline="none" color="inherit">
-                                <ListItem disablePadding sx={{ display: 'block' }}>
+                            <Link
+                                key={item.name + "collapsed"}
+                                component={RouterLink}
+                                to={item.link}
+                                underline="none"
+                                color="inherit">
+                                <ListItem
+                                    disablePadding
+                                    selected={item.link === pathname}
+                                    sx={{ display: 'block' }}>
                                     <ListItemButton
                                         sx={{
                                             minHeight: 48,

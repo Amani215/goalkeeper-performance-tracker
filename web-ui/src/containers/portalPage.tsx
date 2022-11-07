@@ -5,6 +5,7 @@ import Header from '../components/header'
 import SideNav from '../components/sideNav'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
+import { Typography } from '@mui/material'
 
 //Menu, headers, footer...
 const PortalPage = ({ children }: PropsWithChildren<{}>) => {
@@ -23,6 +24,18 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
             setRedirect(true)
         }
     }, [loaded, authReady, auth?.user])
+    function PageName() {
+        if (location.pathname.split('/')[2]) return <></>
+        return <Typography
+            variant='h5'
+            sx={{
+                textTransform: 'capitalize',
+                fontWeight: 'bold'
+            }}
+            style={{ color: '#757575' }}>
+            {location.pathname.split('/')[1]}
+        </Typography>
+    }
     if (redirect) {
         return <Navigate to="/login" state={{ from: location }} replace />
     }
@@ -32,7 +45,10 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <SideNav />
+
+
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                    <PageName />
                     {children}
                 </Box>
             </Box>

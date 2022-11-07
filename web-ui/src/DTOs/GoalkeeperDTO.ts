@@ -2,6 +2,7 @@ export interface GoalkeeperDTO {
   id: string;
   name: string;
   birthday: Date;
+  picture: string;
 }
 
 export interface NewGoalkeeperDTO {

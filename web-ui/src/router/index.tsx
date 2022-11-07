@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Login, Dashboard, Users, User, Goalkeepers, Categories, Matches, Logout } from '../pages';
+import { Login, Dashboard, Users, User, Goalkeepers, Goalkeeper, Categories, Matches, Logout } from '../pages';
 
 const AppRoutes = () => {
     return (
@@ -11,7 +11,10 @@ const AppRoutes = () => {
                     <Route index={true} element={<Users />} />
                     <Route path=":id" element={<User />} />
                 </Route>
-                <Route path="/goalkeepers" element={<Goalkeepers />} />
+                <Route path="/goalkeepers">
+                    <Route index={true} element={<Goalkeepers />} />
+                    <Route path=":id" element={<Goalkeeper />} />
+                </Route>
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/matches" element={<Matches />} />
                 <Route path="/logout" element={<Logout />} />

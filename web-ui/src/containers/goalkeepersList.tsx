@@ -18,7 +18,7 @@ const columns: GridColDef[] = [
         align: "center",
         renderCell: (params) => {
             return (
-                <RouterLink to={`/users/${params.id}`}>
+                <RouterLink to={`/goalkeepers/${params.id}`}>
                     <Avatar src={params.row.profile_pic} sx={{ width: 32, height: 32 }} />
                 </RouterLink>
             );

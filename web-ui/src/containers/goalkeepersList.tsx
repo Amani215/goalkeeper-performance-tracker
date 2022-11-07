@@ -65,7 +65,7 @@ function GoalkeepersList({
                 <Box
                     display="flex" justifyContent="flex-end"
                     mb={2}>
-                    <Button variant="contained" onClick={() => { setModalIsOpen() }}>Add User</Button>
+                    <Button variant="contained" onClick={() => { setModalIsOpen() }}>Add Goalkeeper</Button>
                 </Box> : <></>
             }
 

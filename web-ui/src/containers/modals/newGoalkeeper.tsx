@@ -1,12 +1,14 @@
-import { Box, Button, Checkbox, FormControlLabel, Modal, TextField, Typography } from '@mui/material'
+import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useState } from 'react';
 import { useNewGoalkeeper, useNewGoalkeeperError } from '../../contexts/goalkeepersContext';
-import { useNewUser, useNewUserError } from '../../contexts/usersContext';
 import { ModalProp } from '../../interfaces/modalProp'
 import goalkeeperValidationSchema from '../../schemas/goalkeeperValidation';
-import userValidationSchema from '../../schemas/userValidation';
 
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs, { Dayjs } from 'dayjs';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -26,9 +28,18 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const newGoalkeeper = useNewGoalkeeper()
     const newGoalkeeperError = useNewGoalkeeperError()
 
-    const handleSubmit = async ({ name, day, month, year }: FormikValues): Promise<void> => {
+    const [birthdayDate, setBirthdayDate] = useState<Dayjs>(
+        dayjs('2014-08-18T21:11:54'),
+    );
+
+    const handleSubmit = async ({ name, birthday }: FormikValues): Promise<void> => {
         if (newGoalkeeper != null) {
-            await newGoalkeeper({ name: name, day: day, month: month, year: year })
+            setBirthdayDate(birthday)
+
+            await newGoalkeeper({
+                name: name, day: birthdayDate.toDate().getDay(),
+                month: birthdayDate.toDate().getMonth(), year: birthdayDate.toDate().getFullYear()
+            })
             if (newGoalkeeperError) setError(true)
             else setModalIsOpen()
         }
@@ -36,9 +47,7 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const formik = useFormik({
         initialValues: {
             name: '',
-            day: 1,
-            month: 1,
-            year: 1970
+            birthday: birthdayDate
         },
         validationSchema: goalkeeperValidationSchema,
         onSubmit: handleSubmit
@@ -75,48 +84,19 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         error={formik.touched.name && Boolean(formik.errors.name)}
                         helperText={formik.touched.name && formik.errors.name}
                     />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="day"
-                        label="Day"
-                        type="day"
-                        id="day"
-                        autoComplete="day"
-                        value={formik.values.day}
-                        error={formik.touched.day && Boolean(formik.errors.day)}
-                        helperText={formik.touched.day && formik.errors.day}
-                        onChange={formik.handleChange}
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="month"
-                        label="Month"
-                        type="month"
-                        id="month"
-                        autoComplete="month"
-                        value={formik.values.month}
-                        error={formik.touched.month && Boolean(formik.errors.month)}
-                        helperText={formik.touched.month && formik.errors.month}
-                        onChange={formik.handleChange}
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="year"
-                        label="Year"
-                        type="year"
-                        id="year"
-                        autoComplete="year"
-                        value={formik.values.year}
-                        error={formik.touched.year && Boolean(formik.errors.year)}
-                        helperText={formik.touched.year && formik.errors.year}
-                        onChange={formik.handleChange}
-                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <Stack spacing={3}>
+                            <DesktopDatePicker
+                                label="Birth Date"
+                                inputFormat="MM/DD/YYYY"
+                                value={formik.values.birthday}
+                                onChange={v => formik.setFieldValue("birthday", v)}
+                                maxDate={dayjs()}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </Stack>
+                    </LocalizationProvider>
+
                     <Button
                         type="submit"
                         fullWidth

@@ -46,6 +46,8 @@ class Goalkeeper(db.Model):
             'birthday':
             str(self.birthday.day) + '/' + str(self.birthday.month) + '/' +
             str(self.birthday.year),
+            'phone':
+            self.phone,
             'picture':
             self.picture
         }

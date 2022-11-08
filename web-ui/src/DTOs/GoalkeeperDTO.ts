@@ -2,6 +2,7 @@ export interface GoalkeeperDTO {
   id: string;
   name: string;
   birthday: string;
+  phone: string;
   picture: string;
 }
 

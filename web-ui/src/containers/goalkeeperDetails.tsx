@@ -106,6 +106,20 @@ function GoalkeeperDetails() {
                                     {dayjs(goalkeeper?.birthday).format('DD MMM YYYY').toString()}
                                 </Typography>
                             </Box>
+                            <Box
+                                display="flex"
+                                flexDirection="row">
+                                <Typography
+                                    variant='subtitle1'
+                                    sx={{ fontWeight: 'bold' }}
+                                    mr={2}>
+                                    Phone Number
+                                </Typography>
+                                <Typography
+                                    variant='body1'>
+                                    {goalkeeper?.phone}
+                                </Typography>
+                            </Box>
 
                             <Typography
                                 variant='subtitle1'

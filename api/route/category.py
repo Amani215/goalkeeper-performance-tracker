@@ -77,3 +77,21 @@ def get_category_trainers(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@category_api.route('/category/goalkeepers', methods=['GET'])
+@token_required(admin=False)
+def get_category_goalkeepers(current_user: User):
+    '''Get all requested goalkeepers correponding to the given category
+
+    If id is not provided an error is raised
+    '''
+    try:
+        args = request.args
+
+        goalkeepers = category_service.get_category_goalkeepers(args.get('id'))
+        return jsonify([i.serialize for i in goalkeepers])
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

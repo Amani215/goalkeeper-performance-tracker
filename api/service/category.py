@@ -51,3 +51,12 @@ def get_category_trainers(category_id):
         return category.trainers
     except SQLAlchemyError as err:
         return {'error': str(err)}
+
+
+def get_category_goalkeepers(category_id):
+    '''Get goalkeepers that have that category'''
+    try:
+        category: Category = Category.query.filter_by(id=category_id).one()
+        return category.goalkeepers
+    except SQLAlchemyError as err:
+        return {'error': str(err)}

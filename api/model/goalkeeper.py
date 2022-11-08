@@ -3,18 +3,7 @@ from uuid import uuid4
 from sqlalchemy import Column, String, Date
 from sqlalchemy.dialects.postgresql import UUID
 from config.postgres import db
-from model.category import Category
-
-goalkeeper_categories = db.Table(
-    'category_goalkeepers',
-    db.Column('goalkeeper_id',
-              UUID(as_uuid=True),
-              db.ForeignKey('goalkeeper.id'),
-              primary_key=True),
-    db.Column('category_id',
-              String,
-              db.ForeignKey('category.id'),
-              primary_key=True))
+from model.association_tables import goalkeeper_categories
 
 
 class Goalkeeper(db.Model):
@@ -29,7 +18,7 @@ class Goalkeeper(db.Model):
     categories = db.relationship('Category',
                                  secondary=goalkeeper_categories,
                                  lazy='subquery',
-                                 backref=db.backref('goalkeepers', lazy=True))
+                                 back_populates="goalkeepers")
 
     def __init__(self, name, birthday):
         self.name = name

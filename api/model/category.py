@@ -1,7 +1,7 @@
 """imports"""
 from sqlalchemy import Column, String, Integer
 from config.postgres import db
-from model.association_tables import trainer_categories
+from model.association_tables import trainer_categories, goalkeeper_categories
 
 
 class Category(db.Model):
@@ -12,6 +12,9 @@ class Category(db.Model):
     trainers = db.relationship("User",
                                secondary=trainer_categories,
                                back_populates="categories")
+    goalkeepers = db.relationship("Goalkeeper",
+                                  secondary=goalkeeper_categories,
+                                  back_populates="categories")
 
     def __init__(self, name: str, season: int):
         self.id = name + str(season)

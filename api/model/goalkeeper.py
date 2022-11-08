@@ -1,6 +1,6 @@
 '''imports'''
 from uuid import uuid4
-from sqlalchemy import Column, String, Date
+from sqlalchemy import Column, String, Date, Integer
 from sqlalchemy.dialects.postgresql import UUID
 from config.postgres import db
 from model.category import Category
@@ -24,6 +24,7 @@ class Goalkeeper(db.Model):
                 default=lambda: uuid4().hex)
     name = Column(String(80), unique=True, nullable=False)
     picture = Column(String(128), unique=False, nullable=True)
+    age = Column(Integer, unique=False, nullable=False)
     birthday = Column(Date, unique=False, nullable=False)
     phone = Column(String(15), unique=False, nullable=True)
     categories = db.relationship('Category',
@@ -43,6 +44,8 @@ class Goalkeeper(db.Model):
             self.id,
             'name':
             self.name,
+            'age':
+            self.age,
             'birthday':
             str(self.birthday.day) + '/' + str(self.birthday.month) + '/' +
             str(self.birthday.year),

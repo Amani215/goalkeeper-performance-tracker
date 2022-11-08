@@ -1,11 +1,14 @@
 import React from 'react';
 import PortalPage from '../../containers/portalPage'
 import CategoryDetails from '../../containers/categoryDetails';
+import CategoryProvider from '../../contexts/categoryContext';
 
 function Category() {
     return (
         <PortalPage>
-            <CategoryDetails />
+            <CategoryProvider>
+                <CategoryDetails />
+            </CategoryProvider>
         </PortalPage>
     )
 }

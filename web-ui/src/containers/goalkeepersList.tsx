@@ -2,6 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext';
@@ -19,7 +20,7 @@ const columns: GridColDef[] = [
         renderCell: (params) => {
             return (
                 <RouterLink to={`/goalkeepers/${params.id}`}>
-                    <Avatar src={params.row.profile_pic} sx={{ width: 32, height: 32 }} />
+                    <Avatar src={params.row.picture} sx={{ width: 32, height: 32 }} />
                 </RouterLink>
             );
         }
@@ -41,6 +42,7 @@ const columns: GridColDef[] = [
         flex: 1,
         minWidth: 60,
         align: "center",
+        valueGetter: (params) => dayjs().diff(dayjs(params.row.birthday), 'year')
     }
 ]
 

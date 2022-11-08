@@ -39,8 +39,13 @@ class Goalkeeper(db.Model):
     def serialize(self):
         """Return object data in easily serializable format"""
         return {
-            'id': self.id,
-            'name': self.name,
-            'birthday': self.birthday,
-            'picture': self.picture
+            'id':
+            self.id,
+            'name':
+            self.name,
+            'birthday':
+            str(self.birthday.day) + '/' + str(self.birthday.month) + '/' +
+            str(self.birthday.year),
+            'picture':
+            self.picture
         }

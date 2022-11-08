@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
+import dayjs from 'dayjs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAuth } from '../contexts/authContext'
@@ -90,7 +91,7 @@ function GoalkeeperDetails() {
                                 </Typography>
                                 <Typography
                                     variant='body1'>
-                                    {/* {goalkeeper?.birthday.getDate()} */}
+                                    {dayjs(goalkeeper?.birthday).format('DD MMM YYYY').toString()}
                                 </Typography>
                             </Box>
 
@@ -114,7 +115,7 @@ function GoalkeeperDetails() {
                                     maxHeight: { xs: "100%", sm: "100%", md: 500 },
                                     maxWidth: { xs: "100%", sm: 350, md: 500 },
                                 }}
-                                alt="Example Coach"
+                                alt="Example Goalkeeper"
                                 src={goalkeeper?.picture ? goalkeeper.picture : "https://pressboxonline.com/wp-content/uploads/2021/01/dan-enos-800x445.jpg"}
                             />
                             <Box

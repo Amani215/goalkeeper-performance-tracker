@@ -2,9 +2,10 @@ import { Avatar, Box, Button, Card, Grid, IconButton, List, ListItem, ListItemAv
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
-import { useCategory, useCategoryError, useCategoryReady, useCategoryTrainers, useCategoryTrainersReady } from '../contexts/categoryContext';
+import { useCategory, useCategoryError, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainers, useCategoryTrainersReady } from '../contexts/categoryContext';
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { Link as RouterLink } from 'react-router-dom';
+import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 
 function CategoryDetails() {
     const { id } = useParams();
@@ -14,6 +15,7 @@ function CategoryDetails() {
     const [loaded, setLoaded] = useState(false)
 
     const [trainers, setTrainers] = useState<UserDTO[]>([])
+    const [goalkeepers, setGoalkeepers] = useState<GoalkeeperDTO[]>([])
 
     const categoryContext = useCategory()
     const categoryError = useCategoryError()
@@ -22,6 +24,8 @@ function CategoryDetails() {
     const trainersContext = useCategoryTrainers()
     const trainersReady = useCategoryTrainersReady()
 
+    const goalkeepersContext = useCategoryGoalkeepers()
+    const goalkeepersReady = useCategoryGoalkeepersReady()
 
     useEffect(
         () => {
@@ -54,8 +58,19 @@ function CategoryDetails() {
             )
 
         }
-        console.log("trainers: ", trainers)
     }, [trainersReady])
+
+    useEffect(() => {
+        if (goalkeepersContext) {
+            goalkeepersContext(id ? id : "").then((data) => {
+                if (goalkeepersReady)
+                    setGoalkeepers(data as GoalkeeperDTO[])
+            }
+            )
+
+        }
+        console.log("goals: ", goalkeepers)
+    }, [goalkeepersReady])
 
     return (
         <>
@@ -79,27 +94,35 @@ function CategoryDetails() {
                                     Add Coach
                                 </Button>
                             </Box>
-                            <List>
-                                {trainers.map((trainer) => (
-                                    <ListItem
-                                        key={trainer.id}
-                                        secondaryAction={
-                                            <IconButton edge="end" aria-label="delete">
-                                                <MdDeleteOutline />
-                                            </IconButton>
-                                        }
-                                    >
-                                        <RouterLink to={`/users/${trainer.id}`}>
-                                            <ListItemAvatar>
-                                                <Avatar src={trainer.profile_pic} />
-                                            </ListItemAvatar>
-                                        </RouterLink>
-                                        <ListItemText
-                                            primary={trainer.username}
-                                        />
-                                    </ListItem>
-                                ))}
-                            </List>
+                            {trainers.length > 0 ?
+                                <List>
+                                    {trainers.map((trainer) => (
+                                        <ListItem
+                                            key={trainer.id}
+                                            secondaryAction={
+                                                <IconButton edge="end" aria-label="delete">
+                                                    <MdDeleteOutline />
+                                                </IconButton>
+                                            }
+                                        >
+                                            <RouterLink to={`/users/${trainer.id}`}>
+                                                <ListItemAvatar>
+                                                    <Avatar src={trainer.profile_pic} />
+                                                </ListItemAvatar>
+                                            </RouterLink>
+                                            <ListItemText
+                                                primary={trainer.username}
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                                : <Box display="flex"
+                                    flexDirection="column"
+                                    justifyContent="center"
+                                    alignItems="center">
+                                    No coaches yet.
+                                </Box>
+                            }
 
                         </Card>
                     </Grid>
@@ -111,7 +134,36 @@ function CategoryDetails() {
                                     Add Goalkeeper
                                 </Button>
                             </Box>
-                            <p>Goalkeepers</p>
+
+                            {goalkeepers.length > 0 ?
+                                <List>
+                                    {goalkeepers.map((goalkeeper) => (
+                                        <ListItem
+                                            key={goalkeeper.id}
+                                            secondaryAction={
+                                                <IconButton edge="end" aria-label="delete">
+                                                    <MdDeleteOutline />
+                                                </IconButton>
+                                            }
+                                        >
+                                            <RouterLink to={`/goalkeepers/${goalkeeper.id}`}>
+                                                <ListItemAvatar>
+                                                    <Avatar src={goalkeeper.picture} />
+                                                </ListItemAvatar>
+                                            </RouterLink>
+                                            <ListItemText
+                                                primary={goalkeeper.name}
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                                : <Box display="flex"
+                                    flexDirection="column"
+                                    justifyContent="center"
+                                    alignItems="center">
+                                    No goalkeepers yet.
+                                </Box>
+                            }
                         </Card>
                     </Grid>
                 </Grid>

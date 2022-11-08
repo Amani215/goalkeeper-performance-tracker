@@ -1,5 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { CategoryDTO, UserDTO } from '../DTOs';
+import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
 
@@ -34,13 +35,23 @@ export function useCategoryTrainersReady() {
 }
 
 // GET GOALKEEPERS CONTEXT
+type CategoryGoalkeepersDelegate = (id: string) => Promise<GoalkeeperDTO[] | errorResponse>;
+const categoryGoalkeepersContext = createContext<CategoryGoalkeepersDelegate | null>(null)
+export function useCategoryGoalkeepers() {
+    return useContext(categoryGoalkeepersContext)
+}
 
+const categoryGoalkeepersReadyContext = createContext<boolean>(false);
+export function useCategoryGoalkeepersReady() {
+    return useContext(categoryGoalkeepersReadyContext);
+}
 
 // PROVIDER
 export default function CategoryProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
     const [categoryReady, setCategoryReady] = useState<boolean>(false)
     const [categoryTrainersReady, setCategoryTrainersReady] = useState<boolean>(false)
+    const [categoryGoalkeepersReady, setCategoryGoalkeepersReady] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -87,13 +98,38 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
         }
     }
 
+    const goalkeepers: CategoryGoalkeepersDelegate = async (id: string) => {
+        const data = await fetch("/api/category/goalkeepers?id=" + id, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setCategoryGoalkeepersReady(true)
+            setError(false);
+            return json_data as GoalkeeperDTO[];
+        }
+        else {
+            setCategoryGoalkeepersReady(true)
+            setError(true);
+            return json_data as errorResponse;
+        }
+    }
+
     return (
         <categoryContext.Provider value={category}>
             <categoryErrorContext.Provider value={error}>
                 <categoryReadyContext.Provider value={categoryReady}>
                     <categoryTrainersContext.Provider value={trainers}>
                         <categoryTrainersReadyContext.Provider value={categoryTrainersReady}>
-                            {props.children}
+                            <categoryGoalkeepersContext.Provider value={goalkeepers}>
+                                <categoryGoalkeepersReadyContext.Provider value={categoryGoalkeepersReady}>
+                                    {props.children}
+                                </categoryGoalkeepersReadyContext.Provider>
+                            </categoryGoalkeepersContext.Provider>
                         </categoryTrainersReadyContext.Provider>
                     </categoryTrainersContext.Provider>
                 </categoryReadyContext.Provider>

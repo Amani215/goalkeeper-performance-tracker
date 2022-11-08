@@ -72,6 +72,14 @@ function UserDetails() {
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     <Grid item xs={4} sm={5} md={8} order={{ xs: 2, sm: 1, md: 1 }}>
                         <Card sx={{ padding: 2 }}>
+                            {auth?.user.admin ?
+                                <Box display="flex" justifyContent="flex-end">
+                                    <Button>
+                                        Edit
+                                    </Button>
+                                </Box> : <></>
+                            }
+
                             <Box
                                 display="flex"
                                 flexDirection="row">

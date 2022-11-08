@@ -1,8 +1,10 @@
-import { Box, Button, Card, Grid, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
+import { MdDeleteOutline } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
-import { useCategory, useCategoryError, useCategoryReady } from '../contexts/categoryContext';
-import { CategoryDTO } from '../DTOs';
+import { useCategory, useCategoryError, useCategoryReady, useCategoryTrainers, useCategoryTrainersReady } from '../contexts/categoryContext';
+import { CategoryDTO, UserDTO } from '../DTOs';
+import { Link as RouterLink } from 'react-router-dom';
 
 function CategoryDetails() {
     const { id } = useParams();
@@ -11,9 +13,15 @@ function CategoryDetails() {
     const [error, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
+    const [trainers, setTrainers] = useState<UserDTO[]>([])
+
     const categoryContext = useCategory()
     const categoryError = useCategoryError()
     const categoryReady = useCategoryReady()
+
+    const trainersContext = useCategoryTrainers()
+    const trainersReady = useCategoryTrainersReady()
+
 
     useEffect(
         () => {
@@ -27,6 +35,8 @@ function CategoryDetails() {
                 data => setCategory(data as CategoryDTO)
             )
         }
+
+
         if (loaded && categoryReady && categoryError) {
             setError("No category Found.")
         }
@@ -34,6 +44,18 @@ function CategoryDetails() {
             setError("")
         }
     }, [loaded, categoryReady, categoryError, id])
+
+    useEffect(() => {
+        if (trainersContext) {
+            trainersContext(id ? id : "").then((data) => {
+                if (trainersReady)
+                    setTrainers(data as UserDTO[])
+            }
+            )
+
+        }
+        console.log("trainers: ", trainers)
+    }, [trainersReady])
 
     return (
         <>
@@ -57,7 +79,28 @@ function CategoryDetails() {
                                     Add Coach
                                 </Button>
                             </Box>
-                            <p>Coaches</p>
+                            <List>
+                                {trainers.map((trainer) => (
+                                    <ListItem
+                                        key={trainer.id}
+                                        secondaryAction={
+                                            <IconButton edge="end" aria-label="delete">
+                                                <MdDeleteOutline />
+                                            </IconButton>
+                                        }
+                                    >
+                                        <RouterLink to={`/users/${trainer.id}`}>
+                                            <ListItemAvatar>
+                                                <Avatar src={trainer.profile_pic} />
+                                            </ListItemAvatar>
+                                        </RouterLink>
+                                        <ListItemText
+                                            primary={trainer.username}
+                                        />
+                                    </ListItem>
+                                ))}
+                            </List>
+
                         </Card>
                     </Grid>
 

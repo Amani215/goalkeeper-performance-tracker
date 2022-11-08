@@ -6,7 +6,6 @@ import Grid from '@mui/material/Grid'
 import dayjs from 'dayjs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useAuth } from '../contexts/authContext'
 import { useGoalkeeper, useGoalkeeperError, useGoalkeeperReady, useUpdatePicture } from '../contexts/goalkeeperContext'
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO'
 
@@ -17,7 +16,6 @@ function GoalkeeperDetails() {
     const [error, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
-    const auth = useAuth()
     const goalkeeperContext = useGoalkeeper()
     const goalkeeperError = useGoalkeeperError()
     const goalkeeperReady = useGoalkeeperReady()
@@ -78,6 +76,20 @@ function GoalkeeperDetails() {
                                 <Typography
                                     variant='body1'>
                                     {goalkeeper?.name}
+                                </Typography>
+                            </Box>
+                            <Box
+                                display="flex"
+                                flexDirection="row">
+                                <Typography
+                                    variant='subtitle1'
+                                    sx={{ fontWeight: 'bold' }}
+                                    mr={2}>
+                                    Age
+                                </Typography>
+                                <Typography
+                                    variant='body1'>
+                                    {dayjs().diff(dayjs(goalkeeper?.birthday), 'year')}
                                 </Typography>
                             </Box>
                             <Box

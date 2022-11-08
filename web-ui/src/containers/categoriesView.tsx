@@ -9,6 +9,8 @@ import { useAuth } from '../contexts/authContext'
 import { useCategories, useCategoriesReady } from '../contexts/categoriesContext'
 import { CategoryDTO } from '../DTOs'
 import { ModalProp } from '../interfaces/modalProp'
+import { Link as RouterLink } from 'react-router-dom';
+
 
 function CategoriesView({ setModalIsOpen }: ModalProp) {
   const [categories, setCategories] = useState<CategoryDTO[]>([])
@@ -18,7 +20,6 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
   const categoriesReady = useCategoriesReady()
 
   useEffect(() => {
-    console.log("categories", categoriesContext)
     if (categoriesReady && categoriesContext) {
       setCategories(categoriesContext)
     }
@@ -46,7 +47,10 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
         spacing={2}
         columns={{ xs: 4, sm: 8, md: 12 }}>
         {categories.map((c) => (
-          <Button key={c.id + "-item"}>
+          <Button
+            key={c.id + "-item"}
+            component={RouterLink}
+            to={`/categories/${c.id}`}>
             <Card raised>
               <Grid item xs={2} sm={2} md={3}>
                 <Box

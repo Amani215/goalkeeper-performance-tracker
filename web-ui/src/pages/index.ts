@@ -5,6 +5,7 @@ import User from "./user";
 import Goalkeepers from "./goalkeepers";
 import Goalkeeper from "./goalkeeper";
 import Categories from "./categories";
+import Category from "./category";
 import Matches from "./matches";
 import Logout from "./logout";
 
@@ -16,6 +17,7 @@ export {
   Goalkeepers,
   Goalkeeper,
   Categories,
+  Category,
   Matches,
   Logout,
 };

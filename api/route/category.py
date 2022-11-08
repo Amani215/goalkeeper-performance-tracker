@@ -59,3 +59,21 @@ def get_categories(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@category_api.route('/category/trainers', methods=['GET'])
+@token_required(admin=False)
+def get_category_trainers(current_user: User):
+    '''Get all requested trainers correponding to the given category
+
+    If id is not provided an error is raised
+    '''
+    try:
+        args = request.args
+
+        trainers = category_service.get_category_trainers(args.get('id'))
+        return jsonify([i.serialize for i in trainers])
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

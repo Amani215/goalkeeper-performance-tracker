@@ -42,3 +42,12 @@ def get_by_season(category_season):
         return Category.query.filter_by(season=category_season)
     except SQLAlchemyError as err:
         return {'error': str(err)}
+
+
+def get_category_trainers(category_id):
+    '''Get coaches that have that category'''
+    try:
+        category: Category = Category.query.filter_by(id=category_id).one()
+        return category.trainers
+    except SQLAlchemyError as err:
+        return {'error': str(err)}

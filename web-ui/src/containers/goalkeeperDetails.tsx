@@ -70,69 +70,78 @@ function GoalkeeperDetails() {
                                 </Button>
                             </Box>
 
-                            <Box
-                                display="flex"
-                                flexDirection="row">
-                                <Typography
-                                    variant='subtitle1'
-                                    sx={{ fontWeight: 'bold' }}
-                                    mr={2}>
-                                    Name
-                                </Typography>
-                                <Typography
-                                    variant='body1'>
-                                    {goalkeeper?.name}
-                                </Typography>
-                            </Box>
-                            <Box
-                                display="flex"
-                                flexDirection="row">
-                                <Typography
-                                    variant='subtitle1'
-                                    sx={{ fontWeight: 'bold' }}
-                                    mr={2}>
-                                    Age
-                                </Typography>
-                                <Typography
-                                    variant='body1'>
-                                    {dayjs().diff(dayjs(goalkeeper?.birthday), 'year')}
-                                </Typography>
-                            </Box>
-                            <Box
-                                display="flex"
-                                flexDirection="row">
-                                <Typography
-                                    variant='subtitle1'
-                                    sx={{ fontWeight: 'bold' }}
-                                    mr={2}>
-                                    Birthday
-                                </Typography>
-                                <Typography
-                                    variant='body1'>
-                                    {dayjs(goalkeeper?.birthday).format('DD MMM YYYY').toString()}
-                                </Typography>
-                            </Box>
-                            <Box
-                                display="flex"
-                                flexDirection="row">
-                                <Typography
-                                    variant='subtitle1'
-                                    sx={{ fontWeight: 'bold' }}
-                                    mr={2}>
-                                    Phone Number
-                                </Typography>
-                                <Typography
-                                    variant='body1'>
-                                    {goalkeeper?.phone}
-                                </Typography>
-                            </Box>
+                            <Grid container columns={8}>
+                                <Grid item xs={3}>
+                                    <Typography
+                                        variant='subtitle1'
+                                        sx={{ fontWeight: 'bold' }}>
+                                        Name
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Typography
+                                        variant='body1'>
+                                        {goalkeeper?.name}
+                                    </Typography>
+                                </Grid>
 
-                            <Typography
-                                variant='subtitle1'
-                                sx={{ fontWeight: 'bold' }}
-                                mr={2}>
-                                Associated Categories
-                            </Typography>
+                                <Grid item xs={3}>
+                                    <Typography
+                                        variant='subtitle1'
+                                        sx={{ fontWeight: 'bold' }}>
+                                        Age
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Typography
+                                        variant='body1'>
+                                        {dayjs().diff(dayjs(goalkeeper?.birthday), 'year')}
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item xs={3}>
+                                    <Typography
+                                        variant='subtitle1'
+                                        sx={{ fontWeight: 'bold' }}
+                                        mr={2}>
+                                        Birthday
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Typography
+                                        variant='body1'>
+                                        {dayjs(goalkeeper?.birthday).format('DD MMM YYYY').toString()}
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item xs={3}>
+                                    <Typography
+                                        variant='subtitle1'
+                                        sx={{ fontWeight: 'bold' }}
+                                        mr={2}>
+                                        Phone Number
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Typography
+                                        variant='body1'>
+                                        {goalkeeper?.phone}
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item xs={3}>
+                                    <Typography
+                                        variant='subtitle1'
+                                        sx={{ fontWeight: 'bold' }}>
+                                        Associated Categories
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Typography
+                                        variant='body1'>
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Card>
                     </Grid>
                     <Grid item xs={4} sm={3} md={4} order={{ xs: 1, sm: 2, md: 2 }}>

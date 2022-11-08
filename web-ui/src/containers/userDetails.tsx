@@ -41,7 +41,7 @@ function UserDetails() {
         if (loaded && userReady && !userError) {
             setError("")
         }
-    }, [loaded, userReady, userError])
+    }, [loaded, userReady, userError, id])
 
     useEffect(() => {
         if (auth && auth.user.id == id) {
@@ -80,41 +80,46 @@ function UserDetails() {
                                 </Box> : <></>
                             }
 
-                            <Box
-                                display="flex"
-                                flexDirection="row">
-                                <Typography
-                                    variant='subtitle1'
-                                    sx={{ fontWeight: 'bold' }}
-                                    mr={2}>
-                                    Name
-                                </Typography>
-                                <Typography
-                                    variant='body1'>
-                                    {user?.username}
-                                </Typography>
-                            </Box>
-                            <Box
-                                display="flex"
-                                flexDirection="row">
-                                <Typography
-                                    variant='subtitle1'
-                                    sx={{ fontWeight: 'bold' }}
-                                    mr={2}>
-                                    Status
-                                </Typography>
-                                <Typography
-                                    variant='body1'>
-                                    {user?.admin ? "Admin" : "Coach"}
-                                </Typography>
-                            </Box>
+                            <Grid container columns={8}>
+                                <Grid item xs={3}>
+                                    <Typography
+                                        variant='subtitle1'
+                                        sx={{ fontWeight: 'bold' }}>
+                                        Name
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Typography
+                                        variant='body1'>
+                                        {user?.username}
+                                    </Typography>
+                                </Grid>
 
-                            <Typography
-                                variant='subtitle1'
-                                sx={{ fontWeight: 'bold' }}
-                                mr={2}>
-                                Associated Categories
-                            </Typography>
+                                <Grid item xs={3}>
+                                    <Typography
+                                        variant='subtitle1'
+                                        sx={{ fontWeight: 'bold' }}>
+                                        Status
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={5}>
+                                    <Typography
+                                        variant='body1'>
+                                        {user?.admin ? "Admin" : "Coach"}
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item xs={3}>
+                                    <Typography
+                                        variant='subtitle1'
+                                        sx={{ fontWeight: 'bold' }}>
+                                        Associated Categories
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={5}>
+
+                                </Grid>
+                            </Grid>
                         </Card>
                     </Grid>
                     <Grid item xs={4} sm={3} md={4} order={{ xs: 1, sm: 2, md: 2 }}>

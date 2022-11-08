@@ -6,9 +6,17 @@ import { useCategory, useCategoryError, useCategoryGoalkeepers, useCategoryGoalk
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { Link as RouterLink } from 'react-router-dom';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
+import { useAuth } from '../contexts/authContext';
+import { ModalProp } from '../interfaces/modalProp';
 
-function CategoryDetails() {
+type MultiModalProp = {
+    modal1: ModalProp,
+    modal2: ModalProp
+}
+
+function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
+    const auth = useAuth()
 
     const [category, setCategory] = useState<CategoryDTO | null>(null)
     const [error, setError] = useState("")
@@ -54,9 +62,7 @@ function CategoryDetails() {
             trainersContext(id ? id : "").then((data) => {
                 if (trainersReady)
                     setTrainers(data as UserDTO[])
-            }
-            )
-
+            })
         }
     }, [trainersReady])
 
@@ -65,112 +71,111 @@ function CategoryDetails() {
             goalkeepersContext(id ? id : "").then((data) => {
                 if (goalkeepersReady)
                     setGoalkeepers(data as GoalkeeperDTO[])
-            }
-            )
-
+            })
         }
         console.log("goals: ", goalkeepers)
     }, [goalkeepersReady])
 
     return (
-        <>
-            <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-            >
-                <Typography
-                    variant='h4'
-                    mb={2}>
-                    {`${category?.name} ${category?.season}`}
-                </Typography>
+        <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+        >
+            <Typography
+                variant='h4'
+                mb={2}>
+                {`${category?.name} ${category?.season}`}
+            </Typography>
 
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    <Grid item xs={4} sm={4} md={6}>
-                        <Card sx={{ padding: 2 }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid item xs={4} sm={4} md={6}>
+                    <Card sx={{ padding: 2 }}>
+                        {auth?.user.admin ?
                             <Box display="flex" justifyContent="flex-end">
-                                <Button>
-                                    Add Coach
+                                <Button onClick={() => { modal1.setModalIsOpen() }}>
+                                    Add a Coach
                                 </Button>
+                            </Box> : <></>
+                        }
+
+                        {trainers.length > 0 ?
+                            <List>
+                                {trainers.map((trainer) => (
+                                    <ListItem
+                                        key={trainer.id}
+                                        secondaryAction={
+                                            <IconButton edge="end" aria-label="delete">
+                                                <MdDeleteOutline />
+                                            </IconButton>
+                                        }
+                                    >
+                                        <RouterLink to={`/users/${trainer.id}`}>
+                                            <ListItemAvatar>
+                                                <Avatar src={trainer.profile_pic} />
+                                            </ListItemAvatar>
+                                        </RouterLink>
+                                        <ListItemText
+                                            primary={trainer.username}
+                                        />
+                                    </ListItem>
+                                ))}
+                            </List>
+                            : <Box display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                                alignItems="center">
+                                No coaches yet.
                             </Box>
-                            {trainers.length > 0 ?
-                                <List>
-                                    {trainers.map((trainer) => (
-                                        <ListItem
-                                            key={trainer.id}
-                                            secondaryAction={
-                                                <IconButton edge="end" aria-label="delete">
-                                                    <MdDeleteOutline />
-                                                </IconButton>
-                                            }
-                                        >
-                                            <RouterLink to={`/users/${trainer.id}`}>
-                                                <ListItemAvatar>
-                                                    <Avatar src={trainer.profile_pic} />
-                                                </ListItemAvatar>
-                                            </RouterLink>
-                                            <ListItemText
-                                                primary={trainer.username}
-                                            />
-                                        </ListItem>
-                                    ))}
-                                </List>
-                                : <Box display="flex"
-                                    flexDirection="column"
-                                    justifyContent="center"
-                                    alignItems="center">
-                                    No coaches yet.
-                                </Box>
-                            }
+                        }
 
-                        </Card>
-                    </Grid>
-
-                    <Grid item xs={4} sm={4} md={6}>
-                        <Card sx={{ padding: 2 }}>
-                            <Box display="flex" justifyContent="flex-end">
-                                <Button>
-                                    Add Goalkeeper
-                                </Button>
-                            </Box>
-
-                            {goalkeepers.length > 0 ?
-                                <List>
-                                    {goalkeepers.map((goalkeeper) => (
-                                        <ListItem
-                                            key={goalkeeper.id}
-                                            secondaryAction={
-                                                <IconButton edge="end" aria-label="delete">
-                                                    <MdDeleteOutline />
-                                                </IconButton>
-                                            }
-                                        >
-                                            <RouterLink to={`/goalkeepers/${goalkeeper.id}`}>
-                                                <ListItemAvatar>
-                                                    <Avatar src={goalkeeper.picture} />
-                                                </ListItemAvatar>
-                                            </RouterLink>
-                                            <ListItemText
-                                                primary={goalkeeper.name}
-                                            />
-                                        </ListItem>
-                                    ))}
-                                </List>
-                                : <Box display="flex"
-                                    flexDirection="column"
-                                    justifyContent="center"
-                                    alignItems="center">
-                                    No goalkeepers yet.
-                                </Box>
-                            }
-                        </Card>
-                    </Grid>
+                    </Card>
                 </Grid>
-            </Box>
 
-        </>
+                <Grid item xs={4} sm={4} md={6}>
+                    <Card sx={{ padding: 2 }}>
+                        {auth?.user.admin ?
+                            <Box display="flex" justifyContent="flex-end">
+                                <Button onClick={() => { modal2.setModalIsOpen() }}>
+                                    Add a Goalkeeper
+                                </Button>
+                            </Box> : <></>
+                        }
 
+                        {goalkeepers.length > 0 ?
+                            <List>
+                                {goalkeepers.map((goalkeeper) => (
+                                    <ListItem
+                                        key={goalkeeper.id}
+                                        secondaryAction={
+                                            <IconButton edge="end" aria-label="delete">
+                                                <MdDeleteOutline />
+                                            </IconButton>
+                                        }
+                                    >
+                                        <RouterLink to={`/goalkeepers/${goalkeeper.id}`}>
+                                            <ListItemAvatar>
+                                                <Avatar src={goalkeeper.picture} />
+                                            </ListItemAvatar>
+                                        </RouterLink>
+                                        <ListItemText
+                                            primary={goalkeeper.name}
+                                        />
+                                    </ListItem>
+                                ))}
+                            </List>
+                            : <Box display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                                alignItems="center">
+                                No goalkeepers yet.
+                            </Box>
+                        }
+                    </Card>
+                </Grid>
+            </Grid>
+        </Box>
     )
 }
 

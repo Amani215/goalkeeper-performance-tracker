@@ -1,13 +1,15 @@
-import { Typography } from '@mui/material'
+import { Chip, Link, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import dayjs from 'dayjs'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useGoalkeeper, useGoalkeeperError, useGoalkeeperReady, useUpdatePicture } from '../contexts/goalkeeperContext'
+import { useParams, Link as RouterLink } from 'react-router-dom'
+import { useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperReady, useUpdatePicture } from '../contexts/goalkeeperContext'
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO'
+import { IoFootball } from "react-icons/io5"
+import { CategoryDTO } from '../DTOs'
 
 function GoalkeeperDetails() {
     const { id } = useParams();
@@ -20,6 +22,10 @@ function GoalkeeperDetails() {
     const goalkeeperError = useGoalkeeperError()
     const goalkeeperReady = useGoalkeeperReady()
     const updatePicture = useUpdatePicture()
+
+    const [categories, setCategories] = useState<CategoryDTO[]>([])
+    const categoriesContext = useGoalkeeperCategories()
+    const categoriesReady = useGoalkeeperCategoriesReady()
 
     useEffect(
         () => {
@@ -40,6 +46,15 @@ function GoalkeeperDetails() {
             setError("")
         }
     }, [loaded, goalkeeperReady, goalkeeperError])
+
+    useEffect(() => {
+        if (categoriesContext) {
+            categoriesContext(id ? id : "").then((data) => {
+                if (categoriesReady)
+                    setCategories(data as CategoryDTO[])
+            })
+        }
+    }, [categoriesReady])
 
     const uploadPicture = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {
@@ -129,17 +144,39 @@ function GoalkeeperDetails() {
                                     </Typography>
                                 </Grid>
 
-                                <Grid item xs={3}>
+                                <Grid item xs={8} mb={1}>
                                     <Typography
                                         variant='subtitle1'
                                         sx={{ fontWeight: 'bold' }}>
                                         Associated Categories
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={5}>
-                                    <Typography
-                                        variant='body1'>
-                                    </Typography>
+
+                                <Grid
+                                    container
+                                    spacing={{ xs: 1 }}
+                                    columns={{ xs: 8, sm: 8, md: 12 }} mt={1}>
+                                    {categories.length > 0 ?
+                                        categories.map((category) => (
+                                            <Grid item xs={4} md={3}
+                                                key={category.id}
+                                                mb={1}
+                                            >
+                                                <Link
+                                                    component={RouterLink}
+                                                    to={`/categories/${category.id}`}
+                                                    underline="none"
+                                                    color="inherit">
+                                                    <Chip
+                                                        icon={<IoFootball />}
+                                                        label={`${category?.name} ${category?.season}`}
+                                                        onClick={() => { }} />
+                                                </Link>
+                                            </Grid>
+                                        ))
+                                        : <Box pl={1}>
+                                            No associated categories yet.
+                                        </Box>}
                                 </Grid>
                             </Grid>
                         </Card>

@@ -123,7 +123,7 @@ function UserDetails() {
                                     </Typography>
                                 </Grid>
 
-                                <Grid item xs={8}>
+                                <Grid item xs={8} mb={1}>
                                     <Typography
                                         variant='subtitle1'
                                         sx={{ fontWeight: 'bold' }}>
@@ -153,12 +153,10 @@ function UserDetails() {
                                                 </Link>
                                             </Grid>
                                         ))
-                                        : <Box display="flex"
-                                            flexDirection="column"
-                                            justifyContent="center"
-                                            alignItems="center">
+                                        : <Box pl={1}>
                                             No associated categories yet.
-                                        </Box>}
+                                        </Box>
+                                    }
                                 </Grid>
                             </Grid>
                         </Card>

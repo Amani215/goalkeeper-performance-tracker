@@ -78,7 +78,7 @@ function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         >
                             {coaches.map((coach) => (
                                 coach.admin ?
-                                    <></> :
+                                    <div key={coach.id}></div> :
                                     <MenuItem key={coach.id} value={coach.id}>{coach.username}</MenuItem>
                             ))}
                         </Select>

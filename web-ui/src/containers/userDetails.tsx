@@ -1,13 +1,14 @@
-import { Typography } from '@mui/material'
+import { Chip, Link, List, ListItem, ListItemText, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { ChangeEvent, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '../contexts/authContext'
-import { useUpdateProfilePic, useUser, useUserError, useUserReady } from '../contexts/userContext'
-import { UserDTO } from '../DTOs'
+import { useUpdateProfilePic, useUser, useUserCategories, useUserCategoriesReady, useUserError, useUserReady } from '../contexts/userContext'
+import { CategoryDTO, UserDTO } from '../DTOs'
+import { IoFootball } from "react-icons/io5"
 
 function UserDetails() {
     const { id } = useParams();
@@ -22,6 +23,10 @@ function UserDetails() {
     const userError = useUserError()
     const userReady = useUserReady()
     const updateProfilePic = useUpdateProfilePic()
+
+    const [categories, setCategories] = useState<CategoryDTO[]>([])
+    const categoriesContext = useUserCategories()
+    const categoriesReady = useUserCategoriesReady()
 
     useEffect(
         () => {
@@ -48,6 +53,15 @@ function UserDetails() {
             setIsCurrentUser(true)
         }
     }, [auth, user])
+
+    useEffect(() => {
+        if (categoriesContext) {
+            categoriesContext(id ? id : "").then((data) => {
+                if (categoriesReady)
+                    setCategories(data as CategoryDTO[])
+            })
+        }
+    }, [categoriesReady])
 
     const uploadPicture = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {
@@ -109,19 +123,47 @@ function UserDetails() {
                                     </Typography>
                                 </Grid>
 
-                                <Grid item xs={3}>
+                                <Grid item xs={8}>
                                     <Typography
                                         variant='subtitle1'
                                         sx={{ fontWeight: 'bold' }}>
                                         Associated Categories
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={5}>
 
+                                <Grid
+                                    container
+                                    spacing={{ xs: 1 }}
+                                    columns={{ xs: 8, sm: 8, md: 12 }} mt={1}>
+                                    {categories.length > 0 ?
+                                        categories.map((category) => (
+                                            <Grid item xs={4} md={3}
+                                                key={category.id}
+                                                mb={1}
+                                            >
+                                                <Link
+                                                    component={RouterLink}
+                                                    to={`/categories/${category.id}`}
+                                                    underline="none"
+                                                    color="inherit">
+                                                    <Chip
+                                                        icon={<IoFootball />}
+                                                        label={`${category?.name} ${category?.season}`}
+                                                        onClick={() => { }} />
+                                                </Link>
+                                            </Grid>
+                                        ))
+                                        : <Box display="flex"
+                                            flexDirection="column"
+                                            justifyContent="center"
+                                            alignItems="center">
+                                            No associated categories yet.
+                                        </Box>}
                                 </Grid>
                             </Grid>
                         </Card>
                     </Grid>
+
                     <Grid item xs={4} sm={3} md={4} order={{ xs: 1, sm: 2, md: 2 }}>
                         <Card sx={{ width: "auto" }}>
                             <Box
@@ -160,9 +202,7 @@ function UserDetails() {
                                     </Button>
                                     : <></>
                                 }
-
                             </Box>
-
                         </Card>
                     </Grid>
                 </Grid>

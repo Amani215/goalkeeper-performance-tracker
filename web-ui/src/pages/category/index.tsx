@@ -4,6 +4,7 @@ import CategoryDetails from '../../containers/categoryDetails';
 import CategoryProvider from '../../contexts/categoryContext';
 import NewCategoryCoach from '../../containers/modals/newCategoryCoach';
 import NewCategoryGoalkeeper from '../../containers/modals/newCategoryGoalkeeper';
+import UsersProvider from '../../contexts/usersContext';
 
 function Category() {
     const [trainersModalIsOpen, setTrainersModalIsOpen] = useState<boolean>(false)
@@ -15,7 +16,7 @@ function Category() {
     const handleGoalkeepersOpen = () => setGoalkeepersModalIsOpen(true)
     const handleGoalkeepersClose = () => setGoalkeepersModalIsOpen(false)
     return (
-        <>
+        <UsersProvider>
             <NewCategoryCoach {...{ modalIsOpen: trainersModalIsOpen, setModalIsOpen: handleTrainersClose }} />
             <NewCategoryGoalkeeper {...{ modalIsOpen: goalkeepersModalIsOpen, setModalIsOpen: handleGoalkeepersClose }} />
 
@@ -32,7 +33,7 @@ function Category() {
                         }} />
                 </CategoryProvider>
             </PortalPage>
-        </>
+        </UsersProvider>
 
     )
 }

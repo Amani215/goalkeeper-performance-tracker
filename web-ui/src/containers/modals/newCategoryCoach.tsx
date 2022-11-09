@@ -1,6 +1,10 @@
-import { Box, Button, Checkbox, FormControlLabel, Modal, TextField, Typography } from '@mui/material'
+import { Box, Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useNewCategoryTrainer } from '../../contexts/categoryContext';
+import { useUsers, useUsersReady } from '../../contexts/usersContext';
+import { UserDTO } from '../../DTOs';
 import { ModalProp } from '../../interfaces/modalProp'
 
 const style = {
@@ -16,16 +20,31 @@ const style = {
 };
 
 function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
-    const [error, setError] = useState(false)
+    const { id } = useParams();
 
-    const handleSubmit = async ({ user }: FormikValues): Promise<void> => {
+    const [coaches, setCoaches] = useState<UserDTO[]>([] as UserDTO[])
+
+    const usersReady = useUsersReady()
+    const users = useUsers()
+    const newCategoryTrainer = useNewCategoryTrainer()
+
+    useEffect(() => {
+        if (usersReady && users) {
+            setCoaches(users)
+        }
+    }, [usersReady, users])
+
+    const handleSubmit = async ({ userId }: FormikValues): Promise<void> => {
+        if (userId == "")
+            return;
+
 
     };
+
     const formik = useFormik({
         initialValues: {
-            user: ''
+            userId: ''
         },
-        // validationSchema: userValidationSchema,
         onSubmit: handleSubmit
     })
 
@@ -37,7 +56,7 @@ function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography id="modal-modal-title" variant="h6" component="h2" mb={2}>
                     Add a Coach
                 </Typography>
                 <Box
@@ -45,6 +64,21 @@ function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     onSubmit={formik.handleSubmit}
                     sx={{ mt: 1 }}
                 >
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Coach</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formik.values.userId}
+                            label="Coach"
+                            onChange={(e) => formik.setFieldValue("userId", e.target.value)}
+                        >
+                            {coaches.map((coach) => (
+                                <MenuItem key={coach.id} value={coach.id}>{coach.username}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
                     <Button
                         type="submit"
                         fullWidth

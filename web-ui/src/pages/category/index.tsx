@@ -5,6 +5,7 @@ import CategoryProvider from '../../contexts/categoryContext';
 import NewCategoryCoach from '../../containers/modals/newCategoryCoach';
 import NewCategoryGoalkeeper from '../../containers/modals/newCategoryGoalkeeper';
 import UsersProvider from '../../contexts/usersContext';
+import GoalkeepersProvider from '../../contexts/goalkeepersContext';
 
 function Category() {
     const [trainersModalIsOpen, setTrainersModalIsOpen] = useState<boolean>(false)
@@ -18,21 +19,23 @@ function Category() {
     return (
         <CategoryProvider>
             <UsersProvider>
-                <NewCategoryCoach {...{ modalIsOpen: trainersModalIsOpen, setModalIsOpen: handleTrainersClose }} />
-                <NewCategoryGoalkeeper {...{ modalIsOpen: goalkeepersModalIsOpen, setModalIsOpen: handleGoalkeepersClose }} />
+                <GoalkeepersProvider>
+                    <NewCategoryCoach {...{ modalIsOpen: trainersModalIsOpen, setModalIsOpen: handleTrainersClose }} />
+                    <NewCategoryGoalkeeper {...{ modalIsOpen: goalkeepersModalIsOpen, setModalIsOpen: handleGoalkeepersClose }} />
 
-                <PortalPage>
+                    <PortalPage>
 
-                    <CategoryDetails
-                        modal1={{
-                            modalIsOpen: trainersModalIsOpen,
-                            setModalIsOpen: handleTrainersOpen
-                        }}
-                        modal2={{
-                            modalIsOpen: goalkeepersModalIsOpen,
-                            setModalIsOpen: handleGoalkeepersOpen
-                        }} />
-                </PortalPage>
+                        <CategoryDetails
+                            modal1={{
+                                modalIsOpen: trainersModalIsOpen,
+                                setModalIsOpen: handleTrainersOpen
+                            }}
+                            modal2={{
+                                modalIsOpen: goalkeepersModalIsOpen,
+                                setModalIsOpen: handleGoalkeepersOpen
+                            }} />
+                    </PortalPage>
+                </GoalkeepersProvider>
             </UsersProvider>
         </CategoryProvider>
     )

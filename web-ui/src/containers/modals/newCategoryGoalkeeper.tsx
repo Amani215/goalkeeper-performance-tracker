@@ -1,6 +1,9 @@
-import { Box, Button, Checkbox, FormControlLabel, Modal, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useGoalkeepers, useGoalkeepersReady } from '../../contexts/goalkeepersContext';
+import { GoalkeeperDTO } from '../../DTOs/GoalkeeperDTO';
 import { ModalProp } from '../../interfaces/modalProp'
 
 const style = {
@@ -16,16 +19,28 @@ const style = {
 };
 
 function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
-    const [error, setError] = useState(false)
+    const { id } = useParams();
 
-    const handleSubmit = async ({ user }: FormikValues): Promise<void> => {
+    const [goalkeepers, setGoalkeepers] = useState<GoalkeeperDTO[]>([] as GoalkeeperDTO[])
 
+    const goalkeepersReady = useGoalkeepersReady()
+    const goalkeepersContext = useGoalkeepers()
+
+    useEffect(() => {
+        if (goalkeepersReady && goalkeepersContext) {
+            setGoalkeepers(goalkeepersContext)
+        }
+    }, [goalkeepersReady, goalkeepersContext])
+
+    const handleSubmit = async ({ goalkeeperId }: FormikValues): Promise<void> => {
+        if (goalkeeperId == "")
+            return;
     };
+
     const formik = useFormik({
         initialValues: {
-            user: ''
+            goalkeeperId: ''
         },
-        // validationSchema: userValidationSchema,
         onSubmit: handleSubmit
     })
 
@@ -45,6 +60,21 @@ function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     onSubmit={formik.handleSubmit}
                     sx={{ mt: 1 }}
                 >
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Goalkeeper</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formik.values.goalkeeperId}
+                            label="Goalkeeper"
+                            onChange={(e) => formik.setFieldValue("goalkeeperId", e.target.value)}
+                        >
+                            {goalkeepers.map((goalkeeper) => (
+                                <MenuItem key={goalkeeper.id} value={goalkeeper.id}>{goalkeeper.name}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
                     <Button
                         type="submit"
                         fullWidth

@@ -16,12 +16,13 @@ function Category() {
     const handleGoalkeepersOpen = () => setGoalkeepersModalIsOpen(true)
     const handleGoalkeepersClose = () => setGoalkeepersModalIsOpen(false)
     return (
-        <UsersProvider>
-            <NewCategoryCoach {...{ modalIsOpen: trainersModalIsOpen, setModalIsOpen: handleTrainersClose }} />
-            <NewCategoryGoalkeeper {...{ modalIsOpen: goalkeepersModalIsOpen, setModalIsOpen: handleGoalkeepersClose }} />
+        <CategoryProvider>
+            <UsersProvider>
+                <NewCategoryCoach {...{ modalIsOpen: trainersModalIsOpen, setModalIsOpen: handleTrainersClose }} />
+                <NewCategoryGoalkeeper {...{ modalIsOpen: goalkeepersModalIsOpen, setModalIsOpen: handleGoalkeepersClose }} />
 
-            <PortalPage>
-                <CategoryProvider>
+                <PortalPage>
+
                     <CategoryDetails
                         modal1={{
                             modalIsOpen: trainersModalIsOpen,
@@ -31,10 +32,9 @@ function Category() {
                             modalIsOpen: goalkeepersModalIsOpen,
                             setModalIsOpen: handleGoalkeepersOpen
                         }} />
-                </CategoryProvider>
-            </PortalPage>
-        </UsersProvider>
-
+                </PortalPage>
+            </UsersProvider>
+        </CategoryProvider>
     )
 }
 

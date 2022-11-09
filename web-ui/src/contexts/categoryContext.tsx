@@ -46,6 +46,17 @@ export function useCategoryGoalkeepersReady() {
     return useContext(categoryGoalkeepersReadyContext);
 }
 
+// ADD TRAINER CONTEXT
+type NewCategoryTrainerDelegate = (userId: string, categoryId: string) => Promise<UserDTO | errorResponse>;
+const newCategoryTrainerContext = createContext<NewCategoryTrainerDelegate | null>(null);
+export function useNewCategoryTrainer() {
+    return useContext(newCategoryTrainerContext);
+}
+
+// ADD GOALKEEPER CONTEXT
+
+
+
 // PROVIDER
 export default function CategoryProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
@@ -87,7 +98,6 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
         });
         const json_data = await data.json();
         if ('id' in json_data) {
-            setCategoryTrainersReady(true)
             setError(false);
             return json_data as UserDTO[];
         }
@@ -119,6 +129,30 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
         }
     }
 
+    const newCategoryTrainer: NewCategoryTrainerDelegate = (userId: string, categoryId: string) => {
+        return fetch("/api/user/category", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                trainer_id: userId,
+                category_id: categoryId
+            })
+        })
+            .then(data => data.json())
+            .then(data => {
+                if ("error" in data) {
+                    setError(true)
+                    return data as errorResponse
+                } else {
+                    setCategoryTrainersReady(true)
+                    return data as UserDTO
+                }
+            })
+    }
+
     return (
         <categoryContext.Provider value={category}>
             <categoryErrorContext.Provider value={error}>
@@ -127,7 +161,9 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
                         <categoryTrainersReadyContext.Provider value={categoryTrainersReady}>
                             <categoryGoalkeepersContext.Provider value={goalkeepers}>
                                 <categoryGoalkeepersReadyContext.Provider value={categoryGoalkeepersReady}>
-                                    {props.children}
+                                    <newCategoryTrainerContext.Provider value={newCategoryTrainer}>
+                                        {props.children}
+                                    </newCategoryTrainerContext.Provider>
                                 </categoryGoalkeepersReadyContext.Provider>
                             </categoryGoalkeepersContext.Provider>
                         </categoryTrainersReadyContext.Provider>

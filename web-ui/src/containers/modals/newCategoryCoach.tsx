@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -38,7 +38,10 @@ function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
         if (userId == "")
             return;
 
-
+        if (newCategoryTrainer != null) {
+            await newCategoryTrainer(userId, id as string)
+            setModalIsOpen()
+        }
     };
 
     const formik = useFormik({

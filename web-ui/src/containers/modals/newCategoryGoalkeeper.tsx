@@ -2,6 +2,7 @@ import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextFiel
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNewCategoryGoalkeeper } from '../../contexts/categoryContext';
 import { useGoalkeepers, useGoalkeepersReady } from '../../contexts/goalkeepersContext';
 import { GoalkeeperDTO } from '../../DTOs/GoalkeeperDTO';
 import { ModalProp } from '../../interfaces/modalProp'
@@ -25,6 +26,7 @@ function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
     const goalkeepersReady = useGoalkeepersReady()
     const goalkeepersContext = useGoalkeepers()
+    const newCategoryGoalkeeper = useNewCategoryGoalkeeper()
 
     useEffect(() => {
         if (goalkeepersReady && goalkeepersContext) {
@@ -35,6 +37,11 @@ function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const handleSubmit = async ({ goalkeeperId }: FormikValues): Promise<void> => {
         if (goalkeeperId == "")
             return;
+
+        if (newCategoryGoalkeeper != null) {
+            await newCategoryGoalkeeper(goalkeeperId, id as string)
+            setModalIsOpen()
+        }
     };
 
     const formik = useFormik({

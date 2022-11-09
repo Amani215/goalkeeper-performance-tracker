@@ -59,7 +59,16 @@ export function useCategoryTrainerAdded() {
 }
 
 // ADD GOALKEEPER CONTEXT
+type NewCategoryGoalkeeperDelegate = (goalkeeperId: string, categoryId: string) => Promise<GoalkeeperDTO | errorResponse>;
+const newCategoryGoalkeeperContext = createContext<NewCategoryGoalkeeperDelegate | null>(null);
+export function useNewCategoryGoalkeeper() {
+    return useContext(newCategoryGoalkeeperContext);
+}
 
+const categoryGoalkeeperAddedContext = createContext<boolean>(false);
+export function useCategoryGoalkeeperAdded() {
+    return useContext(categoryGoalkeeperAddedContext);
+}
 
 
 // PROVIDER
@@ -69,6 +78,7 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
     const [categoryTrainersReady, setCategoryTrainersReady] = useState<boolean>(false)
     const [categoryTrainerAdded, setCategoryTrainerAdded] = useState<boolean>(false)
     const [categoryGoalkeepersReady, setCategoryGoalkeepersReady] = useState<boolean>(false)
+    const [categoryGoalkeeperAdded, setCategoryGoalkeeperAdded] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -160,6 +170,31 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
             })
     }
 
+    const newCategoryGoalkeeper: NewCategoryGoalkeeperDelegate = (goalkeeperId: string, categoryId: string) => {
+        return fetch("/api/goalkeeper/category", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                goalkeeper_id: goalkeeperId,
+                category_id: categoryId
+            })
+        })
+            .then(data => data.json())
+            .then(data => {
+                if ("error" in data) {
+                    setError(true)
+                    setCategoryGoalkeeperAdded(false)
+                    return data as errorResponse
+                } else {
+                    setCategoryGoalkeeperAdded(true)
+                    return data as GoalkeeperDTO
+                }
+            })
+    }
+
     return (
         <categoryContext.Provider value={category}>
             <categoryErrorContext.Provider value={error}>
@@ -170,7 +205,11 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
                                 <categoryGoalkeepersReadyContext.Provider value={categoryGoalkeepersReady}>
                                     <newCategoryTrainerContext.Provider value={newCategoryTrainer}>
                                         <categoryTrainerAddedContext.Provider value={categoryTrainerAdded}>
-                                        {props.children}
+                                            <newCategoryGoalkeeperContext.Provider value={newCategoryGoalkeeper}>
+                                                <categoryGoalkeeperAddedContext.Provider value={categoryGoalkeeperAdded}>
+                                                    {props.children}
+                                                </categoryGoalkeeperAddedContext.Provider>
+                                            </newCategoryGoalkeeperContext.Provider>
                                         </categoryTrainerAddedContext.Provider>
                                     </newCategoryTrainerContext.Provider>
                                 </categoryGoalkeepersReadyContext.Provider>

@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, Grid, IconButton, List, ListItem, ListItemAv
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useCategory, useCategoryError, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainers, useCategoryTrainersReady } from '../contexts/categoryContext';
+import { useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainers, useCategoryTrainersReady } from '../contexts/categoryContext';
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
@@ -18,7 +18,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const auth = useAuth()
 
     const [category, setCategory] = useState<CategoryDTO | null>(null)
-    const [error, setError] = useState("")
+    const [, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
     const [trainers, setTrainers] = useState<UserDTO[]>([])
@@ -34,6 +34,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
 
     const goalkeepersContext = useCategoryGoalkeepers()
     const goalkeepersReady = useCategoryGoalkeepersReady()
+    const goalkeeperAdded = useCategoryGoalkeeperAdded()
 
     useEffect(
         () => {
@@ -74,7 +75,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
             })
         }
         console.log("goals: ", goalkeepers)
-    }, [goalkeepersReady])
+    }, [goalkeepersReady, goalkeeperAdded])
 
     return (
         <Box

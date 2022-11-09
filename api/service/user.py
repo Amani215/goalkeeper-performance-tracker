@@ -79,6 +79,15 @@ def set_admin(username: str, admin: bool):
     return user
 
 
+def get_categories(user_id):
+    '''Get categories of the given user'''
+    try:
+        user: User = User.query.filter_by(id=user_id).one()
+        return user.categories
+    except SQLAlchemyError as err:
+        return {'error': str(err)}
+
+
 def add_category(user: User, category: Category):
     '''Add a category to the trainer'''
     user.categories.append(category)

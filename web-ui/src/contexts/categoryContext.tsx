@@ -70,13 +70,29 @@ export function useCategoryGoalkeeperAdded() {
     return useContext(categoryGoalkeeperAddedContext);
 }
 
+// DELETE TRAINER CONTEXT
+// ADD TRAINER CONTEXT
+type DeleteCategoryTrainerDelegate = (userId: string, categoryId: string) => Promise<null>;
+const deleteCategoryTrainerContext = createContext<DeleteCategoryTrainerDelegate | null>(null);
+export function useDeleteCategoryTrainer() {
+    return useContext(deleteCategoryTrainerContext);
+}
+
+const categoryTrainerDeletedContext = createContext<boolean>(false);
+export function useCategoryTrainerDeleted() {
+    return useContext(categoryTrainerDeletedContext);
+}
+
 
 // PROVIDER
 export default function CategoryProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
     const [categoryReady, setCategoryReady] = useState<boolean>(false)
+
     const [categoryTrainersReady, setCategoryTrainersReady] = useState<boolean>(false)
     const [categoryTrainerAdded, setCategoryTrainerAdded] = useState<boolean>(false)
+    const [categoryTrainerDeleted, setCategoryTrainerDeleted] = useState<boolean>(false)
+
     const [categoryGoalkeepersReady, setCategoryGoalkeepersReady] = useState<boolean>(false)
     const [categoryGoalkeeperAdded, setCategoryGoalkeeperAdded] = useState<boolean>(false)
 
@@ -105,6 +121,8 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
     }
 
     const trainers: CategoryTrainersDelegate = async (id: string) => {
+        setCategoryTrainerAdded(false)
+        setCategoryTrainerDeleted(false)
         const data = await fetch("/api/category/trainers?id=" + id, {
             method: "GET",
             headers: {
@@ -195,6 +213,29 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
             })
     }
 
+    const deleteCategoryTrainer: DeleteCategoryTrainerDelegate = async (userId: string, categoryId: string) => {
+        return fetch("/api/user/category", {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                trainer_id: userId,
+                category_id: categoryId
+            })
+        })
+            .then(data => {
+                if (data.status == 204) {
+                    setError(false)
+                    setCategoryTrainerDeleted(true)
+                } else {
+                    setError(true)
+                    setCategoryTrainerDeleted(false)
+                }
+                return null
+            })
+    }
     return (
         <categoryContext.Provider value={category}>
             <categoryErrorContext.Provider value={error}>
@@ -207,7 +248,11 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
                                         <categoryTrainerAddedContext.Provider value={categoryTrainerAdded}>
                                             <newCategoryGoalkeeperContext.Provider value={newCategoryGoalkeeper}>
                                                 <categoryGoalkeeperAddedContext.Provider value={categoryGoalkeeperAdded}>
-                                                    {props.children}
+                                                    <deleteCategoryTrainerContext.Provider value={deleteCategoryTrainer}>
+                                                        <categoryTrainerDeletedContext.Provider value={categoryTrainerDeleted}>
+                                                            {props.children}
+                                                        </categoryTrainerDeletedContext.Provider>
+                                                    </deleteCategoryTrainerContext.Provider>
                                                 </categoryGoalkeeperAddedContext.Provider>
                                             </newCategoryGoalkeeperContext.Provider>
                                         </categoryTrainerAddedContext.Provider>

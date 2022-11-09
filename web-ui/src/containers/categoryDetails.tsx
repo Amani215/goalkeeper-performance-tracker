@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, Grid, IconButton, List, ListItem, ListItemAv
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainers, useCategoryTrainersReady } from '../contexts/categoryContext';
+import { useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainerDeleted, useCategoryTrainers, useCategoryTrainersReady, useDeleteCategoryTrainer } from '../contexts/categoryContext';
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
@@ -31,11 +31,14 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const trainersContext = useCategoryTrainers()
     const trainersReady = useCategoryTrainersReady()
     const trainerAdded = useCategoryTrainerAdded()
+    const deleteTrainerContext = useDeleteCategoryTrainer()
+    const trainerDeleted = useCategoryTrainerDeleted()
 
     const goalkeepersContext = useCategoryGoalkeepers()
     const goalkeepersReady = useCategoryGoalkeepersReady()
     const goalkeeperAdded = useCategoryGoalkeeperAdded()
 
+    // INIT PAGE
     useEffect(
         () => {
             setLoaded(true)
@@ -48,7 +51,6 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                 data => setCategory(data as CategoryDTO)
             )
         }
-
 
         if (loaded && categoryReady && categoryError) {
             setError("No category Found.")
@@ -65,7 +67,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                     setTrainers(data as UserDTO[])
             })
         }
-    }, [trainersReady, trainerAdded])
+    }, [trainersReady, trainerAdded, trainerDeleted])
 
     useEffect(() => {
         if (goalkeepersContext) {
@@ -76,6 +78,17 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
         }
         console.log("goals: ", goalkeepers)
     }, [goalkeepersReady, goalkeeperAdded])
+
+    // DELETE EVENTS
+    const deleteGoalkeeper = (goalkeeperId: string) => {
+        console.log("delete goalkeeper ", goalkeeperId)
+    }
+
+    const deleteTrainer = async (userId: string) => {
+        if (deleteTrainerContext) {
+            await deleteTrainerContext(userId, id as string)
+        }
+    }
 
     return (
         <Box
@@ -107,7 +120,10 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                     <ListItem
                                         key={trainer.id}
                                         secondaryAction={
-                                            <IconButton edge="end" aria-label="delete">
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="delete"
+                                                onClick={e => deleteTrainer(trainer.id)}>
                                                 <MdDeleteOutline />
                                             </IconButton>
                                         }
@@ -150,7 +166,10 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                     <ListItem
                                         key={goalkeeper.id}
                                         secondaryAction={
-                                            <IconButton edge="end" aria-label="delete">
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="delete"
+                                                onClick={e => deleteGoalkeeper(goalkeeper.id)}>
                                                 <MdDeleteOutline />
                                             </IconButton>
                                         }

@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, Grid, IconButton, List, ListItem, ListItemAv
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainerDeleted, useCategoryTrainers, useCategoryTrainersReady, useDeleteCategoryTrainer } from '../contexts/categoryContext';
+import { useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryGoalkeeperDeleted, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainerDeleted, useCategoryTrainers, useCategoryTrainersReady, useDeleteCategoryGoalkeeper, useDeleteCategoryTrainer } from '../contexts/categoryContext';
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
@@ -37,6 +37,8 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const goalkeepersContext = useCategoryGoalkeepers()
     const goalkeepersReady = useCategoryGoalkeepersReady()
     const goalkeeperAdded = useCategoryGoalkeeperAdded()
+    const deleteGoalkeeperContext = useDeleteCategoryGoalkeeper()
+    const goalkeeperDeleted = useCategoryGoalkeeperDeleted()
 
     // INIT PAGE
     useEffect(
@@ -76,12 +78,13 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                     setGoalkeepers(data as GoalkeeperDTO[])
             })
         }
-        console.log("goals: ", goalkeepers)
-    }, [goalkeepersReady, goalkeeperAdded])
+    }, [goalkeepersReady, goalkeeperAdded, goalkeeperDeleted])
 
     // DELETE EVENTS
-    const deleteGoalkeeper = (goalkeeperId: string) => {
-        console.log("delete goalkeeper ", goalkeeperId)
+    const deleteGoalkeeper = async (goalkeeperId: string) => {
+        if (deleteGoalkeeperContext) {
+            await deleteGoalkeeperContext(goalkeeperId, id as string)
+        }
     }
 
     const deleteTrainer = async (userId: string) => {

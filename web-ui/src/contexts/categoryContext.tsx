@@ -71,7 +71,6 @@ export function useCategoryGoalkeeperAdded() {
 }
 
 // DELETE TRAINER CONTEXT
-// ADD TRAINER CONTEXT
 type DeleteCategoryTrainerDelegate = (userId: string, categoryId: string) => Promise<null>;
 const deleteCategoryTrainerContext = createContext<DeleteCategoryTrainerDelegate | null>(null);
 export function useDeleteCategoryTrainer() {
@@ -81,6 +80,18 @@ export function useDeleteCategoryTrainer() {
 const categoryTrainerDeletedContext = createContext<boolean>(false);
 export function useCategoryTrainerDeleted() {
     return useContext(categoryTrainerDeletedContext);
+}
+
+// DELETE GOALKEEPER CONTEXT
+type DeleteCategoryGoalkeeperDelegate = (goalkeeperId: string, categoryId: string) => Promise<null>;
+const deleteCategoryGoalkeeperContext = createContext<DeleteCategoryGoalkeeperDelegate | null>(null);
+export function useDeleteCategoryGoalkeeper() {
+    return useContext(deleteCategoryGoalkeeperContext);
+}
+
+const categoryGoalkeeperDeletedContext = createContext<boolean>(false);
+export function useCategoryGoalkeeperDeleted() {
+    return useContext(categoryGoalkeeperDeletedContext);
 }
 
 
@@ -95,6 +106,7 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
 
     const [categoryGoalkeepersReady, setCategoryGoalkeepersReady] = useState<boolean>(false)
     const [categoryGoalkeeperAdded, setCategoryGoalkeeperAdded] = useState<boolean>(false)
+    const [categoryGoalkeeperDeleted, setCategoryGoalkeeperDeleted] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -143,6 +155,8 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
     }
 
     const goalkeepers: CategoryGoalkeepersDelegate = async (id: string) => {
+        setCategoryGoalkeeperAdded(false)
+        setCategoryGoalkeeperDeleted(false)
         const data = await fetch("/api/category/goalkeepers?id=" + id, {
             method: "GET",
             headers: {
@@ -236,6 +250,31 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
                 return null
             })
     }
+
+    const deleteCategoryGoalkeeper: DeleteCategoryTrainerDelegate = async (goalkeeperId: string, categoryId: string) => {
+        return fetch("/api/goalkeeper/category", {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                goalkeeper_id: goalkeeperId,
+                category_id: categoryId
+            })
+        })
+            .then(data => {
+                if (data.status == 204) {
+                    setError(false)
+                    setCategoryGoalkeeperDeleted(true)
+                } else {
+                    setError(true)
+                    setCategoryGoalkeeperDeleted(false)
+                }
+                return null
+            })
+    }
+
     return (
         <categoryContext.Provider value={category}>
             <categoryErrorContext.Provider value={error}>
@@ -250,7 +289,11 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
                                                 <categoryGoalkeeperAddedContext.Provider value={categoryGoalkeeperAdded}>
                                                     <deleteCategoryTrainerContext.Provider value={deleteCategoryTrainer}>
                                                         <categoryTrainerDeletedContext.Provider value={categoryTrainerDeleted}>
-                                                            {props.children}
+                                                            <deleteCategoryGoalkeeperContext.Provider value={deleteCategoryGoalkeeper}>
+                                                                <categoryGoalkeeperDeletedContext.Provider value={categoryGoalkeeperDeleted}>
+                                                                    {props.children}
+                                                                </categoryGoalkeeperDeletedContext.Provider>
+                                                            </deleteCategoryGoalkeeperContext.Provider>
                                                         </categoryTrainerDeletedContext.Provider>
                                                     </deleteCategoryTrainerContext.Provider>
                                                 </categoryGoalkeeperAddedContext.Provider>

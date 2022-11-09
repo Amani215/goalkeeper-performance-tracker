@@ -53,6 +53,11 @@ export function useNewCategoryTrainer() {
     return useContext(newCategoryTrainerContext);
 }
 
+const categoryTrainerAddedContext = createContext<boolean>(false);
+export function useCategoryTrainerAdded() {
+    return useContext(categoryTrainerAddedContext);
+}
+
 // ADD GOALKEEPER CONTEXT
 
 
@@ -62,6 +67,7 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
     const [categoryReady, setCategoryReady] = useState<boolean>(false)
     const [categoryTrainersReady, setCategoryTrainersReady] = useState<boolean>(false)
+    const [categoryTrainerAdded, setCategoryTrainerAdded] = useState<boolean>(false)
     const [categoryGoalkeepersReady, setCategoryGoalkeepersReady] = useState<boolean>(false)
 
     const auth = useAuth()
@@ -145,9 +151,10 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
             .then(data => {
                 if ("error" in data) {
                     setError(true)
+                    setCategoryTrainerAdded(false)
                     return data as errorResponse
                 } else {
-                    setCategoryTrainersReady(true)
+                    setCategoryTrainerAdded(true)
                     return data as UserDTO
                 }
             })
@@ -162,7 +169,9 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
                             <categoryGoalkeepersContext.Provider value={goalkeepers}>
                                 <categoryGoalkeepersReadyContext.Provider value={categoryGoalkeepersReady}>
                                     <newCategoryTrainerContext.Provider value={newCategoryTrainer}>
+                                        <categoryTrainerAddedContext.Provider value={categoryTrainerAdded}>
                                         {props.children}
+                                        </categoryTrainerAddedContext.Provider>
                                     </newCategoryTrainerContext.Provider>
                                 </categoryGoalkeepersReadyContext.Provider>
                             </categoryGoalkeepersContext.Provider>

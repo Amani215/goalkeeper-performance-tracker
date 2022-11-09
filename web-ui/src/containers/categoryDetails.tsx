@@ -1,10 +1,9 @@
 import { Avatar, Box, Button, Card, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
-import { useParams } from 'react-router-dom';
-import { useCategory, useCategoryError, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainers, useCategoryTrainersReady } from '../contexts/categoryContext';
+import { useParams, Link as RouterLink } from 'react-router-dom';
+import { useCategory, useCategoryError, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainers, useCategoryTrainersReady } from '../contexts/categoryContext';
 import { CategoryDTO, UserDTO } from '../DTOs';
-import { Link as RouterLink } from 'react-router-dom';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
 import { ModalProp } from '../interfaces/modalProp';
@@ -31,6 +30,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
 
     const trainersContext = useCategoryTrainers()
     const trainersReady = useCategoryTrainersReady()
+    const trainerAdded = useCategoryTrainerAdded()
 
     const goalkeepersContext = useCategoryGoalkeepers()
     const goalkeepersReady = useCategoryGoalkeepersReady()
@@ -64,7 +64,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                     setTrainers(data as UserDTO[])
             })
         }
-    }, [trainersReady])
+    }, [trainersReady, trainerAdded])
 
     useEffect(() => {
         if (goalkeepersContext) {

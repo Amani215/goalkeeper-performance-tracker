@@ -77,7 +77,9 @@ function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
                             onChange={(e) => formik.setFieldValue("userId", e.target.value)}
                         >
                             {coaches.map((coach) => (
-                                <MenuItem key={coach.id} value={coach.id}>{coach.username}</MenuItem>
+                                coach.admin ?
+                                    <></> :
+                                    <MenuItem key={coach.id} value={coach.id}>{coach.username}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>

@@ -40,6 +40,16 @@ def get_by_id(id):
         return {'error': str(err)}
 
 
+def get_categories(goalkeeper_id):
+    '''Get categories of the given goalkeeper'''
+    try:
+        goalkeeper: Goalkeeper = Goalkeeper.query.filter_by(
+            id=goalkeeper_id).one()
+        return goalkeeper.categories
+    except SQLAlchemyError as err:
+        return {'error': str(err)}
+
+
 def add_category(goalkeeper: Goalkeeper, category: Category):
     '''Add a category to the goalkeeper'''
     goalkeeper.categories.append(category)

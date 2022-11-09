@@ -65,6 +65,24 @@ def get_goalkeepers(current_user: User):
         return {'error': str(err)}, 400
 
 
+@goalkeeper_api.route('/goalkeeper/category', methods=['GET'])
+@token_required(admin=False)
+def get_categories(current_user: User):
+    '''Get all requested categories correponding to the given goalkeeper
+
+    If id is not provided an error is raised
+    '''
+    try:
+        args = request.args
+
+        categories = goalkeeper_service.get_categories(args.get('id'))
+        return jsonify([i.serialize for i in categories])
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
 @goalkeeper_api.route('/goalkeeper/category', methods=['PUT'])
 @token_required(admin=True)
 def add_category(current_user: User):

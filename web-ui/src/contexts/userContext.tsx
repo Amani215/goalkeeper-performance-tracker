@@ -1,6 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { UserDTO } from '../DTOs';
-import { NewUserDTO } from '../DTOs/UserDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
 

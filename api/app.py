@@ -28,12 +28,14 @@ def create_app():
     from route.category import category_api
     from route.goalkeeper import goalkeeper_api
     from route.match import match_api
+    from route.match_monitoring import match_monitoring_api
 
     app.register_blueprint(user_api)
     app.register_blueprint(auth_api)
     app.register_blueprint(category_api)
     app.register_blueprint(goalkeeper_api)
     app.register_blueprint(match_api)
+    app.register_blueprint(match_monitoring_api)
 
     return app
 

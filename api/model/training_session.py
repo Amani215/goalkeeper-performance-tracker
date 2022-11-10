@@ -27,11 +27,7 @@ class training_session(db.Model):
     def serialize(self):
         """Return object data in easily serializable format"""
         return {
-            'id':
-            self.id,
-            'date':
-            str(self.date.day) + '/' + str(self.date.month) + '/' +
-            str(self.date.year),
-            'category_id':
-            self.training_session_category_id
+            'id': self.id,
+            'date': self.date.strftime('%d/%m/%Y %H:%M'),
+            'category_id': self.training_session_category_id
         }

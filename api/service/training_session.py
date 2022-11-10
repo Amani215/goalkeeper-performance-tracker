@@ -8,7 +8,7 @@ import service.category as category_service
 
 def add_training_session(date: str, duration: int, category_id: str):
     '''Add a new training session to the database'''
-    training_session_date = datetime.strptime(date, '%d/%m/%Y')
+    training_session_date = datetime.strptime(date, '%d/%m/%Y %H:%M')
     category = category_service.get_by_id(category_id)
     training_session_obj = training_session(training_session_date, duration,
                                             category)

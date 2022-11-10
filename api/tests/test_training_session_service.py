@@ -10,9 +10,9 @@ def test_add_training_session(app, category):
 
     training_sessions = training_session_service.get_training_sessions()
     training_session_count = len([i.serialize for i in training_sessions])
-    date = random_date.generate()
+    date = random_date.generate_with_time()
     training_session = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime('%d/%m/%Y %H:%M'),
         'duration': random.randint(0, 500),
         'category_id': category.id
     }
@@ -38,9 +38,9 @@ def test_get_training_sessions(app):
     }
     category1 = category_service.add_category(category['name'],
                                               category['season'])
-    date = random_date.generate()
+    date = random_date.generate_with_time()
     training_session = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime('%d/%m/%Y %H:%M'),
         'duration': random.randint(0, 500),
         'category_id': category1.id
     }
@@ -55,9 +55,9 @@ def test_get_training_sessions(app):
     }
     category2 = category_service.add_category(category['name'],
                                               category['season'])
-    date = random_date.generate()
+    date = random_date.generate_with_time()
     training_session = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime('%d/%m/%Y %H:%M'),
         'duration': random.randint(0, 500),
         'category_id': category2.id
     }
@@ -83,9 +83,9 @@ def test_update_category(app, category):
     }
     new_category = category_service.add_category(new_category_json['name'],
                                                  new_category_json['season'])
-    date = random_date.generate()
+    date = random_date.generate_with_time()
     training_session_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime('%d/%m/%Y %H:%M'),
         'duration': random.randint(0, 500),
         'category_id': category.id
     }

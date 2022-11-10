@@ -1,6 +1,6 @@
 """imports"""
 from uuid import uuid4
-from sqlalchemy import Column, String, Date, Integer
+from sqlalchemy import Column, String, Date, Integer, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from config.postgres import db
 
@@ -12,13 +12,14 @@ class match_monitoring(db.Model):
                 default=lambda: uuid4().hex)
     match_id = Column(UUID(as_uuid=True), db.ForeignKey("match.id"))
     match = db.relationship("Match", back_populates="goalkeepers_performances")
-    goalkeeper_id = Column(UUID(as_uuid=True), db.ForeignKey("goalkeeper.id"))
-    goalkeeper = db.relationship("Goalkeeper",
-                                 back_populates="match_performances")
+
+    main_goalkeeper_id = Column(UUID(as_uuid=True),
+                                db.ForeignKey("goalkeeper.id"))
+    main_goalkeeper = db.relationship("Goalkeeper",
+                                      back_populates="match_performances",
+                                      foreign_keys=[main_goalkeeper_id])
+
     time_played = Column(Integer, unique=False, default=0)
-    substitute_id = Column(UUID(as_uuid=True), db.ForeignKey("goalkeeper.id"))
-    substitute = db.relationship("Goalkeeper",
-                                 back_populates="match_substitutes")
     goals_scored = Column(Integer, unique=False, default=0)
     goals_conceded = Column(Integer, unique=False, default=0)
     penalties_saved = Column(Integer, unique=False, default=0)
@@ -31,7 +32,7 @@ class match_monitoring(db.Model):
     comment = Column(String(128), unique=False, nullable=True)
 
     def __init__(self, goalkeeper, match):
-        self.goalkeeper = goalkeeper
+        self.main_goalkeeper = goalkeeper
         self.match = match
 
     @property
@@ -39,9 +40,8 @@ class match_monitoring(db.Model):
         """Return object data in easily serializable format"""
         return {
             'id': self.id,
-            'goalkeeper_id': self.goalkeeper_id,
+            'goalkeeper_id': self.main_goalkeeper_id,
             'match_id': self.match_id,
-            'seubstitute_id': self.substitute_id,
             'time_played': self.time_played,
             'goals_scored': self.goals_scored,
             'goals_conceded': self.goals_conceded,

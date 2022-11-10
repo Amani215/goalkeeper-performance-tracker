@@ -20,9 +20,7 @@ class Goalkeeper(db.Model):
                                  lazy='subquery',
                                  back_populates="goalkeepers")
     match_performances = db.relationship("match_monitoring",
-                                         back_populates="goalkeeper")
-    match_substitutes = db.relationship("match_monitoring",
-                                        back_populates="substitute")
+                                         back_populates="main_goalkeeper")
 
     def __init__(self, name, birthday):
         self.name = name

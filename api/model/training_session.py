@@ -7,6 +7,9 @@ from config.postgres import db
 
 class training_session(db.Model):
     """Base class for training sessions"""
+    __table_args__ = (db.UniqueConstraint('date',
+                                          'training_session_category_id'), )
+
     id = Column(UUID(as_uuid=True),
                 primary_key=True,
                 default=lambda: uuid4().hex)

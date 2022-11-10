@@ -8,8 +8,10 @@ from app import create_app
 from config.postgres import db
 from config.s3 import s3_client, s3_resource
 from helper import random_string, random_date
+import service.category as category_service
 import service.user as user_service
 import service.goalkeeper as goalkeeper_service
+import service.match as match_service
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
@@ -54,6 +56,19 @@ def bucket():
 
 
 @pytest.fixture()
+def category():
+    ''' Create a mock category '''
+    category = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500, 2500)
+    }
+    category_response = category_service.add_category(category['name'],
+                                                      category['season'])
+    category = category_service.get_by_id(category_response.id)
+    return category
+
+
+@pytest.fixture()
 def user():
     ''' Create a mock user '''
     user_credentials = {
@@ -83,6 +98,24 @@ def goalkeeper():
                                       goalkeeper_credentials['month'],
                                       goalkeeper_credentials['year'])
     return goalkeeper_credentials
+
+
+@pytest.fixture()
+def match():
+    ''' Create a mock match '''
+
+    date = random_date.generate()
+    match_credentials = {
+        'date': date.strftime('%d/%m/%Y'),
+        'local': random_string.generate(4),
+        'visitor': random_string.generate(4),
+        'match_type': random_string.generate(4)
+    }
+    _match = match_service.add_match(match_credentials['date'],
+                                     match_credentials['visitor'],
+                                     match_credentials['local'],
+                                     match_credentials['match_type'])
+    return _match
 
 
 @pytest.fixture()

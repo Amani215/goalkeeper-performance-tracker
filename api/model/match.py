@@ -14,9 +14,8 @@ class Match(db.Model):
     local = Column(String(128), unique=False, nullable=False)
     visitor = Column(String(128), unique=False, nullable=False)
     match_type = Column(String(128), unique=False, nullable=False)
-    match_category = db.relationship("Category",
-                                     back_populates="matches",
-                                     uselist=False)
+    category_id = Column(String(35), db.ForeignKey("category.id"))
+    match_category = db.relationship("Category", back_populates="matches")
 
     # add goaalkeepers_performances: MatchMonitoring
 

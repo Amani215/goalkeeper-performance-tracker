@@ -36,51 +36,11 @@ def get_by_id(id: str):
         return {'error': str(err)}
 
 
-def update_time_played(match_monitoring_id: str, time_played: int):
-    '''Set the time played of the goalkeeper'''
-    match_monitoring_obj = get_by_id(match_monitoring_id)
-    match_monitoring_obj.time_played = time_played
-
-    db.session.commit()
-    return match_monitoring_obj
-
-
-def update_goals_scored(match_monitoring_id: str, goals_scored: int):
+def update_param(match_monitoring_id: str, param_name: str, param_value):
     '''Set the substitute of the goalkeeper'''
     match_monitoring_obj = get_by_id(match_monitoring_id)
 
-    match_monitoring_obj.goals_scored = goals_scored
-
-    db.session.commit()
-    return match_monitoring_obj
-
-
-def update_goals_conceded(match_monitoring_id: str, goals_conceded: int):
-    '''Set the substitute of the goalkeeper'''
-    match_monitoring_obj = get_by_id(match_monitoring_id)
-
-    match_monitoring_obj.goals_conceded = goals_conceded
-
-    db.session.commit()
-    return match_monitoring_obj
-
-
-def update_penalties_saved(match_monitoring_id: str, penalties_saved: int):
-    '''Set the substitute of the goalkeeper'''
-    match_monitoring_obj = get_by_id(match_monitoring_id)
-
-    match_monitoring_obj.penalties_saved = penalties_saved
-
-    db.session.commit()
-    return match_monitoring_obj
-
-
-def update_penalties_non_saved(match_monitoring_id: str,
-                               penalties_non_saved: int):
-    '''Set the substitute of the goalkeeper'''
-    match_monitoring_obj = get_by_id(match_monitoring_id)
-
-    match_monitoring_obj.penalties_non_saved = penalties_non_saved
+    match_monitoring_obj.__setattr__(param_name, param_value)
 
     db.session.commit()
     return match_monitoring_obj

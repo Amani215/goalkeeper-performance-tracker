@@ -25,6 +25,7 @@ env:
   AWS_SECRET_ACCESS_KEY: minio-secret-key-change-me
   PROFILE_PICS_BUCKET: build-profile-pics
   GOALKEEPER_PICS_BUCKET: build-goalkeeper-pics
+  TRAINING_FORMS_BUCKET: build-training-forms
   REDIS_HOST: localhost
   REDIS_PORT: 6379
   ADMIN_USERNAME: build

@@ -1,12 +1,14 @@
 """imports"""
 from uuid import uuid4
-from sqlalchemy import Column, String, Date, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer
 from sqlalchemy.dialects.postgresql import UUID
 from config.postgres import db
 
 
 class match_monitoring(db.Model):
     """Base class for match monitoring"""
+    __table_args__ = (db.UniqueConstraint('match_id', 'main_goalkeeper_id'), )
+
     id = Column(UUID(as_uuid=True),
                 primary_key=True,
                 default=lambda: uuid4().hex)

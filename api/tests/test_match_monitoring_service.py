@@ -1,4 +1,5 @@
 '''Testing the match monitoring services'''
+import pytest
 import random
 import service.match_monitoring as match_monitoring_service
 import service.goalkeeper as goalkeeper_service
@@ -17,6 +18,9 @@ def test_add_match_monitoring(app, goalkeeper, match):
     match_monitorings = match_monitoring_service.get_match_monitorings()
     assert len([i.serialize
                 for i in match_monitorings]) == match_monitoring_count + 1
+    # DUPLICATE
+    with pytest.raises(Exception):
+        match_monitoring_service.add_match_monitoring(_goalkeeper.id, match.id)
 
 
 def test_get_matches(app):

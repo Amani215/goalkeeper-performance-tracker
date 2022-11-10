@@ -27,10 +27,13 @@ def create_app():
     from route.auth import auth_api
     from route.category import category_api
     from route.goalkeeper import goalkeeper_api
+    from route.match import match_api
+
     app.register_blueprint(user_api)
     app.register_blueprint(auth_api)
     app.register_blueprint(category_api)
     app.register_blueprint(goalkeeper_api)
+    app.register_blueprint(match_api)
 
     return app
 

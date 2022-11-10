@@ -62,9 +62,8 @@ def category():
         'name': random_string.generate(12),
         'season': random.randint(1500, 2500)
     }
-    category_response = category_service.add_category(category['name'],
-                                                      category['season'])
-    category = category_service.get_by_id(category_response.id)
+    category = category_service.add_category(category['name'],
+                                             category['season'])
     return category
 
 

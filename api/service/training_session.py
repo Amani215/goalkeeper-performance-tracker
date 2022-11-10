@@ -34,6 +34,15 @@ def get_by_id(id):
         return {'error': str(err)}
 
 
+def get_by_category(category_id: str):
+    '''Get training session by Category'''
+    try:
+        return training_session.query.filter_by(
+            training_session_category_id=category_id).all()
+    except SQLAlchemyError as err:
+        return {'error': str(err)}
+
+
 def update_category(training_session_id: str, category_id: str):
     '''Update the category of the training session'''
     training_session_obj = get_by_id(training_session_id)

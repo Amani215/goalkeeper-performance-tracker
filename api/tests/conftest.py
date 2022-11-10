@@ -12,6 +12,7 @@ import service.category as category_service
 import service.user as user_service
 import service.goalkeeper as goalkeeper_service
 import service.match as match_service
+import service.training_session as training_session_service
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
@@ -115,6 +116,23 @@ def match():
                                      match_credentials['local'],
                                      match_credentials['match_type'])
     return _match
+
+
+@pytest.fixture()
+def training_session(category):
+    ''' Create a mock training session '''
+
+    date = random_date.generate_with_time()
+    training_session_credentials = {
+        'date': date.strftime('%d/%m/%Y %H:%M'),
+        'duration': random.randint(0, 500),
+        'category_id': category.id
+    }
+    _training = training_session_service.add_training_session(
+        training_session_credentials['date'],
+        training_session_credentials['duration'],
+        training_session_credentials['category_id'])
+    return _training
 
 
 @pytest.fixture()

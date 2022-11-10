@@ -16,8 +16,10 @@ class Match(db.Model):
     match_type = Column(String(128), unique=False, nullable=False)
     category_id = Column(String(35), db.ForeignKey("category.id"))
     match_category = db.relationship("Category", back_populates="matches")
-
-    # add goaalkeepers_performances: MatchMonitoring
+    goalkeepers_performances = db.relationship("match_monitoring",
+                                               back_populates="match")
+    result = Column(String(35), unique=False, nullable=True)
+    score = Column(String(35), unique=False, nullable=True)
 
     def __init__(self, date, local, visitor, match_type):
         self.date = date

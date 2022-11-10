@@ -15,6 +15,7 @@ class Category(db.Model):
     goalkeepers = db.relationship("Goalkeeper",
                                   secondary=goalkeeper_categories,
                                   back_populates="categories")
+    matches = db.relationship("Match", back_populates="match_category")
 
     def __init__(self, name: str, season: int):
         self.id = name + str(season)

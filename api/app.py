@@ -41,6 +41,7 @@ def setup_database(_db, _app):
         from model.user import User
         from model.category import Category
         from model.goalkeeper import Goalkeeper
+        from model.match import Match
         _db.create_all()
         set_default_user()
         return _db

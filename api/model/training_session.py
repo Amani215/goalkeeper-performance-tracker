@@ -20,6 +20,8 @@ class training_session(db.Model):
                                           db.ForeignKey("category.id"))
     training_session_category = db.relationship(
         "Category", back_populates="training_sessions")
+    goalkeepers_performances = db.relationship("training_monitoring",
+                                               back_populates="session")
 
     def __init__(self, date, duration, category):
         self.date = date

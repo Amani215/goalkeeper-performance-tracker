@@ -51,6 +51,7 @@ def setup_database(_db, _app):
         from model.match import Match
         from model.match_monitoring import match_monitoring
         from model.training_session import training_session
+        from model.training_monitoring import training_monitoring
         _db.create_all()
         set_default_user()
         return _db

@@ -23,6 +23,7 @@ class Goalkeeper(db.Model):
                                          back_populates="main_goalkeeper")
     training_performances = db.relationship("training_monitoring",
                                             back_populates="goalkeeper")
+    growth = db.relationship("growth_monitoring", back_populates="goalkeeper")
 
     def __init__(self, name, birthday):
         self.name = name

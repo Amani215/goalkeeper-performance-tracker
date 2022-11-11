@@ -31,6 +31,7 @@ def create_app():
     from route.match_monitoring import match_monitoring_api
     from route.training_session import training_session_api
     from route.training_monitoring import training_monitoring_api
+    from route.growth_monitoring import growth_monitoring_api
 
     app.register_blueprint(user_api)
     app.register_blueprint(auth_api)
@@ -40,6 +41,7 @@ def create_app():
     app.register_blueprint(match_monitoring_api)
     app.register_blueprint(training_session_api)
     app.register_blueprint(training_monitoring_api)
+    app.register_blueprint(growth_monitoring_api)
 
     return app
 

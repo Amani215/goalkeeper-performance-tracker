@@ -30,9 +30,9 @@ def get_training_monitorings():
 def get_by_id(id: str):
     '''Get training monitoring by ID'''
     try:
-        traiining_monitoring_obj: training_monitoring = training_monitoring.query.filter_by(
+        training_monitoring_obj: training_monitoring = training_monitoring.query.filter_by(
             id=id).one()
-        return traiining_monitoring_obj
+        return training_monitoring_obj
     except SQLAlchemyError as err:
         return {'error': str(err)}
 

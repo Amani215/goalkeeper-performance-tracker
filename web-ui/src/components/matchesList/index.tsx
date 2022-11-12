@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import dayjs from 'dayjs';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { MatchDTO } from "../../DTOs/MatchDTO";
 import { Box, Card, Typography } from '@mui/material';
@@ -9,8 +10,33 @@ type PropType = {
 
 const columns: GridColDef[] = [
     {
+        field: 'date',
+        headerName: 'Date',
+        flex: 2,
+        minWidth: 80,
+        valueGetter: (params) => dayjs(params.row.date).format('DD-MM-YYYY')
+    },
+    {
         field: 'id',
         headerName: 'ID',
+        flex: 2,
+        minWidth: 80
+    },
+    {
+        field: 'local',
+        headerName: 'Local',
+        flex: 2,
+        minWidth: 80
+    },
+    {
+        field: 'visitor',
+        headerName: 'Visitor',
+        flex: 2,
+        minWidth: 80
+    },
+    {
+        field: 'match_type',
+        headerName: 'Match Type',
         flex: 2,
         minWidth: 80
     }
@@ -40,12 +66,10 @@ function MatchesList({ matches }: PropType) {
 
                 <Box
                     display="flex"
-                    // flexDirection="column"
                     justifyContent="center"
                     alignItems="center"
                     mt={1}
                 >
-
                     <Card
                         sx={{
                             height: { xs: 100 },
@@ -59,7 +83,6 @@ function MatchesList({ matches }: PropType) {
                             color: '#616161'
                         }}>
                             <Typography
-                                // p={1}
                                 variant='subtitle2'>No matches in this section.
                             </Typography>
                         </div>

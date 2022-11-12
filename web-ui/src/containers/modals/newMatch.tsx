@@ -33,7 +33,8 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
     const handleSubmit = async ({ date, local, visitor, matchType }: FormikValues) => {
         if (newMatch != null) {
-            await newMatch({ date: date, local: local, visitor: visitor, match_type: matchType })
+            const matchDate = dayjs(date).format('DD/MM/YYYY').toString()
+            await newMatch({ date: matchDate, local: local, visitor: visitor, match_type: matchType })
             if (newMatchError) setError(true)
             else setModalIsOpen()
         }

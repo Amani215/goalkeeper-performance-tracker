@@ -13,8 +13,7 @@ const columns: GridColDef[] = [
         field: 'date',
         headerName: 'Date',
         flex: 2,
-        minWidth: 80,
-        valueGetter: (params) => dayjs(params.row.date).format('DD-MM-YYYY')
+        minWidth: 80
     },
     {
         field: 'id',

@@ -83,7 +83,7 @@ export default function MatchesProvider(props: PropsWithChildren<{}>) {
             body: JSON.stringify({
                 date: newMatchObj.date,
                 local: newMatchObj.local,
-                visitor: newMatchObj.local,
+                visitor: newMatchObj.visitor,
                 match_type: newMatchObj.match_type
             })
         })

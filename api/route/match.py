@@ -45,17 +45,23 @@ def get_matches(current_user: User):
     '''Get all requested matches
 
     If id is provided then then only the match with that id is returned
+    If before date is provided then only matches before that given date (included) are returned
+    If after date is provided then only matches after that given date (included) are returned
     '''
     try:
         args = request.args
 
         if args.get('id') is not None:
             match = match_service.get_by_id(args.get("id"))
+            return match.serialize
+        elif args.get('before') is not None:
+            matches = match_service.get_by_date_before(args.get("before"))
+        elif args.get('after') is not None:
+            matches = match_service.get_by_date_after(args.get("after"))
         else:
             matches = match_service.get_matches()
-            return jsonify([i.serialize for i in matches])
-
-        return match.serialize
+        
+        return jsonify([i.serialize for i in matches])
     except PermissionError as err:
         return {'error': str(err)}, 401
     except Exception as err:

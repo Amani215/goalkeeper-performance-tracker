@@ -33,7 +33,7 @@ def test_get_matches(client, authenticated_user):
     assert response.status_code == 200
 
     ### GET BY ID
-    date = random_date.generate()
+    date = random_date.generate(end='31/12/1999')
     test_json = {
         'date': date.strftime('%d/%m/%Y'),
         'local': random_string.generate(4),
@@ -49,6 +49,32 @@ def test_get_matches(client, authenticated_user):
     response = client.get(ID_URL + str(uuid.uuid4), headers=headers)
     assert response.status_code == 400
     assert 'error' in response.json
+
+    ### GET BY DATE BEFORE
+    date = random_date.generate(start='01/01/2000', end='01/01/2000')
+    test_json = {
+        'date': date.strftime('%d/%m/%Y'),
+        'local': random_string.generate(4),
+        'visitor': random_string.generate(4),
+        'match_type': random_string.generate(4)
+    }
+    client.post(URL, data=json.dumps(test_json), headers=headers)
+
+    date = random_date.generate(start='02/01/2000')
+    test_json = {
+        'date': date.strftime('%d/%m/%Y'),
+        'local': random_string.generate(4),
+        'visitor': random_string.generate(4),
+        'match_type': random_string.generate(4)
+    }
+    client.post(URL, data=json.dumps(test_json), headers=headers)
+
+    response = client.get(URL + '?before=01/01/2000', headers=headers)
+    assert sum(1 for _ in range(len(response.json))) == 2
+
+    ### GET BY DATE AFTER
+    response = client.get(URL + '?after=02/01/2000', headers=headers)
+    assert sum(1 for _ in range(len(response.json))) == 1
 
 
 @pytest.mark.parametrize(['admin'], [[True]])

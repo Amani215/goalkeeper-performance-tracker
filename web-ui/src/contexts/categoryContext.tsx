@@ -1,3 +1,4 @@
+import React from 'react';
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
@@ -274,38 +275,75 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
                 return null
             })
     }
-
-    return (
-        <categoryContext.Provider value={category}>
-            <categoryErrorContext.Provider value={error}>
-                <categoryReadyContext.Provider value={categoryReady}>
-                    <categoryTrainersContext.Provider value={trainers}>
-                        <categoryTrainersReadyContext.Provider value={categoryTrainersReady}>
-                            <categoryGoalkeepersContext.Provider value={goalkeepers}>
-                                <categoryGoalkeepersReadyContext.Provider value={categoryGoalkeepersReady}>
-                                    <newCategoryTrainerContext.Provider value={newCategoryTrainer}>
-                                        <categoryTrainerAddedContext.Provider value={categoryTrainerAdded}>
-                                            <newCategoryGoalkeeperContext.Provider value={newCategoryGoalkeeper}>
-                                                <categoryGoalkeeperAddedContext.Provider value={categoryGoalkeeperAdded}>
-                                                    <deleteCategoryTrainerContext.Provider value={deleteCategoryTrainer}>
-                                                        <categoryTrainerDeletedContext.Provider value={categoryTrainerDeleted}>
-                                                            <deleteCategoryGoalkeeperContext.Provider value={deleteCategoryGoalkeeper}>
-                                                                <categoryGoalkeeperDeletedContext.Provider value={categoryGoalkeeperDeleted}>
-                                                                    {props.children}
-                                                                </categoryGoalkeeperDeletedContext.Provider>
-                                                            </deleteCategoryGoalkeeperContext.Provider>
-                                                        </categoryTrainerDeletedContext.Provider>
-                                                    </deleteCategoryTrainerContext.Provider>
-                                                </categoryGoalkeeperAddedContext.Provider>
-                                            </newCategoryGoalkeeperContext.Provider>
-                                        </categoryTrainerAddedContext.Provider>
-                                    </newCategoryTrainerContext.Provider>
-                                </categoryGoalkeepersReadyContext.Provider>
-                            </categoryGoalkeepersContext.Provider>
-                        </categoryTrainersReadyContext.Provider>
-                    </categoryTrainersContext.Provider>
-                </categoryReadyContext.Provider>
-            </categoryErrorContext.Provider>
-        </categoryContext.Provider>
-    )
+    type contextProvider = {
+        ctx: React.Context<any>,
+        value: any
+    }
+    const providers: contextProvider[] = [
+        {
+            ctx: categoryContext,
+            value: category
+        },
+        {
+            ctx: categoryErrorContext,
+            value: error
+        },
+        {
+            ctx: categoryReadyContext,
+            value: categoryReady
+        },
+        {
+            ctx: categoryTrainersContext,
+            value: trainers
+        },
+        {
+            ctx: categoryTrainersReadyContext,
+            value: categoryTrainersReady
+        },
+        {
+            ctx: categoryGoalkeepersContext,
+            value: goalkeepers
+        },
+        {
+            ctx: categoryGoalkeepersReadyContext,
+            value: categoryGoalkeepersReady
+        },
+        {
+            ctx: newCategoryTrainerContext,
+            value: newCategoryTrainer
+        },
+        {
+            ctx: categoryTrainerAddedContext,
+            value: categoryTrainerAdded
+        },
+        {
+            ctx: newCategoryGoalkeeperContext,
+            value: newCategoryGoalkeeper
+        },
+        {
+            ctx: categoryGoalkeeperAddedContext,
+            value: categoryGoalkeeperAdded
+        },
+        {
+            ctx: deleteCategoryTrainerContext,
+            value: useDeleteCategoryTrainer
+        },
+        {
+            ctx: categoryTrainerDeletedContext,
+            value: categoryTrainerDeleted
+        },
+        {
+            ctx: deleteCategoryGoalkeeperContext,
+            value: deleteCategoryGoalkeeper
+        },
+        {
+            ctx: categoryGoalkeeperDeletedContext,
+            value: categoryGoalkeeperDeleted
+        }
+    ]
+    return providers.reduce(
+        (Ctx1: React.ReactNode, Ctx2: contextProvider) => React.createElement(Ctx2.ctx.Provider, {
+            value: Ctx2.value
+        }, Ctx1)
+        , props.children)
 }

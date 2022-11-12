@@ -30,6 +30,45 @@ def test_get_matches(app):
     assert len([i.serialize for i in matches]) == 0
 
 
+def tes_get_by_date(app):
+    '''Test get matches before or after a certain date'''
+    date = random_date.generate(start='01/01/1970', end='31/12/1999')
+    match = {
+        'date': date.strftime('%d/%m/%Y'),
+        'local': random_string.generate(4),
+        'visitor': random_string.generate(4),
+        'match_type': random_string.generate(4)
+    }
+    match_service.add_match(match['date'], match['visitor'], match['local'],
+                            match['match_type'])
+
+    date = random_date.generate(start='01/01/2000', end='01/01/2000')
+    match = {
+        'date': date.strftime('%d/%m/%Y'),
+        'local': random_string.generate(4),
+        'visitor': random_string.generate(4),
+        'match_type': random_string.generate(4)
+    }
+    match_service.add_match(match['date'], match['visitor'], match['local'],
+                            match['match_type'])
+
+    date = random_date.generate(start='02/01/2000')
+    match = {
+        'date': date.strftime('%d/%m/%Y'),
+        'local': random_string.generate(4),
+        'visitor': random_string.generate(4),
+        'match_type': random_string.generate(4)
+    }
+    match_service.add_match(match['date'], match['visitor'], match['local'],
+                            match['match_type'])
+
+    response = match_service.get_by_date_before('01/01/2000')
+    assert response.length == 2
+
+    response = match_service.get_by_date_after('02/01/2000')
+    assert response.length == 1
+
+
 def test_set_category(app, match, category):
     '''Test set the category of the match'''
     _match = match_service.get_by_id(match.id)

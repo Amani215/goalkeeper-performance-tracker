@@ -31,6 +31,18 @@ def get_by_id(id):
         return {'error': str(err)}
 
 
+def get_by_date_before(date: str):
+    '''Get matches with a date before the given date'''
+    given_date = datetime.strptime(date, '%d/%m/%Y')
+    return Match.query.filter(Match.date <= given_date)
+
+
+def get_by_date_after(date: str):
+    '''Get matches with a date after the given date'''
+    given_date = datetime.strptime(date, '%d/%m/%Y')
+    return Match.query.filter(Match.date >= given_date)
+
+
 def set_category(match: Match, category: Category):
     '''Set the category of the match'''
     match.match_category = category

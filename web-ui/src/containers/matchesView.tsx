@@ -2,6 +2,7 @@ import { Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useMatches, useMatchesError, useMatchesReady } from '../contexts/matchesContext'
 import { MatchDTO } from '../DTOs/MatchDTO'
+import MatchesList from '../components/matchesList'
 
 function MatchesView() {
     const [pastMatches, setPastMatches] = useState<MatchDTO[]>([])
@@ -43,7 +44,22 @@ function MatchesView() {
                     variant='subtitle2'
                     ml={1} mt={1}>
                     {error}
-                </Typography> : <></>}
+                </Typography> :
+                <>
+                    <Typography
+                        variant='h6'
+                        ml={1} mt={1}>
+                        Upcoming Matches
+                    </Typography>
+                    <MatchesList matches={upcomingMatches} />
+                    <Typography
+                        variant='h6'
+                        ml={1} mt={4}>
+                        Past Matches
+                    </Typography>
+                    <MatchesList matches={pastMatches} />
+                </>
+            }
         </>
 
     )

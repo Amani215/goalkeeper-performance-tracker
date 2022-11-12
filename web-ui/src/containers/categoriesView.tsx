@@ -46,34 +46,38 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
         alignItems="center"
         spacing={2}
         columns={{ xs: 4, sm: 8, md: 12 }}>
-        {categories.map((c) => (
-          <Button
-            key={c.id + "-item"}
-            component={RouterLink}
-            to={`/categories/${c.id}`}>
-            <Card raised>
-              <Grid item xs={2} sm={2} md={3}>
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  sx={{
-                    minWidth: { xs: 180, sm: 180, md: 180 },
-                  }}
-                  mt={1}>
-                  <IoFootballOutline size={70} />
-                  <Typography variant="body1" >
-                    {c.name}
-                  </Typography>
-                  <Typography variant="body2" mb={1}>
-                    {c.season}
-                  </Typography>
-                </Box>
-              </Grid>
-            </Card>
-          </Button>
-        ))}
+        {
+          categories.length > 0 ?
+            categories.map((c) => (
+              <Button
+                key={c.id + "-item"}
+                component={RouterLink}
+                to={`/categories/${c.id}`}>
+                <Card raised>
+                  <Grid item xs={2} sm={2} md={3}>
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      justifyContent="center"
+                      alignItems="center"
+                      sx={{
+                        minWidth: { xs: 180, sm: 180, md: 180 },
+                      }}
+                      mt={1}>
+                      <IoFootballOutline size={70} />
+                      <Typography variant="body1" >
+                        {c.name}
+                      </Typography>
+                      <Typography variant="body2" mb={1}>
+                        {c.season}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Card>
+              </Button>
+            ))
+            :
+            <Typography variant="body1">No categories yet.</Typography>}
       </Grid>
     </>
 

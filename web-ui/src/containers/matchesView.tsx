@@ -1,10 +1,11 @@
-import { Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useMatches, useMatchesError, useMatchesReady } from '../contexts/matchesContext'
 import { MatchDTO } from '../DTOs/MatchDTO'
 import MatchesList from '../components/matchesList'
+import { ModalProp } from '../interfaces/modalProp'
 
-function MatchesView() {
+function MatchesView({ setModalIsOpen }: ModalProp) {
     const [pastMatches, setPastMatches] = useState<MatchDTO[]>([])
     const [upcomingMatches, setUpcomingMatches] = useState<MatchDTO[]>([])
     const [error, setError] = useState("")
@@ -46,6 +47,16 @@ function MatchesView() {
                     {error}
                 </Typography> :
                 <>
+                    <Box
+                        display="flex"
+                        justifyContent="flex-end"
+                        mb={3}>
+                        <Button
+                            variant="contained"
+                            onClick={() => { setModalIsOpen() }}
+                        >Add Match
+                        </Button>
+                    </Box> : <></>
                     <Typography
                         variant='h6'
                         ml={1} mt={1}>

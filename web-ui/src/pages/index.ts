@@ -7,6 +7,7 @@ import Goalkeeper from "./goalkeeper";
 import Categories from "./categories";
 import Category from "./category";
 import Matches from "./matches";
+import Match from "./match"
 import Logout from "./logout";
 
 export {
@@ -19,5 +20,6 @@ export {
   Categories,
   Category,
   Matches,
+  Match,
   Logout,
 };

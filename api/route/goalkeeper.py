@@ -142,8 +142,10 @@ def add_picture(current_user: User):
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
 
         goalkeeper: Goalkeeper = goalkeeper_service.get_by_id(args.get('id'))
-        pic = request.files['picture']
+        if (goalkeeper_service.editable(goalkeeper, current_user) == False):
+            raise PermissionError('User cannot edit this goalkeeper.')
 
+        pic = request.files['picture']
         pic_url = goalkeeper_service.update_picture(goalkeeper, pic)
         return {'url': pic_url}
 

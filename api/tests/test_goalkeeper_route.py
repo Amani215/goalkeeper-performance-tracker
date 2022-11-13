@@ -8,11 +8,14 @@ import pytest
 from helper import random_string, random_date
 from tests.conftest import content_type
 import service.category as category_service
+import service.goalkeeper as goalkeeper_service
+import service.user as user_service
 
 URL = '/goalkeeper'
 PICTURE_URL = '/goalkeeper/picture'
 CATEGORY_URL = '/goalkeeper/category'
 NAME_URL = '/goalkeeper?name='
+PIC = 'tests/assets/image.jpeg'
 
 
 def test_no_token(client):
@@ -23,7 +26,7 @@ def test_no_token(client):
 
     ### ADD IMAGE ROUTE
     test_data = {
-        'picture': (io.BytesIO(b'test_picture'), 'tests/assets/image.jpeg'),
+        'picture': (io.BytesIO(b'test_picture'), PIC),
     }
     response = client.put(PICTURE_URL, data=test_data, headers=headers)
     assert response.status_code == 401
@@ -175,19 +178,34 @@ def test_add_remove_category(client, authenticated_user, goalkeeper):
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
-def test_add_picture(client, authenticated_user, goalkeeper):
+def test_add_picture(client, authenticated_user, goalkeeper, category):
     '''Test adding a picture to the given goalkeeper route'''
+    ### ADD PIC AS USER FROM DIFFERENT CATEGORY
     headers = {'Accept': '*/*', 'Authorization': authenticated_user['token']}
-    response = client.get(NAME_URL + goalkeeper['name'], headers=headers)
-    url = PICTURE_URL + '?id=' + response.json['id']
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    goalkeeper_service.add_category(_goalkeeper, category)
+
+    url = PICTURE_URL + '?id=' + str(_goalkeeper.id)
+    test_data = {
+        'picture': (io.BytesIO(b'test_picture'), PIC),
+    }
+
+    response = client.put(url, data=test_data, headers=headers)
+    assert response.status_code == 401
+    assert 'User cannot edit this goalkeeper.' in response.json['error']
+
+    ### ADD EMPTY JSON
+    response = client.put(url, data={}, headers=headers)
+    assert response.status_code == 400
+    assert 'No data was provided' in response.json['error']
+
+    ### ADD PIC AS USER FROM SAME CATEGORY
+    authenticated_user = user_service.get_by_id(authenticated_user['id'])
+    user_service.add_category(authenticated_user, category)
 
     test_data = {
-        'picture': (io.BytesIO(b'test_picture'), 'tests/assets/image.jpeg'),
+        'picture': (io.BytesIO(b'test_picture'), PIC),
     }
     response = client.put(url, data=test_data, headers=headers)
     assert response.status_code == 200
     assert 'url' in response.json
-
-    response = client.put(url, data={}, headers=headers)
-    assert response.status_code == 400
-    assert 'No data was provided' in response.json['error']

@@ -326,7 +326,7 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
         },
         {
             ctx: deleteCategoryTrainerContext,
-            value: useDeleteCategoryTrainer
+            value: deleteCategoryTrainer
         },
         {
             ctx: categoryTrainerDeletedContext,

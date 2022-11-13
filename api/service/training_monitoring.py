@@ -4,9 +4,11 @@ import os
 from sqlalchemy.exc import SQLAlchemyError
 from config.postgres import db
 from model.training_monitoring import training_monitoring
+from model.user import User
 import service.goalkeeper as goalkeeper_service
 import service.training_session as training_session_service
 from service.s3 import upload_file
+from config.redis import redis_db
 
 
 def add_training_monitoring(goalkeeper_id: str, session_id: str):
@@ -66,3 +68,26 @@ def update_training_form(training_monitoring_id: str, pic: FieldStorage):
 
     db.session.commit()
     return form_url
+
+
+def editable(tm: training_monitoring, user: User) -> bool:
+    if user.admin:
+        return True
+
+    key = f'{tm.id}_editable'
+    if redis_db.exists(key) > 0:
+        return redis_db.sismember(key, str(user.id))
+
+    s: set = set()
+    for t in tm.session.training_session_category.trainers:
+        _id = str(t.id)
+        s.add(_id)
+        redis_db.sadd(key, _id)
+
+    for c in tm.goalkeeper.categories:
+        for t in c.trainers:
+            _id = str(t.id)
+            s.add(_id)
+            redis_db.sadd(key, _id)
+
+    return str(user.id) in s

@@ -4,6 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from config.postgres import db
 from model.training_session import training_session
 import service.category as category_service
+from config.redis import redis_db
 
 
 def add_training_session(date: str, duration: int, category_id: str):
@@ -47,6 +48,10 @@ def update_category(training_session_id: str, category_id: str):
     '''Update the category of the training session'''
     training_session_obj = get_by_id(training_session_id)
     category = category_service.get_by_id(category_id)
+
+    for gp in training_session_obj.goalkeepers_performances:
+        key = f'{gp.id}_editable'
+        redis_db.delete(key)
 
     training_session_obj.training_session_category = category
     db.session.commit()

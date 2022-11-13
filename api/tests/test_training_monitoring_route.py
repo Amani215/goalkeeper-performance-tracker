@@ -182,25 +182,12 @@ def test_set_param_goalkeeper_category(client, authenticated_user,
     assert response.json['comment'] == comment
 
 
-@pytest.mark.parametrize(['admin'], [[True]])
-def test_add_form(client, authenticated_user, goalkeeper, training_session):
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_add_form_diff_category(client, authenticated_user,
+                                training_monitoring):
     '''Test adding a picture to the given goalkeeper route'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
-    test_json = {
-        'goalkeeper_id': str(_goalkeeper.id),
-        'session_id': str(training_session.id)
-    }
-    training_monitoring_obj = client.post(URL,
-                                          data=json.dumps(test_json),
-                                          headers=headers)
-
     headers = {'Accept': '*/*', 'Authorization': authenticated_user['token']}
-    url = FORM_URL + training_monitoring_obj.json['id']
+    url = FORM_URL + str(training_monitoring.id)
 
     test_data = {
         'training_form':
@@ -208,9 +195,53 @@ def test_add_form(client, authenticated_user, goalkeeper, training_session):
     }
     response = client.put(url, data=test_data, headers=headers)
 
-    assert response.status_code == 200
-    assert 'url' in response.json
+    assert response.status_code == 401
+    assert 'User cannot edit this data.' in response.json['error']
 
+    ### BAD JSON
     response = client.put(url, data={}, headers=headers)
     assert response.status_code == 400
     assert 'No data was provided' in response.json['error']
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_add_form_session_category(client, authenticated_user,
+                                   training_monitoring):
+    '''Test adding a picture to the given goalkeeper route when user has session's category'''
+    headers = {'Accept': '*/*', 'Authorization': authenticated_user['token']}
+    url = FORM_URL + str(training_monitoring.id)
+
+    authenticated_user = user_service.get_by_id(authenticated_user['id'])
+    user_service.add_category(
+        authenticated_user,
+        training_monitoring.session.training_session_category)
+
+    test_data = {
+        'training_form':
+        (io.BytesIO(b'test_picture'), 'tests/assets/image.jpeg'),
+    }
+    response = client.put(url, data=test_data, headers=headers)
+
+    assert response.status_code == 201
+    assert 'url' in response.json
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_add_form_goalkeeper_category(client, authenticated_user,
+                                      training_monitoring):
+    '''Test adding a picture to the given goalkeeper route when user has goalkeeper's category'''
+    headers = {'Accept': '*/*', 'Authorization': authenticated_user['token']}
+    url = FORM_URL + str(training_monitoring.id)
+
+    authenticated_user = user_service.get_by_id(authenticated_user['id'])
+    user_service.add_category(authenticated_user,
+                              training_monitoring.goalkeeper.categories[0])
+
+    test_data = {
+        'training_form':
+        (io.BytesIO(b'test_picture'), 'tests/assets/image.jpeg'),
+    }
+    response = client.put(url, data=test_data, headers=headers)
+
+    assert response.status_code == 201
+    assert 'url' in response.json

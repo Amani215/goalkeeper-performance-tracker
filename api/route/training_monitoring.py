@@ -116,7 +116,7 @@ def add_training_form(current_user: User):
 
         form_url = training_monitoring_service.update_training_form(
             args.get('id'), form)
-        return {'url': form_url}
+        return {'url': form_url}, 201
 
     except PermissionError as err:
         return {'error': str(err)}, 401

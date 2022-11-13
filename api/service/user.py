@@ -7,6 +7,7 @@ from model.category import Category
 from model.user import User
 from config.postgres import db
 from service.s3 import upload_file
+from config.redis import redis_db
 
 
 def add_user(username: str, password: str, admin: bool):
@@ -92,6 +93,9 @@ def add_category(user: User, category: Category):
     '''Add a category to the trainer'''
     user.categories.append(category)
     db.session.commit()
+    for goalkeeper in category.goalkeepers:
+        key = f'{goalkeeper.id}_editable'
+        redis_db.delete(key)
     return {'user_id': user.id, 'category_id': category.id}
 
 
@@ -99,6 +103,9 @@ def remove_category(user: User, category: Category):
     '''Remove a category from the trainer's list'''
     user.categories.remove(category)
     db.session.commit()
+    for goalkeeper in category.goalkeepers:
+        key = f'{goalkeeper.id}_editable'
+        redis_db.delete(key)
 
 
 def update_profile_pic(user: User, pic: FileStorage):

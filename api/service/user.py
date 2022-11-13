@@ -107,6 +107,10 @@ def remove_category(user: User, category: Category):
         key = f'{goalkeeper.id}_editable'
         redis_db.delete(key)
 
+        for mm in goalkeeper.match_performances:
+            key = f'{mm.id}_editable'
+            redis_db.delete(key)
+
 
 def update_profile_pic(user: User, pic: FileStorage):
     '''Set or change the link to the profile pic of the user'''

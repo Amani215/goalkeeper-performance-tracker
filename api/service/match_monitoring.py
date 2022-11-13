@@ -1,11 +1,11 @@
 '''Match monitoring services (add, update, etc.)'''
-from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from config.postgres import db
-from model.category import Category
 from model.match_monitoring import match_monitoring
+from model.user import User
 import service.goalkeeper as goalkeeper_service
 import service.match as match_service
+from config.redis import redis_db
 
 
 def add_match_monitoring(goalkeeper_id: str, match_id: str):
@@ -44,3 +44,26 @@ def update_param(match_monitoring_id: str, param_name: str, param_value):
 
     db.session.commit()
     return match_monitoring_obj
+
+
+def editable(mm: match_monitoring, user: User) -> bool:
+    if user.admin:
+        return True
+
+    key = f'{mm.id}_editable'
+    if redis_db.exists(key) > 0:
+        return redis_db.sismember(key, str(user.id))
+
+    s: set = set()
+    for t in mm.match.match_category.trainers:
+        _id = str(t.id)
+        s.add(_id)
+        redis_db.sadd(key, _id)
+
+    for c in mm.main_goalkeeper.categories:
+        for t in c.trainers:
+            _id = str(t.id)
+            s.add(_id)
+            redis_db.sadd(key, _id)
+
+    return str(user.id) in s

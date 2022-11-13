@@ -56,6 +56,12 @@ def add_category(goalkeeper: Goalkeeper, category: Category):
     '''Add a category to the goalkeeper'''
     key = f'{goalkeeper.id}_editable'
     redis_db.delete(key)
+
+    goalkeeper_matches = goalkeeper.match_performances
+    for mm in goalkeeper_matches:
+        key = f'{mm.id}_editable'
+        redis_db.delete(key)
+
     goalkeeper.categories.append(category)
     db.session.commit()
     return {'goalkeeper_id': goalkeeper.id, 'category_id': category.id}
@@ -65,6 +71,12 @@ def remove_category(goalkeeper: Goalkeeper, category: Category):
     '''Remove a category from the goalkeeper's list'''
     key = f'{goalkeeper.id}_editable'
     redis_db.delete(key)
+
+    goalkeeper_matches = goalkeeper.match_performances
+    for mm in goalkeeper_matches:
+        key = f'{mm.id}_editable'
+        redis_db.delete(key)
+
     goalkeeper.categories.remove(category)
     db.session.commit()
 

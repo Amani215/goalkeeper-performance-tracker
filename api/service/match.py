@@ -4,6 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from config.postgres import db
 from model.category import Category
 from model.match import Match
+from config.redis import redis_db
 
 
 def add_match(date: str, local: str, visitor: str, match_type: str):
@@ -45,6 +46,10 @@ def get_by_date_after(date: str):
 
 def set_category(match: Match, category: Category):
     '''Set the category of the match'''
+    for gp in match.goalkeepers_performances:
+        key = f'{gp.id}_editable'
+        redis_db.delete(key)
+
     match.match_category = category
     db.session.commit()
     return {'match_id': match.id, 'category_id': category.id}

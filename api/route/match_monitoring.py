@@ -24,6 +24,7 @@ def add_match_monitoring(current_user: User):
 
         goalkeeper_id = request.json['goalkeeper_id']
         match_id = request.json['match_id']
+
         response = match_monitoring_service.add_match_monitoring(
             goalkeeper_id=goalkeeper_id, match_id=match_id)
 
@@ -69,10 +70,10 @@ def set_param(current_user: User):
 
         match_monitoring_obj = match_monitoring_service.get_by_id(
             args.get("id"))
-        if (not current_user.admin) and (
-                match_monitoring_obj.match.match_category
-                not in current_user.categories):
-            raise PermissionError("User is not allowed to update this data")
+
+        if (match_monitoring_service.editable(match_monitoring_obj,
+                                              current_user) == False):
+            raise PermissionError('User cannot edit this data.')
 
         possible_params = [
             'time_played', 'goals_scored', 'goals_conceded', 'penalties_saved',

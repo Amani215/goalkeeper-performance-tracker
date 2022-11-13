@@ -14,6 +14,7 @@ import service.goalkeeper as goalkeeper_service
 import service.match as match_service
 import service.training_session as training_session_service
 import service.growth_monitoring as growth_monitoring_service
+import service.match_monitoring as match_monitoring_service
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
@@ -117,6 +118,30 @@ def match():
                                      match_credentials['local'],
                                      match_credentials['match_type'])
     return _match
+
+
+@pytest.fixture()
+def match_monitoring(goalkeeper, match):
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    goalkeeper_category = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500, 2500)
+    }
+    goalkeeper_category = category_service.add_category(
+        goalkeeper_category['name'], goalkeeper_category['season'])
+    goalkeeper_service.add_category(_goalkeeper, goalkeeper_category)
+
+    match_category = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500, 2500)
+    }
+    match_category = category_service.add_category(match_category['name'],
+                                                   match_category['season'])
+    match_service.set_category(match, match_category)
+
+    match_monitoring_obj = match_monitoring_service.add_match_monitoring(
+        str(_goalkeeper.id), str(match.id))
+    return match_monitoring_obj
 
 
 @pytest.fixture()

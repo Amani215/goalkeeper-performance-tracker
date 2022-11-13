@@ -1,10 +1,11 @@
 import React from 'react'
+import MatchDetails from '../../containers/matchDetails'
 import PortalPage from '../../containers/portalPage'
 
 function Match() {
     return (
         <PortalPage>
-            <div>Match</div>
+            <MatchDetails />
         </PortalPage>
     )
 }

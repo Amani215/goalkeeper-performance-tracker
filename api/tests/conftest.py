@@ -15,6 +15,7 @@ import service.match as match_service
 import service.training_session as training_session_service
 import service.growth_monitoring as growth_monitoring_service
 import service.match_monitoring as match_monitoring_service
+import service.training_monitoring as training_monitoring_service
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
@@ -159,6 +160,31 @@ def training_session(category):
         training_session_credentials['duration'],
         training_session_credentials['category_id'])
     return _training
+
+
+@pytest.fixture()
+def training_monitoring(goalkeeper, training_session):
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    goalkeeper_category = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500, 2500)
+    }
+    goalkeeper_category = category_service.add_category(
+        goalkeeper_category['name'], goalkeeper_category['season'])
+    goalkeeper_service.add_category(_goalkeeper, goalkeeper_category)
+
+    session_category = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500, 2500)
+    }
+    session_category = category_service.add_category(
+        session_category['name'], session_category['season'])
+    training_session_service.update_category(str(training_session.id),
+                                             str(session_category.id))
+
+    training_monitoring_obj = training_monitoring_service.add_training_monitoring(
+        str(_goalkeeper.id), str(training_session.id))
+    return training_monitoring_obj
 
 
 @pytest.fixture()

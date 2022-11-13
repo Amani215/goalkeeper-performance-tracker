@@ -69,10 +69,9 @@ def set_param(current_user: User):
 
         training_monitoring_obj = training_monitoring_service.get_by_id(
             args.get("id"))
-        if (not current_user.admin) and (
-                training_monitoring_obj.session.training_session_category
-                not in current_user.categories):
-            raise PermissionError("User is not allowed to update this data")
+        if (training_monitoring_service.editable(training_monitoring_obj,
+                                                 current_user) == False):
+            raise PermissionError('User cannot edit this data.')
 
         possible_bool_params = [
             'absent', 'dismissed', 'hurt', 'with_seniors', 'with_national_team'
@@ -109,10 +108,9 @@ def add_training_form(current_user: User):
 
         training_monitoring_obj = training_monitoring_service.get_by_id(
             args.get("id"))
-        if (not current_user.admin) and (
-                training_monitoring_obj.session.training_session_category
-                not in current_user.categories):
-            raise PermissionError("User is not allowed to update this data")
+        if (training_monitoring_service.editable(training_monitoring_obj,
+                                                 current_user) == False):
+            raise PermissionError('User cannot edit this data.')
 
         form = request.files['training_form']
 

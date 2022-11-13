@@ -9,6 +9,7 @@ from helper import random_string, random_date
 from tests.conftest import content_type
 import service.category as category_service
 import service.goalkeeper as goalkeeper_service
+import service.user as user_service
 
 URL = '/training_monitoring'
 ID_URL = '/training_monitoring?id='
@@ -107,29 +108,71 @@ def test_add_training_monitoring(client, authenticated_user, goalkeeper,
     assert response.json == {'error': 'No data was provided'}
 
 
-@pytest.mark.parametrize(['admin'], [[True]])
-def test_set_param(client, authenticated_user, goalkeeper, training_session):
-    '''Test setting a param to a training monitoring object'''
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_set_param_diff_category(client, authenticated_user,
+                                 training_monitoring):
+    '''Test setting a param to a training monitoring object when user has no permissions'''
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
         'Authorization': authenticated_user['token']
     }
 
-    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
-    test_json = {
-        'goalkeeper_id': str(_goalkeeper.id),
-        'session_id': str(training_session.id)
-    }
-    training_monitoring_obj = client.post(URL,
-                                          data=json.dumps(test_json),
-                                          headers=headers)
-    assert training_monitoring_obj.json['hurt'] == False
-    assert training_monitoring_obj.json['with_seniors'] == False
+    assert training_monitoring.hurt == False
+    assert training_monitoring.with_seniors == False
 
     comment = random_string.generate(100)
     test_data = {'hurt': True, 'with_seniors': True, 'comment': comment}
-    response = client.put(ID_URL + training_monitoring_obj.json['id'],
+    response = client.put(ID_URL + str(training_monitoring.id),
+                          data=json.dumps(test_data),
+                          headers=headers)
+
+    assert response.status_code == 401
+    assert 'User cannot edit this data.' in response.json['error']
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_set_param_session_category(client, authenticated_user,
+                                    training_monitoring):
+    '''Test setting a param to a training monitoring object when user has session's category'''
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+    authenticated_user = user_service.get_by_id(authenticated_user['id'])
+    user_service.add_category(
+        authenticated_user,
+        training_monitoring.session.training_session_category)
+
+    comment = random_string.generate(100)
+    test_data = {'hurt': True, 'with_seniors': True, 'comment': comment}
+    response = client.put(ID_URL + str(training_monitoring.id),
+                          data=json.dumps(test_data),
+                          headers=headers)
+
+    assert response.status_code == 201
+    assert response.json['hurt'] == True
+    assert response.json['with_seniors'] == True
+    assert response.json['comment'] == comment
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_set_param_goalkeeper_category(client, authenticated_user,
+                                       training_monitoring):
+    '''Test setting a param to a training monitoring object when user has goalkeeper's category'''
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+    authenticated_user = user_service.get_by_id(authenticated_user['id'])
+    user_service.add_category(authenticated_user,
+                              training_monitoring.goalkeeper.categories[0])
+
+    comment = random_string.generate(100)
+    test_data = {'hurt': True, 'with_seniors': True, 'comment': comment}
+    response = client.put(ID_URL + str(training_monitoring.id),
                           data=json.dumps(test_data),
                           headers=headers)
 

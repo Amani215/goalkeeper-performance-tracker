@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import dayjs from 'dayjs';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { MatchDTO } from "../../DTOs/MatchDTO";
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Card, Link, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 
 type PropType = {
     matches: MatchDTO[]
@@ -19,7 +19,18 @@ const columns: GridColDef[] = [
         field: 'id',
         headerName: 'ID',
         flex: 2,
-        minWidth: 80
+        minWidth: 80,
+        renderCell: (params) => {
+            return (
+                <Link
+                    component={RouterLink}
+                    to={`/matches/${params.id}`}
+                    underline="none"
+                    color="inherit">
+                    <Typography>{params.row.id}</Typography>
+                </Link>
+            );
+        }
     },
     {
         field: 'local',

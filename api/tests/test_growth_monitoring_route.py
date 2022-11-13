@@ -7,6 +7,7 @@ import pytest
 from helper import random_string, random_date
 from tests.conftest import content_type
 import service.goalkeeper as goalkeeper_service
+import service.user as user_service
 
 URL = '/growth_monitoring'
 ID_URL = '/growth_monitoring?id='
@@ -62,8 +63,9 @@ def test_get_growth_monitorings(client, authenticated_user):
     assert 'error' in response.json
 
 
-@pytest.mark.parametrize(['admin'], [[True]])
-def test_add_grwoth_monitoring(client, authenticated_user, goalkeeper):
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_add_growth_monitoring(client, authenticated_user, goalkeeper,
+                               category):
     '''Test add a growth monitoring object'''
     headers = {
         'Content-Type': content_type,
@@ -71,15 +73,26 @@ def test_add_grwoth_monitoring(client, authenticated_user, goalkeeper):
         'Authorization': authenticated_user['token']
     }
 
+    ### USER FROM DIFFERENT CATEGORY
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    goalkeeper_service.add_category(_goalkeeper, category)
+
     date = random_date.generate()
     test_json = {
         'goalkeeper_id': str(_goalkeeper.id),
         'date': date.strftime('%d/%m/%Y')
     }
+
+    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    assert response.status_code == 401
+    assert 'User cannot edit this goalkeeper.' in response.json['error']
+
+    ### USER FROM SAME CATEGORY
+    authenticated_user = user_service.get_by_id(authenticated_user['id'])
+    user_service.add_category(authenticated_user, category)
+
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 201
-    assert 'id' in response.json
 
     ### BAD JSON
     test_json = {}
@@ -88,16 +101,20 @@ def test_add_grwoth_monitoring(client, authenticated_user, goalkeeper):
     assert response.json == {'error': 'No data was provided'}
 
 
-@pytest.mark.parametrize(['admin'], [[True]])
-def test_set_param(client, authenticated_user, goalkeeper, match):
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_set_param(client, authenticated_user, goalkeeper, category):
     '''Test setting a param to a growth monitoring object'''
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
         'Authorization': authenticated_user['token']
     }
+    authenticated_user = user_service.get_by_id(authenticated_user['id'])
 
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    goalkeeper_service.add_category(_goalkeeper, category)
+    user_service.add_category(authenticated_user, category)
+
     date = random_date.generate()
     test_json = {
         'goalkeeper_id': str(_goalkeeper.id),
@@ -106,16 +123,43 @@ def test_set_param(client, authenticated_user, goalkeeper, match):
     growth_monitoring_obj = client.post(URL,
                                         data=json.dumps(test_json),
                                         headers=headers)
+    assert growth_monitoring_obj.status_code == 201
 
+    ### USER FROM SAME CATEGORY
     rand_int1 = random.randint(60, 90)
     rand_int2 = random.randint(0, 30)
     test_data = {'weight': rand_int1, 'annual_growth': rand_int2}
     response = client.put(ID_URL + growth_monitoring_obj.json['id'],
                           data=json.dumps(test_data),
                           headers=headers)
+
     assert response.status_code == 201
 
     response = client.get(ID_URL + growth_monitoring_obj.json['id'],
                           headers=headers)
     assert response.json['weight'] == rand_int1
     assert response.json['annual_growth'] == rand_int2
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_set_param_diff_category(client, authenticated_user, category,
+                                 growth_monitoring):
+    '''Test setting a param to a growth monitoring object'''
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+
+    goalkeeper = goalkeeper_service.get_by_id(growth_monitoring.goalkeeper_id)
+    goalkeeper_service.add_category(goalkeeper, category)
+
+    ### USER FROM DIFFERENT CATEGORY
+    rand_int1 = random.randint(60, 90)
+    rand_int2 = random.randint(0, 30)
+    test_data = {'weight': rand_int1, 'annual_growth': rand_int2}
+    response = client.put(ID_URL + str(growth_monitoring.id),
+                          data=json.dumps(test_data),
+                          headers=headers)
+    assert response.status_code == 401
+    assert 'User cannot edit this goalkeeper.' in response.json['error']

@@ -13,6 +13,7 @@ import service.user as user_service
 import service.goalkeeper as goalkeeper_service
 import service.match as match_service
 import service.training_session as training_session_service
+import service.growth_monitoring as growth_monitoring_service
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
@@ -133,6 +134,17 @@ def training_session(category):
         training_session_credentials['duration'],
         training_session_credentials['category_id'])
     return _training
+
+
+@pytest.fixture()
+def growth_monitoring(goalkeeper):
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    date = random_date.generate()
+
+    growth_monitoring_obj = growth_monitoring_service.add_growth_monitoring(
+        _goalkeeper.id, date.strftime('%d/%m/%Y'))
+
+    return growth_monitoring_obj
 
 
 @pytest.fixture()

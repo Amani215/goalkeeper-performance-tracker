@@ -1,8 +1,43 @@
 import { Avatar, Box, Button, Card, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Paper, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdAddchart, MdDeleteOutline } from 'react-icons/md'
+import { useParams } from 'react-router-dom';
+import { useMatch, useMatchError, useMatchReady } from '../contexts/matchContext';
+import { MatchDTO } from '../DTOs/MatchDTO';
 
 function MatchDetails() {
+    const { id } = useParams();
+
+    const [match, setMatch] = useState<MatchDTO | null>(null)
+    const [, setError] = useState("")
+    const [loaded, setLoaded] = useState(false)
+
+    const matchContext = useMatch()
+    const matchError = useMatchError()
+    const matchReady = useMatchReady()
+
+    useEffect(
+        () => {
+            setLoaded(true)
+        }, []
+    )
+
+    useEffect(() => {
+        if (matchContext) {
+            matchContext(id ? id : "").then(
+                data => setMatch(data as MatchDTO)
+                // console.log(data)
+            )
+        }
+
+        if (loaded && matchReady && matchError) {
+            setError("No match Found.")
+        }
+        if (loaded && matchReady && !matchError) {
+            setError("")
+        }
+    }, [loaded, matchReady, matchError, id])
+
     return (
         <>
             <Box
@@ -14,7 +49,7 @@ function MatchDetails() {
                 <Typography
                     variant='h4'
                     mb={2}>
-                    Tournament
+                    {match?.match_type}
                 </Typography>
                 <Typography
                     variant='h5'
@@ -24,7 +59,7 @@ function MatchDetails() {
                 <Typography
                     variant='h6'
                     mb={2}>
-                    12-11-2022
+                    {match?.date}
                 </Typography>
 
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8 }} mb={3}>
@@ -41,7 +76,7 @@ function MatchDetails() {
                                 justifyContent="center"
                                 alignItems="center"
                             >
-                                <Typography variant='h6'>Local</Typography>
+                                <Typography variant='h6'>{match?.local}</Typography>
                                 <Typography variant='h6' sx={{ fontWeight: 'bold' }}>2</Typography>
                             </Box>
                         </Card>
@@ -59,7 +94,7 @@ function MatchDetails() {
                                 justifyContent="center"
                                 alignItems="center"
                             >
-                                <Typography variant='h6'>Visitor</Typography>
+                                <Typography variant='h6'>{match?.visitor}</Typography>
                                 <Typography variant='h6' sx={{ fontWeight: 'bold' }}>1</Typography>
                             </Box>
                         </Card>

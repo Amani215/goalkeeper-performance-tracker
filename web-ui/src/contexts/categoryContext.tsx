@@ -97,7 +97,7 @@ export function useCategoryGoalkeeperDeleted() {
 
 
 // PROVIDER
-export default function CategoryProvider(props: PropsWithChildren<{}>) {
+export default function CategoryProvider(props: PropsWithChildren<{}>): JSX.Element {
     const [error, setError] = useState(false)
     const [categoryReady, setCategoryReady] = useState<boolean>(false)
 
@@ -341,9 +341,13 @@ export default function CategoryProvider(props: PropsWithChildren<{}>) {
             value: categoryGoalkeeperDeleted
         }
     ]
-    return providers.reduce(
-        (Ctx1: React.ReactNode, Ctx2: contextProvider) => React.createElement(Ctx2.ctx.Provider, {
-            value: Ctx2.value
-        }, Ctx1)
-        , props.children)
+    return (
+        <>
+            {providers.reduce(
+                (Ctx1: React.ReactNode, Ctx2: contextProvider) => React.createElement(Ctx2.ctx.Provider, {
+                    value: Ctx2.value
+                }, Ctx1)
+                , props.children)}
+        </>)
+
 }

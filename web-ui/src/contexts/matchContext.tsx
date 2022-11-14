@@ -48,6 +48,13 @@ export function useMatchPerformancesReady() {
     return useContext(matchPerformancesReadyContext);
 }
 
+// UPDATE SCORES CONTEXT
+type UpdateScoresDelegate = (id: string, localScore: number, visitorScore: number) => Promise<MatchDTO | errorResponse>;
+const updateScoresContext = createContext<UpdateScoresDelegate | null>(null);
+export function useUpdateScores() {
+    return useContext(updateScoresContext);
+}
+
 // ADD GOALKEEPER CONTEXT
 
 // DELETE GOALKEEPER CONTEXT
@@ -126,6 +133,33 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         }
     }
 
+    const updateScores: UpdateScoresDelegate = async (id: string, localScore: number, visitorScore: number) => {
+        const data = await fetch("/api/match/score?id=" + id, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                score_local: Number(localScore),
+                score_visitor: Number(visitorScore)
+            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setMatchReady(true);
+            setError(false);
+            setMatch(json_data as MatchDTO)
+            return json_data as MatchDTO;
+        }
+        else {
+            setError(true);
+            setMatchReady(true);
+            setMatch(null)
+            return json_data as errorResponse;
+        }
+    }
+
     type contextProvider = {
         ctx: React.Context<any>,
         value: any
@@ -159,7 +193,12 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
             ctx: matchPerformancesReadyContext,
             value: matchPerformancesReady
         },
+        {
+            ctx: updateScoresContext,
+            value: updateScores
+        },
     ]
+
     return (
         <>
             {providers.reduce(

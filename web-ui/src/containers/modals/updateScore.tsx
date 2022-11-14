@@ -1,7 +1,7 @@
 import { Box, Button, Modal, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
-import { useMatch, useMatchError, useMatchReady } from '../../contexts/matchContext';
+import { useMatch, useMatchError, useMatchReady, useUpdateScores } from '../../contexts/matchContext';
 import { ModalProp } from '../../interfaces/modalProp'
 
 
@@ -24,18 +24,21 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const match = useMatch()
     const matchError = useMatchError()
     const matchReady = useMatchReady()
+    const updateScores = useUpdateScores()
 
     useEffect(
         () => {
             setLoaded(true)
         }, []
     )
-    const [localScore, setLocalScore] = useState(0)
-    const [visitorScore, setVisitorScore] = useState(0)
+    const [matchID, setMatchID] = useState("")
+    const [localScore, setLocalScore] = useState<number>(0)
+    const [visitorScore, setVisitorScore] = useState<number>(0)
 
     useEffect(() => {
         if (match) {
             setError(false)
+            setMatchID(match.id)
             setLocalScore(match.score_local)
             setVisitorScore(match.score_visitor)
         }
@@ -46,7 +49,10 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
     }, [loaded, match])
 
     const handleSubmit = async ({ localScore, visitorScore }: FormikValues): Promise<void> => {
-
+        if (updateScores) {
+            await updateScores(matchID, localScore, visitorScore)
+            setModalIsOpen()
+        }
     };
 
     const formik = useFormik({

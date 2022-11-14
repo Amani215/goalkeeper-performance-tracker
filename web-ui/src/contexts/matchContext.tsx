@@ -1,6 +1,5 @@
 import React from 'react';
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
-import { CategoryDTO } from '../DTOs';
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
@@ -27,13 +26,6 @@ export function useMatchError() {
 const matchReadyContext = createContext<boolean>(false);
 export function useMatchReady() {
     return useContext(matchReadyContext);
-}
-
-// GET MATCH CATEGORY CONTEXT
-type MatchCategoryDelegate = (id: string) => Promise<CategoryDTO | null>;
-const matchCategoryContext = createContext<MatchCategoryDelegate | null>(null);
-export function useMatchCategory() {
-    return useContext(matchCategoryContext);
 }
 
 // GET GOALKEEPERS PERFORMANCES CONTEXT
@@ -108,25 +100,6 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
             setMatchReady(true);
             setMatch(null)
             return json_data as errorResponse;
-        }
-    }
-
-    const matchCategory: MatchCategoryDelegate = async (id: string) => {
-        const data = await fetch("/api/match/category?id=" + id, {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `bearer ${token}`
-            }
-        });
-        const json_data = await data.json();
-        if ('id' in json_data) {
-            setError(false);
-            return json_data as CategoryDTO;
-        }
-        else {
-            setError(true);
-            return null;
         }
     }
 
@@ -224,10 +197,6 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         {
             ctx: matchErrorContext,
             value: error
-        },
-        {
-            ctx: matchCategoryContext,
-            value: matchCategory
         },
         {
             ctx: matchPerformancesContext,

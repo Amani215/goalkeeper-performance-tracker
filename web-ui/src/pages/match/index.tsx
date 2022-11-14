@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import MatchDetails from '../../containers/matchDetails'
 import NewMatchGoalkeeper from '../../containers/modals/newMatchGoalkeeper'
 import UpdateScore from '../../containers/modals/updateScore'

@@ -1,9 +1,8 @@
-import { Avatar, Box, Button, Card, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Paper, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Avatar, Box, Button, Card, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { MdAddchart, MdDeleteOutline } from 'react-icons/md'
 import { useParams } from 'react-router-dom';
-import { useGetMatch, useMatchCategory, useMatchError, useMatchGoalkeepersUpdated, useMatchPerformances, useMatchPerformancesReady, useMatchReady, useMatchUpdated } from '../contexts/matchContext';
-import { CategoryDTO } from '../DTOs';
+import { useGetMatch, useMatchError, useMatchGoalkeepersUpdated, useMatchPerformances, useMatchPerformancesReady, useMatchReady, useMatchUpdated } from '../contexts/matchContext';
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { MultiModalProp } from '../interfaces/modalProp';
@@ -12,7 +11,6 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
 
     const [match, setMatch] = useState<MatchDTO | null>(null)
-    const [matchCategory, setMatchCategory] = useState<CategoryDTO | null>(null)
     const [, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
@@ -22,7 +20,6 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
     const matchError = useMatchError()
     const matchReady = useMatchReady()
     const matchUpdated = useMatchUpdated()
-    const matchCategoryContext = useMatchCategory()
 
     const performancesContext = useMatchPerformances()
     const performancesReady = useMatchPerformancesReady()
@@ -38,12 +35,6 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
         if (matchContext) {
             matchContext(id ? id : "").then(
                 data => setMatch(data as MatchDTO)
-            )
-        }
-
-        if (matchCategoryContext) {
-            matchCategoryContext(id ? id : "").then(
-                data => setMatchCategory(data as CategoryDTO)
             )
         }
 
@@ -81,9 +72,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                 <Typography
                     variant='h5'
                     mb={2}>
-                    {matchCategory != null ?
-                        matchCategory.name + " " + matchCategory.season :
-                        "--"}
+                    {match ? `${match.category?.name} ${match.category?.season}` : "--"}
                 </Typography>
                 <Typography
                     variant='h6'

@@ -1,5 +1,8 @@
+import { CategoryDTO } from "./CategoryDTO";
+
 export interface MatchDTO {
   id: string;
+  category: CategoryDTO;
   date: string;
   local: string;
   visitor: string;

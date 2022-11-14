@@ -36,6 +36,8 @@ class Match(db.Model):
         return {
             'id':
             self.id,
+            'category':
+            self.match_category.serialize,
             'date':
             str(self.date.day) + '/' + str(self.date.month) + '/' +
             str(self.date.year),

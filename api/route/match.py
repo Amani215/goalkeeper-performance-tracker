@@ -29,10 +29,12 @@ def add_match(current_user: User):
         local = request.json['local']
         visitor = request.json['visitor']
         match_type = request.json['match_type']
+        category_id = request.json['category_id']
         response = match_service.add_match(date=date,
                                            local=local,
                                            visitor=visitor,
-                                           match_type=match_type)
+                                           match_type=match_type,
+                                           category_id=category_id)
 
         return response.serialize, 201
     except Exception as err:

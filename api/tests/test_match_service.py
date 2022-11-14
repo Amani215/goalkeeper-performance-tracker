@@ -4,7 +4,7 @@ import service.match as match_service
 from helper import random_string, random_date
 
 
-def test_add_match(app):
+def test_add_match(app, category):
     ''' Test adding match '''
 
     matches = match_service.get_matches()
@@ -17,7 +17,7 @@ def test_add_match(app):
         'match_type': random_string.generate(4)
     }
     match_service.add_match(match['date'], match['visitor'], match['local'],
-                            match['match_type'])
+                            match['match_type'], category.id)
 
     matches = match_service.get_matches()
     assert len([i.serialize for i in matches]) == match_count + 1
@@ -30,7 +30,7 @@ def test_get_matches(app):
     assert len([i.serialize for i in matches]) == 0
 
 
-def tes_get_by_date(app):
+def tes_get_by_date(app, category):
     '''Test get matches before or after a certain date'''
     date = random_date.generate(start='01/01/1970', end='31/12/1999')
     match = {
@@ -40,7 +40,7 @@ def tes_get_by_date(app):
         'match_type': random_string.generate(4)
     }
     match_service.add_match(match['date'], match['visitor'], match['local'],
-                            match['match_type'])
+                            match['match_type'], category.id)
 
     date = random_date.generate(start='01/01/2000', end='01/01/2000')
     match = {
@@ -50,7 +50,7 @@ def tes_get_by_date(app):
         'match_type': random_string.generate(4)
     }
     match_service.add_match(match['date'], match['visitor'], match['local'],
-                            match['match_type'])
+                            match['match_type'], category.id)
 
     date = random_date.generate(start='02/01/2000')
     match = {
@@ -60,7 +60,7 @@ def tes_get_by_date(app):
         'match_type': random_string.generate(4)
     }
     match_service.add_match(match['date'], match['visitor'], match['local'],
-                            match['match_type'])
+                            match['match_type'], category.id)
 
     response = match_service.get_by_date_before('01/01/2000')
     assert response.length == 2

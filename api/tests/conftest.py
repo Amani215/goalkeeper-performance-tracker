@@ -104,7 +104,7 @@ def goalkeeper():
 
 
 @pytest.fixture()
-def match():
+def match(category):
     ''' Create a mock match '''
 
     date = random_date.generate()
@@ -117,7 +117,8 @@ def match():
     _match = match_service.add_match(match_credentials['date'],
                                      match_credentials['visitor'],
                                      match_credentials['local'],
-                                     match_credentials['match_type'])
+                                     match_credentials['match_type'],
+                                     category.id)
     return _match
 
 

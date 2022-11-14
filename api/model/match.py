@@ -22,11 +22,13 @@ class Match(db.Model):
     score_local = Column(Integer, unique=False, default=0)
     score_visitor = Column(Integer, unique=False, default=0)
 
-    def __init__(self, date, local, visitor, match_type):
+    def __init__(self, date, local, visitor, match_type, category):
         self.date = date
         self.local = local
         self.visitor = visitor
         self.match_type = match_type
+        self.match_category = category
+        self.category_id = category.id
 
     @property
     def serialize(self):

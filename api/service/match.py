@@ -5,12 +5,16 @@ from config.postgres import db
 from model.category import Category
 from model.match import Match
 from config.redis import redis_db
+import service.category as category_service
 
 
-def add_match(date: str, local: str, visitor: str, match_type: str):
+def add_match(date: str, local: str, visitor: str, match_type: str,
+              category_id: str):
     '''Add a new match to the database'''
     match_date = datetime.strptime(date, '%d/%m/%Y')
-    match = Match(match_date, local, visitor, match_type)
+    category = category_service.get_by_id(category_id)
+
+    match = Match(match_date, local, visitor, match_type, category)
 
     db.session.add(match)
     db.session.commit()

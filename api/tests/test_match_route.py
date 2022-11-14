@@ -21,8 +21,10 @@ def test_no_token(client):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_get_matches(client, authenticated_user):
+def test_get_matches(client, authenticated_user, category):
     '''Test getting match routes'''
+    category_id = category.id
+
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
@@ -38,7 +40,8 @@ def test_get_matches(client, authenticated_user):
         'date': date.strftime('%d/%m/%Y'),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
-        'match_type': random_string.generate(4)
+        'match_type': random_string.generate(4),
+        'category_id': category_id
     }
     match = client.post(URL, data=json.dumps(test_json), headers=headers)
 
@@ -56,7 +59,8 @@ def test_get_matches(client, authenticated_user):
         'date': date.strftime('%d/%m/%Y'),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
-        'match_type': random_string.generate(4)
+        'match_type': random_string.generate(4),
+        'category_id': category_id
     }
     client.post(URL, data=json.dumps(test_json), headers=headers)
 
@@ -65,7 +69,8 @@ def test_get_matches(client, authenticated_user):
         'date': date.strftime('%d/%m/%Y'),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
-        'match_type': random_string.generate(4)
+        'match_type': random_string.generate(4),
+        'category_id': category_id
     }
     client.post(URL, data=json.dumps(test_json), headers=headers)
 
@@ -78,8 +83,10 @@ def test_get_matches(client, authenticated_user):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_add_match(client, authenticated_user):
+def test_add_match(client, authenticated_user, category):
     '''Test add a match'''
+    category_id = category.id
+
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
@@ -91,7 +98,8 @@ def test_add_match(client, authenticated_user):
         'date': date.strftime('%d/%m/%Y'),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
-        'match_type': random_string.generate(4)
+        'match_type': random_string.generate(4),
+        'category_id': category_id
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 201
@@ -108,7 +116,8 @@ def test_add_match(client, authenticated_user):
         'date': date.strftime('%d-%m-%Y'),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
-        'match_type': random_string.generate(4)
+        'match_type': random_string.generate(4),
+        'category_id': category_id
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
@@ -119,7 +128,8 @@ def test_add_match(client, authenticated_user):
         'date': date.strftime('%d/%m/%Y'),
         'local_team': random_string.generate(4),
         'visitor': random_string.generate(4),
-        'match_type': random_string.generate(4)
+        'match_type': random_string.generate(4),
+        'category_id': category_id
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
@@ -130,7 +140,8 @@ def test_add_match(client, authenticated_user):
         'date': date.strftime('%d/%m/%Y'),
         'local': random_string.generate(4),
         'visitor_team': random_string.generate(4),
-        'match_type': random_string.generate(4)
+        'match_type': random_string.generate(4),
+        'category_id': category_id
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
@@ -141,7 +152,8 @@ def test_add_match(client, authenticated_user):
         'date': date.strftime('%d/%m/%Y'),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
-        'type': random_string.generate(4)
+        'type': random_string.generate(4),
+        'category_id': category_id
     }
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
     assert response.status_code == 400
@@ -149,7 +161,8 @@ def test_add_match(client, authenticated_user):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_set_get_category(client, authenticated_user):
+def test_set_get_category(client, authenticated_user, category):
+    category_id = category.id
     '''Test setting a category to a match'''
     headers = {
         'Content-Type': content_type,
@@ -162,19 +175,20 @@ def test_set_get_category(client, authenticated_user):
         'date': date.strftime('%d/%m/%Y'),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
-        'match_type': random_string.generate(4)
+        'match_type': random_string.generate(4),
+        'category_id': category_id
     }
     match = client.post(URL, data=json.dumps(test_json), headers=headers)
 
-    category = {
+    _category = {
         'name': random_string.generate(12),
         'season': random.randint(1500, 2500)
     }
-    category_service.add_category(category['name'], category['season'])
+    category_service.add_category(_category['name'], _category['season'])
 
     test_data = {
         'match_id': str(match.json['id']),
-        'category_id': category['name'] + str(category['season'])
+        'category_id': _category['name'] + str(_category['season'])
     }
     response = client.put(CATEGORY_URL,
                           data=json.dumps(test_data),
@@ -183,4 +197,4 @@ def test_set_get_category(client, authenticated_user):
 
     response = client.get(CATEGORY_URL + "?id=" + match.json['id'],
                           headers=headers)
-    assert response.json['id'] == category['name'] + str(category['season'])
+    assert response.json['id'] == _category['name'] + str(_category['season'])

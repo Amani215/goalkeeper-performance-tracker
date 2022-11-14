@@ -22,8 +22,9 @@ def test_no_token(client):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_get_matches(client, authenticated_user):
+def test_get_matches(client, authenticated_user, category):
     '''Test getting match monitoring routes'''
+    category_id = category.id
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
@@ -50,7 +51,8 @@ def test_get_matches(client, authenticated_user):
         'date': date.strftime('%d/%m/%Y'),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
-        'match_type': random_string.generate(4)
+        'match_type': random_string.generate(4),
+        'category_id': category_id
     }
     match = client.post('/match', data=json.dumps(test_json), headers=headers)
     test_json = {

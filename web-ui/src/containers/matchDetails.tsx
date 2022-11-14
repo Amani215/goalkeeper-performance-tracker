@@ -2,9 +2,10 @@ import { Avatar, Box, Button, Card, Divider, Grid, IconButton, List, ListItem, L
 import React, { useEffect, useState } from 'react'
 import { MdAddchart, MdDeleteOutline } from 'react-icons/md'
 import { useParams } from 'react-router-dom';
-import { useMatch, useMatchCategory, useMatchError, useMatchReady } from '../contexts/matchContext';
+import { useMatch, useMatchCategory, useMatchError, useMatchPerformances, useMatchPerformancesReady, useMatchReady } from '../contexts/matchContext';
 import { CategoryDTO } from '../DTOs';
 import { MatchDTO } from '../DTOs/MatchDTO';
+import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 
 function MatchDetails() {
     const { id } = useParams();
@@ -14,10 +15,15 @@ function MatchDetails() {
     const [, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
+    const [goalkeeperPerformances, setGoalkeeperPerformances] = useState<MatchMonitoringDTO[]>([])
+
     const matchContext = useMatch()
     const matchError = useMatchError()
     const matchReady = useMatchReady()
     const matchCategoryContext = useMatchCategory()
+
+    const performancesContext = useMatchPerformances()
+    const performancesReady = useMatchPerformancesReady()
 
     useEffect(
         () => {
@@ -44,7 +50,17 @@ function MatchDetails() {
         if (loaded && matchReady && !matchError) {
             setError("")
         }
-    }, [loaded, matchReady, matchError, id])
+    }, [matchReady, matchError, id])
+
+    useEffect(() => {
+        if (performancesContext) {
+            performancesContext(id ? id : "").then((data) => {
+                console.log(data)
+                if (performancesReady)
+                    setGoalkeeperPerformances(data != null ? data as MatchMonitoringDTO[] : goalkeeperPerformances)
+            })
+        }
+    }, [performancesReady])
 
     return (
         <>
@@ -119,57 +135,29 @@ function MatchDetails() {
                         mb={2}>
                         <Button >Add Goalkeeper</Button>
                     </Box>
-
-                    <List
-                        sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                        <ListItem secondaryAction={
-                            <>
-                                <IconButton edge="end" aria-label="delete" sx={{ marginRight: '1px' }}>
-                                    <MdAddchart />
-                                </IconButton>
-                                <IconButton edge="end" aria-label="delete">
-                                    <MdDeleteOutline />
-                                </IconButton>
-                            </>
-                        }>
-                            <ListItemAvatar>
-                                <Avatar></Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary="Goalkeeper1" />
-                        </ListItem>
-                        <Divider />
-                        <ListItem secondaryAction={
-                            <>
-                                <IconButton edge="end" aria-label="delete" sx={{ marginRight: '1px' }}>
-                                    <MdAddchart />
-                                </IconButton>
-                                <IconButton edge="end" aria-label="delete">
-                                    <MdDeleteOutline />
-                                </IconButton>
-                            </>
-                        }>
-                            <ListItemAvatar>
-                                <Avatar></Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary="Goalkeeper2" />
-                        </ListItem>
-                        <Divider />
-                        <ListItem secondaryAction={
-                            <>
-                                <IconButton edge="end" aria-label="delete" sx={{ marginRight: '1px' }}>
-                                    <MdAddchart />
-                                </IconButton>
-                                <IconButton edge="end" aria-label="delete">
-                                    <MdDeleteOutline />
-                                </IconButton>
-                            </>
-                        }>
-                            <ListItemAvatar>
-                                <Avatar></Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary="Goalkeeper3" />
-                        </ListItem>
-                    </List>
+                    {goalkeeperPerformances.length > 0 ?
+                        <List
+                            sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                            {goalkeeperPerformances.map((gp) => (
+                                <div key={gp.id}>
+                                    <ListItem secondaryAction={<>
+                                        <IconButton edge="end" aria-label="delete" sx={{ marginRight: '1px' }}>
+                                            <MdAddchart />
+                                        </IconButton>
+                                        <IconButton edge="end" aria-label="delete">
+                                            <MdDeleteOutline />
+                                        </IconButton>
+                                    </>}>
+                                        <ListItemAvatar>
+                                            <Avatar></Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary={gp.goalkeeper_id} />
+                                    </ListItem><Divider />
+                                </div>
+                            ))}
+                        </List>
+                        : <></>
+                    }
                 </Paper>
 
             </Box>

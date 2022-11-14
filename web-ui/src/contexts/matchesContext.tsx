@@ -84,7 +84,8 @@ export default function MatchesProvider(props: PropsWithChildren<{}>) {
                 date: newMatchObj.date,
                 local: newMatchObj.local,
                 visitor: newMatchObj.visitor,
-                match_type: newMatchObj.match_type
+                match_type: newMatchObj.match_type,
+                category_id: newMatchObj.category_id
             })
         })
             .then(data => data.json())

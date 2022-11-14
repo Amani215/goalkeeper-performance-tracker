@@ -31,10 +31,10 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
         dayjs(),
     );
 
-    const handleSubmit = async ({ date, local, visitor, matchType }: FormikValues) => {
+    const handleSubmit = async ({ date, local, visitor, matchType, category }: FormikValues) => {
         if (newMatch != null) {
             const matchDate = dayjs(date).format('DD/MM/YYYY').toString()
-            await newMatch({ date: matchDate, local: local, visitor: visitor, match_type: matchType })
+            await newMatch({ date: matchDate, local: local, visitor: visitor, match_type: matchType, category_id: category })
             if (newMatchError) setError(true)
             else setModalIsOpen()
         }
@@ -45,7 +45,8 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
             date: matchDtae,
             local: '',
             visitor: '',
-            matchType: ''
+            matchType: '',
+            category: ''
         },
         onSubmit: handleSubmit
     })
@@ -118,6 +119,20 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         value={formik.values.matchType}
                         error={formik.touched.matchType && Boolean(formik.errors.matchType)}
                         helperText={formik.touched.matchType && formik.errors.matchType}
+                        onChange={formik.handleChange}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="category"
+                        label="Category"
+                        type="category"
+                        id="category"
+                        autoComplete="category"
+                        value={formik.values.category}
+                        error={formik.touched.category && Boolean(formik.errors.category)}
+                        helperText={formik.touched.category && formik.errors.category}
                         onChange={formik.handleChange}
                     />
                     <Button

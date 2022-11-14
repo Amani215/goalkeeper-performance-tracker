@@ -13,4 +13,5 @@ export interface NewMatchDTO {
   local: string;
   visitor: string;
   match_type: string;
+  category_id: string;
 }

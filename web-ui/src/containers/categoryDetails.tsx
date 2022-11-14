@@ -6,12 +6,7 @@ import { useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryG
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
-import { ModalProp } from '../interfaces/modalProp';
-
-type MultiModalProp = {
-    modal1: ModalProp,
-    modal2: ModalProp
-}
+import { MultiModalProp } from '../interfaces/modalProp';
 
 function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();

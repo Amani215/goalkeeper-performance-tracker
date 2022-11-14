@@ -6,9 +6,9 @@ import { useGetMatch, useMatchCategory, useMatchError, useMatchPerformances, use
 import { CategoryDTO } from '../DTOs';
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
-import { ModalProp } from '../interfaces/modalProp';
+import { MultiModalProp } from '../interfaces/modalProp';
 
-function MatchDetails({ setModalIsOpen }: ModalProp) {
+function MatchDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
 
     const [match, setMatch] = useState<MatchDTO | null>(null)
@@ -96,7 +96,7 @@ function MatchDetails({ setModalIsOpen }: ModalProp) {
                             <Box
                                 display="flex" justifyContent="flex-end"
                                 mb={2}>
-                                <Button onClick={() => { setModalIsOpen() }}>Edit Score</Button>
+                                <Button onClick={() => { modal1.setModalIsOpen() }}>Edit Score</Button>
                             </Box>
                             <Box
                                 display="flex"
@@ -114,7 +114,7 @@ function MatchDetails({ setModalIsOpen }: ModalProp) {
                             <Box
                                 display="flex" justifyContent="flex-end"
                                 mb={2}>
-                                <Button onClick={() => { setModalIsOpen() }}>Edit Score</Button>
+                                <Button onClick={() => { modal1.setModalIsOpen() }}>Edit Score</Button>
                             </Box>
                             <Box
                                 display="flex"
@@ -135,7 +135,7 @@ function MatchDetails({ setModalIsOpen }: ModalProp) {
                     <Box
                         display="flex" justifyContent="flex-end"
                         mb={2}>
-                        <Button >Add Goalkeeper</Button>
+                        <Button onClick={() => { modal2.setModalIsOpen() }}>Add Goalkeeper</Button>
                     </Box>
                     {goalkeeperPerformances.length > 0 ?
                         <List

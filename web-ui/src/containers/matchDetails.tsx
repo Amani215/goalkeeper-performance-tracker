@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, Divider, Grid, IconButton, List, ListItem, L
 import React, { useEffect, useState } from 'react'
 import { MdAddchart, MdDeleteOutline } from 'react-icons/md'
 import { useParams } from 'react-router-dom';
-import { useGetMatch, useMatchCategory, useMatchError, useMatchPerformances, useMatchPerformancesReady, useMatchReady, useMatchUpdated } from '../contexts/matchContext';
+import { useGetMatch, useMatchCategory, useMatchError, useMatchGoalkeepersUpdated, useMatchPerformances, useMatchPerformancesReady, useMatchReady, useMatchUpdated } from '../contexts/matchContext';
 import { CategoryDTO } from '../DTOs';
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
@@ -26,6 +26,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
 
     const performancesContext = useMatchPerformances()
     const performancesReady = useMatchPerformancesReady()
+    const performancesUpdated = useMatchGoalkeepersUpdated()
 
     useEffect(
         () => {
@@ -62,7 +63,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                     setGoalkeeperPerformances(data != null ? data as MatchMonitoringDTO[] : goalkeeperPerformances)
             })
         }
-    }, [performancesReady])
+    }, [performancesReady, performancesUpdated])
 
     return (
         <>

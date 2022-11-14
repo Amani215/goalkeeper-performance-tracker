@@ -1,6 +1,7 @@
 import { Avatar, Box, Button, Card, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { MdAddchart, MdDeleteOutline } from 'react-icons/md'
+import { MdDeleteOutline } from 'react-icons/md'
+import { TbFileChart } from 'react-icons/tb'
 import { useParams } from 'react-router-dom';
 import { useGetMatch, useMatchError, useMatchGoalkeepersUpdated, useMatchPerformances, useMatchPerformancesReady, useMatchReady, useMatchUpdated } from '../contexts/matchContext';
 import { MatchDTO } from '../DTOs/MatchDTO';
@@ -133,9 +134,11 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                             {goalkeeperPerformances.map((gp) => (
                                 <div key={gp.id}>
                                     <ListItem secondaryAction={<>
-                                        <IconButton edge="end" aria-label="delete" sx={{ marginRight: '1px' }}>
-                                            <MdAddchart />
-                                        </IconButton>
+                                        <RouterLink to={`/match-performance/${gp.id}`}>
+                                            <IconButton edge="end" aria-label="delete" sx={{ marginRight: '1px' }}>
+                                                <TbFileChart />
+                                            </IconButton>
+                                        </RouterLink>
                                         <IconButton edge="end" aria-label="delete">
                                             <MdDeleteOutline />
                                         </IconButton>

@@ -55,6 +55,11 @@ export function useUpdateScores() {
     return useContext(updateScoresContext);
 }
 
+const matchUpdatedContext = createContext<boolean>(false);
+export function useMatchUpdated() {
+    return useContext(matchUpdatedContext);
+}
+
 // ADD GOALKEEPER CONTEXT
 
 // DELETE GOALKEEPER CONTEXT
@@ -64,6 +69,7 @@ export function useUpdateScores() {
 export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element {
     const [error, setError] = useState(false)
     const [matchReady, setMatchReady] = useState<boolean>(false)
+    const [matchUpdated, setMatchUpdated] = useState<boolean>(false)
     const [matchPerformancesReady, setMatchPerformancesReady] = useState<boolean>(false)
     const [match, setMatch] = useState<MatchDTO | null>(null)
 
@@ -71,6 +77,7 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
     const token = auth?.token
 
     const getMatch: MatchDelegate = async (id: string) => {
+        setMatchUpdated(false)
         const data = await fetch("/api/match?id=" + id, {
             method: "GET",
             headers: {
@@ -150,6 +157,7 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
             setMatchReady(true);
             setError(false);
             setMatch(json_data as MatchDTO)
+            setMatchUpdated(true)
             return json_data as MatchDTO;
         }
         else {
@@ -196,6 +204,10 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         {
             ctx: updateScoresContext,
             value: updateScores
+        },
+        {
+            ctx: matchUpdatedContext,
+            value: matchUpdated
         },
     ]
 

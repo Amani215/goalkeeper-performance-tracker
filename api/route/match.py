@@ -133,3 +133,23 @@ def set_scores(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@match_api.route('/match/performances', methods=['GET'])
+@token_required(admin=False)
+def get_goalkeepers_performances(current_user: User):
+    '''Set the scores. If score is not provided then it is not changed'''
+    try:
+        args = request.args
+
+        if args.get('id') is None:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+        performances = match_service.get_goalkeepers_performances(
+            args.get('id'))
+
+        return jsonify([i.serialize for i in performances])
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

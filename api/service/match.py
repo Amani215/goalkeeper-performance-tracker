@@ -71,3 +71,9 @@ def set_scores(match_id: str, score_local: int = -1, score_visitor: int = -1):
 
     db.session.commit()
     return match
+
+
+def get_goalkeepers_performances(match_id: str):
+    '''Returns the match monitoring objects belonging to the given ID'''
+    match = get_by_id(match_id)
+    return match.goalkeepers_performances

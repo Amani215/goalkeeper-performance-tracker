@@ -77,7 +77,7 @@ function MatchDetails() {
                                 alignItems="center"
                             >
                                 <Typography variant='h6'>{match?.local}</Typography>
-                                <Typography variant='h6' sx={{ fontWeight: 'bold' }}>2</Typography>
+                                <Typography variant='h6' sx={{ fontWeight: 'bold' }}>{match?.score_local}</Typography>
                             </Box>
                         </Card>
                     </Grid>
@@ -95,7 +95,7 @@ function MatchDetails() {
                                 alignItems="center"
                             >
                                 <Typography variant='h6'>{match?.visitor}</Typography>
-                                <Typography variant='h6' sx={{ fontWeight: 'bold' }}>1</Typography>
+                                <Typography variant='h6' sx={{ fontWeight: 'bold' }}>{match?.score_visitor}</Typography>
                             </Box>
                         </Card>
                     </Grid>

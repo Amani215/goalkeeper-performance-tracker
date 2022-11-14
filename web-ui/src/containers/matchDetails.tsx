@@ -6,8 +6,9 @@ import { useGetMatch, useMatchCategory, useMatchError, useMatchPerformances, use
 import { CategoryDTO } from '../DTOs';
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
+import { ModalProp } from '../interfaces/modalProp';
 
-function MatchDetails() {
+function MatchDetails({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
 
     const [match, setMatch] = useState<MatchDTO | null>(null)
@@ -94,7 +95,7 @@ function MatchDetails() {
                             <Box
                                 display="flex" justifyContent="flex-end"
                                 mb={2}>
-                                <Button >Edit Score</Button>
+                                <Button onClick={() => { setModalIsOpen() }}>Edit Score</Button>
                             </Box>
                             <Box
                                 display="flex"
@@ -112,7 +113,7 @@ function MatchDetails() {
                             <Box
                                 display="flex" justifyContent="flex-end"
                                 mb={2}>
-                                <Button >Edit Score</Button>
+                                <Button onClick={() => { setModalIsOpen() }}>Edit Score</Button>
                             </Box>
                             <Box
                                 display="flex"

@@ -1,6 +1,6 @@
 """imports"""
 from uuid import uuid4
-from sqlalchemy import Column, String, Date
+from sqlalchemy import Column, String, Date, Integer
 from sqlalchemy.dialects.postgresql import UUID
 from config.postgres import db
 
@@ -19,7 +19,8 @@ class Match(db.Model):
     goalkeepers_performances = db.relationship("match_monitoring",
                                                back_populates="match")
     result = Column(String(35), unique=False, nullable=True)
-    score = Column(String(35), unique=False, nullable=True)
+    score_local = Column(Integer, unique=False, default=0)
+    score_visitor = Column(Integer, unique=False, default=0)
 
     def __init__(self, date, local, visitor, match_type):
         self.date = date
@@ -41,5 +42,9 @@ class Match(db.Model):
             'visitor':
             self.visitor,
             'match_type':
-            self.match_type
+            self.match_type,
+            'score_local':
+            self.score_local,
+            'score_visitor':
+            self.score_visitor
         }

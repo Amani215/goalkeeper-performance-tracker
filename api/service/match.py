@@ -53,3 +53,21 @@ def set_category(match: Match, category: Category):
     match.match_category = category
     db.session.commit()
     return {'match_id': match.id, 'category_id': category.id}
+
+
+def set_scores(match_id: str, score_local: int = -1, score_visitor: int = -1):
+    '''Set the scores. If score is not provided (i.e. it equals -1 then it is not changed.'''
+    match = get_by_id(match_id)
+
+    if (score_local > -1):
+        match.score_local = score_local
+    elif (score_local < -1):
+        raise ValueError('Score cannot be negative.')
+
+    if (score_visitor > -1):
+        match.score_visitor = score_visitor
+    elif (score_visitor < -1):
+        raise ValueError('Score cannot be negative.')
+
+    db.session.commit()
+    return match

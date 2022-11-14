@@ -60,7 +60,7 @@ def get_matches(current_user: User):
             matches = match_service.get_by_date_after(args.get("after"))
         else:
             matches = match_service.get_matches()
-        
+
         return jsonify([i.serialize for i in matches])
     except PermissionError as err:
         return {'error': str(err)}, 401
@@ -102,6 +102,33 @@ def set_category(current_user: User):
         category: Category = category_service.get_by_id(category_id)
         match_service.set_category(match, category)
         return {}, 201
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
+@match_api.route('/match/score', methods=['PUT'])
+@token_required(admin=True)
+def set_scores(current_user: User):
+    '''Set the scores. If score is not provided then it is not changed'''
+    try:
+        args = request.args
+
+        if not request.json or args.get('id') is None:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+        score_local = -1
+        score_visitor = -1
+        if 'score_local' in request.json:
+            score_local = request.json['score_local']
+        if 'score_visitor' in request.json:
+            score_visitor = request.json['score_visitor']
+
+        response = match_service.set_scores(args.get('id'), score_local,
+                                            score_visitor)
+
+        return response.serialize, 201
     except PermissionError as err:
         return {'error': str(err)}, 401
     except Exception as err:

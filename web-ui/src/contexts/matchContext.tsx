@@ -9,9 +9,14 @@ import { useAuth } from './authContext';
 
 // GET MATCH CONTEXTS
 type MatchDelegate = (id: string) => Promise<MatchDTO | errorResponse>;
-const matchContext = createContext<MatchDelegate | null>(null);
+const getMatchContext = createContext<MatchDelegate | null>(null);
+export function useGetMatch() {
+    return useContext(getMatchContext);
+}
+
+const matchContext = createContext<MatchDTO | null>(null)
 export function useMatch() {
-    return useContext(matchContext);
+    return useContext(matchContext)
 }
 
 const matchErrorContext = createContext<boolean>(false);
@@ -53,11 +58,12 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
     const [error, setError] = useState(false)
     const [matchReady, setMatchReady] = useState<boolean>(false)
     const [matchPerformancesReady, setMatchPerformancesReady] = useState<boolean>(false)
+    const [match, setMatch] = useState<MatchDTO | null>(null)
 
     const auth = useAuth()
     const token = auth?.token
 
-    const match: MatchDelegate = async (id: string) => {
+    const getMatch: MatchDelegate = async (id: string) => {
         const data = await fetch("/api/match?id=" + id, {
             method: "GET",
             headers: {
@@ -69,11 +75,13 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         if ('id' in json_data) {
             setMatchReady(true);
             setError(false);
+            setMatch(json_data as MatchDTO)
             return json_data as MatchDTO;
         }
         else {
             setError(true);
             setMatchReady(true);
+            setMatch(null)
             return json_data as errorResponse;
         }
     }
@@ -123,6 +131,10 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         value: any
     }
     const providers: contextProvider[] = [
+        {
+            ctx: getMatchContext,
+            value: getMatch
+        },
         {
             ctx: matchContext,
             value: match

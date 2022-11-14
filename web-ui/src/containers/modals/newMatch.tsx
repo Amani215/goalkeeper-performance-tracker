@@ -1,11 +1,13 @@
-import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from '@mui/material'
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import { FormikValues, useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useCategories, useCategoriesReady } from '../../contexts/categoriesContext';
 import { useNewMatch, useNewMatchError } from '../../contexts/matchesContext';
+import { CategoryDTO } from '../../DTOs';
 import { ModalProp } from '../../interfaces/modalProp'
 
 
@@ -23,13 +25,23 @@ const style = {
 
 function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [, setError] = useState(false)
+    const [categories, setCategories] = useState<CategoryDTO[]>([])
 
     const newMatch = useNewMatch()
     const newMatchError = useNewMatchError()
 
+    const categoriesContext = useCategories()
+    const categoriesReady = useCategoriesReady()
+
     const [matchDtae,] = useState<Dayjs>(
         dayjs(),
     );
+
+    useEffect(() => {
+        if (categoriesReady && categoriesContext) {
+            setCategories(categoriesContext)
+        }
+    }, [categoriesReady, categoriesContext])
 
     const handleSubmit = async ({ date, local, visitor, matchType, category }: FormikValues) => {
         if (newMatch != null) {
@@ -121,20 +133,22 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         helperText={formik.touched.matchType && formik.errors.matchType}
                         onChange={formik.handleChange}
                     />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="category"
-                        label="Category"
-                        type="category"
-                        id="category"
-                        autoComplete="category"
-                        value={formik.values.category}
-                        error={formik.touched.category && Boolean(formik.errors.category)}
-                        helperText={formik.touched.category && formik.errors.category}
-                        onChange={formik.handleChange}
-                    />
+
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formik.values.category}
+                            label="Category"
+                            onChange={(e) => formik.setFieldValue("category", e.target.value)}
+                        >
+                            {categories.map((category) => (
+                                <MenuItem key={category.id} value={category.id}>{category.name} {category.season}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
                     <Button
                         type="submit"
                         fullWidth

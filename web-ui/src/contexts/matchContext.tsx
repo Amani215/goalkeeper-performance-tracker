@@ -1,5 +1,6 @@
 import React from 'react';
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
+import { CategoryDTO } from '../DTOs';
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
@@ -20,6 +21,13 @@ export function useMatchError() {
 const matchReadyContext = createContext<boolean>(false);
 export function useMatchReady() {
     return useContext(matchReadyContext);
+}
+
+// GET MATCH CATEGORY CONTEXT
+type MatchCategoryDelegate = (id: string) => Promise<CategoryDTO | null>;
+const matchCategoryContext = createContext<MatchCategoryDelegate | null>(null);
+export function useMatchCategory() {
+    return useContext(matchCategoryContext);
 }
 
 // GET GOALKEEPERS CONTEXT
@@ -58,11 +66,32 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         }
     }
 
+    const matchCategory: MatchCategoryDelegate = async (id: string) => {
+        const data = await fetch("/api/match/category?id=" + id, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setError(false);
+            return json_data as CategoryDTO;
+        }
+        else {
+            setError(true);
+            return null;
+        }
+    }
+
     return (
         <matchContext.Provider value={match}>
             <matchReadyContext.Provider value={matchReady}>
                 <matchErrorContext.Provider value={error}>
-                    {props.children}
+                    <matchCategoryContext.Provider value={matchCategory}>
+                        {props.children}
+                    </matchCategoryContext.Provider>
                 </matchErrorContext.Provider>
             </matchReadyContext.Provider>
         </matchContext.Provider>

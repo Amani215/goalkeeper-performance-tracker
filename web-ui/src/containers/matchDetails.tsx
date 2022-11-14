@@ -2,19 +2,22 @@ import { Avatar, Box, Button, Card, Divider, Grid, IconButton, List, ListItem, L
 import React, { useEffect, useState } from 'react'
 import { MdAddchart, MdDeleteOutline } from 'react-icons/md'
 import { useParams } from 'react-router-dom';
-import { useMatch, useMatchError, useMatchReady } from '../contexts/matchContext';
+import { useMatch, useMatchCategory, useMatchError, useMatchReady } from '../contexts/matchContext';
+import { CategoryDTO } from '../DTOs';
 import { MatchDTO } from '../DTOs/MatchDTO';
 
 function MatchDetails() {
     const { id } = useParams();
 
     const [match, setMatch] = useState<MatchDTO | null>(null)
+    const [matchCategory, setMatchCategory] = useState<CategoryDTO | null>(null)
     const [, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
     const matchContext = useMatch()
     const matchError = useMatchError()
     const matchReady = useMatchReady()
+    const matchCategoryContext = useMatchCategory()
 
     useEffect(
         () => {
@@ -26,7 +29,12 @@ function MatchDetails() {
         if (matchContext) {
             matchContext(id ? id : "").then(
                 data => setMatch(data as MatchDTO)
-                // console.log(data)
+            )
+        }
+
+        if (matchCategoryContext) {
+            matchCategoryContext(id ? id : "").then(
+                data => setMatchCategory(data as CategoryDTO)
             )
         }
 
@@ -54,7 +62,9 @@ function MatchDetails() {
                 <Typography
                     variant='h5'
                     mb={2}>
-                    Category A
+                    {matchCategory != null ?
+                        matchCategory.name + " " + matchCategory.season :
+                        "--"}
                 </Typography>
                 <Typography
                     variant='h6'

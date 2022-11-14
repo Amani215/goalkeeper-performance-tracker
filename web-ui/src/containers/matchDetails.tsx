@@ -49,7 +49,6 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
     useEffect(() => {
         if (performancesContext) {
             performancesContext(id ? id : "").then((data) => {
-                console.log(data)
                 if (performancesReady)
                     setGoalkeeperPerformances(data != null ? data as MatchMonitoringDTO[] : goalkeeperPerformances)
             })

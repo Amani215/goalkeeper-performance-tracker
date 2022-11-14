@@ -35,7 +35,6 @@ export default function LoginProvider(props: PropsWithChildren<{}>) {
                     return data as LoginDTO
                 }
                 else {
-                    console.log(data)
                     setLoginError(true)
                     return data as errorResponse
                 }

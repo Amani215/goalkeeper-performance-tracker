@@ -76,7 +76,6 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
                     return data as errorResponse
                 } else {
                     setNewCategoryError(false)
-                    console.log(data)
                     setCategories([...categories as CategoryDTO[], data as CategoryDTO])
                     return data as CategoryDTO
                 }

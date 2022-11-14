@@ -42,7 +42,7 @@ class match_monitoring(db.Model):
         """Return object data in easily serializable format"""
         return {
             'id': self.id,
-            'goalkeeper_id': self.main_goalkeeper_id,
+            'goalkeeper': self.main_goalkeeper.serialize,
             'match_id': self.match_id,
             'time_played': self.time_played,
             'goals_scored': self.goals_scored,

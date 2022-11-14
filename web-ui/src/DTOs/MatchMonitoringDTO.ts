@@ -1,6 +1,8 @@
+import { GoalkeeperDTO } from "./GoalkeeperDTO";
+
 export interface MatchMonitoringDTO {
   id: string;
-  goalkeeper_id: string;
+  goalkeeper: GoalkeeperDTO;
   match_id: string;
   time_played: number;
   goals_scored: number;

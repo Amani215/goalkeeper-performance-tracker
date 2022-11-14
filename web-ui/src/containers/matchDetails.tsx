@@ -154,7 +154,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                                         <ListItemAvatar>
                                             <Avatar></Avatar>
                                         </ListItemAvatar>
-                                        <ListItemText primary={gp.goalkeeper_id} />
+                                        <ListItemText primary={gp.goalkeeper.name} />
                                     </ListItem><Divider />
                                 </div>
                             ))}

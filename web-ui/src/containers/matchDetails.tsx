@@ -6,6 +6,7 @@ import { useGetMatch, useMatchError, useMatchGoalkeepersUpdated, useMatchPerform
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { MultiModalProp } from '../interfaces/modalProp';
+import { Link as RouterLink } from 'react-router-dom';
 
 function MatchDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
@@ -140,7 +141,9 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                                         </IconButton>
                                     </>}>
                                         <ListItemAvatar>
-                                            <Avatar></Avatar>
+                                            <RouterLink to={`/goalkeepers/${gp.goalkeeper.id}`}>
+                                                <Avatar src={gp.goalkeeper.picture}></Avatar>
+                                            </RouterLink>
                                         </ListItemAvatar>
                                         <ListItemText primary={gp.goalkeeper.name} />
                                     </ListItem><Divider />

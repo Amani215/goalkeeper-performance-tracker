@@ -3,6 +3,7 @@ import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGoalkeepers, useGoalkeepersReady } from '../../contexts/goalkeepersContext';
+import { useNewMatchGoalkeeper } from '../../contexts/matchContext';
 import { GoalkeeperDTO } from '../../DTOs/GoalkeeperDTO';
 import { ModalProp } from '../../interfaces/modalProp'
 
@@ -25,6 +26,7 @@ function NewMatchGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
     const goalkeepersReady = useGoalkeepersReady()
     const goalkeepersContext = useGoalkeepers()
+    const newMatchGoalkeeper = useNewMatchGoalkeeper()
 
     useEffect(() => {
         if (goalkeepersReady && goalkeepersContext) {
@@ -35,6 +37,11 @@ function NewMatchGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const handleSubmit = async ({ goalkeeperId }: FormikValues): Promise<void> => {
         if (goalkeeperId == "")
             return;
+
+        if (newMatchGoalkeeper) {
+            await newMatchGoalkeeper(goalkeeperId, id as string)
+            setModalIsOpen()
+        }
     };
 
     const formik = useFormik({

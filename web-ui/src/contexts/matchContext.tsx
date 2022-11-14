@@ -61,6 +61,16 @@ export function useMatchUpdated() {
 }
 
 // ADD GOALKEEPER CONTEXT
+type NewMatchGoalkeeperDelegate = (goalkeeperId: string, matchId: string) => Promise<MatchMonitoringDTO | errorResponse>;
+const newMatchGoalkeeperContext = createContext<NewMatchGoalkeeperDelegate | null>(null);
+export function useNewMatchGoalkeeper() {
+    return useContext(newMatchGoalkeeperContext);
+}
+
+const matchGoalkeepersUpdatedContext = createContext<boolean>(false);
+export function useMatchGoalkeepersUpdated() {
+    return useContext(matchGoalkeepersUpdatedContext);
+}
 
 // DELETE GOALKEEPER CONTEXT
 
@@ -71,6 +81,7 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
     const [matchReady, setMatchReady] = useState<boolean>(false)
     const [matchUpdated, setMatchUpdated] = useState<boolean>(false)
     const [matchPerformancesReady, setMatchPerformancesReady] = useState<boolean>(false)
+    const [matchPerformancesUpdated, setMatchPerformancesUpdated] = useState<boolean>(false)
     const [match, setMatch] = useState<MatchDTO | null>(null)
 
     const auth = useAuth()
@@ -120,6 +131,7 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
     }
 
     const matchPerformances: MatchPerformancesDelegate = async (id: string) => {
+        setMatchPerformancesUpdated(false)
         const data = await fetch("/api/match/performances?id=" + id, {
             method: "GET",
             headers: {
@@ -137,6 +149,30 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
             setError(false);
             setMatchPerformancesReady(true)
             return json_data as MatchMonitoringDTO[];
+        }
+    }
+
+    // adding a goalkeeper is equivalent to adding a match performance object
+    const newMatchPerformance: NewMatchGoalkeeperDelegate = async (goalkeeperId: string, matchId: string) => {
+        const data = await fetch("/api/match_monitoring", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                goalkeeper_id: goalkeeperId,
+                match_id: matchId
+            })
+        });
+        const data_json = await data.json();
+        if ("error" in data_json) {
+            setError(true);
+            setMatchPerformancesUpdated(false);
+            return data_json as errorResponse;
+        } else {
+            setMatchPerformancesUpdated(true);
+            return data_json as MatchMonitoringDTO;
         }
     }
 
@@ -208,6 +244,14 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         {
             ctx: matchUpdatedContext,
             value: matchUpdated
+        },
+        {
+            ctx: newMatchGoalkeeperContext,
+            value: newMatchPerformance
+        },
+        {
+            ctx: matchGoalkeepersUpdatedContext,
+            value: matchPerformancesUpdated
         },
     ]
 

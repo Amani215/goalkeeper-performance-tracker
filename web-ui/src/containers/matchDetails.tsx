@@ -2,12 +2,11 @@ import { Avatar, Box, Button, Card, Divider, Grid, IconButton, List, ListItem, L
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md'
 import { TbFileChart } from 'react-icons/tb'
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useGetMatch, useMatchError, useMatchGoalkeepersUpdated, useMatchPerformances, useMatchPerformancesReady, useMatchReady, useMatchUpdated } from '../contexts/matchContext';
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { MultiModalProp } from '../interfaces/modalProp';
-import { Link as RouterLink } from 'react-router-dom';
 
 function MatchDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();

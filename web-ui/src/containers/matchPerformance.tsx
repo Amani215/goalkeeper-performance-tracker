@@ -1,7 +1,7 @@
 import { Box, Card, Grid, IconButton, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { MdLaunch } from 'react-icons/md'
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 import MatchFeedback from '../components/matchFeedback'
 import { useMatchPerformance, useMatchPerformanceError, useMatchPerformanceReady } from '../contexts/matchPerformanceContext';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
@@ -58,9 +58,11 @@ function MatchPerformance() {
                 <Grid item xs={4} sm={4} md={8} order={{ xs: 2, sm: 2, md: 2 }}>
                     <Card sx={{ padding: 2, marginBottom: 1 }}>
                         <Box display="flex" justifyContent="flex-end">
-                            <IconButton>
-                                <MdLaunch />
-                            </IconButton>
+                            <RouterLink to={`/matches/${matchPerformance?.match_id}`}>
+                                <IconButton>
+                                    <MdLaunch />
+                                </IconButton>
+                            </RouterLink>
                         </Box>
 
                         <Grid container columns={8}>
@@ -113,9 +115,11 @@ function MatchPerformance() {
                     </Card>
                     <Card sx={{ padding: 2 }}>
                         <Box display="flex" justifyContent="flex-end">
-                            <IconButton>
-                                <MdLaunch />
-                            </IconButton>
+                            <RouterLink to={`/goalkeepers/${matchPerformance ? matchPerformance.goalkeeper?.id : ""}`}>
+                                <IconButton>
+                                    <MdLaunch />
+                                </IconButton>
+                            </RouterLink>
                         </Box>
 
                         <Grid container columns={8}>
@@ -130,7 +134,7 @@ function MatchPerformance() {
                             <Grid item xs={5}>
                                 <Typography
                                     variant='body1'>
-                                    01/01/2022
+                                    {matchPerformance ? matchPerformance.goalkeeper?.birthday : "--"}
                                 </Typography>
                             </Grid>
 
@@ -166,10 +170,10 @@ function MatchPerformance() {
                             alignItems="center"
                             mb={1}>
                             <Typography
-                                variant='subtitle1'
+                                variant='h6'
                                 sx={{ fontWeight: 'bold' }}
                                 ml={1} mt={1}>
-                                Goalkeeper
+                                {matchPerformance ? matchPerformance.goalkeeper?.name : "--"}
                             </Typography>
                         </Box>
 

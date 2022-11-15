@@ -1,4 +1,4 @@
-import { Chip, Link, Typography } from '@mui/material'
+import { Chip, Divider, IconButton, Link, List, ListItem, ListItemText, Paper, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
@@ -6,10 +6,76 @@ import Grid from '@mui/material/Grid'
 import dayjs from 'dayjs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
-import { useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperReady, useUpdatePicture } from '../contexts/goalkeeperContext'
+import { useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useUpdatePicture } from '../contexts/goalkeeperContext'
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO'
 import { IoFootball } from "react-icons/io5"
 import { CategoryDTO } from '../DTOs'
+import { DataGrid } from '@mui/x-data-grid/DataGrid'
+import { GridColDef } from '@mui/x-data-grid'
+import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO'
+
+
+const columns: GridColDef[] = [
+    {
+        field: 'match',
+        headerName: 'Match',
+        flex: 1,
+        minWidth: 60,
+        renderCell: (params) => {
+            return (
+                <Link
+                    component={RouterLink}
+                    to={`/matches/${params.row.match.id}`}
+                    underline="none"
+                    color="inherit">
+                    <Typography>
+                        {params.row.match.match_type} {params.row.match.local}-{params.row.match.visitor}</Typography>
+                </Link>
+            );
+        }
+    },
+    {
+        field: 'date',
+        headerName: 'Date',
+        flex: 1,
+        minWidth: 60,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Typography>{params.row.match.date}</Typography>
+            );
+        }
+    },
+    {
+        field: 'category',
+        headerName: 'Category',
+        flex: 1,
+        minWidth: 60,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Typography>{params.row.match.category.id}</Typography>
+            );
+        }
+    },
+    {
+        field: 'id',
+        headerName: 'Performance Sheet',
+        flex: 1,
+        minWidth: 10,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Link
+                    component={RouterLink}
+                    to={`/match-performance/${params.row.id}`}
+                    color="inherit">
+                    <Typography>Link</Typography>
+                </Link>
+            );
+        }
+    }
+]
 
 function GoalkeeperDetails() {
     const { id } = useParams();
@@ -27,11 +93,11 @@ function GoalkeeperDetails() {
     const categoriesContext = useGoalkeeperCategories()
     const categoriesReady = useGoalkeeperCategoriesReady()
 
-    useEffect(
-        () => {
-            setLoaded(true)
-        }, []
-    )
+    const [rows, setRows] = useState<MatchMonitoringDTO[]>([] as MatchMonitoringDTO[])
+    const matches = useGoalkeeperMatches()
+    const matchesReady = useGoalkeeperMatchesReady()
+
+    useEffect(() => { setLoaded(true) }, [])
 
     useEffect(() => {
         if (goalkeeperContext) {
@@ -55,6 +121,15 @@ function GoalkeeperDetails() {
             })
         }
     }, [categoriesReady])
+
+    useEffect(() => {
+        if (matches) {
+            matches(id ? id : "").then((data) => {
+                if (matchesReady)
+                    setRows(data as MatchMonitoringDTO[])
+            })
+        }
+    }, [matchesReady])
 
     const uploadPicture = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {
@@ -180,7 +255,18 @@ function GoalkeeperDetails() {
                                 </Grid>
                             </Grid>
                         </Card>
+
+                        <Typography fontWeight="bold" mt={2} mb={1}>Match performances</Typography>
+                        {rows.length > 0 ?
+                            < DataGrid
+                                rows={rows || []}
+                                columns={columns}
+                                pageSize={3}
+                                rowsPerPageOptions={[3]}
+                            /> : <></>
+                        }
                     </Grid>
+
                     <Grid item xs={4} sm={3} md={4} order={{ xs: 1, sm: 2, md: 2 }}>
                         <Card sx={{ width: "auto" }}>
                             <Box

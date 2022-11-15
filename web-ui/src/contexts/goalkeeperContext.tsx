@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { CategoryDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
+import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
 
@@ -33,6 +34,18 @@ export function useGoalkeeperCategoriesReady() {
     return useContext(goalkeeperCategoriesReadyContext);
 }
 
+// GET MATCH PERFORMANCES CONTEXTS
+type GoalkeeperMatchesDelegate = (id: string) => Promise<MatchMonitoringDTO[] | errorResponse>;
+const goalkeeperMatchesContext = createContext<GoalkeeperMatchesDelegate | null>(null)
+export function useGoalkeeperMatches() {
+    return useContext(goalkeeperMatchesContext)
+}
+
+const goalkeeperMatchesReadyContext = createContext<boolean>(false);
+export function useGoalkeeperMatchesReady() {
+    return useContext(goalkeeperMatchesReadyContext);
+}
+
 // PROFILE PIC CONTEXT
 type PictureDelegate = (id: string, formdata: FormData) => Promise<string | errorResponse>;
 const updatePictureContext = createContext<PictureDelegate | null>(null);
@@ -46,6 +59,7 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
     const [goalkeeperReady, setGoalkeeperReady] = useState<boolean>(false)
 
     const [goalkeeperCategoriesReady, setGoalkeeperCategoriesReady] = useState<boolean>(false)
+    const [goalkeeperMatchesReady, setGoalkeeperMatchesReady] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -91,6 +105,26 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
         }
     }
 
+    const matches: GoalkeeperMatchesDelegate = async (id: string) => {
+        const data = await fetch("/api/goalkeeper/match_performances?id=" + id, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setError(false);
+            return json_data as MatchMonitoringDTO[];
+        }
+        else {
+            setGoalkeeperMatchesReady(true)
+            setError(true);
+            return json_data as errorResponse;
+        }
+    }
+
     const picture: PictureDelegate = (id: string, formdata: FormData) => {
         return fetch("/api/goalkeeper/picture?id=" + id, {
             method: "PUT",
@@ -109,9 +143,13 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
                 <goalkeeperReadyContext.Provider value={goalkeeperReady}>
                     <goalkeeperCategoriesContext.Provider value={categories}>
                         <goalkeeperCategoriesReadyContext.Provider value={goalkeeperCategoriesReady}>
-                            <updatePictureContext.Provider value={picture}>
-                                {props.children}
-                            </updatePictureContext.Provider>
+                            <goalkeeperMatchesContext.Provider value={matches}>
+                                <goalkeeperMatchesReadyContext.Provider value={goalkeeperMatchesReady}>
+                                    <updatePictureContext.Provider value={picture}>
+                                        {props.children}
+                                    </updatePictureContext.Provider>
+                                </goalkeeperMatchesReadyContext.Provider>
+                            </goalkeeperMatchesContext.Provider>
                         </goalkeeperCategoriesReadyContext.Provider>
                     </goalkeeperCategoriesContext.Provider>
                 </goalkeeperReadyContext.Provider>

@@ -8,8 +8,9 @@ import { useGoalkeeperCategories, useGoalkeeperCategoriesReady } from '../contex
 import { useGetMatchPerformance, useMatchPerformanceError, useMatchPerformanceReady } from '../contexts/matchPerformanceContext';
 import { CategoryDTO } from '../DTOs';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
+import { ModalProp } from '../interfaces/modalProp';
 
-function MatchPerformance() {
+function MatchPerformance({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
 
     const [matchPerformance, setMatchPerformance] = useState<MatchMonitoringDTO | null>(null)
@@ -215,7 +216,7 @@ function MatchPerformance() {
                     </Card>
                 </Grid>
             </Grid>
-            <MatchFeedback matchPerformance={matchPerformance} />
+            <MatchFeedback matchPerformance={matchPerformance} setModalIsOpen={setModalIsOpen} />
         </>
     )
 }

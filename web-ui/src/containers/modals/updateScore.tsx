@@ -18,7 +18,7 @@ const style = {
 };
 
 function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
-    const [error, setError] = useState(false)
+    const [, setError] = useState(false)
     const [loaded, setLoaded] = useState(false)
 
     const match = useMatch()

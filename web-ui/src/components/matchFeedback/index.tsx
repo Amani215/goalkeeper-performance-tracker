@@ -1,11 +1,14 @@
 import React from 'react'
 import { Box, Button, Card, Grid, Typography } from '@mui/material'
 import { MatchMonitoringDTO } from '../../DTOs/MatchMonitoringDTO'
+import { ModalProp } from '../../interfaces/modalProp'
+import { VoidDelegate } from '../../interfaces/voidDelegate'
 
 type PropType = {
-    matchPerformance: MatchMonitoringDTO | null
+    matchPerformance: MatchMonitoringDTO | null,
+    setModalIsOpen: VoidDelegate
 }
-function MatchFeedback({ matchPerformance }: PropType) {
+function MatchFeedback({ matchPerformance, setModalIsOpen }: PropType) {
     return (
         <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 4, md: 12 }}>
             <Grid item xs={4} sm={4} md={8} order={{ xs: 1, sm: 1, md: 1 }}>
@@ -30,7 +33,7 @@ function MatchFeedback({ matchPerformance }: PropType) {
                 <Card sx={{ width: "100%", marginTop: 2, padding: 2 }}>
                     <Box
                         display="flex" justifyContent="flex-end">
-                        <Button>Update Feedback</Button>
+                        <Button onClick={() => { setModalIsOpen() }}>Update Feedback</Button>
                     </Box>
                     <Grid container columns={8}>
                         <Grid item xs={8}>

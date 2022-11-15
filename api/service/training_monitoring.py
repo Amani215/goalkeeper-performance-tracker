@@ -91,3 +91,14 @@ def editable(tm: training_monitoring, user: User) -> bool:
             redis_db.sadd(key, _id)
 
     return str(user.id) in s
+
+
+def delete(id: str):
+    '''Deletes the given training performance from the database'''
+    tm = get_by_id(id)
+
+    key = f'{id}_editable'
+    redis_db.delete(key)
+
+    db.session.delete(tm)
+    db.session.commit()

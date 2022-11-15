@@ -10,6 +10,7 @@ from model.user import User
 from service.s3 import upload_file
 from config.redis import redis_db
 from model.match_monitoring import match_monitoring
+from model.training_monitoring import training_monitoring
 
 
 def add_goalkeeper(name: str, day: int, month: int, year: int):
@@ -135,3 +136,11 @@ def get_training_performances(goalkeeper_id: str):
     '''Get the training performances of the goalkeeper'''
     goalkeeper = get_by_id(goalkeeper_id)
     return goalkeeper.training_performances
+
+
+def remove_training_performance(goalkeeper_id: str,
+                                training_performance: training_monitoring):
+    '''Remove a specific training performance'''
+    goalkeeper = get_by_id(goalkeeper_id)
+    goalkeeper.training_performances.remove(training_performance)
+    db.session.commit()

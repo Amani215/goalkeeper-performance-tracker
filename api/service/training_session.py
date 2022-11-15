@@ -4,6 +4,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from config.postgres import db
 from model.training_session import training_session
 import service.category as category_service
+import service.training_monitoring as training_monitoring_service
+import service.goalkeeper as goalkeeper_service
 from config.redis import redis_db
 
 
@@ -62,3 +64,16 @@ def get_goalkeepers_performances(session_id: str):
     '''Returns the match monitoring objects belonging to the given ID'''
     session = get_by_id(session_id)
     return session.goalkeepers_performances
+
+
+def remove_goalkeeper_performance(session_id: str,
+                                  goalkeeper_performance_id: str):
+    '''Remove a goalkeeper's performance from the match'''
+    gp = training_monitoring_service.get_by_id(goalkeeper_performance_id)
+    goalkeeper_service.remove_training_performance(gp.goalkeeper.id, gp)
+
+    session = get_by_id(session_id)
+    session.goalkeepers_performances.remove(gp)
+
+    training_monitoring_service.delete(goalkeeper_performance_id)
+    db.session.commit()

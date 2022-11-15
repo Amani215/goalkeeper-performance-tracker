@@ -121,3 +121,24 @@ def get_goalkeepers_performances(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@training_session_api.route('/training_session/performances',
+                            methods=['DELETE'])
+@token_required(admin=True)
+def remove_goalkeepers_performance(current_user: User):
+    '''Remove a goalkeeper performance by id'''
+    try:
+        args = request.args
+
+        if not request.json or args.get('id') is None:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+        training_session_service.remove_goalkeeper_performance(
+            args.get('id'), request.json['goalkeeper_performance_id'])
+
+        return {}, 204
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

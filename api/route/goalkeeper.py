@@ -153,3 +153,37 @@ def add_picture(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@goalkeeper_api.route('/goalkeeper/match_performances', methods=['GET'])
+@token_required(admin=False)
+def get_match_performances(current_user: User):
+    '''Get all rthe match performances of the given goalkeeper
+    '''
+    try:
+        args = request.args
+
+        match_performances = goalkeeper_service.get_match_performances(
+            args.get('id'))
+        return jsonify([i.serialize for i in match_performances])
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
+@goalkeeper_api.route('/goalkeeper/training_performances', methods=['GET'])
+@token_required(admin=False)
+def get_training_performances(current_user: User):
+    '''Get all rthe training performances of the given goalkeeper
+    '''
+    try:
+        args = request.args
+
+        training_performances = goalkeeper_service.get_training_performances(
+            args.get('id'))
+        return jsonify([i.serialize for i in training_performances])
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

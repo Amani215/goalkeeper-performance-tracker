@@ -7,6 +7,7 @@ from model.match import Match
 from config.redis import redis_db
 import service.category as category_service
 import service.match_monitoring as match_monitoring_service
+import service.goalkeeper as goalkeeper_service
 
 
 def add_match(date: str, local: str, visitor: str, match_type: str,
@@ -87,8 +88,11 @@ def get_goalkeepers_performances(match_id: str):
 def remove_goalkeeper_performance(match_id: str,
                                   goalkeeper_performance_id: str):
     '''Remove a goalkeeper's performance from the match'''
-    match = get_by_id(match_id)
     gp = match_monitoring_service.get_by_id(goalkeeper_performance_id)
+    goalkeeper_service.remove_match_performance(gp.main_goalkeeper_id, gp)
+
+    match = get_by_id(match_id)
     match.goalkeepers_performances.remove(gp)
+
     match_monitoring_service.delete(goalkeeper_performance_id)
     db.session.commit()

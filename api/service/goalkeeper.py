@@ -9,6 +9,7 @@ from model.goalkeeper import Goalkeeper
 from model.user import User
 from service.s3 import upload_file
 from config.redis import redis_db
+from model.match_monitoring import match_monitoring
 
 
 def add_goalkeeper(name: str, day: int, month: int, year: int):
@@ -114,3 +115,23 @@ def editable(goalkeeper: Goalkeeper, user: User) -> bool:
             s.add(_id)
             redis_db.sadd(key, _id)
     return str(user.id) in s
+
+
+def get_match_performances(goalkeeper_id: str):
+    '''Get the match performances of the goalkeeper'''
+    goalkeeper = get_by_id(goalkeeper_id)
+    return goalkeeper.match_performances
+
+
+def remove_match_performance(goalkeeper_id: str,
+                             match_performance: match_monitoring):
+    '''Remove a specific match performance'''
+    goalkeeper = get_by_id(goalkeeper_id)
+    goalkeeper.match_performances.remove(match_performance)
+    db.session.commit()
+
+
+def get_training_performances(goalkeeper_id: str):
+    '''Get the training performances of the goalkeeper'''
+    goalkeeper = get_by_id(goalkeeper_id)
+    return goalkeeper.training_performances

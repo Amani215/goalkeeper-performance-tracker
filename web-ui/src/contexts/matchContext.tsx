@@ -64,7 +64,11 @@ export function useMatchGoalkeepersUpdated() {
 }
 
 // DELETE GOALKEEPER CONTEXT
-
+type DeleteMatchGoalkeeperDelegate = (goalkeeperPerformanceId: string, matchId: string) => Promise<null | errorResponse>;
+const deleteMatchGoalkeeperContext = createContext<DeleteMatchGoalkeeperDelegate | null>(null);
+export function useDeleteMatchGoalkeeper() {
+    return useContext(deleteMatchGoalkeeperContext);
+}
 
 // PROVIDER
 export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element {
@@ -148,6 +152,28 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         }
     }
 
+    // deleting a goalkeeper is equivalent to deleting a match performance object
+    const deleteMatchPerformance: DeleteMatchGoalkeeperDelegate = async (goalkeeperPerformanceId: string, matchId: string) => {
+        const data = await fetch("/api/match/performances?id=" + matchId, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                goalkeeper_performance_id: goalkeeperPerformanceId
+            })
+        });
+        if (data.status == 204) {
+            setMatchPerformancesUpdated(true);
+            return null;
+        }
+        const data_json = await data.json();
+        setError(true);
+        setMatchPerformancesUpdated(false);
+        return data_json as errorResponse;
+    }
+
     const updateScores: UpdateScoresDelegate = async (id: string, localScore: number, visitorScore: number) => {
         const data = await fetch("/api/match/score?id=" + id, {
             method: "PUT",
@@ -216,6 +242,10 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         {
             ctx: newMatchGoalkeeperContext,
             value: newMatchPerformance
+        },
+        {
+            ctx: deleteMatchGoalkeeperContext,
+            value: deleteMatchPerformance
         },
         {
             ctx: matchGoalkeepersUpdatedContext,

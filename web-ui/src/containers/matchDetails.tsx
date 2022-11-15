@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md'
 import { TbFileChart } from 'react-icons/tb'
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useGetMatch, useMatchError, useMatchGoalkeepersUpdated, useMatchPerformances, useMatchPerformancesReady, useMatchReady, useMatchUpdated } from '../contexts/matchContext';
+import { useDeleteMatchGoalkeeper, useGetMatch, useMatchError, useMatchGoalkeepersUpdated, useMatchPerformances, useMatchPerformancesReady, useMatchReady, useMatchUpdated } from '../contexts/matchContext';
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { MultiModalProp } from '../interfaces/modalProp';
@@ -21,6 +21,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
     const matchError = useMatchError()
     const matchReady = useMatchReady()
     const matchUpdated = useMatchUpdated()
+    const deleteMatchGoalkeeper = useDeleteMatchGoalkeeper()
 
     const performancesContext = useMatchPerformances()
     const performancesReady = useMatchPerformancesReady()
@@ -55,6 +56,12 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
             })
         }
     }, [performancesReady, performancesUpdated])
+
+    const deleteGoalkeeperPerformance = (gpId: string) => {
+        if (deleteMatchGoalkeeper) {
+            deleteMatchGoalkeeper(gpId, id ? id : "")
+        }
+    }
 
     return (
         <>
@@ -138,7 +145,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                                                 <TbFileChart />
                                             </IconButton>
                                         </RouterLink>
-                                        <IconButton edge="end" aria-label="delete">
+                                        <IconButton edge="end" aria-label="delete" onClick={() => { deleteGoalkeeperPerformance(gp.id) }}>
                                             <MdDeleteOutline />
                                         </IconButton>
                                     </>}>

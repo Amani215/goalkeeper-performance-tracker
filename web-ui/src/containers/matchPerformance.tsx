@@ -58,7 +58,7 @@ function MatchPerformance() {
                 <Grid item xs={4} sm={4} md={8} order={{ xs: 2, sm: 2, md: 2 }}>
                     <Card sx={{ padding: 2, marginBottom: 1 }}>
                         <Box display="flex" justifyContent="flex-end">
-                            <RouterLink to={`/matches/${matchPerformance?.match_id}`}>
+                            <RouterLink to={`/matches/${matchPerformance?.match?.id}`}>
                                 <IconButton>
                                     <MdLaunch />
                                 </IconButton>
@@ -70,7 +70,7 @@ function MatchPerformance() {
                                 <Typography
                                     variant='subtitle1'
                                     sx={{ fontWeight: 'bold' }}>
-                                    Match CA-EST
+                                    Match {matchPerformance?.match?.local}-{matchPerformance?.match?.visitor}
                                 </Typography>
                             </Grid>
                             <Grid item xs={3}>
@@ -82,7 +82,7 @@ function MatchPerformance() {
                             <Grid item xs={5}>
                                 <Typography
                                     variant='body1'>
-                                    01/01/2022
+                                    {matchPerformance?.match?.date}
                                 </Typography>
                             </Grid>
 
@@ -95,7 +95,7 @@ function MatchPerformance() {
                             <Grid item xs={5}>
                                 <Typography
                                     variant='body1'>
-                                    Amical
+                                    {matchPerformance?.match?.match_type}
                                 </Typography>
                             </Grid>
 
@@ -108,7 +108,7 @@ function MatchPerformance() {
                             <Grid item xs={5}>
                                 <Typography
                                     variant='body1'>
-                                    CategoryA
+                                    {matchPerformance?.match?.category?.id}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -176,11 +176,9 @@ function MatchPerformance() {
                                 {matchPerformance ? matchPerformance.goalkeeper?.name : "--"}
                             </Typography>
                         </Box>
-
                     </Card>
                 </Grid>
             </Grid>
-
             <MatchFeedback matchPerformance={matchPerformance} />
         </>
     )

@@ -43,7 +43,7 @@ class match_monitoring(db.Model):
         return {
             'id': self.id,
             'goalkeeper': self.main_goalkeeper.serialize,
-            'match_id': self.match_id,
+            'match': self.match.serialize,
             'time_played': self.time_played,
             'goals_scored': self.goals_scored,
             'goals_conceded': self.goals_conceded,

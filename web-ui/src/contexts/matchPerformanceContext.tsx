@@ -5,7 +5,12 @@ import { useAuth } from './authContext';
 
 // GET MATCH PERFORMANCE CONTEXTS
 type MatchPerformanceDelegate = (id: string) => Promise<MatchMonitoringDTO | errorResponse>;
-const matchPerformanceContext = createContext<MatchPerformanceDelegate | null>(null);
+const getMatchPerformanceContext = createContext<MatchPerformanceDelegate | null>(null);
+export function useGetMatchPerformance() {
+    return useContext(getMatchPerformanceContext);
+}
+
+const matchPerformanceContext = createContext<MatchMonitoringDTO | null>(null)
 export function useMatchPerformance() {
     return useContext(matchPerformanceContext);
 }
@@ -23,12 +28,13 @@ export function useMatchPerformanceReady() {
 // PROVIDER
 export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
+    const [matchPerformance, setMatchPerformance] = useState<MatchMonitoringDTO | null>(null)
     const [matchPerformanceReady, setMatchPerformanceReady] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
 
-    const matchPerformance: MatchPerformanceDelegate = async (id: string) => {
+    const getMatchPerformance: MatchPerformanceDelegate = async (id: string) => {
         const data = await fetch("/api/match_monitoring?id=" + id, {
             method: "GET",
             headers: {
@@ -39,23 +45,27 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
         const json_data = await data.json();
         if ('id' in json_data) {
             setMatchPerformanceReady(true);
+            setMatchPerformance(json_data as MatchMonitoringDTO)
             setError(false);
             return json_data as MatchMonitoringDTO;
         }
         else {
             setError(true);
             setMatchPerformanceReady(true);
+            setMatchPerformance(null)
             return json_data as errorResponse;
         }
     }
 
     return (
-        <matchPerformanceContext.Provider value={matchPerformance}>
-            <matchPerformanceErrorContext.Provider value={error}>
-                <matchPerformanceReadyContext.Provider value={matchPerformanceReady}>
-                    {props.children}
-                </matchPerformanceReadyContext.Provider>
-            </matchPerformanceErrorContext.Provider>
-        </matchPerformanceContext.Provider>
+        <getMatchPerformanceContext.Provider value={getMatchPerformance}>
+            <matchPerformanceContext.Provider value={matchPerformance}>
+                <matchPerformanceErrorContext.Provider value={error}>
+                    <matchPerformanceReadyContext.Provider value={matchPerformanceReady}>
+                        {props.children}
+                    </matchPerformanceReadyContext.Provider>
+                </matchPerformanceErrorContext.Provider>
+            </matchPerformanceContext.Provider>
+        </getMatchPerformanceContext.Provider>
     )
 }

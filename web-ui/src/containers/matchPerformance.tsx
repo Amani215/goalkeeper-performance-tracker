@@ -5,7 +5,7 @@ import { MdLaunch } from 'react-icons/md'
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import MatchFeedback from '../components/matchFeedback'
 import { useGoalkeeperCategories, useGoalkeeperCategoriesReady } from '../contexts/goalkeeperContext';
-import { useMatchPerformance, useMatchPerformanceError, useMatchPerformanceReady } from '../contexts/matchPerformanceContext';
+import { useGetMatchPerformance, useMatchPerformanceError, useMatchPerformanceReady } from '../contexts/matchPerformanceContext';
 import { CategoryDTO } from '../DTOs';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 
@@ -16,7 +16,7 @@ function MatchPerformance() {
     const [, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
-    const matchPerformanceContext = useMatchPerformance()
+    const matchPerformanceContext = useGetMatchPerformance()
     const matchPerformanceReady = useMatchPerformanceReady()
     const matchPerformanceError = useMatchPerformanceError()
 
@@ -48,7 +48,6 @@ function MatchPerformance() {
                     setCategories(data as CategoryDTO[])
             })
         }
-
     }, [loaded, matchPerformanceReady, matchPerformanceError, id, goalkeeperCategoriesReady])
 
     return (

@@ -34,5 +34,5 @@ class training_session(db.Model):
         return {
             'id': self.id,
             'date': self.date.strftime('%d/%m/%Y %H:%M'),
-            'category_id': self.training_session_category_id
+            'category': self.training_session_category.serialize
         }

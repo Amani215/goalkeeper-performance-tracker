@@ -5,6 +5,7 @@ import {
   MdSupervisorAccount,
   MdSportsHandball,
   MdSportsScore,
+  MdToday,
 } from "react-icons/md";
 
 export default [
@@ -28,6 +29,11 @@ export default [
       name: "Categories",
       link: "/categories",
       MenuIcon: MdCategory,
+    },
+    {
+      name: "Trainings",
+      link: "/trainings",
+      MenuIcon: MdToday,
     },
     {
       name: "Matches",

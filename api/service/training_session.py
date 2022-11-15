@@ -56,3 +56,9 @@ def update_category(training_session_id: str, category_id: str):
     training_session_obj.training_session_category = category
     db.session.commit()
     return training_session_obj
+
+
+def get_goalkeepers_performances(session_id: str):
+    '''Returns the match monitoring objects belonging to the given ID'''
+    session = get_by_id(session_id)
+    return session.goalkeepers_performances

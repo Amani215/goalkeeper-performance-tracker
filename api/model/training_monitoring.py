@@ -39,8 +39,8 @@ class training_monitoring(db.Model):
         """Return object data in easily serializable format"""
         return {
             'id': self.id,
-            'goalkeeper_id': self.goalkeeper_id,
-            'session_id': self.session_id,
+            'goalkeeper': self.goalkeeper.serialize,
+            'session': self.session.serialize,
             'absent': self.absent,
             'dismissed': self.dismissed,
             'hurt': self.hurt,

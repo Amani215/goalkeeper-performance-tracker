@@ -101,3 +101,23 @@ def set_category(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@training_session_api.route('/training_session/performances', methods=['GET'])
+@token_required(admin=False)
+def get_goalkeepers_performances(current_user: User):
+    '''Get the goalkeeper performances of the given training session'''
+    try:
+        args = request.args
+
+        if args.get('id') is None:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+        performances = training_session_service.get_goalkeepers_performances(
+            args.get('id'))
+
+        return jsonify([i.serialize for i in performances])
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

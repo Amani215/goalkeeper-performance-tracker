@@ -1,8 +1,11 @@
 import React from 'react'
 import { Box, Button, Card, Grid, Typography } from '@mui/material'
+import { MatchMonitoringDTO } from '../../DTOs/MatchMonitoringDTO'
 
-
-function MatchFeedback() {
+type PropType = {
+    matchPerformance: MatchMonitoringDTO | null
+}
+function MatchFeedback({ matchPerformance }: PropType) {
     return (
         <Grid container spacing={{ xs: 2, md: 1 }} columns={{ xs: 4, sm: 4, md: 12 }}>
             <Grid item xs={4} sm={4} md={8} order={{ xs: 1, sm: 1, md: 1 }}>
@@ -18,7 +21,7 @@ function MatchFeedback() {
                             Grade
                         </Typography>
                         <Typography variant='h6'>
-                            14.25
+                            {matchPerformance ? matchPerformance.grade : "--"}
                         </Typography>
 
 
@@ -47,7 +50,7 @@ function MatchFeedback() {
                         <Grid item xs={5}>
                             <Typography
                                 variant='subtitle1'>
-                                70 min
+                                {matchPerformance ? matchPerformance.time_played : "--"} min
                             </Typography>
                         </Grid>
 
@@ -60,7 +63,7 @@ function MatchFeedback() {
                         <Grid item xs={5}>
                             <Typography
                                 variant='subtitle1'>
-                                Asset Chips
+                                {matchPerformance ? matchPerformance.assets : "--"}
                             </Typography>
                         </Grid>
 
@@ -73,7 +76,7 @@ function MatchFeedback() {
                         <Grid item xs={5}>
                             <Typography
                                 variant='subtitle1'>
-                                Weaknesses Chips
+                                {matchPerformance ? matchPerformance.flaws : "--"}
                             </Typography>
                         </Grid>
 
@@ -86,7 +89,7 @@ function MatchFeedback() {
                         <Grid item xs={5}>
                             <Typography
                                 variant='subtitle1'>
-                                Was replaced by goalkeeper2
+                                {matchPerformance ? matchPerformance.comment : "--"}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -103,7 +106,9 @@ function MatchFeedback() {
                                 alignItems="center"
                                 p={2}
                             >
-                                <Typography variant='h3'>4</Typography>
+                                <Typography variant='h3'>
+                                    {matchPerformance ? matchPerformance.goals_conceded : "--"}
+                                </Typography>
                                 <Typography
                                     variant='h6'
                                     align='center'
@@ -124,7 +129,9 @@ function MatchFeedback() {
                                 alignItems="center"
                                 p={2}
                             >
-                                <Typography variant='h3'>2</Typography>
+                                <Typography variant='h3'>
+                                    {matchPerformance ? matchPerformance.goals_scored : "--"}
+                                </Typography>
                                 <Typography
                                     variant='h6'
                                     align='center'
@@ -145,7 +152,9 @@ function MatchFeedback() {
                                 alignItems="center"
                                 p={2}
                             >
-                                <Typography variant='h3'>3</Typography>
+                                <Typography variant='h3'>
+                                    {matchPerformance ? matchPerformance.penalties_saved : "--"}
+                                </Typography>
                                 <Typography
                                     variant='h6'
                                     align='center'
@@ -166,7 +175,9 @@ function MatchFeedback() {
                                 alignItems="center"
                                 p={2}
                             >
-                                <Typography variant='h3'>0</Typography>
+                                <Typography variant='h3'>
+                                    {matchPerformance ? matchPerformance.penalties_non_saved : "--"}
+                                </Typography>
                                 <Typography
                                     variant='h6'
                                     align='center'

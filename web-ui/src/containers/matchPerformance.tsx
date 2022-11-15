@@ -1,9 +1,43 @@
 import { Box, Card, Grid, IconButton, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdLaunch } from 'react-icons/md'
+import { useParams } from 'react-router-dom';
 import MatchFeedback from '../components/matchFeedback'
+import { useMatchPerformance, useMatchPerformanceError, useMatchPerformanceReady } from '../contexts/matchPerformanceContext';
+import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 
 function MatchPerformance() {
+    const { id } = useParams();
+
+    const [matchPerformance, setMatchPerformance] = useState<MatchMonitoringDTO | null>(null)
+    const [, setError] = useState("")
+    const [loaded, setLoaded] = useState(false)
+
+    const matchPerformanceContext = useMatchPerformance()
+    const matchPerformanceReady = useMatchPerformanceReady()
+    const matchPerformanceError = useMatchPerformanceError()
+
+    useEffect(
+        () => {
+            setLoaded(true)
+        }, []
+    )
+
+    useEffect(() => {
+        if (matchPerformanceContext) {
+            matchPerformanceContext(id ? id : "").then(
+                data => setMatchPerformance(data as MatchMonitoringDTO)
+            )
+        }
+
+        if (loaded && matchPerformanceReady && matchPerformanceError) {
+            setError("No feedback Found.")
+        }
+        if (loaded && matchPerformanceReady && !matchPerformanceError) {
+            setError("")
+        }
+    }, [loaded, matchPerformanceReady, matchPerformanceError, id])
+
     return (
         <>
             <Box
@@ -143,7 +177,7 @@ function MatchPerformance() {
                 </Grid>
             </Grid>
 
-            <MatchFeedback />
+            <MatchFeedback matchPerformance={matchPerformance} />
         </>
     )
 }

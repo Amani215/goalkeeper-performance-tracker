@@ -1,11 +1,14 @@
 import React from 'react'
 import MatchPerformance from '../../containers/matchPerformance'
 import PortalPage from '../../containers/portalPage'
+import MatchPerformanceProvider from '../../contexts/matchPerformanceContext'
 
 function MatchPerformancePage() {
     return (
         <PortalPage>
-            <MatchPerformance />
+            <MatchPerformanceProvider>
+                <MatchPerformance />
+            </MatchPerformanceProvider>
         </PortalPage>
     )
 }

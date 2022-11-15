@@ -67,3 +67,14 @@ def editable(mm: match_monitoring, user: User) -> bool:
             redis_db.sadd(key, _id)
 
     return str(user.id) in s
+
+
+def delete(id: str):
+    '''Deletes the given match performance from the database'''
+    mm = get_by_id(id)
+
+    key = f'{id}_editable'
+    redis_db.delete(key)
+
+    db.session.delete(mm)
+    db.session.commit()

@@ -49,7 +49,7 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
     const [error, setError] = useState(false)
     const [trainingReady, setTrainingReady] = useState<boolean>(false)
     const [training, setTraining] = useState<TrainingDTO | null>(null)
-    const [matchPerformancesReady, setMatchPerformancesReady] = useState<boolean>(false)
+    const [trainingPerformancesReady, setTrainingPerformancesReady] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -77,7 +77,7 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         }
     }
 
-    const matchPerformances: TrainingPerformancesDelegate = async (id: string) => {
+    const trainingPerformances: TrainingPerformancesDelegate = async (id: string) => {
         const data = await fetch("/api/training_session/performances?id=" + id, {
             method: "GET",
             headers: {
@@ -88,12 +88,12 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         const json_data = await data.json();
         if ('error' in json_data) {
             setError(true);
-            setMatchPerformancesReady(true)
+            setTrainingPerformancesReady(true)
             return null;
         }
         else {
             setError(false);
-            setMatchPerformancesReady(true)
+            setTrainingPerformancesReady(true)
             return json_data as TrainingMonitoringDTO[];
         }
     }
@@ -119,7 +119,15 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         {
             ctx: trainingReadyContext,
             value: trainingReady
-        }
+        },
+        {
+            ctx: trainingPerformancesContext,
+            value: trainingPerformances
+        },
+        {
+            ctx: trainingPerformancesReadyContext,
+            value: trainingPerformancesReady
+        },
     ]
 
     return (

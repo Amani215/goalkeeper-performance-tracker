@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { TbFileChart } from 'react-icons/tb';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useGetTraining, useTrainingError, useTrainingReady } from '../contexts/trainingContext';
+import { useGetTraining, useTrainingError, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady } from '../contexts/trainingContext';
 import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 
@@ -19,6 +19,8 @@ function TrainingDetails() {
     const trainingReady = useTrainingReady()
 
     const [goalkeeperPerformances, setGoalkeeperPerformances] = useState<TrainingMonitoringDTO[]>([])
+    const performancesContext = useTrainingPerformances()
+    const performancesReady = useTrainingPerformancesReady()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -36,6 +38,15 @@ function TrainingDetails() {
             setError("")
         }
     }, [loaded, trainingReady, trainingError, id])
+
+    useEffect(() => {
+        if (performancesContext) {
+            performancesContext(id ? id : "").then((data) => {
+                if (performancesReady)
+                    setGoalkeeperPerformances(data != null ? data as TrainingMonitoringDTO[] : goalkeeperPerformances)
+            })
+        }
+    }, [performancesReady])
 
     return (
         <>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { TbFileChart } from 'react-icons/tb';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady } from '../contexts/trainingContext';
+import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady } from '../contexts/trainingContext';
 import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { ModalProp } from '../interfaces/modalProp';
@@ -23,6 +23,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
     const performancesContext = useTrainingPerformances()
     const performancesReady = useTrainingPerformancesReady()
     const performancesUpdated = useTrainingGoalkeepersUpdated()
+    const deleteTrainingGoalkeeper = useDeleteTrainingGoalkeeper()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -40,6 +41,12 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
             setError("")
         }
     }, [loaded, trainingReady, trainingError, id])
+
+    const deleteGoalkeeperPerformance = (gpId: string) => {
+        if (deleteTrainingGoalkeeper) {
+            deleteTrainingGoalkeeper(gpId, id ? id : "")
+        }
+    }
 
     useEffect(() => {
         if (performancesContext) {
@@ -96,7 +103,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                                     <TbFileChart />
                                                 </IconButton>
                                             </RouterLink>
-                                            <IconButton edge="end" aria-label="delete" onClick={() => { }}>
+                                            <IconButton edge="end" aria-label="delete" onClick={() => { deleteGoalkeeperPerformance(gp.id) }}>
                                                 <MdDeleteOutline />
                                             </IconButton>
                                         </>}>

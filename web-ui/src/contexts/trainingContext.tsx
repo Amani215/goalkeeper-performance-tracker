@@ -52,7 +52,11 @@ export function useTrainingGoalkeepersUpdated() {
 }
 
 // DELETE GOALKEEPER CONTEXT
-
+type DeleteTrainingGoalkeeperDelegate = (goalkeeperPerformanceId: string, sessionId: string) => Promise<null | errorResponse>;
+const deleteTrainingGoalkeeperContext = createContext<DeleteTrainingGoalkeeperDelegate | null>(null);
+export function useDeleteTrainingGoalkeeper() {
+    return useContext(deleteTrainingGoalkeeperContext);
+}
 
 // PROVIDER
 export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Element {
@@ -89,6 +93,7 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
     }
 
     const trainingPerformances: TrainingPerformancesDelegate = async (id: string) => {
+        setTrainingPerformancesUpdated(false)
         const data = await fetch("/api/training_session/performances?id=" + id, {
             method: "GET",
             headers: {
@@ -132,6 +137,27 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         }
     }
 
+    const deleteTrainingPerformance: DeleteTrainingGoalkeeperDelegate = async (goalkeeperPerformanceId: string, sessionId: string) => {
+        const data = await fetch("/api/training_session/performances?id=" + sessionId, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                goalkeeper_performance_id: goalkeeperPerformanceId
+            })
+        });
+        if (data.status == 204) {
+            setTrainingPerformancesUpdated(true);
+            return null;
+        }
+        const data_json = await data.json();
+        setError(true);
+        setTrainingPerformancesUpdated(false);
+        return data_json as errorResponse;
+    }
+
     type contextProvider = {
         ctx: React.Context<any>,
         value: any
@@ -168,6 +194,10 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         {
             ctx: trainingGoalkeepersUpdatedContext,
             value: trainingPerformancesUpdated
+        },
+        {
+            ctx: deleteTrainingGoalkeeperContext,
+            value: deleteTrainingPerformance
         },
     ]
 

@@ -7,6 +7,7 @@ import Goalkeeper from "./goalkeeper";
 import Categories from "./categories";
 import Category from "./category";
 import Trainings from "./trainings";
+import Training from "./training";
 import Matches from "./matches";
 import Match from "./match";
 import MatchPerformancePage from "./matchPerformance";
@@ -22,6 +23,7 @@ export {
   Categories,
   Category,
   Trainings,
+  Training,
   Matches,
   Match,
   MatchPerformancePage,

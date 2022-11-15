@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
-import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
+import { MatchMonitoringDTO, UpdateMatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
 
@@ -26,17 +26,7 @@ export function useMatchPerformanceReady() {
 }
 
 // UPDATE MATCH PERFORMANCE CONTEXTS
-type UpdateMatchPerformanceDelegate = (
-    id: string,
-    time_played: number,
-    goals_scored: number,
-    goals_conceded: number,
-    penalties_saved: number,
-    penalties_non_saved: number,
-    yellow_cards: number,
-    red_cards: number,
-    grade: number,
-    assets: string, flaws: string, comment: string) => Promise<MatchMonitoringDTO | errorResponse>;
+type UpdateMatchPerformanceDelegate = (newMatchMonitoring: UpdateMatchMonitoringDTO) => Promise<MatchMonitoringDTO | errorResponse>;
 const updateMatchPerformanceContext = createContext<UpdateMatchPerformanceDelegate | null>(null);
 export function useUpdateMatchPerformance() {
     return useContext(updateMatchPerformanceContext);
@@ -80,35 +70,25 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
         }
     }
 
-    const updateMatchPerformance: UpdateMatchPerformanceDelegate = async (
-        id: string,
-        time_played: number,
-        goals_scored: number,
-        goals_conceded: number,
-        penalties_saved: number,
-        penalties_non_saved: number,
-        yellow_cards: number,
-        red_cards: number,
-        grade: number,
-        assets: string, flaws: string, comment: string) => {
-        const data = await fetch("/api/match_monitoring?id=" + id, {
+    const updateMatchPerformance: UpdateMatchPerformanceDelegate = async (newMatchMonitoring: UpdateMatchMonitoringDTO) => {
+        const data = await fetch("/api/match_monitoring?id=" + newMatchMonitoring.id, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `bearer ${token}`
             },
             body: JSON.stringify({
-                time_played: Number(time_played),
-                goals_scored: Number(goals_scored),
-                goals_conceded: Number(goals_conceded),
-                penalties_saved: Number(penalties_saved),
-                penalties_non_saved: Number(penalties_non_saved),
-                yellow_cards: Number(yellow_cards),
-                red_cards: Number(red_cards),
-                grade: Number(grade),
-                assets: assets,
-                flaws: flaws,
-                comment: comment
+                time_played: Number(newMatchMonitoring.time_played),
+                goals_scored: Number(newMatchMonitoring.goals_scored),
+                goals_conceded: Number(newMatchMonitoring.goals_conceded),
+                penalties_saved: Number(newMatchMonitoring.penalties_saved),
+                penalties_non_saved: Number(newMatchMonitoring.penalties_non_saved),
+                yellow_cards: Number(newMatchMonitoring.yellow_cards),
+                red_cards: Number(newMatchMonitoring.red_cards),
+                grade: Number(newMatchMonitoring.grade),
+                assets: newMatchMonitoring.assets,
+                flaws: newMatchMonitoring.flaws,
+                comment: newMatchMonitoring.comment
             })
         });
         const json_data = await data.json();

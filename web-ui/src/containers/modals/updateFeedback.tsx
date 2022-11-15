@@ -2,7 +2,7 @@ import { Box, Button, Grid, Modal, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useMatchPerformance, useUpdateMatchPerformance } from '../../contexts/matchPerformanceContext';
-import { MatchMonitoringDTO } from '../../DTOs/MatchMonitoringDTO';
+import { MatchMonitoringDTO, UpdateMatchMonitoringDTO } from '../../DTOs/MatchMonitoringDTO';
 import { ModalProp } from '../../interfaces/modalProp'
 
 
@@ -45,18 +45,22 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
         red_cards,
         grade,
         assets, flaws, comment }: FormikValues): Promise<void> => {
+        const newMatchMonitoring: UpdateMatchMonitoringDTO = {
+            id: matchPerformance ? matchPerformance.id : "",
+            time_played: time_played,
+            goals_scored: goals_scored,
+            goals_conceded: goals_conceded,
+            penalties_saved: penalties_saved,
+            penalties_non_saved: penalties_non_saved,
+            yellow_cards: yellow_cards,
+            red_cards: red_cards,
+            grade: grade,
+            assets: assets,
+            flaws: flaws,
+            comment: comment
+        }
         if (updateMatchPerformance) {
-            await updateMatchPerformance(
-                matchPerformance ? matchPerformance.id : "",
-                time_played,
-                goals_scored,
-                goals_conceded,
-                penalties_saved,
-                penalties_non_saved,
-                yellow_cards,
-                red_cards,
-                grade,
-                assets, flaws, comment)
+            await updateMatchPerformance(newMatchMonitoring)
             setModalIsOpen()
         }
     };

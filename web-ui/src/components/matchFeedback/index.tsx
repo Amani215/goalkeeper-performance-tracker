@@ -1,7 +1,6 @@
 import React from 'react'
 import { Box, Button, Card, Grid, Typography } from '@mui/material'
 import { MatchMonitoringDTO } from '../../DTOs/MatchMonitoringDTO'
-import { ModalProp } from '../../interfaces/modalProp'
 import { VoidDelegate } from '../../interfaces/voidDelegate'
 
 type PropType = {

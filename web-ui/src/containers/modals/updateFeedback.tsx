@@ -101,8 +101,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         value={formik.values.time_played}
                         onChange={formik.handleChange}
                         autoFocus
-                        error={formik.touched.time_played && Boolean(formik.errors.time_played)}
-                        helperText={formik.touched.time_played && formik.errors.time_played}
                     />
 
                     <Grid container spacing={{ sm: 1 }} columns={{ xs: 8, sm: 8 }}>
@@ -120,8 +118,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 value={formik.values.goals_scored}
                                 onChange={formik.handleChange}
                                 autoFocus
-                                error={formik.touched.goals_scored && Boolean(formik.errors.goals_scored)}
-                                helperText={formik.touched.goals_scored && formik.errors.goals_scored}
                             />
                         </Grid>
                         <Grid item xs={8} sm={4}>
@@ -138,8 +134,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 value={formik.values.goals_conceded}
                                 onChange={formik.handleChange}
                                 autoFocus
-                                error={formik.touched.goals_conceded && Boolean(formik.errors.goals_conceded)}
-                                helperText={formik.touched.goals_conceded && formik.errors.goals_conceded}
                             />
                         </Grid>
                     </Grid>
@@ -159,8 +153,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 value={formik.values.penalties_saved}
                                 onChange={formik.handleChange}
                                 autoFocus
-                                error={formik.touched.penalties_saved && Boolean(formik.errors.penalties_saved)}
-                                helperText={formik.touched.penalties_saved && formik.errors.penalties_saved}
                             />
                         </Grid>
                         <Grid item xs={8} sm={4}>
@@ -177,8 +169,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 value={formik.values.penalties_non_saved}
                                 onChange={formik.handleChange}
                                 autoFocus
-                                error={formik.touched.penalties_non_saved && Boolean(formik.errors.penalties_non_saved)}
-                                helperText={formik.touched.penalties_non_saved && formik.errors.penalties_non_saved}
                             />
                         </Grid>
                     </Grid>
@@ -198,8 +188,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 value={formik.values.yellow_cards}
                                 onChange={formik.handleChange}
                                 autoFocus
-                                error={formik.touched.yellow_cards && Boolean(formik.errors.yellow_cards)}
-                                helperText={formik.touched.yellow_cards && formik.errors.yellow_cards}
                             />
                         </Grid>
                         <Grid item xs={8} sm={4}>
@@ -216,8 +204,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 value={formik.values.red_cards}
                                 onChange={formik.handleChange}
                                 autoFocus
-                                error={formik.touched.red_cards && Boolean(formik.errors.red_cards)}
-                                helperText={formik.touched.red_cards && formik.errors.red_cards}
                             />
                         </Grid>
                     </Grid>
@@ -225,7 +211,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     <TextField
                         margin="normal"
                         size="small"
-                        required
                         fullWidth
                         id="assets"
                         label="Assets"
@@ -234,13 +219,10 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         value={formik.values.assets}
                         onChange={formik.handleChange}
                         autoFocus
-                        error={formik.touched.assets && Boolean(formik.errors.assets)}
-                        helperText={formik.touched.assets && formik.errors.assets}
                     />
                     <TextField
                         margin="normal"
                         size="small"
-                        required
                         fullWidth
                         id="flaws"
                         label="Flaws"
@@ -249,8 +231,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         value={formik.values.flaws}
                         onChange={formik.handleChange}
                         autoFocus
-                        error={formik.touched.flaws && Boolean(formik.errors.flaws)}
-                        helperText={formik.touched.flaws && formik.errors.flaws}
                     />
                     <TextField
                         margin="normal"
@@ -265,13 +245,10 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         value={formik.values.grade}
                         onChange={formik.handleChange}
                         autoFocus
-                        error={formik.touched.grade && Boolean(formik.errors.grade)}
-                        helperText={formik.touched.grade && formik.errors.grade}
                     />
                     <TextField
                         margin="normal"
                         size="small"
-                        required
                         fullWidth
                         id="comment"
                         label="Comment"
@@ -280,8 +257,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         value={formik.values.comment}
                         onChange={formik.handleChange}
                         autoFocus
-                        error={formik.touched.comment && Boolean(formik.errors.comment)}
-                        helperText={formik.touched.comment && formik.errors.comment}
                     />
                     <Button
                         type="submit"

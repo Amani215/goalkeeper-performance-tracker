@@ -40,6 +40,16 @@ export function useTrainingPerformancesReady() {
 }
 
 // ADD GOALKEEPER CONTEXT
+type NewTrainingGoalkeeperDelegate = (goalkeeperId: string, sessionId: string) => Promise<TrainingMonitoringDTO | errorResponse>;
+const newTrainingGoalkeeperContext = createContext<NewTrainingGoalkeeperDelegate | null>(null);
+export function useNewTrainingGoalkeeper() {
+    return useContext(newTrainingGoalkeeperContext);
+}
+
+const trainingGoalkeepersUpdatedContext = createContext<boolean>(false);
+export function useTrainingGoalkeepersUpdated() {
+    return useContext(trainingGoalkeepersUpdatedContext);
+}
 
 // DELETE GOALKEEPER CONTEXT
 
@@ -50,6 +60,7 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
     const [trainingReady, setTrainingReady] = useState<boolean>(false)
     const [training, setTraining] = useState<TrainingDTO | null>(null)
     const [trainingPerformancesReady, setTrainingPerformancesReady] = useState<boolean>(false)
+    const [trainingPerformancesUpdated, setTrainingPerformancesUpdated] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -98,6 +109,28 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         }
     }
 
+    const newTrainingPerformance: NewTrainingGoalkeeperDelegate = async (goalkeeperId: string, sessionId: string) => {
+        const data = await fetch("/api/training_monitoring", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                goalkeeper_id: goalkeeperId,
+                session_id: sessionId
+            })
+        });
+        const data_json = await data.json();
+        if ("error" in data_json) {
+            setError(true);
+            setTrainingPerformancesUpdated(false);
+            return data_json as errorResponse;
+        } else {
+            setTrainingPerformancesUpdated(true);
+            return data_json as TrainingMonitoringDTO;
+        }
+    }
 
     type contextProvider = {
         ctx: React.Context<any>,
@@ -127,6 +160,14 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         {
             ctx: trainingPerformancesReadyContext,
             value: trainingPerformancesReady
+        },
+        {
+            ctx: newTrainingGoalkeeperContext,
+            value: newTrainingPerformance
+        },
+        {
+            ctx: trainingGoalkeepersUpdatedContext,
+            value: trainingPerformancesUpdated
         },
     ]
 

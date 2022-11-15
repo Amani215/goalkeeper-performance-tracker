@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { TbFileChart } from 'react-icons/tb';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useGetTraining, useTrainingError, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady } from '../contexts/trainingContext';
+import { useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady } from '../contexts/trainingContext';
 import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
+import { ModalProp } from '../interfaces/modalProp';
 
-function TrainingDetails() {
+function TrainingDetails({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
 
     const [training, setTraining] = useState<TrainingDTO | null>(null)
@@ -21,6 +22,7 @@ function TrainingDetails() {
     const [goalkeeperPerformances, setGoalkeeperPerformances] = useState<TrainingMonitoringDTO[]>([])
     const performancesContext = useTrainingPerformances()
     const performancesReady = useTrainingPerformancesReady()
+    const performancesUpdated = useTrainingGoalkeepersUpdated()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -46,7 +48,7 @@ function TrainingDetails() {
                     setGoalkeeperPerformances(data != null ? data as TrainingMonitoringDTO[] : goalkeeperPerformances)
             })
         }
-    }, [performancesReady])
+    }, [performancesReady, performancesUpdated])
 
     return (
         <>
@@ -81,7 +83,7 @@ function TrainingDetails() {
                         <Box
                             display="flex" justifyContent="flex-end"
                             mb={2}>
-                            <Button variant='contained' onClick={() => { }}>Add Goalkeeper</Button>
+                            <Button variant='contained' onClick={() => { setModalIsOpen() }}>Add Goalkeeper</Button>
                         </Box>
                         {goalkeeperPerformances.length > 0 ?
                             <List

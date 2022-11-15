@@ -1,9 +1,12 @@
-import { Box, Card, Grid, IconButton, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Box, Card, Chip, Grid, IconButton, Link, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { IoFootball } from 'react-icons/io5';
 import { MdLaunch } from 'react-icons/md'
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import MatchFeedback from '../components/matchFeedback'
+import { useGoalkeeperCategories, useGoalkeeperCategoriesReady } from '../contexts/goalkeeperContext';
 import { useMatchPerformance, useMatchPerformanceError, useMatchPerformanceReady } from '../contexts/matchPerformanceContext';
+import { CategoryDTO } from '../DTOs';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 
 function MatchPerformance() {
@@ -17,16 +20,18 @@ function MatchPerformance() {
     const matchPerformanceReady = useMatchPerformanceReady()
     const matchPerformanceError = useMatchPerformanceError()
 
-    useEffect(
-        () => {
-            setLoaded(true)
-        }, []
-    )
+    const [categories, setCategories] = useState<CategoryDTO[]>([])
+    const goalkeeperCategoriesContext = useGoalkeeperCategories()
+    const goalkeeperCategoriesReady = useGoalkeeperCategoriesReady()
+
+    useEffect(() => { setLoaded(true) }, [])
 
     useEffect(() => {
         if (matchPerformanceContext) {
             matchPerformanceContext(id ? id : "").then(
-                data => setMatchPerformance(data as MatchMonitoringDTO)
+                data => {
+                    setMatchPerformance(data as MatchMonitoringDTO)
+                }
             )
         }
 
@@ -36,7 +41,15 @@ function MatchPerformance() {
         if (loaded && matchPerformanceReady && !matchPerformanceError) {
             setError("")
         }
-    }, [loaded, matchPerformanceReady, matchPerformanceError, id])
+
+        if (goalkeeperCategoriesContext) {
+            goalkeeperCategoriesContext(matchPerformance ? matchPerformance.goalkeeper?.id : "").then((data) => {
+                if (goalkeeperCategoriesReady)
+                    setCategories(data as CategoryDTO[])
+            })
+        }
+
+    }, [loaded, matchPerformanceReady, matchPerformanceError, id, goalkeeperCategoriesReady])
 
     return (
         <>
@@ -139,11 +152,35 @@ function MatchPerformance() {
                             </Grid>
 
                             <Grid item xs={8} mb={1}>
-                                <Typography
-                                    variant='subtitle1'
-                                    sx={{ fontWeight: 'bold' }}>
-                                    Associated Categories
-                                </Typography>
+                                <Box display="flex" flexDirection="row">
+                                    <Typography
+                                        variant='subtitle1'
+                                        sx={{ fontWeight: 'bold' }}
+                                        mr={1}>
+                                        Associated Categories
+                                    </Typography>
+                                    {categories.length > 0 ?
+                                        categories.map((category) => (
+                                            <Grid item xs={4} md={3}
+                                                key={category.id}
+                                                mb={1}
+                                            >
+                                                <Link
+                                                    component={RouterLink}
+                                                    to={`/categories/${category.id}`}
+                                                    underline="none"
+                                                    color="inherit">
+                                                    <Chip
+                                                        icon={<IoFootball />}
+                                                        label={`${category?.name} ${category?.season}`}
+                                                        onClick={() => { }} />
+                                                </Link>
+                                            </Grid>
+                                        ))
+                                        : <Box pl={1}>
+                                            No associated categories yet.
+                                        </Box>}
+                                </Box>
                             </Grid>
                         </Grid>
                     </Card>

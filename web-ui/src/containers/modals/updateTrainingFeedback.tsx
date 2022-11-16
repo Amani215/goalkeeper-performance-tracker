@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Button, FormControlLabel, Modal, Switch, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { ModalProp } from '../../interfaces/modalProp'
+import { TrainingMonitoringDTO, UpdateTrainingMonitoringDTO } from '../../DTOs/TrainingMonitoringDTO';
+import { useTrainingPerformance, useUpdateTrainingPerformance } from '../../contexts/trainingPerformanceContext';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -16,8 +18,35 @@ const style = {
 };
 
 function UpdateTrainingFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const [loaded, setLoaded] = useState(false)
 
-    const handleSubmit = async ({ comment }: FormikValues): Promise<void> => { }
+    const [trainingPerformance, setTrainingPerformance] = useState<TrainingMonitoringDTO | null>(null)
+    const trainingPerformanceContext = useTrainingPerformance()
+    const updateTrainingPerformance = useUpdateTrainingPerformance()
+
+    useEffect(() => { setLoaded(true) }, [])
+
+    useEffect(() => {
+        if (trainingPerformanceContext) {
+            setTrainingPerformance(trainingPerformanceContext)
+        }
+    }, [loaded, trainingPerformanceContext])
+
+    const handleSubmit = async ({ absent, dismissed, hurt, with_seniors, with_national_team, comment }: FormikValues): Promise<void> => {
+        const newTrainingMonitoring: UpdateTrainingMonitoringDTO = {
+            id: trainingPerformance ? trainingPerformance.id : "",
+            absent: absent,
+            dismissed: dismissed,
+            hurt: hurt,
+            with_seniors: with_seniors,
+            with_national_team: with_national_team,
+            comment: comment
+        }
+        if (updateTrainingPerformance) {
+            await updateTrainingPerformance(newTrainingMonitoring)
+            setModalIsOpen()
+        }
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -30,6 +59,21 @@ function UpdateTrainingFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
         },
         onSubmit: handleSubmit
     })
+
+    useEffect(() => {
+        if (trainingPerformance) {
+            formik.setValues({
+                absent: trainingPerformance.absent,
+                dismissed: trainingPerformance.dismissed,
+                hurt: trainingPerformance.hurt,
+                with_seniors: trainingPerformance.with_seniors,
+                with_national_team: trainingPerformance.with_national_team,
+                comment: trainingPerformance.comment
+            }
+            );
+        }
+    }, [trainingPerformance]);
+
     return (
         <Modal
             open={modalIsOpen}

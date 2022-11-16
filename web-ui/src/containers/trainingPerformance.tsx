@@ -7,7 +7,7 @@ import { BsCheckCircle } from 'react-icons/bs'
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO';
 import { CategoryDTO } from '../DTOs';
 import { useGoalkeeperCategories, useGoalkeeperCategoriesReady } from '../contexts/goalkeeperContext';
-import { useGetTrainingPerformance, useTrainingPerformanceError, useTrainingPerformanceReady } from '../contexts/trainingPerformanceContext';
+import { useGetTrainingPerformance, useTrainingPerformanceError, useTrainingPerformanceReady, useTrainingPerformanceUpdated } from '../contexts/trainingPerformanceContext';
 import { IoFootball } from 'react-icons/io5';
 import { ModalProp } from '../interfaces/modalProp';
 
@@ -21,6 +21,7 @@ function TrainingPerformance({ setModalIsOpen }: ModalProp) {
     const trainingPerformanceContext = useGetTrainingPerformance()
     const trainingPerformanceReady = useTrainingPerformanceReady()
     const trainingPerformanceError = useTrainingPerformanceError()
+    const trainingPerformanceUpdated = useTrainingPerformanceUpdated()
 
     const [categories, setCategories] = useState<CategoryDTO[]>([])
     const goalkeeperCategoriesContext = useGoalkeeperCategories()
@@ -50,7 +51,7 @@ function TrainingPerformance({ setModalIsOpen }: ModalProp) {
                     setCategories(data as CategoryDTO[])
             })
         }
-    }, [loaded, trainingPerformanceReady, trainingPerformanceError, id, goalkeeperCategoriesReady])
+    }, [loaded, trainingPerformanceReady, trainingPerformanceUpdated, trainingPerformanceError, id, goalkeeperCategoriesReady])
 
     return (
         <>

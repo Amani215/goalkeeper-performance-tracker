@@ -13,3 +13,13 @@ export interface TrainingMonitoringDTO {
   training_form: string;
   comment: string;
 }
+
+export interface UpdateTrainingMonitoringDTO {
+  id: string;
+  absent: boolean;
+  dismissed: boolean;
+  hurt: boolean;
+  with_seniors: boolean;
+  with_national_team: boolean;
+  comment: string;
+}

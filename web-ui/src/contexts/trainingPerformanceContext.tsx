@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react'
-import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO';
+import { TrainingMonitoringDTO, UpdateTrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
 import React from 'react'
@@ -26,8 +26,17 @@ export function useTrainingPerformanceReady() {
     return useContext(trainingPerformanceReadyContext);
 }
 
-// UPDATE MATCH PERFORMANCE CONTEXTS
+// UPDATE TRAININF PERFORMANCE CONTEXTS
+type UpdateTrainingPerformanceDelegate = (newTrainingMonitoring: UpdateTrainingMonitoringDTO) => Promise<TrainingMonitoringDTO | errorResponse>;
+const updateTrainingPerformanceContext = createContext<UpdateTrainingPerformanceDelegate | null>(null);
+export function useUpdateTrainingPerformance() {
+    return useContext(updateTrainingPerformanceContext);
+}
 
+const trainingPerformanceUpdatedContext = createContext<boolean>(false);
+export function useTrainingPerformanceUpdated() {
+    return useContext(trainingPerformanceUpdatedContext);
+}
 
 // PROVIDER
 export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>) {
@@ -62,13 +71,48 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
         }
     }
 
+    const updateTrainingPerformance: UpdateTrainingPerformanceDelegate = async (newTrainingMonitoring: UpdateTrainingMonitoringDTO) => {
+        const data = await fetch("/api/training_monitoring?id=" + newTrainingMonitoring.id, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                absent: newTrainingMonitoring.absent,
+                dismissed: newTrainingMonitoring.dismissed,
+                hurt: newTrainingMonitoring.hurt,
+                with_seniors: newTrainingMonitoring.with_seniors,
+                with_national_team: newTrainingMonitoring.with_national_team,
+                comment: newTrainingMonitoring.comment
+            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setTrainingPerformanceReady(true);
+            setError(false);
+            setTrainingPerformance(json_data)
+            setTrainingPerformanceUpdated(true)
+            return json_data as TrainingMonitoringDTO;
+        }
+        else {
+            setError(true);
+            setTrainingPerformanceReady(true);
+            setTrainingPerformance(null)
+            return json_data as errorResponse;
+        }
+    }
 
     return (
         <getTrainingPerformanceContext.Provider value={getTrainingPerformance}>
             <trainingPerformanceContext.Provider value={trainingPerformance}>
                 <trainingPerformanceErrorContext.Provider value={error}>
                     <trainingPerformanceReadyContext.Provider value={trainingPerformanceReady}>
-                        {props.children}
+                        <updateTrainingPerformanceContext.Provider value={updateTrainingPerformance}>
+                            <trainingPerformanceUpdatedContext.Provider value={trainingPerformanceUpdated}>
+                                {props.children}
+                            </trainingPerformanceUpdatedContext.Provider>
+                        </updateTrainingPerformanceContext.Provider>
                     </trainingPerformanceReadyContext.Provider>
                 </trainingPerformanceErrorContext.Provider>
             </trainingPerformanceContext.Provider>

@@ -9,8 +9,9 @@ import { CategoryDTO } from '../DTOs';
 import { useGoalkeeperCategories, useGoalkeeperCategoriesReady } from '../contexts/goalkeeperContext';
 import { useGetTrainingPerformance, useTrainingPerformanceError, useTrainingPerformanceReady } from '../contexts/trainingPerformanceContext';
 import { IoFootball } from 'react-icons/io5';
+import { ModalProp } from '../interfaces/modalProp';
 
-function TrainingPerformance() {
+function TrainingPerformance({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
 
     const [trainingPerformance, setTrainingPerformance] = useState<TrainingMonitoringDTO | null>(null)
@@ -176,7 +177,7 @@ function TrainingPerformance() {
 
                     <Card sx={{ padding: 2, marginBottom: 1 }}>
                         <Box display="flex" justifyContent="flex-end">
-                            <Button variant="contained">Edit</Button>
+                            <Button variant="contained" onClick={() => { setModalIsOpen() }}>Edit</Button>
                         </Box>
                         <Grid container columns={8}>
                             <Grid item xs={8}>

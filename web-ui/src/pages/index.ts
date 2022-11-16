@@ -8,6 +8,7 @@ import Categories from "./categories";
 import Category from "./category";
 import Trainings from "./trainings";
 import Training from "./training";
+import TrainingPerformancePage from "./trainingPerformance";
 import Matches from "./matches";
 import Match from "./match";
 import MatchPerformancePage from "./matchPerformance";
@@ -24,6 +25,7 @@ export {
   Category,
   Trainings,
   Training,
+  TrainingPerformancePage,
   Matches,
   Match,
   MatchPerformancePage,

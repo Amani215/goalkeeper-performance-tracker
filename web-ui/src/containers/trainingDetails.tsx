@@ -98,7 +98,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                 {goalkeeperPerformances.map((gp) => (
                                     <div key={gp.id}>
                                         <ListItem secondaryAction={<>
-                                            <RouterLink to={`/match-performance/${gp.id}`}>
+                                            <RouterLink to={`/training-performance/${gp.id}`}>
                                                 <IconButton edge="end" aria-label="delete" sx={{ marginRight: '1px' }}>
                                                     <TbFileChart />
                                                 </IconButton>

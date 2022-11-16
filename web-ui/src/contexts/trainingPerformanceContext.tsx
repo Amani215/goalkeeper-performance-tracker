@@ -38,6 +38,13 @@ export function useTrainingPerformanceUpdated() {
     return useContext(trainingPerformanceUpdatedContext);
 }
 
+// UPDATE TRAINING FORM CONTEXT
+type FileDelegate = (id: string, formdata: FormData) => Promise<string | errorResponse>;
+const updateTrainingFormContext = createContext<FileDelegate | null>(null);
+export function useUpdateTrainingForm() {
+    return useContext(updateTrainingFormContext);
+}
+
 // PROVIDER
 export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
@@ -103,6 +110,18 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
         }
     }
 
+    const trainingForm: FileDelegate = (id: string, formdata: FormData) => {
+        return fetch("/api/training_monitoring/form?id=" + id, {
+            method: "PUT",
+            headers: {
+                'Accept': '*/*',
+                'Authorization': `bearer ${token}`
+            },
+            body: formdata
+        })
+            .then(data => data.json())
+    }
+
     return (
         <getTrainingPerformanceContext.Provider value={getTrainingPerformance}>
             <trainingPerformanceContext.Provider value={trainingPerformance}>
@@ -110,7 +129,9 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
                     <trainingPerformanceReadyContext.Provider value={trainingPerformanceReady}>
                         <updateTrainingPerformanceContext.Provider value={updateTrainingPerformance}>
                             <trainingPerformanceUpdatedContext.Provider value={trainingPerformanceUpdated}>
-                                {props.children}
+                                <updateTrainingFormContext.Provider value={trainingForm}>
+                                    {props.children}
+                                </updateTrainingFormContext.Provider>
                             </trainingPerformanceUpdatedContext.Provider>
                         </updateTrainingPerformanceContext.Provider>
                     </trainingPerformanceReadyContext.Provider>

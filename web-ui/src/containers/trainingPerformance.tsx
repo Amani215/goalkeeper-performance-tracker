@@ -1,5 +1,5 @@
 import { Box, Button, Card, Chip, Grid, IconButton, Link, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { MdLaunch } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { TiDeleteOutline } from 'react-icons/ti'
@@ -7,9 +7,10 @@ import { BsCheckCircle } from 'react-icons/bs'
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO';
 import { CategoryDTO } from '../DTOs';
 import { useGoalkeeperCategories, useGoalkeeperCategoriesReady } from '../contexts/goalkeeperContext';
-import { useGetTrainingPerformance, useTrainingPerformanceError, useTrainingPerformanceReady, useTrainingPerformanceUpdated } from '../contexts/trainingPerformanceContext';
+import { useGetTrainingPerformance, useTrainingPerformanceError, useTrainingPerformanceReady, useTrainingPerformanceUpdated, useUpdateTrainingForm } from '../contexts/trainingPerformanceContext';
 import { IoFootball } from 'react-icons/io5';
 import { ModalProp } from '../interfaces/modalProp';
+
 
 function TrainingPerformance({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
@@ -26,6 +27,8 @@ function TrainingPerformance({ setModalIsOpen }: ModalProp) {
     const [categories, setCategories] = useState<CategoryDTO[]>([])
     const goalkeeperCategoriesContext = useGoalkeeperCategories()
     const goalkeeperCategoriesReady = useGoalkeeperCategoriesReady()
+
+    const updateTrainingForm = useUpdateTrainingForm()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -52,6 +55,17 @@ function TrainingPerformance({ setModalIsOpen }: ModalProp) {
             })
         }
     }, [loaded, trainingPerformanceReady, trainingPerformanceUpdated, trainingPerformanceError, id, goalkeeperCategoriesReady])
+
+    const uploadTrainingForm = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files != null) {
+            const formdata = new FormData()
+            formdata.append("training_form", e.target.files[0])
+            if (updateTrainingForm) {
+                updateTrainingForm(id ? id : "", formdata).then((data) => { console.log(data) })
+            }
+            console.log(e.target.files[0])
+        }
+    }
 
     return (
         <>
@@ -267,12 +281,10 @@ function TrainingPerformance({ setModalIsOpen }: ModalProp) {
                             </Typography>
 
                             {trainingPerformance?.training_form ?
-                                <Link
-                                    component={RouterLink}
-                                    to={trainingPerformance.training_form}
-                                    color="inherit">
+                                <a target="_blank" href={trainingPerformance.training_form}>
                                     <Typography>Link</Typography>
-                                </Link> : <Typography>No training form uploaded.</Typography>
+                                </a>
+                                : <Typography>No training form uploaded.</Typography>
                             }
 
                         </Box>
@@ -288,7 +300,7 @@ function TrainingPerformance({ setModalIsOpen }: ModalProp) {
                                     hidden
                                     accept="application/pdf"
                                     multiple type="file"
-                                    onChange={e => console.log("upload form")} />
+                                    onChange={e => uploadTrainingForm(e)} />
                             </Button>
                         </Box>
                     </Card>

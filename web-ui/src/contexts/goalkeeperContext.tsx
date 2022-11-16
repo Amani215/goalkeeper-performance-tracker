@@ -2,6 +2,7 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { CategoryDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
+import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
 
@@ -46,6 +47,18 @@ export function useGoalkeeperMatchesReady() {
     return useContext(goalkeeperMatchesReadyContext);
 }
 
+// GET TRAINING PERFORMANCES CONTEXTS
+type GoalkeeperTrainingsDelegate = (id: string) => Promise<TrainingMonitoringDTO[] | errorResponse>;
+const goalkeeperTrainingsContext = createContext<GoalkeeperTrainingsDelegate | null>(null)
+export function useGoalkeeperTrainings() {
+    return useContext(goalkeeperTrainingsContext)
+}
+
+const goalkeeperTrainingsReadyContext = createContext<boolean>(false);
+export function useGoalkeeperTrainingsReady() {
+    return useContext(goalkeeperTrainingsReadyContext);
+}
+
 // PROFILE PIC CONTEXT
 type PictureDelegate = (id: string, formdata: FormData) => Promise<string | errorResponse>;
 const updatePictureContext = createContext<PictureDelegate | null>(null);
@@ -60,6 +73,7 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
 
     const [goalkeeperCategoriesReady, setGoalkeeperCategoriesReady] = useState<boolean>(false)
     const [goalkeeperMatchesReady, setGoalkeeperMatchesReady] = useState<boolean>(false)
+    const [goalkeeperTrainingsReady, setGoalkeeperTrainingsReady] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -125,6 +139,27 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
         }
     }
 
+    const trainings: GoalkeeperTrainingsDelegate = async (id: string) => {
+        const data = await fetch("/api/goalkeeper/training_performances?id=" + id, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setError(false);
+            setGoalkeeperTrainingsReady(true)
+            return json_data as TrainingMonitoringDTO[];
+        }
+        else {
+            setGoalkeeperTrainingsReady(true)
+            setError(true);
+            return json_data as errorResponse;
+        }
+    }
+
     const picture: PictureDelegate = (id: string, formdata: FormData) => {
         return fetch("/api/goalkeeper/picture?id=" + id, {
             method: "PUT",
@@ -145,9 +180,13 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
                         <goalkeeperCategoriesReadyContext.Provider value={goalkeeperCategoriesReady}>
                             <goalkeeperMatchesContext.Provider value={matches}>
                                 <goalkeeperMatchesReadyContext.Provider value={goalkeeperMatchesReady}>
-                                    <updatePictureContext.Provider value={picture}>
-                                        {props.children}
-                                    </updatePictureContext.Provider>
+                                    <goalkeeperTrainingsContext.Provider value={trainings}>
+                                        <goalkeeperTrainingsReadyContext.Provider value={goalkeeperTrainingsReady}>
+                                            <updatePictureContext.Provider value={picture}>
+                                                {props.children}
+                                            </updatePictureContext.Provider>
+                                        </goalkeeperTrainingsReadyContext.Provider>
+                                    </goalkeeperTrainingsContext.Provider>
                                 </goalkeeperMatchesReadyContext.Provider>
                             </goalkeeperMatchesContext.Provider>
                         </goalkeeperCategoriesReadyContext.Provider>

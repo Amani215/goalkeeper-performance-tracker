@@ -6,16 +6,17 @@ import Grid from '@mui/material/Grid'
 import dayjs from 'dayjs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
-import { useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useUpdatePicture } from '../contexts/goalkeeperContext'
+import { useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useGoalkeeperTrainings, useGoalkeeperTrainingsReady, useUpdatePicture } from '../contexts/goalkeeperContext'
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO'
 import { IoFootball } from "react-icons/io5"
 import { CategoryDTO } from '../DTOs'
 import { DataGrid } from '@mui/x-data-grid/DataGrid'
 import { GridColDef } from '@mui/x-data-grid'
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO'
+import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 
 
-const columns: GridColDef[] = [
+const matchColumns: GridColDef[] = [
     {
         field: 'match',
         headerName: 'Match',
@@ -77,6 +78,56 @@ const columns: GridColDef[] = [
     }
 ]
 
+const trainingColumns: GridColDef[] = [
+    {
+        field: 'training',
+        headerName: 'Training',
+        flex: 1,
+        minWidth: 60,
+        renderCell: (params) => {
+            return (
+                <Link
+                    component={RouterLink}
+                    to={`/trainings/${params.row.session.id}`}
+                    underline="none"
+                    color="inherit">
+                    <Typography>
+                        {params.row.session.category.id} Training</Typography>
+                </Link>
+            );
+        }
+    },
+    {
+        field: 'date',
+        headerName: 'Date',
+        flex: 1,
+        minWidth: 60,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Typography>{params.row.session.date}</Typography>
+            );
+        }
+    },
+    {
+        field: 'id',
+        headerName: 'Performance Sheet',
+        flex: 1,
+        minWidth: 10,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Link
+                    component={RouterLink}
+                    to={`/training-performance/${params.row.id}`}
+                    color="inherit">
+                    <Typography>Link</Typography>
+                </Link>
+            );
+        }
+    }
+]
+
 function GoalkeeperDetails() {
     const { id } = useParams();
 
@@ -93,9 +144,13 @@ function GoalkeeperDetails() {
     const categoriesContext = useGoalkeeperCategories()
     const categoriesReady = useGoalkeeperCategoriesReady()
 
-    const [rows, setRows] = useState<MatchMonitoringDTO[]>([] as MatchMonitoringDTO[])
+    const [matchRows, setMatchRows] = useState<MatchMonitoringDTO[]>([] as MatchMonitoringDTO[])
     const matches = useGoalkeeperMatches()
     const matchesReady = useGoalkeeperMatchesReady()
+
+    const [trainingRows, setTrainingRows] = useState<TrainingMonitoringDTO[]>([] as TrainingMonitoringDTO[])
+    const trainings = useGoalkeeperTrainings()
+    const trainingsReady = useGoalkeeperTrainingsReady()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -126,10 +181,19 @@ function GoalkeeperDetails() {
         if (matches) {
             matches(id ? id : "").then((data) => {
                 if (matchesReady)
-                    setRows(data as MatchMonitoringDTO[])
+                    setMatchRows(data as MatchMonitoringDTO[])
             })
         }
     }, [matchesReady])
+
+    useEffect(() => {
+        if (trainings) {
+            trainings(id ? id : "").then((data) => {
+                if (trainingsReady)
+                    setTrainingRows(data as TrainingMonitoringDTO[])
+            })
+        }
+    }, [trainingsReady])
 
     const uploadPicture = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {
@@ -301,14 +365,26 @@ function GoalkeeperDetails() {
                     </Grid>
 
                     <Typography fontWeight="bold" mt={2} mb={1}>Match performances</Typography>
-                    {rows.length > 0 ?
+                    {matchRows.length > 0 ?
                         < DataGrid
-                            rows={rows || []}
-                            columns={columns}
+                            rows={matchRows || []}
+                            columns={matchColumns}
                             pageSize={3}
                             rowsPerPageOptions={[3]}
                         /> : <></>
                     }
+
+                    <Typography fontWeight="bold" mt={2} mb={1}>Training performances</Typography>
+                    {matchRows.length > 0 ?
+                        < DataGrid
+                            rows={trainingRows || []}
+                            columns={trainingColumns}
+                            pageSize={3}
+                            rowsPerPageOptions={[3]}
+                        /> : <></>
+                    }
+
+                    <Box sx={{ height: "5%" }}></Box>
                 </>
             }
         </>

@@ -11,7 +11,7 @@ interface IProps {
 
 export default function Header({ auth }: IProps) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, position: "sticky", top: 0, zIndex: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Box sx={{ flexGrow: 1 }} />

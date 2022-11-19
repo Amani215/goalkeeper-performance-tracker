@@ -76,7 +76,10 @@ services:
     restart: always
     ports:
       - 6379:6379
-    command: [ "redis-server", "--appendonly", "yes" ]
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
     volumes:
       - redis-data:/var/lib/redis/data
     environment:

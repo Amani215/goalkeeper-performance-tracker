@@ -24,3 +24,6 @@ lint-web-ui:
 .PHONY: clear
 clear:
 	docker system prune -a -f --volumes
+
+.PHONY: restart
+restart: down up

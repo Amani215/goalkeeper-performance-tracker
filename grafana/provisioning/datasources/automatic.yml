@@ -1,0 +1,25 @@
+apiVersion: 1
+
+deleteDatasources:
+  - name: PostgreSQL
+    orgId: 1
+
+datasources:
+  - name: PostgreSQL
+    access: proxy
+    type: postgres
+    url: db
+    user: db
+    database: db
+    basicAuth: false
+    basicAuthUser:
+    basicAuthPassword:
+    withCredentials: false
+    isDefault: true
+    jsonData:
+      postgresVersion: 1400
+      sslmode: disable
+    secureJsonData:
+      password: pass
+    version: 1
+    editable: true

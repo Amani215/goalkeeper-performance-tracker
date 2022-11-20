@@ -32,8 +32,9 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
                 textTransform: 'capitalize',
                 fontWeight: 'bold'
             }}
-            style={{ color: '#757575' }}>
-            {location.pathname.split('/')[1]}
+            style={{ color: '#757575' }}
+            mb={2}>
+            {location.pathname.split('/')[1] || "Dashboard"}
         </Typography>
     }
     if (redirect) {

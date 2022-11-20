@@ -61,11 +61,15 @@
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true,
-          "values": ["value"]
+          "values": [
+            "value"
+          ]
         },
         "pieType": "pie",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": true
         },
@@ -89,7 +93,9 @@
           "select": [
             [
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "column"
               }
             ]
@@ -147,7 +153,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -163,7 +171,10 @@
           "format": "table",
           "group": [
             {
-              "params": ["$__interval", "none"],
+              "params": [
+                "$__interval",
+                "none"
+              ],
               "type": "time"
             }
           ],
@@ -174,15 +185,21 @@
           "select": [
             [
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "column"
               },
               {
-                "params": ["count"],
+                "params": [
+                  "count"
+                ],
                 "type": "aggregate"
               },
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "alias"
               }
             ]
@@ -235,7 +252,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -251,7 +270,10 @@
           "format": "table",
           "group": [
             {
-              "params": ["$__interval", "none"],
+              "params": [
+                "$__interval",
+                "none"
+              ],
               "type": "time"
             }
           ],
@@ -262,15 +284,21 @@
           "select": [
             [
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "column"
               },
               {
-                "params": ["count"],
+                "params": [
+                  "count"
+                ],
                 "type": "aggregate"
               },
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "alias"
               }
             ]
@@ -365,12 +393,14 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT  g.name as \"Goalkeeper\", AVG(gp.grade) as \"Grade Average\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  mm.main_goalkeeper_id, mm.grade\n  FROM    match_monitoring mm\n          INNER JOIN\n          (\n              SELECT id\n              FROM match\n              where date >= date(now())\n              ORDER BY \"date\" DESC\n              limit 3\n          ) m ON  mm.match_id = m.id\n)gp ON gp.main_goalkeeper_id = g.id\ngroup by g.id\nORDER BY AVG(gp.grade) DESC\nlimit 5\n",
+          "rawSql": "SELECT  g.name as \"Goalkeeper\", AVG(gp.grade) as \"Grade Average\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  mm.main_goalkeeper_id, mm.grade\n  FROM    match_monitoring mm\n          INNER JOIN\n          (\n              SELECT id\n              FROM match\n              where date <= date(now())\n              ORDER BY \"date\" DESC\n              limit 3\n          ) m ON  mm.match_id = m.id\n)gp ON gp.main_goalkeeper_id = g.id\ngroup by g.id\nORDER BY AVG(gp.grade) DESC\nlimit 5\n",
           "refId": "A",
           "select": [
             [
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "column"
               }
             ]
@@ -428,7 +458,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -444,7 +476,10 @@
           "format": "table",
           "group": [
             {
-              "params": ["$__interval", "none"],
+              "params": [
+                "$__interval",
+                "none"
+              ],
               "type": "time"
             }
           ],
@@ -455,15 +490,21 @@
           "select": [
             [
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "column"
               },
               {
-                "params": ["count"],
+                "params": [
+                  "count"
+                ],
                 "type": "aggregate"
               },
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "alias"
               }
             ]
@@ -510,12 +551,16 @@
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true,
-          "values": ["value"],
+          "values": [
+            "value"
+          ],
           "width": -1
         },
         "pieType": "pie",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": true
         },
@@ -540,7 +585,9 @@
           "select": [
             [
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "column"
               }
             ]
@@ -601,7 +648,9 @@
       "options": {
         "footer": {
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "show": false
         },
         "showHeader": true
@@ -622,7 +671,9 @@
           "select": [
             [
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "column"
               }
             ]
@@ -674,12 +725,16 @@
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true,
-          "values": ["value"],
+          "values": [
+            "value"
+          ],
           "width": -1
         },
         "pieType": "donut",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": true
         },
@@ -704,7 +759,9 @@
           "select": [
             [
               {
-                "params": ["value"],
+                "params": [
+                  "value"
+                ],
                 "type": "column"
               }
             ]
@@ -762,6 +819,6 @@
   "timezone": "",
   "title": "main dashboard",
   "uid": "qeVBDKdVk",
-  "version": 4,
+  "version": 1,
   "weekStart": ""
 }

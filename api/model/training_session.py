@@ -1,7 +1,8 @@
 """imports"""
+import datetime
 from uuid import uuid4
-from sqlalchemy import Column, String, Date, Integer
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, Integer
+from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
 from config.postgres import db
 
 
@@ -13,7 +14,9 @@ class training_session(db.Model):
     id = Column(UUID(as_uuid=True),
                 primary_key=True,
                 default=lambda: uuid4().hex)
-    date = Column(Date, unique=False, nullable=False)
+    date = Column(TIMESTAMP(timezone=False),
+                  nullable=False,
+                  default=datetime.datetime.now())
     duration = Column(Integer, unique=False, nullable=False)
 
     training_session_category_id = Column(String(35),

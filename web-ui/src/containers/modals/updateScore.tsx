@@ -3,19 +3,7 @@ import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useMatch, useMatchError, useMatchReady, useUpdateScores } from '../../contexts/matchContext';
 import { ModalProp } from '../../interfaces/modalProp'
-
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50%',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2
-};
+import { style } from './style';
 
 function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [, setError] = useState(false)

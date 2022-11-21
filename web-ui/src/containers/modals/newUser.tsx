@@ -4,19 +4,7 @@ import { useState } from 'react';
 import { useNewUser, useNewUserError } from '../../contexts/usersContext';
 import { ModalProp } from '../../interfaces/modalProp'
 import userValidationSchema from '../../schemas/userValidation';
-
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50%',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2
-};
+import { style } from './style';
 
 function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [error, setError] = useState(false)

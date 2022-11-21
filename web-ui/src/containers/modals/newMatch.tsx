@@ -9,19 +9,7 @@ import { useCategories, useCategoriesReady } from '../../contexts/categoriesCont
 import { useNewMatch, useNewMatchError } from '../../contexts/matchesContext';
 import { CategoryDTO } from '../../DTOs';
 import { ModalProp } from '../../interfaces/modalProp'
-
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50%',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2
-};
+import { style } from './style';
 
 function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [, setError] = useState(false)

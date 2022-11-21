@@ -8,18 +8,7 @@ import { useNewTraining, useNewTrainingError } from '../../contexts/trainingsCon
 import { CategoryDTO } from '../../DTOs/CategoryDTO';
 import { ModalProp } from '../../interfaces/modalProp'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50%',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2
-};
+import { style } from './style';
 
 function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [, setError] = useState(false)

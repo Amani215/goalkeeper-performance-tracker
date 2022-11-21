@@ -4,18 +4,7 @@ import { FormikValues, useFormik } from 'formik';
 import { ModalProp } from '../../interfaces/modalProp'
 import { TrainingMonitoringDTO, UpdateTrainingMonitoringDTO } from '../../DTOs/TrainingMonitoringDTO';
 import { useTrainingPerformance, useUpdateTrainingPerformance } from '../../contexts/trainingPerformanceContext';
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50%',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2
-};
+import { style } from './style';
 
 function UpdateTrainingFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [loaded, setLoaded] = useState(false)

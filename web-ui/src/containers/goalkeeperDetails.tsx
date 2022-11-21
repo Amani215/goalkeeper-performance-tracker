@@ -152,12 +152,19 @@ function GoalkeeperDetails() {
     const trainings = useGoalkeeperTrainings()
     const trainingsReady = useGoalkeeperTrainingsReady()
 
+    const [birthday, setBirthday] = useState<string>("")
+
     useEffect(() => { setLoaded(true) }, [])
 
     useEffect(() => {
         if (goalkeeperContext) {
             goalkeeperContext(id ? id : "").then(
-                data => setGoalkeeper(data as GoalkeeperDTO)
+                data => {
+                    const dto = data as GoalkeeperDTO
+                    setGoalkeeper(dto)
+
+                    setBirthday(dto.birthday.split('/')[2] + "-" + dto.birthday.split('/')[1] + "-" + dto.birthday.split('/')[0])
+                }
             )
         }
         if (loaded && goalkeeperReady && goalkeeperError) {
@@ -250,7 +257,7 @@ function GoalkeeperDetails() {
                                     <Grid item xs={5}>
                                         <Typography
                                             variant='body1'>
-                                            {dayjs().diff(dayjs(goalkeeper?.birthday), 'year')}
+                                            {dayjs().diff(dayjs(birthday), 'year')}
                                         </Typography>
                                     </Grid>
 
@@ -265,7 +272,7 @@ function GoalkeeperDetails() {
                                     <Grid item xs={5}>
                                         <Typography
                                             variant='body1'>
-                                            {dayjs(goalkeeper?.birthday).format('DD MMM YYYY').toString()}
+                                            {dayjs(birthday).format("DD MMM YYYY").toString()}
                                         </Typography>
                                     </Grid>
 

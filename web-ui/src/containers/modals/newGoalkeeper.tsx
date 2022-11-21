@@ -35,8 +35,8 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const handleSubmit = async ({ name, birthday }: FormikValues): Promise<void> => {
         if (newGoalkeeper != null) {
             await newGoalkeeper({
-                name: name, day: birthday.toDate().getDay(),
-                month: birthday.toDate().getMonth(), year: birthday.toDate().getFullYear()
+                name: name, day: birthday['$D'],
+                month: birthday['$d'].getMonth() + 1, year: birthday.toDate().getFullYear()
             })
             if (newGoalkeeperError) setError(true)
             else setModalIsOpen()

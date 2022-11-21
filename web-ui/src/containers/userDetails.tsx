@@ -168,15 +168,21 @@ function UserDetails() {
                                 display="flex"
                                 flexDirection="column"
                                 justifyContent="center"
-                                alignItems="center"
-                                component="img"
-                                sx={{
-                                    maxHeight: { xs: "100%", sm: "100%", md: 500 },
-                                    maxWidth: { xs: "100%", sm: 350, md: 500 },
-                                }}
-                                alt="Example Coach"
-                                src={user?.profile_pic ? user.profile_pic : "https://pressboxonline.com/wp-content/uploads/2021/01/dan-enos-800x445.jpg"}
-                            />
+                                alignItems="center">
+                                <Box
+                                    display="flex"
+                                    flexDirection="column"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    component="img"
+                                    sx={{
+                                        maxHeight: { xs: "100%", sm: "100%", md: "32rem" },
+                                        maxWidth: { xs: "100%", sm: 350, md: "32rem" },
+                                    }}
+                                    alt="Image by Stephanie Edwards from Pixabay"
+                                    src={user?.profile_pic ? user.profile_pic : `${process.env.PUBLIC_URL}/assets/placeholder.png`}
+                                /></Box>
+
                             <Box
                                 display="flex"
                                 flexDirection="column"

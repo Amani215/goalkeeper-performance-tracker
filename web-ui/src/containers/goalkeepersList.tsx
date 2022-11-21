@@ -26,12 +26,6 @@ const columns: GridColDef[] = [
         }
     },
     {
-        field: 'id',
-        headerName: 'ID',
-        flex: 2,
-        minWidth: 80
-    },
-    {
         field: 'name',
         headerName: 'Name',
         flex: 3, minWidth: 100
@@ -42,7 +36,7 @@ const columns: GridColDef[] = [
         flex: 1,
         minWidth: 60,
         align: "center",
-        valueGetter: (params) => dayjs().diff(dayjs(params.row.birthday), 'year')
+        valueGetter: (params) => dayjs().diff(dayjs(params.row.birthday.split('/')[2] + "-" + params.row.birthday.split('/')[1] + "-" + params.row.birthday.split('/')[0]), 'year')
     }
 ]
 

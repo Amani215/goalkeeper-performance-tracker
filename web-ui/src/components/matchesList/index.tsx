@@ -63,7 +63,6 @@ function MatchesList({ matches }: PropType) {
                         rowsPerPageOptions={[5]}
                     />
                 </div> :
-
                 <Box
                     display="flex"
                     justifyContent="center"

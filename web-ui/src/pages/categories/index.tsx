@@ -14,7 +14,6 @@ function Categories() {
         <CategoriesProvider>
             <NewCategory {...{ modalIsOpen, setModalIsOpen: handleClose }} />
 
-
             <PortalPage>
                 <CategoriesView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
             </PortalPage>

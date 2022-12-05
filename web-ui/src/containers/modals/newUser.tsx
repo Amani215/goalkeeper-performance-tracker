@@ -45,7 +45,6 @@ function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     onSubmit={formik.handleSubmit}
                     sx={{ mt: 1 }}
                 >
-
                     <TextField
                         margin="normal"
                         required

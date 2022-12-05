@@ -1,5 +1,4 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-import { MatchDTO, NewMatchDTO } from "../DTOs/MatchDTO";
 import { errorResponse } from "../interfaces/errorResponse";
 import { useAuth } from "./authContext";
 import { TrainingDTO } from "../DTOs/TrainingDTO"

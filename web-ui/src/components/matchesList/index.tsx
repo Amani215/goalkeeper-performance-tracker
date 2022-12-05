@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { MatchDTO } from "../../DTOs/MatchDTO";
 import { Box, Card, Link, Typography } from '@mui/material';
@@ -53,20 +52,12 @@ const columns: GridColDef[] = [
 ];
 
 function MatchesList({ matches }: PropType) {
-    const [rows, setRows] = useState<MatchDTO[]>([] as MatchDTO[])
-
-    useEffect(() => {
-        if (matches) {
-            setRows(matches)
-        }
-    }, [matches])
-
     return (
         <>
-            {rows.length > 0 ?
+            {matches.length > 0 ?
                 <div style={{ height: 400, width: '100%' }}>
                     <DataGrid
-                        rows={rows || []}
+                        rows={matches || []}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}

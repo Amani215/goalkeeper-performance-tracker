@@ -90,7 +90,9 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
                         <Card sx={{ padding: 2 }}>
                             {auth?.user.admin ?
                                 <Box display="flex" justifyContent="flex-end">
-                                    <Button onClick={() => { setModalIsOpen() }}>
+                                    <Button
+                                        disabled={user?.admin}
+                                        onClick={() => { setModalIsOpen() }}>
                                         Edit
                                     </Button>
                                 </Box> : <></>

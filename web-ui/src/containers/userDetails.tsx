@@ -6,11 +6,12 @@ import Grid from '@mui/material/Grid'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '../contexts/authContext'
-import { useUpdateProfilePic, useUser, useUserCategories, useUserCategoriesReady, useUserError, useUserReady } from '../contexts/userContext'
+import { useUpdateProfilePic, useGetUser, useUserCategories, useUserCategoriesReady, useUserError, useUserReady, useUserUpdated } from '../contexts/userContext'
 import { CategoryDTO, UserDTO } from '../DTOs'
 import { IoFootball } from "react-icons/io5"
+import { ModalProp } from '../interfaces/modalProp'
 
-function UserDetails() {
+function UserDetails({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
 
     const [isCurrentUser, setIsCurrentUser] = useState(false)
@@ -19,9 +20,10 @@ function UserDetails() {
     const [loaded, setLoaded] = useState(false)
 
     const auth = useAuth()
-    const userContext = useUser()
+    const userContext = useGetUser()
     const userError = useUserError()
     const userReady = useUserReady()
+    const userUpdated = useUserUpdated()
     const updateProfilePic = useUpdateProfilePic()
 
     const [categories, setCategories] = useState<CategoryDTO[]>([])
@@ -46,7 +48,7 @@ function UserDetails() {
         if (loaded && userReady && !userError) {
             setError("")
         }
-    }, [loaded, userReady, userError, id])
+    }, [loaded, userReady, userError, userUpdated, id])
 
     useEffect(() => {
         if (auth && auth.user.id == id) {
@@ -88,7 +90,7 @@ function UserDetails() {
                         <Card sx={{ padding: 2 }}>
                             {auth?.user.admin ?
                                 <Box display="flex" justifyContent="flex-end">
-                                    <Button>
+                                    <Button onClick={() => { setModalIsOpen() }}>
                                         Edit
                                     </Button>
                                 </Box> : <></>

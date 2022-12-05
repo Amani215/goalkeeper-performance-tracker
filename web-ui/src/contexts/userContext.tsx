@@ -5,7 +5,12 @@ import { useAuth } from './authContext';
 
 // GET USER CONTEXTS
 type UserDelegate = (id: string) => Promise<UserDTO | errorResponse>;
-const userContext = createContext<UserDelegate | null>(null);
+const getUserContext = createContext<UserDelegate | null>(null);
+export function useGetUser() {
+    return useContext(getUserContext);
+}
+
+const userContext = createContext<UserDTO | null>(null);
 export function useUser() {
     return useContext(userContext);
 }
@@ -39,17 +44,31 @@ export function useUpdateProfilePic() {
     return useContext(updateProfilePicContext);
 }
 
+// UPDATE STATUS CONTEXT
+type UpdateUserStatusDelegate = (id: string, status: boolean) => Promise<UserDTO | errorResponse>;
+const updateUserStatusContext = createContext<UpdateUserStatusDelegate | null>(null);
+export function useUpdateUserStatus() {
+    return useContext(updateUserStatusContext);
+}
+
+const userUpdatedContext = createContext<boolean>(false);
+export function useUserUpdated() {
+    return useContext(userUpdatedContext);
+}
+
 // PROVIDER
 export default function UserProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
+    const [user, setUser] = useState<UserDTO | null>(null)
     const [userReady, setUserReady] = useState<boolean>(false)
+    const [userUpdated, setUserUpdated] = useState<boolean>(false);
 
     const [userCategoriesReady, setUserCategoriesReady] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
 
-    const user: UserDelegate = async (id: string) => {
+    const getUser: UserDelegate = async (id: string) => {
         const data = await fetch("/api/user?id=" + id, {
             method: "GET",
             headers: {
@@ -61,11 +80,13 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
         if ('id' in json_data) {
             setUserReady(true);
             setError(false);
+            setUser(json_data as UserDTO);
             return json_data as UserDTO;
         }
         else {
             setError(true);
             setUserReady(true);
+            setUser(null);
             return json_data as errorResponse;
         }
     }
@@ -102,19 +123,52 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             .then(data => data.json())
     }
 
+    const updateUserStatus: UpdateUserStatusDelegate = async (username: string, status: boolean) => {
+        const data = await fetch("/api/user/admin", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                username: username,
+                admin: status
+            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setUserReady(true);
+            setError(false);
+            setUser(json_data as UserDTO)
+            setUserUpdated(true)
+            return json_data as UserDTO;
+        }
+        else {
+            setError(true);
+            setUserReady(true);
+            setUser(null)
+            return json_data as errorResponse;
+        }
+    }
     return (
-        <userContext.Provider value={user}>
-            <userErrorContext.Provider value={error}>
-                <userReadyContext.Provider value={userReady}>
-                    <updateProfilePicContext.Provider value={profile_pic}>
-                        <userCategoriesContext.Provider value={categories}>
-                            <userCategoriesReadyContext.Provider value={userCategoriesReady}>
-                                {props.children}
-                            </userCategoriesReadyContext.Provider>
-                        </userCategoriesContext.Provider>
-                    </updateProfilePicContext.Provider>
-                </userReadyContext.Provider>
-            </userErrorContext.Provider>
-        </userContext.Provider>
+        <getUserContext.Provider value={getUser}>
+            <userContext.Provider value={user}>
+                <userErrorContext.Provider value={error}>
+                    <userReadyContext.Provider value={userReady}>
+                        <updateProfilePicContext.Provider value={profile_pic}>
+                            <updateUserStatusContext.Provider value={updateUserStatus}>
+                                <userUpdatedContext.Provider value={userUpdated}>
+                                    <userCategoriesContext.Provider value={categories}>
+                                        <userCategoriesReadyContext.Provider value={userCategoriesReady}>
+                                            {props.children}
+                                        </userCategoriesReadyContext.Provider>
+                                    </userCategoriesContext.Provider>
+                                </userUpdatedContext.Provider>
+                            </updateUserStatusContext.Provider>
+                        </updateProfilePicContext.Provider>
+                    </userReadyContext.Provider>
+                </userErrorContext.Provider>
+            </userContext.Provider>
+        </getUserContext.Provider>
     )
 }

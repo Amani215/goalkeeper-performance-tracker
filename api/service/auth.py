@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import jwt
 from model.user import User
 from schema.token import TokenSchema
-from service.user import verify_user, get_by_id, get_by_username
+from service.user import verify_user, get_by_id
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -12,7 +12,6 @@ def authenticate_user(username, password):
     """Authenticate the user with the given username and password
     
     Possible exceptions: SQLAlchemyError, PermissionError"""
-
     try:
         result = verify_user(username, password)
 

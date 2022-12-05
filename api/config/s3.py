@@ -1,4 +1,4 @@
-"""Init S3 resource"""
+"""Init S3 resource and client"""
 import boto3
 import os
 

@@ -1,5 +1,4 @@
 '''Entry point of the API'''
-import unittest
 from flask import Flask
 from config import Config
 from config.postgres import db, migrate
@@ -23,6 +22,7 @@ def create_app():
     load_redis()
     create_buckets()
 
+    # Import routes
     from route.user import user_api
     from route.auth import auth_api
     from route.category import category_api
@@ -33,6 +33,7 @@ def create_app():
     from route.training_monitoring import training_monitoring_api
     from route.growth_monitoring import growth_monitoring_api
 
+    # Register routes as blueprints
     app.register_blueprint(user_api)
     app.register_blueprint(auth_api)
     app.register_blueprint(category_api)
@@ -49,6 +50,7 @@ def create_app():
 def setup_database(_db, _app):
     '''Create the postgres database'''
     with _app.app_context():
+        # Import models
         from model.user import User
         from model.category import Category
         from model.goalkeeper import Goalkeeper
@@ -57,27 +59,12 @@ def setup_database(_db, _app):
         from model.training_session import training_session
         from model.training_monitoring import training_monitoring
         from model.growth_monitoring import growth_monitoring
+        
         _db.create_all()
         set_default_user()
         return _db
 
 
 app = create_app()
+
 app.app_context().push()
-
-
-def run():
-    app.run()
-
-
-def test():
-    '''Runs the unit tests.'''
-    tests = unittest.TestLoader().discover('api/tests', pattern='test*.py')
-    result = unittest.TextTestRunner(verbosity=2).run(tests)
-    if result.wasSuccessful():
-        return 0
-    return 1
-
-
-if __name__ == '__main__':
-    run()

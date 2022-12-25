@@ -47,6 +47,25 @@ variable "public_s3" {
   type = string
 }
 
+variable "AWS_DOMAIN" {
+  type = string
+}
+
+variable "AWS_DEFAULT_REGION" {
+  type      = string
+  sensitive = true
+}
+
+variable "AWS_ACCESS_KEY_ID" {
+  type      = string
+  sensitive = true
+}
+
+variable "AWS_SECRET_ACCESS_KEY" {
+  type      = string
+  sensitive = true
+}
+
 variable "MINIO_ROOT_USER" {
   type      = string
   sensitive = true

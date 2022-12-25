@@ -51,6 +51,10 @@ variable "public_s3" {
   type = string
 }
 
+variable "AWS_DOMAIN" {
+  type = string
+}
+
 variable "MINIO_ROOT_PASSWORD" {
   type      = string
   sensitive = true
@@ -61,10 +65,20 @@ variable "MINIO_ROOT_USER" {
   sensitive = true
 }
 
-# AWS_DEFAULT_REGION=eu-central-1
-# AWS_DOMAIN=http://minio:9000
-# AWS_ACCESS_KEY_ID=myminioadmin
-# AWS_SECRET_ACCESS_KEY =minio-secret-key-change-me
+variable "AWS_DEFAULT_REGION" {
+  type      = string
+  sensitive = true
+}
+
+variable "AWS_ACCESS_KEY_ID" {
+  type      = string
+  sensitive = true
+}
+
+variable "AWS_SECRET_ACCESS_KEY" {
+  type      = string
+  sensitive = true
+}
 
 variable "profile_pics_bucket" {
   type    = string

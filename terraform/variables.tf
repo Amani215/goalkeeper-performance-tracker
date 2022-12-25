@@ -46,3 +46,13 @@ variable "admin_password" {
 variable "public_s3" {
   type = string
 }
+
+variable "MINIO_ROOT_USER" {
+  type      = string
+  sensitive = true
+}
+
+variable "MINIO_ROOT_PASSWORD" {
+  type      = string
+  sensitive = true
+}

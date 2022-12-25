@@ -46,6 +46,16 @@ module "redis" {
   ]
 }
 
+module "minio" {
+  source              = "./modules/minio"
+  MINIO_ROOT_USER     = var.MINIO_ROOT_USER
+  MINIO_ROOT_PASSWORD = var.MINIO_ROOT_PASSWORD
+  minio_network       = var.gpt_network
+  depends_on = [
+    docker_network.gpt_network
+  ]
+}
+
 module "webApp" {
   source              = "./modules/webApp"
   api_secret_key      = var.api_secret_key
@@ -58,6 +68,8 @@ module "webApp" {
   pg_host             = var.db_username
   pg_password         = var.db_password
   public_s3           = var.public_s3
+  MINIO_ROOT_USER     = var.MINIO_ROOT_USER
+  MINIO_ROOT_PASSWORD = var.MINIO_ROOT_PASSWORD
   providers = {
     docker = docker
     ghcr   = ghcr

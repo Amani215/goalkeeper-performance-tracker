@@ -50,8 +50,16 @@ variable "pg_db" {
 variable "public_s3" {
   type = string
 }
-# MINIO_ROOT_USER=myminioadmin
-# MINIO_ROOT_PASSWORD=minio-secret-key-change-me
+
+variable "MINIO_ROOT_PASSWORD" {
+  type      = string
+  sensitive = true
+}
+
+variable "MINIO_ROOT_USER" {
+  type      = string
+  sensitive = true
+}
 
 # AWS_DEFAULT_REGION=eu-central-1
 # AWS_DOMAIN=http://minio:9000

@@ -38,6 +38,14 @@ module "postgres" {
   ]
 }
 
+module "redis" {
+  source        = "./modules/redis"
+  redis_network = var.gpt_network
+  depends_on = [
+    docker_network.gpt_network
+  ]
+}
+
 module "webApp" {
   source              = "./modules/webApp"
   api_secret_key      = var.api_secret_key

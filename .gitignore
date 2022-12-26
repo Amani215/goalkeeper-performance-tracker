@@ -8,5 +8,5 @@ coverage.xml
 _cache
 node_modules
 .terraform
-secret.tfvars
+*tfvars
 *tfstate*

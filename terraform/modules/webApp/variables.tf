@@ -8,6 +8,10 @@ variable "api_image" {
   default = "ghcr.io/amani215/goalkeeper-performance-tracker-api:master-alpine3.15"
 }
 
+variable "web_ui_image" {
+  type    = string
+  default = "ghcr.io/amani215/goalkeeper-performance-tracker-web-ui:master-alpine"
+}
 
 ### FLASK ###
 variable "api_secret_key" {

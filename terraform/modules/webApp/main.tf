@@ -11,18 +11,7 @@ terraform {
   }
 }
 
-# resource "docker_registry_image" "api_image" {
-#   name = "ghcr.io/amani215/goalkeeper-performance-tracker-api:master-alpine3.15"
-#   build {
-#     context = path.cwd
-#     auth_config {
-#       host_name = "ghcr.io"
-#       user_name = "amani215"
-#       password  = var.password
-#     }
-#   }
-# }
-
+# API
 resource "docker_container" "api" {
   provider = docker
   image    = docker_image.api.name
@@ -64,5 +53,29 @@ resource "docker_image" "api" {
 
 data "docker_registry_image" "api" {
   name     = var.api_image
+  provider = ghcr
+}
+
+# WEB UI
+resource "docker_container" "web_ui" {
+  provider = docker
+  image    = docker_image.web_ui.name
+  name     = "web_ui"
+  networks_advanced {
+    name = var.web_network
+  }
+  depends_on = [
+    docker_container.api
+  ]
+}
+
+resource "docker_image" "web_ui" {
+  provider      = ghcr
+  name          = data.docker_registry_image.web_ui.name
+  pull_triggers = [data.docker_registry_image.web_ui.sha256_digest]
+}
+
+data "docker_registry_image" "web_ui" {
+  name     = var.web_ui_image
   provider = ghcr
 }

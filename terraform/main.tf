@@ -82,3 +82,11 @@ module "webApp" {
     docker_network.gpt_network
   ]
 }
+
+module "grafana" {
+  source          = "./modules/grafana"
+  grafana_network = var.gpt_network
+  depends_on = [
+    docker_network.gpt_network
+  ]
+}

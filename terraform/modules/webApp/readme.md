@@ -1,7 +1,7 @@
-Creates the API container
+Creates the Backend container
 
 ### Input
-- SECRET KEY (api_secret_key)
+- SECRET KEY (backend_secret_key)
 - WTF CSRF SECRET KEY (wtf_csrf_secret_key)
 - Network (web_network)
 - Admin User (admin_user)

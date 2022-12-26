@@ -3,7 +3,7 @@ variable "web_network" {
   default = "goalkeeper_tracker_platform"
 }
 
-variable "api_image" {
+variable "backend_image" {
   type    = string
   default = "ghcr.io/amani215/goalkeeper-performance-tracker-api:master-alpine3.15"
 }
@@ -14,7 +14,7 @@ variable "web_ui_image" {
 }
 
 ### FLASK ###
-variable "api_secret_key" {
+variable "backend_secret_key" {
   type      = string
   sensitive = true
 }

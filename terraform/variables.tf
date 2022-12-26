@@ -13,7 +13,7 @@ variable "gpt_network" {
   default = "goalkeeper_tracker_platform"
 }
 
-variable "api_secret_key" {
+variable "backend_secret_key" {
   type      = string
   sensitive = true
 }

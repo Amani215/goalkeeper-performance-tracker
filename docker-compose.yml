@@ -39,7 +39,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./nginx:/etc/nginx/conf.d
+      - ./nginx/dev:/etc/nginx/conf.d
     depends_on:
       - web-ui
       - backend

@@ -11,16 +11,16 @@ terraform {
   }
 }
 
-# API
-resource "docker_container" "api" {
+# Backend
+resource "docker_container" "backend" {
   provider = docker
-  image    = docker_image.api.name
-  name     = "api"
+  image    = docker_image.backend.name
+  name     = "backend"
   networks_advanced {
     name = var.web_network
   }
   env = [
-    "SECRET_KEY=${var.api_secret_key}",
+    "SECRET_KEY=${var.backend_secret_key}",
     "WTF_CSRF_SECRET_KEY=${var.wtf_csrf_secret_key}",
     "SQLALCHEMY_TRACK_MODIFICATIONS=True",
     "POSTGRES_USER=${var.pg_user}",
@@ -45,14 +45,14 @@ resource "docker_container" "api" {
   ]
 }
 
-resource "docker_image" "api" {
+resource "docker_image" "backend" {
   provider      = ghcr
-  name          = data.docker_registry_image.api.name
-  pull_triggers = [data.docker_registry_image.api.sha256_digest]
+  name          = data.docker_registry_image.backend.name
+  pull_triggers = [data.docker_registry_image.backend.sha256_digest]
 }
 
-data "docker_registry_image" "api" {
-  name     = var.api_image
+data "docker_registry_image" "backend" {
+  name     = var.backend_image
   provider = ghcr
 }
 
@@ -60,12 +60,12 @@ data "docker_registry_image" "api" {
 resource "docker_container" "web_ui" {
   provider = docker
   image    = docker_image.web_ui.name
-  name     = "web_ui"
+  name     = "web-ui"
   networks_advanced {
     name = var.web_network
   }
   depends_on = [
-    docker_container.api
+    docker_container.backend
   ]
 }
 

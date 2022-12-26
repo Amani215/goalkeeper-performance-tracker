@@ -38,10 +38,6 @@ resource "docker_container" "adminer" {
   provider = docker
   image    = "michalhosna/adminer"
   name     = "adminer"
-  ports {
-    internal = 8080
-    external = 80
-  }
   networks_advanced {
     name = var.pg_network
   }

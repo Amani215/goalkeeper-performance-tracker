@@ -58,7 +58,7 @@ module "minio" {
 
 module "webApp" {
   source                = "./modules/webApp"
-  api_secret_key        = var.api_secret_key
+  backend_secret_key    = var.backend_secret_key
   wtf_csrf_secret_key   = var.wtf_csrf_secret_key
   web_network           = var.gpt_network
   admin_user            = var.admin_user
@@ -79,7 +79,10 @@ module "webApp" {
     ghcr   = ghcr
   }
   depends_on = [
-    docker_network.gpt_network
+    docker_network.gpt_network,
+    module.postgres,
+    module.redis,
+    module.minio
   ]
 }
 
@@ -88,5 +91,15 @@ module "grafana" {
   grafana_network = var.gpt_network
   depends_on = [
     docker_network.gpt_network
+  ]
+}
+
+module "nginx" {
+  source        = "./modules/nginx"
+  nginx_network = var.gpt_network
+  depends_on = [
+    docker_network.gpt_network,
+    module.grafana,
+    module.webApp
   ]
 }

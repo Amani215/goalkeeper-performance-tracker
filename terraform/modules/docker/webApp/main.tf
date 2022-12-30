@@ -39,9 +39,7 @@ resource "docker_container" "backend" {
     "AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_ACCESS_KEY}",
     "PROFILE_PICS_BUCKET=${var.profile_pics_bucket}",
     "GOALKEEPER_PICS_BUCKET=${var.goalkeeper_pics_bucket}",
-    "TRAINING_FORMS_BUCKET=${var.training_forms_bucket}",
-    "MINIO_ROOT_PASSWORD=${var.MINIO_ROOT_PASSWORD}",
-    "MINIO_ROOT_USER=${var.MINIO_ROOT_USER}"
+    "TRAINING_FORMS_BUCKET=${var.training_forms_bucket}"
   ]
 }
 

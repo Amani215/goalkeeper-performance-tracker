@@ -59,15 +59,6 @@ variable "AWS_DOMAIN" {
   type = string
 }
 
-variable "MINIO_ROOT_PASSWORD" {
-  type      = string
-  sensitive = true
-}
-
-variable "MINIO_ROOT_USER" {
-  type      = string
-  sensitive = true
-}
 
 variable "AWS_DEFAULT_REGION" {
   type      = string

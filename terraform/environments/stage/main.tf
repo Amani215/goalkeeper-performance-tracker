@@ -48,8 +48,8 @@ module "redis" {
 
 module "minio" {
   source              = "../../modules/docker/minio"
-  MINIO_ROOT_USER     = var.MINIO_ROOT_USER
-  MINIO_ROOT_PASSWORD = var.MINIO_ROOT_PASSWORD
+  MINIO_ROOT_USER     = var.AWS_ACCESS_KEY_ID
+  MINIO_ROOT_PASSWORD = var.AWS_SECRET_ACCESS_KEY
   minio_network       = var.gpt_network
   depends_on = [
     docker_network.gpt_network
@@ -68,8 +68,6 @@ module "webApp" {
   pg_host               = var.db_username
   pg_password           = var.db_password
   public_s3             = var.public_s3
-  MINIO_ROOT_USER       = var.MINIO_ROOT_USER
-  MINIO_ROOT_PASSWORD   = var.MINIO_ROOT_PASSWORD
   AWS_DOMAIN            = var.AWS_DOMAIN
   AWS_ACCESS_KEY_ID     = var.AWS_ACCESS_KEY_ID
   AWS_DEFAULT_REGION    = var.AWS_DEFAULT_REGION

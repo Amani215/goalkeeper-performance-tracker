@@ -65,13 +65,3 @@ variable "AWS_SECRET_ACCESS_KEY" {
   type      = string
   sensitive = true
 }
-
-variable "MINIO_ROOT_USER" {
-  type      = string
-  sensitive = true
-}
-
-variable "MINIO_ROOT_PASSWORD" {
-  type      = string
-  sensitive = true
-}

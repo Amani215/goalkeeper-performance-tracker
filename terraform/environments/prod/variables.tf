@@ -65,3 +65,23 @@ variable "AWS_SECRET_ACCESS_KEY" {
   type      = string
   sensitive = true
 }
+
+variable "vultr_api_key" {
+  type      = string
+  sensitive = true
+}
+
+variable "cloudflare_zone_id" {
+  type       = string
+  sesnsitive = true
+}
+
+variable "cloudflare_api_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "cloudflare_api_hostname" {
+  type      = string
+  sensitive = true
+}

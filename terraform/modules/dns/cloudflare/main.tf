@@ -23,7 +23,7 @@ resource "cloudflare_record" "ipv6" {
   ttl     = 3600
 }
 
-resource "cloudflare_record" "ipv6" {
+resource "cloudflare_record" "alias" {
   zone_id = var.zone_id
   name    = "*.${var.subdomain}"
   value   = var.subdomain

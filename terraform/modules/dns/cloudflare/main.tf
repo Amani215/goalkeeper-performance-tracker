@@ -13,6 +13,7 @@ resource "cloudflare_record" "ipv4" {
   value   = var.ipv4
   type    = "A"
   ttl     = 3600
+  proxied = false
 }
 
 resource "cloudflare_record" "ipv6" {
@@ -21,6 +22,7 @@ resource "cloudflare_record" "ipv6" {
   value   = var.ipv6
   type    = "AAAA"
   ttl     = 3600
+  proxied = false
 }
 
 resource "cloudflare_record" "alias" {
@@ -29,6 +31,7 @@ resource "cloudflare_record" "alias" {
   value   = var.subdomain
   type    = "CNAME"
   ttl     = 3600
+  proxied = false
   depends_on = [
     cloudflare_record.ipv4,
     cloudflare_record.ipv6

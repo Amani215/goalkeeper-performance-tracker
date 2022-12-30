@@ -45,7 +45,7 @@ module "vultr_instance" {
 
 provider "cloudflare" {
   api_token    = var.cloudflare_api_token
-  api_hostname = var.cloudflare_api_hostname
+  # api_hostname = var.cloudflare_api_hostname
 }
 
 module "cloudflare_dns" {

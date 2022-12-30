@@ -29,4 +29,8 @@ resource "cloudflare_record" "alias" {
   value   = var.subdomain
   type    = "CNAME"
   ttl     = 3600
+  depends_on = [
+    cloudflare_record.ipv4,
+    cloudflare_record.ipv6
+  ]
 }

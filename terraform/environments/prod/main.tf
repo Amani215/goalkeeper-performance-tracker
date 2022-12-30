@@ -56,6 +56,9 @@ module "cloudflare_dns" {
   ipv4    = module.vultr_instance.ipv4
   ipv6    = module.vultr_instance.ipv6
   zone_id = var.cloudflare_zone_id
+  depends_on = [
+    module.vultr_instance
+  ]
 }
 
 ### GHCR ###

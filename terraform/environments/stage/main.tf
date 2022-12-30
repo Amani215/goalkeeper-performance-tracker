@@ -29,7 +29,7 @@ resource "docker_network" "gpt_network" {
 }
 
 module "postgres" {
-  source      = "./modules/postgres"
+  source      = "../../modules/docker/postgres"
   db_username = var.db_username
   db_password = var.db_password
   pg_network  = var.gpt_network
@@ -39,7 +39,7 @@ module "postgres" {
 }
 
 module "redis" {
-  source        = "./modules/redis"
+  source        = "../../modules/docker/redis"
   redis_network = var.gpt_network
   depends_on = [
     docker_network.gpt_network
@@ -47,7 +47,7 @@ module "redis" {
 }
 
 module "minio" {
-  source              = "./modules/minio"
+  source              = "../../modules/docker/minio"
   MINIO_ROOT_USER     = var.MINIO_ROOT_USER
   MINIO_ROOT_PASSWORD = var.MINIO_ROOT_PASSWORD
   minio_network       = var.gpt_network
@@ -57,7 +57,7 @@ module "minio" {
 }
 
 module "webApp" {
-  source                = "./modules/webApp"
+  source                = "../../modules/docker/webApp"
   backend_secret_key    = var.backend_secret_key
   wtf_csrf_secret_key   = var.wtf_csrf_secret_key
   web_network           = var.gpt_network
@@ -87,7 +87,7 @@ module "webApp" {
 }
 
 module "grafana" {
-  source          = "./modules/grafana"
+  source          = "../../modules/docker/grafana"
   grafana_network = var.gpt_network
   depends_on = [
     docker_network.gpt_network
@@ -95,7 +95,7 @@ module "grafana" {
 }
 
 module "nginx" {
-  source        = "./modules/nginx"
+  source        = "../../modules/docker/nginx"
   nginx_network = var.gpt_network
   depends_on = [
     docker_network.gpt_network,

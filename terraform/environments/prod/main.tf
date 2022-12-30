@@ -8,10 +8,6 @@ terraform {
       source  = "kreuzwerker/docker"
       version = "2.23.1"
     }
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "3.31.0"
-    }
     vultr = {
       source  = "vultr/vultr"
       version = "2.12.0"
@@ -39,26 +35,6 @@ module "vultr_instance" {
   providers = {
     vultr = vultr
   }
-}
-
-### CLOUDFLARE ###
-
-provider "cloudflare" {
-  api_token    = var.cloudflare_api_token
-  # api_hostname = var.cloudflare_api_hostname
-}
-
-module "cloudflare_dns" {
-  source = "../../modules/dns/cloudflare"
-  providers = {
-    cloudflare = cloudflare
-  }
-  ipv4    = module.vultr_instance.ipv4
-  ipv6    = module.vultr_instance.ipv6
-  zone_id = var.cloudflare_zone_id
-  depends_on = [
-    module.vultr_instance
-  ]
 }
 
 ### GHCR ###

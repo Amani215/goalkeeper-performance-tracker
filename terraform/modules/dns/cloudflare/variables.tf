@@ -1,6 +1,6 @@
 variable "subdomain" {
   type    = string
-  default = "gpt"
+  default = "gpt.amanibrik.tk"
 }
 
 variable "ipv4" {

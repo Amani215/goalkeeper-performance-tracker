@@ -43,6 +43,9 @@ resource "null_resource" "host_key_checking" {
       "/usr/bin/bash"
     ]
   }
+  output "host" {
+    value = module.vultr_instance.ipv4
+  }
 }
 
 ### GHCR ###
@@ -53,12 +56,11 @@ provider "ghcr" {
     username = var.GH_USER
     password = var.GH_PAT
   }
-  host = "ssh://root@${module.vultr_instance.ipv4}"
-
+  host = "ssh://root@${null_resource.host_key_checking.host}"
 }
 
 provider "docker" {
-  host = "ssh://root@${module.vultr_instance.ipv4}"
+  host = "ssh://root@${null_resource.host_key_checking.host}"
 }
 
 resource "docker_network" "gpt_network" {

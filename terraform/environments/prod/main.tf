@@ -53,9 +53,7 @@ provider "docker" {
 
 resource "docker_network" "gpt_network" {
   name = var.gpt_network
-  providers = {
-    docker = docker
-  }
+
 }
 
 module "postgres" {
@@ -66,9 +64,7 @@ module "postgres" {
   depends_on = [
     docker_network.gpt_network
   ]
-  providers = {
-    docker = docker
-  }
+
 }
 
 module "redis" {
@@ -77,9 +73,7 @@ module "redis" {
   depends_on = [
     docker_network.gpt_network
   ]
-  providers = {
-    docker = docker
-  }
+
 }
 
 module "minio" {
@@ -90,9 +84,7 @@ module "minio" {
   depends_on = [
     docker_network.gpt_network
   ]
-  providers = {
-    docker = docker
-  }
+
 }
 
 module "webApp" {
@@ -129,9 +121,7 @@ module "grafana" {
   depends_on = [
     docker_network.gpt_network
   ]
-  providers = {
-    docker = docker
-  }
+
 }
 
 module "nginx" {
@@ -142,7 +132,5 @@ module "nginx" {
     module.grafana,
     module.webApp
   ]
-  providers = {
-    docker = docker
-  }
+
 }

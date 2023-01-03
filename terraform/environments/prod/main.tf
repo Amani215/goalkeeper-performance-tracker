@@ -53,6 +53,8 @@ provider "ghcr" {
     username = var.GH_USER
     password = var.GH_PAT
   }
+  host = "ssh://root@${module.vultr_instance.ipv4}"
+
 }
 
 provider "docker" {

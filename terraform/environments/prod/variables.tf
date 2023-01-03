@@ -72,7 +72,7 @@ variable "vultr_api_key" {
 }
 
 variable "cloudflare_zone_id" {
-  type       = string
+  type      = string
   sensitive = true
 }
 
@@ -87,6 +87,7 @@ variable "cloudflare_api_hostname" {
 }
 
 variable "host_key_checking" {
+  type    = string
   default = <<EOF
   Host ${module.vultr_instance.ipv4}
     StrictHostKeyChecking no

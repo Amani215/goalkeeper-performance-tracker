@@ -36,17 +36,6 @@ module "vultr_instance" {
     vultr = vultr
   }
 }
-resource "null_resource" "host_key_checking" {
-  provisioner "local-exec" {
-    command = "echo ${var.host_key_checking} > ~/.ssh/config && chmod 400 ~/.ssh/config"
-    interpreter = [
-      "/usr/bin/bash"
-    ]
-  }
-  output "host" {
-    value = module.vultr_instance.ipv4
-  }
-}
 
 ### GHCR ###
 
@@ -56,16 +45,17 @@ provider "ghcr" {
     username = var.GH_USER
     password = var.GH_PAT
   }
-  host = "ssh://root@${null_resource.host_key_checking.host}"
+  host = "ssh://root@${module.vultr_instance.ipv4}"
+  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null"]
 }
 
 provider "docker" {
-  host = "ssh://root@${null_resource.host_key_checking.host}"
+  host = "ssh://root@${module.vultr_instance.ipv4}"
+  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null"]
 }
 
 resource "docker_network" "gpt_network" {
   name = var.gpt_network
-
 }
 
 module "postgres" {

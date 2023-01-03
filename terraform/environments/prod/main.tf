@@ -46,12 +46,12 @@ provider "ghcr" {
     password = var.GH_PAT
   }
   host = "ssh://root@${module.vultr_instance.ipv4}"
-  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null"]
+  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null","-vvv"]
 }
 
 provider "docker" {
   host = "ssh://root@${module.vultr_instance.ipv4}"
-  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null"]
+  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null","-vvv"]
 }
 
 resource "docker_network" "gpt_network" {

@@ -35,8 +35,13 @@ module "vultr_instance" {
   providers = {
     vultr = vultr
   }
+}
+resource "null_resource" "host_key_checking" {
   provisioner "local-exec" {
     command = "echo ${var.host_key_checking} > ~/.ssh/config && chmod 400 ~/.ssh/config"
+    interpreter = [
+      "/usr/bin/bash"
+    ]
   }
 }
 

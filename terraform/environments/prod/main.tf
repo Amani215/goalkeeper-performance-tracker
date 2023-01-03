@@ -46,7 +46,8 @@ provider "local" {
 }
 
 module "ssh" {
-  source = "../../modules/vultr/ssh"
+  source       = "../../modules/vultr/ssh"
+  id_rsa_vultr = var.id_rsa_vultr
   providers = {
     local = local
   }

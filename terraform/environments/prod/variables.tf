@@ -93,3 +93,8 @@ Host gpt.amanibrik.tk
   StrictHostKeyChecking no
 EOF
 }
+
+variable "id_rsa_vultr" {
+  type      = string
+  sensitive = true
+}

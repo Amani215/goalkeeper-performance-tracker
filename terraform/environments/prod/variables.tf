@@ -89,7 +89,7 @@ variable "cloudflare_api_hostname" {
 variable "host_key_checking" {
   type    = string
   default = <<EOF
-  Host ${module.vultr_instance.ipv4}
-    StrictHostKeyChecking no
-  EOF
+Host gpt.amanibrik.tk
+  StrictHostKeyChecking no
+EOF
 }

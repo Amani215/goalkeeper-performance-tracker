@@ -35,6 +35,16 @@ module "vultr_instance" {
   providers = {
     vultr = vultr
   }
+  provisioner "local-exec" {
+    command = "echo ${var.host_key_checking} > ~/.ssh/config && chmod 400 ~/.ssh/config"
+  }
+}
+
+variable "host_key_checking" {
+  default = <<EOF
+  Host ${module.vultr_instance.ipv4}
+    StrictHostKeyChecking no
+  EOF
 }
 
 ### GHCR ###

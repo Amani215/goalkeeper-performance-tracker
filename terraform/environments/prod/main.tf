@@ -40,13 +40,6 @@ module "vultr_instance" {
   }
 }
 
-variable "host_key_checking" {
-  default = <<EOF
-  Host ${module.vultr_instance.ipv4}
-    StrictHostKeyChecking no
-  EOF
-}
-
 ### GHCR ###
 
 provider "ghcr" {

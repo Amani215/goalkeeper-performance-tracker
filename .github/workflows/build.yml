@@ -30,7 +30,7 @@ env:
   REDIS_PORT: 6379
   ADMIN_USERNAME: build
   ADMIN_PASSWORD: buildbuild
-  TF_MODULES_DIR: ${{ env.GITHUB_WORKSPACE }}/terraform/modules
+  TF_MODULES_DIR: $GITHUB_WORKSPACE/terraform/modules
 
 jobs:
   # test-api:

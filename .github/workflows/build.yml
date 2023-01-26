@@ -202,10 +202,9 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
       - name: terraform secrets
         uses: timheuer/base64-to-file@v1.2
-        working-directory: ./terraform/environments/prod
         with:
           fileName: 'secret.tfvars'
-          fileDir: '.'
+          fileDir: './terraform/environments/prod'
           encodedString: ${{ secrets.SECRET_TFVARS }}
       - name: terraform init
         run: terraform init --upgrade

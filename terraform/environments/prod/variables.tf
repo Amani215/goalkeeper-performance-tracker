@@ -70,3 +70,8 @@ variable "vultr_api_key" {
   type      = string
   sensitive = true
 }
+
+variable "MODULES_DIR" {
+    type      = string
+    default = "../../modules"
+}

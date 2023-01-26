@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo $TF_VAR_id_rsa_vultr > /id_rsa_vultr
+chmod 400 /id_rsa_vultr
+eval `ssh-agent`
+ssh-add /id_rsa_vultr

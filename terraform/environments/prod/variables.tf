@@ -70,31 +70,3 @@ variable "vultr_api_key" {
   type      = string
   sensitive = true
 }
-
-variable "cloudflare_zone_id" {
-  type      = string
-  sensitive = true
-}
-
-variable "cloudflare_api_token" {
-  type      = string
-  sensitive = true
-}
-
-variable "cloudflare_api_hostname" {
-  type      = string
-  sensitive = true
-}
-
-variable "host_key_checking" {
-  type    = string
-  default = <<EOF
-Host gpt.amanibrik.tk
-  StrictHostKeyChecking no
-EOF
-}
-
-variable "id_rsa_vultr" {
-  type      = string
-  sensitive = true
-}

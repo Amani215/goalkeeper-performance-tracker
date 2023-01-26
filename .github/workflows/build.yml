@@ -188,3 +188,26 @@ jobs:
           tags: ${{ steps.web-ui-meta.outputs.tags }}-alpine
           labels: ${{ steps.web-ui-meta.outputs.labels }}
           file: web-ui/Dockerfile
+
+  plan:
+    runs-on: ubuntu-latest
+    needs: build
+    working-directory: terraform/environments/prod
+    steps:
+      - uses: actions/checkout@v3
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.ID_RSA_VULTR }}
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      - name: terraform secrets
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'secret.tfvars'
+          fileDir: '.'
+          encodedString: ${{ secrets.SECRET_TFVARS }}
+      - name: terraform init
+        run: terraform init --upgrade
+      - name: terraform plan
+        run: terraform plan

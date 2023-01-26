@@ -16,6 +16,10 @@ terraform {
       source  = "hashicorp/local"
       version = "2.2.3"
     }
+    null = {
+      source = "hashicorp/null"
+      version = "3.2.1"
+    }
   }
   cloud {
     organization = "amanibrik"
@@ -45,11 +49,15 @@ module "vultr_instance" {
 provider "local" {
 }
 
+provider "null"{
+}
+
 module "ssh" {
   source       = "../../modules/vultr/ssh"
   id_rsa_vultr = var.id_rsa_vultr
   providers = {
     local = local
+    null = null
   }
 }
 
@@ -62,18 +70,12 @@ provider "ghcr" {
     password = var.GH_PAT
   }
   host     = "ssh://root@${module.vultr_instance.ipv4}"
-  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-i", module.ssh.ssh_key_dir]
-  depends_on = [
-    ssh
-  ]
+  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-i", fileexists(module.ssh.ssh_key_dir) ? module.ssh.ssh_key_dir : ]
 }
 
 provider "docker" {
   host     = "ssh://root@${module.vultr_instance.ipv4}"
-  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-i", module.ssh.ssh_key_dir]
-  depends_on = [
-    ssh
-  ]
+  ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-i", fileexists(module.ssh.ssh_key_dir)]
 }
 
 resource "docker_network" "gpt_network" {

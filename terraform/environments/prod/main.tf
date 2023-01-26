@@ -63,11 +63,17 @@ provider "ghcr" {
   }
   host     = "ssh://root@${module.vultr_instance.ipv4}"
   ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-i", module.ssh.ssh_key_dir]
+  depends_on = [
+    ssh
+  ]
 }
 
 provider "docker" {
   host     = "ssh://root@${module.vultr_instance.ipv4}"
   ssh_opts = ["-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null", "-i", module.ssh.ssh_key_dir]
+  depends_on = [
+    ssh
+  ]
 }
 
 resource "docker_network" "gpt_network" {

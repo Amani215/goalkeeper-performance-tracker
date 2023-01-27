@@ -1,3 +1,3 @@
 output "ssh_key_dir" {
-  value = "/id_rsa_vultr"
+  value = "id_rsa_vultr"
 }

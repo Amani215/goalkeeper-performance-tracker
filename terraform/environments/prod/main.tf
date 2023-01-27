@@ -31,7 +31,7 @@ provider "vultr" {
 }
 
 module "vultr_instance" {
-  source = "../../mods/vultr/instance"
+  source = "https://github.com/Amani215/goalkeeper-performance-tracker/ /terraform/mods/vultr/instance"
   providers = {
     vultr = vultr
   }
@@ -59,7 +59,7 @@ resource "docker_network" "gpt_network" {
 }
 
 module "postgres" {
-  source      = "../../mods/docker/postgres"
+  source      = "https://github.com/Amani215/goalkeeper-performance-tracker/ /terraform/mods/docker/postgres"
   db_username = var.db_username
   db_password = var.db_password
   pg_network  = var.gpt_network
@@ -70,7 +70,7 @@ module "postgres" {
 }
 
 module "redis" {
-  source        = "../../mods/docker/redis"
+  source        = "https://github.com/Amani215/goalkeeper-performance-tracker/ /terraform/mods/docker/redis"
   redis_network = var.gpt_network
   depends_on = [
     docker_network.gpt_network
@@ -79,7 +79,7 @@ module "redis" {
 }
 
 module "minio" {
-  source              = "../../mods/docker/minio"
+  source              = "https://github.com/Amani215/goalkeeper-performance-tracker/ /terraform/mods/docker/minio"
   MINIO_ROOT_USER     = var.AWS_ACCESS_KEY_ID
   MINIO_ROOT_PASSWORD = var.AWS_SECRET_ACCESS_KEY
   minio_network       = var.gpt_network
@@ -90,7 +90,7 @@ module "minio" {
 }
 
 module "webApp" {
-  source                = "../../mods/docker/webApp"
+  source                = "https://github.com/Amani215/goalkeeper-performance-tracker/ /terraform/mods/docker/webApp"
   backend_secret_key    = var.backend_secret_key
   wtf_csrf_secret_key   = var.wtf_csrf_secret_key
   web_network           = var.gpt_network
@@ -118,7 +118,7 @@ module "webApp" {
 }
 
 module "grafana" {
-  source          = "../../mods/docker/grafana"
+  source          = "https://github.com/Amani215/goalkeeper-performance-tracker/ /terraform/mods/docker/grafana"
   grafana_network = var.gpt_network
   depends_on = [
     docker_network.gpt_network
@@ -127,7 +127,7 @@ module "grafana" {
 }
 
 module "nginx" {
-  source        = "../../mods/docker/nginx"
+  source        = "https://github.com/Amani215/goalkeeper-performance-tracker/ /terraform/mods/docker/nginx"
   nginx_network = var.gpt_network
   depends_on = [
     docker_network.gpt_network,

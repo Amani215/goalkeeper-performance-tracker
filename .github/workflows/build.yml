@@ -212,5 +212,5 @@ jobs:
         run: terraform init --upgrade
         working-directory: ./terraform/environments/prod
       - name: terraform plan
-        run: terraform plan
+        run: terraform plan -var-file="secret.tfvars"
         working-directory: ./terraform/environments/prod

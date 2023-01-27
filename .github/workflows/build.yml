@@ -213,4 +213,4 @@ jobs:
         working-directory: ./terraform/environments/prod
       - name: terraform plan
         run: terraform plan
-        # working-directory: ./terraform/environments/prod
+        working-directory: ./terraform/environments/prod

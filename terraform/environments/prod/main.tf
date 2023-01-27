@@ -13,7 +13,7 @@ terraform {
       version = "2.12.0"
     }
   }
-  backend "remote" {
+  cloud {
     organization = "amanibrik"
 
     workspaces {

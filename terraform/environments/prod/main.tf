@@ -48,7 +48,7 @@ module "vultr_instance" {
 module "ssh" {
   source = "github.com/Amani215/goalkeeper-performance-tracker//terraform/mods/vultr/ssh"
   depends_on = [
-    "vultr_instance"
+    module.vultr_instance
   ]
   ipv4 = module.vultr_instance.ipv4
 }

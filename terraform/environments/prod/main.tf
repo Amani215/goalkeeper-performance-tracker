@@ -12,6 +12,10 @@ terraform {
       source  = "vultr/vultr"
       version = "2.12.0"
     }
+    null = {
+      source = "hashicorp/null"
+      version = "3.2.1"
+    }
   }
   backend "remote" {
     organization = "amanibrik"
@@ -30,12 +34,26 @@ provider "vultr" {
   retry_limit = 3
 }
 
+provider "null" {
+
+}
+
 module "vultr_instance" {
   source = "github.com/Amani215/goalkeeper-performance-tracker//terraform/mods/vultr/instance"
   providers = {
     vultr = vultr
   }
 }
+
+module "ssh" {
+  source = "github.com/Amani215/goalkeeper-performance-tracker//terraform/mods/vultr/ssh"
+  depends_on = [
+    "vultr_instance"
+  ]
+  ipv4 = module.vultr_instance.ipv4
+}
+
+
 
 ### GHCR ###
 
@@ -121,18 +139,19 @@ module "grafana" {
   source          = "github.com/Amani215/goalkeeper-performance-tracker//terraform/mods/docker/grafana"
   grafana_network = var.gpt_network
   depends_on = [
-    docker_network.gpt_network
-  ]
-
-}
-
-module "nginx" {
-  source        = "github.com/Amani215/goalkeeper-performance-tracker//terraform/mods/docker/nginx"
-  nginx_network = var.gpt_network
-  depends_on = [
     docker_network.gpt_network,
-    module.grafana,
-    module.webApp
+    module.ssh
   ]
 
 }
+
+# module "nginx" {
+#   source        = "github.com/Amani215/goalkeeper-performance-tracker//terraform/mods/docker/nginx"
+#   nginx_network = var.gpt_network
+#   depends_on = [
+#     docker_network.gpt_network,
+#     module.grafana,
+#     module.webApp
+#     module.ssh
+#   ]
+# }

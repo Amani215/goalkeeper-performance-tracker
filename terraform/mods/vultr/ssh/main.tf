@@ -1,25 +1,27 @@
 terraform {
   required_providers {
-    local = {
-      source  = "hashicorp/local"
-      version = "2.2.3"
+    null = {
+      source = "hashicorp/null"
+      version = "3.2.1"
     }
   }
 }
 
-resource "local_sensitive_file" "ssh_key" {
-  content         = var.id_rsa_vultr
-  filename        = "id_rsa_vultr"
-  file_permission = "0400"
-}
+resource "null_resource" "gh_repo" {
+  triggers = {
+    ipv4 = var.ipv4
+  }
 
-resource "null_resource" "ssh_commands" {
+  provisioner "remote-exec" {
+    # Bootstrap script called with private_ip of each node in the cluster
+    inline = [
+      "git clone ${var.gh_repo} ${var.gh_repo_dir}",
+    ]
+  }
   connection {
-    host = machine_resource.host
+    host = var.ipv4
     type = "ssh"
     user = "root"
     agent = false
-    private_key = file("id_rsa_vultr")
   }
-  depends_on = [local_sensitive_file.ssh_key]
 }

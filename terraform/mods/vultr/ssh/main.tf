@@ -22,6 +22,6 @@ resource "null_resource" "gh_repo" {
     host = var.ipv4
     type = "ssh"
     user = "root"
-    agent = false
+    agent = true
   }
 }

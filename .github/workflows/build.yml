@@ -211,9 +211,9 @@ jobs:
       - name: terraform init
         run: terraform init --upgrade
         working-directory: ./terraform/environments/prod
-      - name: unlock
-        run: terraform force-unlock -force 720da31a-aa32-aba4-2025-1c8258678eea 
-        working-directory: ./terraform/environments/prod
+      # - name: unlock
+      #   run: terraform force-unlock -force 720da31a-aa32-aba4-2025-1c8258678eea 
+      #   working-directory: ./terraform/environments/prod
       - name: terraform plan
         run: terraform plan -var-file="secret.tfvars"
         working-directory: ./terraform/environments/prod

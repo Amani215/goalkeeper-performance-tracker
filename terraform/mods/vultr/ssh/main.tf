@@ -7,6 +7,16 @@ terraform {
   }
 }
 
+resource "null_resource" "known_host" {
+  triggers = {
+    ipv4 = var.ipv4
+  }
+
+  provisioner "local-exec" {
+    command = "ssh-keyscan -H ${var.ipv4} >> ~/.ssh/known_hosts"
+  }
+}
+
 resource "null_resource" "gh_repo" {
   triggers = {
     ipv4 = var.ipv4
@@ -24,4 +34,7 @@ resource "null_resource" "gh_repo" {
     user = "root"
     agent = true
   }
+  depends_on = [
+    null_resource.known_host
+  ]
 }

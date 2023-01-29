@@ -7,7 +7,7 @@ terraform {
   }
 }
 
-resource "docker_container" "pg_db" {
+resource "docker_container" "db" {
   provider = docker
   image    = "postgres:${var.pg_tag}"
   name     = var.db_sever_name

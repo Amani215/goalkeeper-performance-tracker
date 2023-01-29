@@ -74,6 +74,9 @@ provider "docker" {
 
 resource "docker_network" "gpt_network" {
   name = var.gpt_network
+  depends_on = [
+    module.ssh
+  ]
 }
 
 module "postgres" {

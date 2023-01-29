@@ -12,6 +12,7 @@ resource "docker_container" "pg_db" {
   image    = "postgres:${var.pg_tag}"
   name     = var.db_sever_name
   env = [
+    "POSTGRES_HOST=${var.db_sever_name}",
     "POSTGRES_PASSWORD=${var.db_password}",
     "POSTGRES_USER=${var.db_username}",
     "POSTGRES_DB=${var.db_username}",

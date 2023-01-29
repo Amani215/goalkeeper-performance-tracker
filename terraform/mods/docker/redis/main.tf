@@ -11,6 +11,7 @@ resource "docker_container" "redis" {
   provider = docker
   image    = "redis:${var.redis_tag}"
   name     = "redis"
+  restart = "always"
   env = [
     "ALLOW_EMPTY_PASSWORD=yes"
   ]
@@ -35,6 +36,7 @@ resource "docker_container" "redis_commander" {
   provider = docker
   image    = "rediscommander/redis-commander:${var.redis_commander_tag}"
   name     = "redis-commander"
+  restart = "always"
   env = [
     "REDIS_HOSTS=redis:6379"
   ]

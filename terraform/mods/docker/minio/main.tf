@@ -11,6 +11,7 @@ resource "docker_container" "minio" {
   provider = docker
   image    = "minio/minio:${var.minio_tag}"
   name     = "minio"
+  restart = "always"
   env = [
     "MINIO_ROOT_USER=${var.MINIO_ROOT_USER}",
     "MINIO_ROOT_PASSWORD=${var.MINIO_ROOT_PASSWORD}"

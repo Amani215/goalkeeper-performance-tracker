@@ -11,6 +11,7 @@ resource "docker_container" "nginx" {
   provider = docker
   image    = "nginx:${var.nginx_tag}"
   name     = "nginx"
+  restart = "always"
   networks_advanced {
     name = var.nginx_network
   }
@@ -26,5 +27,4 @@ resource "docker_container" "nginx" {
   #   internal = 443
   #   external = 443
   # }
-  restart = "always"
 }

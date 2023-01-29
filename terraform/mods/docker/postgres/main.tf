@@ -11,6 +11,7 @@ resource "docker_container" "pg_db" {
   provider = docker
   image    = "postgres:${var.pg_tag}"
   name     = var.db_sever_name
+  restart  = "always"
   env = [
     "POSTGRES_HOST=${var.db_sever_name}",
     "POSTGRES_PASSWORD=${var.db_password}",
@@ -39,6 +40,7 @@ resource "docker_container" "adminer" {
   provider = docker
   image    = "michalhosna/adminer"
   name     = "adminer"
+  restart = "always"
   networks_advanced {
     name = var.pg_network
   }

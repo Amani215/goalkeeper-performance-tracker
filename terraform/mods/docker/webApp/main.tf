@@ -16,7 +16,7 @@ resource "docker_container" "backend" {
   provider = docker
   image    = docker_image.backend.name
   name     = "backend"
-  # restart = "always"
+  restart  = "always"
   networks_advanced {
     name = var.web_network
   }
@@ -60,7 +60,7 @@ resource "docker_container" "web_ui" {
   provider = docker
   image    = docker_image.web_ui.name
   name     = "web-ui"
-  # restart = "always"
+  restart  = "always"
   networks_advanced {
     name = var.web_network
   }

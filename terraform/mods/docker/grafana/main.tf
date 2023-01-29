@@ -11,6 +11,7 @@ resource "docker_container" "grafana" {
   provider = docker
   image    = "grafana/grafana:${var.grafana_tag}"
   name     = "grafana"
+  restart  = "always"
   networks_advanced {
     name = var.grafana_network
   }

@@ -63,23 +63,3 @@ resource "null_resource" "gh_repo" {
     null_resource.gh_keys
   ]
 }
-
-
-resource "null_resource" "docker_cleanup" {
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-  connection {
-    host  = var.ipv4
-    type  = "ssh"
-    user  = "root"
-    agent = true
-  }
-  provisioner "remote-exec" {
-    # Bootstrap script called with private_ip of each node in the cluster
-    inline = [
-      "docker system prune -f",
-      "docker rm -f $(docker ps -a -q)"
-    ]
-  }
-}

@@ -1,0 +1,29 @@
+---
+name: destroy
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.ID_RSA_VULTR }}
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_version: 1.3.6
+      - name: terraform secrets
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: "secret.tfvars"
+          fileDir: "./terraform/environments/prod"
+          encodedString: ${{ secrets.SECRET_TFVARS }}
+      - name: terraform init
+        run: terraform init --upgrade
+        working-directory: ./terraform/environments/prod
+      - name: terraform destroy
+        run: terraform destroy -var-file="secret.tfvars" -auto-approve
+        working-directory: ./terraform/environments/prod

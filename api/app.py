@@ -1,7 +1,6 @@
 '''Entry point of the API'''
 from flask import Flask
-from config import Config
-from config.postgres import db, migrate
+from config.postgres import db, migrate, Config
 from init.postgres_init import set_default_user
 from init.redis_init import load_redis
 from init.s3_init import create_buckets
@@ -59,7 +58,7 @@ def setup_database(_db, _app):
         from model.training_session import training_session
         from model.training_monitoring import training_monitoring
         from model.growth_monitoring import growth_monitoring
-        
+
         _db.create_all()
         set_default_user()
         return _db

@@ -1,2 +1,4 @@
 run.sh
+db/*.db
+db/.gitignore
 Dockerfile

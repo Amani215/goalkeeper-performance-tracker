@@ -1,7 +1,6 @@
 """imports"""
 from uuid import uuid4
 from sqlalchemy import Column, Integer, Date, String
-# from sqlalchemy.dialects.postgresql import UUID
 from config import db
 
 

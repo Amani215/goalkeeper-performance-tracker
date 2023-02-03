@@ -1,5 +1,4 @@
 from config import db
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import String
 
 trainer_categories = db.Table(

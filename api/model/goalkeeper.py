@@ -1,7 +1,6 @@
 '''imports'''
 from uuid import uuid4
 from sqlalchemy import Column, String, Date
-# from sqlalchemy.dialects.postgresql import UUID
 from config import db
 from model.association_tables import goalkeeper_categories
 

@@ -2,7 +2,7 @@
 import datetime
 from uuid import uuid4
 from sqlalchemy import Column, String, Integer
-from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 from config import db
 
 

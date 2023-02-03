@@ -1,5 +1,5 @@
 # Framework
-Flask==2.1.1
+Flask==2.2
 
 # For protection from CSRF attacks
 Flask-WTF==1.0.1

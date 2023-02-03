@@ -2,7 +2,7 @@
 from uuid import uuid4
 from sqlalchemy import Column, String, Boolean
 from sqlalchemy.dialects.postgresql import UUID
-from config.postgres import db
+from config import db
 
 
 class training_monitoring(db.Model):

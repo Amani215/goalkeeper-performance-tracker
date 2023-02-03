@@ -1,6 +1,6 @@
 '''Match monitoring services (add, update, etc.)'''
 from sqlalchemy.exc import SQLAlchemyError
-from config.postgres import db
+from config import db
 from model.match_monitoring import match_monitoring
 from model.user import User
 import service.goalkeeper as goalkeeper_service

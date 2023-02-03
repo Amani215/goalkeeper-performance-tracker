@@ -13,6 +13,3 @@ Config = {
     'SQLALCHEMY_TRACK_MODIFICATIONS':
     os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
 }
-
-db = SQLAlchemy()
-migrate = Migrate()

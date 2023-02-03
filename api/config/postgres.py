@@ -1,7 +1,5 @@
 """App config with postgres as main db solution"""
 import os
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 
 Config = {
     'SECRET_KEY': os.getenv('SECRET_KEY'),
@@ -11,6 +9,3 @@ Config = {
     'SQLALCHEMY_TRACK_MODIFICATIONS':
     os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
 }
-
-db = SQLAlchemy()
-migrate = Migrate()

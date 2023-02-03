@@ -1,7 +1,7 @@
 '''Training session services (add, update, etc.)'''
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
-from config.postgres import db
+from config import db
 from model.training_session import training_session
 import service.category as category_service
 import service.training_monitoring as training_monitoring_service

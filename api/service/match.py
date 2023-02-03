@@ -1,7 +1,7 @@
 '''Match services (add, update, etc.)'''
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
-from config.postgres import db
+from config import db
 from model.category import Category
 from model.match import Match
 from config.redis import redis_db

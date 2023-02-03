@@ -1,7 +1,7 @@
 '''Match monitoring services (add, update, etc.)'''
 from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
-from config.postgres import db
+from config import db
 from model.growth_monitoring import growth_monitoring
 import service.goalkeeper as goalkeeper_service
 

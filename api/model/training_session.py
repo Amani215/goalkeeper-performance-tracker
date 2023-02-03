@@ -3,7 +3,7 @@ import datetime
 from uuid import uuid4
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.dialects.postgresql import UUID, TIMESTAMP
-from config.postgres import db
+from config import db
 
 
 class training_session(db.Model):

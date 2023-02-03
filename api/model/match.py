@@ -2,7 +2,7 @@
 from uuid import uuid4
 from sqlalchemy import Column, String, Date, Integer
 from sqlalchemy.dialects.postgresql import UUID
-from config.postgres import db
+from config import db
 
 
 class Match(db.Model):

@@ -5,7 +5,7 @@ import random
 import pytest
 from botocore.client import ClientError
 from app import create_app
-from config.postgres import db
+from config import db
 from config.s3 import s3_client, s3_resource
 from helper import random_string, random_date
 import service.category as category_service

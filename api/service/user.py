@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.datastructures import FileStorage
 from model.category import Category
 from model.user import User
-from config.postgres import db
+from config import db
 from service.s3 import upload_file
 from config.redis import redis_db
 

@@ -1,6 +1,7 @@
 '''Entry point of the API'''
 from flask import Flask
-from config.postgres import db, migrate, Config
+from config import db, migrate
+from config.postgres import Config
 from init.postgres_init import set_default_user
 from init.redis_init import load_redis
 from init.s3_init import create_buckets

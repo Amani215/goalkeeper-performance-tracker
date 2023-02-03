@@ -1,6 +1,6 @@
 """imports"""
 from sqlalchemy import Column, String, Integer
-from config.postgres import db
+from config import db
 from model.association_tables import trainer_categories, goalkeeper_categories
 
 

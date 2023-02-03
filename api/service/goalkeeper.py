@@ -3,7 +3,7 @@ import datetime
 import os
 from cgi import FieldStorage
 from sqlalchemy.exc import SQLAlchemyError
-from config.postgres import db
+from config import db
 from model.category import Category
 from model.goalkeeper import Goalkeeper
 from model.user import User

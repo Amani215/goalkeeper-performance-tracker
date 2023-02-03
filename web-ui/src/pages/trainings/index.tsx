@@ -19,7 +19,7 @@ function Trainings() {
 
             <PortalPage>
                 <TrainingsView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
-                <GrafanaPanel src={'http://localhost/grafana/d-solo/qeVBDKdVf/trainings?from=1667257200000&to=1669849199999&orgId=1&panelId=12'} xs={12} height={600} />
+                <GrafanaPanel src={'http://localhost/grafana/d-solo/trainLite/trainings?from=1667257200000&to=1669849199999&orgId=1&panelId=12'} xs={12} height={600} />
             </PortalPage>
         </TrainingsProvider>
     )

@@ -4,10 +4,7 @@ from sqlalchemy import String
 
 trainer_categories = db.Table(
     'category_trainers',
-    db.Column('user_id',
-              UUID(as_uuid=True),
-              db.ForeignKey('user.id'),
-              primary_key=True),
+    db.Column('user_id', String, db.ForeignKey('user.id'), primary_key=True),
     db.Column('category_id',
               String,
               db.ForeignKey('category.id'),
@@ -16,7 +13,7 @@ trainer_categories = db.Table(
 goalkeeper_categories = db.Table(
     'category_goalkeepers',
     db.Column('goalkeeper_id',
-              UUID(as_uuid=True),
+              String,
               db.ForeignKey('goalkeeper.id'),
               primary_key=True),
     db.Column('category_id',

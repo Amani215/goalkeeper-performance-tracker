@@ -7,9 +7,9 @@ from config import db
 
 class Match(db.Model):
     """Base class for matches"""
-    id = Column(UUID(as_uuid=True),
+    id = Column(String(128),
                 primary_key=True,
-                default=lambda: uuid4().hex)
+                default=lambda: str(uuid4().hex))
     date = Column(Date, unique=False, nullable=False)
     local = Column(String(128), unique=False, nullable=False)
     visitor = Column(String(128), unique=False, nullable=False)

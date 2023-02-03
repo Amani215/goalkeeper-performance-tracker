@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-db_host = f'../db/{os.getenv("POSTGRES_DB")}'  # No need for different names
+db_host = f'../db/{os.getenv("POSTGRES_DB")}.db'  # No need for different names
 
 Config = {
     'SECRET_KEY': os.getenv('SECRET_KEY'),

@@ -1,16 +1,16 @@
 '''imports'''
 from uuid import uuid4
 from sqlalchemy import Column, String, Date
-from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.postgresql import UUID
 from config import db
 from model.association_tables import goalkeeper_categories
 
 
 class Goalkeeper(db.Model):
     '''Goalkeeper model'''
-    id = Column(UUID(as_uuid=True),
+    id = Column(String(128),
                 primary_key=True,
-                default=lambda: uuid4().hex)
+                default=lambda: str(uuid4().hex))
     name = Column(String(80), unique=True, nullable=False)
     picture = Column(String(128), unique=False, nullable=True)
     birthday = Column(Date, unique=False, nullable=False)

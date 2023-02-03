@@ -1,16 +1,16 @@
 """imports"""
 from uuid import uuid4
 from sqlalchemy import Column, String, BOOLEAN
-from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.postgresql import UUID
 from config import db
 from model.association_tables import trainer_categories
 
 
 class User(db.Model):
     """Base class for all types of available users"""
-    id = Column(UUID(as_uuid=True),
+    id = Column(String(128),
                 primary_key=True,
-                default=lambda: uuid4().hex)
+                default=lambda: str(uuid4().hex))
     username = Column(String(80), unique=True, nullable=False)
     password = Column(String(128), nullable=False)
     admin = Column(BOOLEAN, nullable=False, default=False)

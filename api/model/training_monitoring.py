@@ -1,7 +1,7 @@
 """imports"""
 from uuid import uuid4
 from sqlalchemy import Column, String, Boolean
-from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.postgresql import UUID
 from config import db
 
 
@@ -9,15 +9,14 @@ class training_monitoring(db.Model):
     """Base class for training monitoring"""
     __table_args__ = (db.UniqueConstraint('session_id', 'goalkeeper_id'), )
 
-    id = Column(UUID(as_uuid=True),
+    id = Column(String(128),
                 primary_key=True,
-                default=lambda: uuid4().hex)
-    session_id = Column(UUID(as_uuid=True),
-                        db.ForeignKey("training_session.id"))
+                default=lambda: str(uuid4().hex))
+    session_id = Column(String, db.ForeignKey("training_session.id"))
     session = db.relationship("training_session",
                               back_populates="goalkeepers_performances")
 
-    goalkeeper_id = Column(UUID(as_uuid=True), db.ForeignKey("goalkeeper.id"))
+    goalkeeper_id = Column(String, db.ForeignKey("goalkeeper.id"))
     goalkeeper = db.relationship("Goalkeeper",
                                  back_populates="training_performances",
                                  foreign_keys=[goalkeeper_id])

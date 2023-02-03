@@ -11,9 +11,9 @@ class training_session(db.Model):
     __table_args__ = (db.UniqueConstraint('date',
                                           'training_session_category_id'), )
 
-    id = Column(UUID(as_uuid=True),
+    id = Column(String(128),
                 primary_key=True,
-                default=lambda: uuid4().hex)
+                default=lambda: str(uuid4().hex))
     date = Column(TIMESTAMP(timezone=False),
                   nullable=False,
                   default=datetime.datetime.now())

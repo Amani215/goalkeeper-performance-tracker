@@ -1,7 +1,7 @@
 """imports"""
 from uuid import uuid4
-from sqlalchemy import Column, Integer, Date
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, Integer, Date, String
+# from sqlalchemy.dialects.postgresql import UUID
 from config import db
 
 
@@ -9,11 +9,11 @@ class growth_monitoring(db.Model):
     """Base class for growth monitoring"""
     __table_args__ = (db.UniqueConstraint('date', 'goalkeeper_id'), )
 
-    id = Column(UUID(as_uuid=True),
+    id = Column(String(128),
                 primary_key=True,
-                default=lambda: uuid4().hex)
+                default=lambda: str(uuid4().hex))
 
-    goalkeeper_id = Column(UUID(as_uuid=True), db.ForeignKey("goalkeeper.id"))
+    goalkeeper_id = Column(String, db.ForeignKey("goalkeeper.id"))
     goalkeeper = db.relationship("Goalkeeper",
                                  back_populates="growth",
                                  foreign_keys=[goalkeeper_id])

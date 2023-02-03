@@ -1,7 +1,7 @@
 """imports"""
 from uuid import uuid4
 from sqlalchemy import Column, String, Integer
-from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.dialects.postgresql import UUID
 from config import db
 
 
@@ -9,14 +9,13 @@ class match_monitoring(db.Model):
     """Base class for match monitoring"""
     __table_args__ = (db.UniqueConstraint('match_id', 'main_goalkeeper_id'), )
 
-    id = Column(UUID(as_uuid=True),
+    id = Column(String(128),
                 primary_key=True,
-                default=lambda: uuid4().hex)
-    match_id = Column(UUID(as_uuid=True), db.ForeignKey("match.id"))
+                default=lambda: str(uuid4().hex))
+    match_id = Column(String, db.ForeignKey("match.id"))
     match = db.relationship("Match", back_populates="goalkeepers_performances")
 
-    main_goalkeeper_id = Column(UUID(as_uuid=True),
-                                db.ForeignKey("goalkeeper.id"))
+    main_goalkeeper_id = Column(String, db.ForeignKey("goalkeeper.id"))
     main_goalkeeper = db.relationship("Goalkeeper",
                                       back_populates="match_performances",
                                       foreign_keys=[main_goalkeeper_id])

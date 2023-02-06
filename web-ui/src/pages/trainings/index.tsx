@@ -19,7 +19,7 @@ function Trainings() {
 
             <PortalPage>
                 <TrainingsView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
-                <GrafanaPanel src={'http://localhost/grafana/d-solo/trainLite/trainings?from=1667257200000&to=1669849199999&orgId=1&panelId=12'} xs={12} height={600} />
+                <GrafanaPanel src={`http://localhost/grafana/d-solo/trainLite/trainings?from=${Math.floor(new Date('2023.03.01').getTime())}&to=${Math.floor(new Date('2023.03.31').getTime())}&orgId=1&panelId=12`} xs={12} height={600} />
             </PortalPage>
         </TrainingsProvider>
     )

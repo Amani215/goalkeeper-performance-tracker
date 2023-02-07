@@ -8,7 +8,8 @@ function TrainingsView({ setModalIsOpen }: ModalProp) {
         <>
             <Box
                 display="flex"
-                justifyContent="flex-end"
+                justifyContent="center"
+                alignItems="center"
                 mb={3}>
                 <Button
                     variant="contained"

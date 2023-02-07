@@ -77,14 +77,28 @@
             "type": "frser-sqlite-datasource",
             "uid": "P2D2EEF3E092AF52B"
           },
-          "queryText": "SELECT\n  id,\n  training_session_category_id,\n  duration,\n  \"date\"\nFROM\n  training_session",
+          "queryText": "SELECT\n  id,\n  training_session_category_id,\n  duration,\n  date  \nFROM\n  training_session\n",
           "queryType": "table",
-          "rawQueryText": "SELECT\n  id,\n  training_session_category_id,\n  duration,\n  \"date\"\nFROM\n  training_session",
+          "rawQueryText": "SELECT\n  id,\n  training_session_category_id,\n  duration,\n  date  \nFROM\n  training_session\n",
           "refId": "A",
-          "timeColumns": ["time", "ts"]
+          "timeColumns": []
         }
       ],
       "title": "Trainings Schedule",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "date"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
       "type": "marcusolsson-calendar-panel"
     }
   ],
@@ -127,6 +141,6 @@
   "timezone": "",
   "title": "trainings",
   "uid": "trainLite",
-  "version": 7,
+  "version": 1,
   "weekStart": ""
 }

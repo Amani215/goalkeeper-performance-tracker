@@ -1,4 +1,5 @@
 '''Match monitoring services (add, update, etc.)'''
+import os
 from sqlalchemy.exc import SQLAlchemyError
 from config import db
 from model.match_monitoring import match_monitoring
@@ -47,6 +48,7 @@ def update_param(match_monitoring_id: str, param_name: str, param_value):
 
 
 def editable(mm: match_monitoring, user: User) -> bool:
+    '''Checks if the user is allowed to edit the given match monitoring data'''
     if user.admin:
         return True
 
@@ -55,17 +57,21 @@ def editable(mm: match_monitoring, user: User) -> bool:
         return redis_db.sismember(key, str(user.id))
 
     s: set = set()
+    p = redis_db.pipeline()
+    p.multi()
     for t in mm.match.match_category.trainers:
         _id = str(t.id)
         s.add(_id)
-        redis_db.sadd(key, _id)
+        p.sadd(key, _id)
 
     for c in mm.main_goalkeeper.categories:
         for t in c.trainers:
             _id = str(t.id)
             s.add(_id)
-            redis_db.sadd(key, _id)
+            p.sadd(key, _id)
 
+    p.expire(key, os.getenv('REDIS_CACHE_TTL'))
+    p.execute()
     return str(user.id) in s
 
 

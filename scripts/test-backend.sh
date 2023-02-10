@@ -23,6 +23,7 @@ export TRAINING_FORMS_BUCKET='test-training-forms'
 # REDIS TEST ENVIRONMENT VARIABLES
 export REDIS_HOST='localhost'
 export REDIS_PORT=6379
+export REDIS_CACHE_TTL=60 
 
 ### DEFAULT USER ###
 export ADMIN_USERNAME='test_user'

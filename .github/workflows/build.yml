@@ -28,6 +28,7 @@ env:
   TRAINING_FORMS_BUCKET: build-training-forms
   REDIS_HOST: localhost
   REDIS_PORT: 6379
+  REDIS_CACHE_TTL: 86400
   ADMIN_USERNAME: build
   ADMIN_PASSWORD: buildbuild
   TF_MODULES_DIR: $GITHUB_WORKSPACE/terraform/modules

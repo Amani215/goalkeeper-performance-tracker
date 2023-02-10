@@ -114,7 +114,13 @@ def editable(goalkeeper: Goalkeeper, user: User) -> bool:
         for t in c.trainers:
             _id = str(t.id)
             s.add(_id)
-            redis_db.sadd(key, _id)
+
+            p = redis_db.pipeline()
+            p.multi()
+
+            p.sadd(key, _id)
+            p.expire(key, os.getenv('REDIS_CACHE_TTL'))
+            p.execute()
     return str(user.id) in s
 
 

@@ -33,6 +33,7 @@ resource "docker_container" "backend" {
     "ADMIN_PASSWORD=${var.admin_password}",
     "REDIS_HOST=${var.redis_host}",
     "REDIS_PORT=${var.redis_port}",
+    "REDIS_CACHE_TTL = ${var.redis_cache_ttl}",
     "PUBLIC_S3=${var.public_s3}",
     "AWS_DOMAIN=${var.AWS_DOMAIN}",
     "AWS_DEFAULT_REGION=${var.AWS_DEFAULT_REGION}",

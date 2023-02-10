@@ -101,6 +101,10 @@ variable "redis_port" {
   default = "6379"
 }
 
+variable "redis_cache_ttl" {
+  type    = string
+  default = "86400"
+}
 ### DEFAULT USER ###
 variable "admin_user" {
   type      = string

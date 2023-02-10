@@ -16,7 +16,11 @@ def add_item(key: str, new_value: str):
 def get_items(key: str):
     '''Get items given the key'''
     if redis_db.exists(key) > 0:
-        return redis_db.smembers(key)
+        items = redis_db.smembers(key)
+        res = []
+        for item in items:
+            res.append(item.decode("utf-8"))
+        return res
     else:
         return {'error': NO_SUCH_KEY}
 

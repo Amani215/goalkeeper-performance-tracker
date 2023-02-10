@@ -1,7 +1,6 @@
 '''Entry point of the API'''
 from flask import Flask
 from config import db, migrate
-# from config.postgres import Config
 from config.sqlite import Config
 from init.postgres_init import set_default_user
 from init.redis_init import load_redis
@@ -13,7 +12,7 @@ def create_app():
     
     (Application factory: https://flask.palletsprojects.com/en/2.2.x/patterns/appfactories/)
     '''
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='./static', static_url_path='')
 
     app.config.from_mapping(Config)
 
@@ -33,6 +32,7 @@ def create_app():
     from route.training_session import training_session_api
     from route.training_monitoring import training_monitoring_api
     from route.growth_monitoring import growth_monitoring_api
+    from route.redis import redis_api
 
     # Register routes as blueprints
     app.register_blueprint(user_api)
@@ -44,6 +44,11 @@ def create_app():
     app.register_blueprint(training_session_api)
     app.register_blueprint(training_monitoring_api)
     app.register_blueprint(growth_monitoring_api)
+    app.register_blueprint(redis_api)
+
+    @app.route('/')
+    def index():
+        return app.send_static_file('index.html')
 
     return app
 

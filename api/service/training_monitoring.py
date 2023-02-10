@@ -71,6 +71,7 @@ def update_training_form(training_monitoring_id: str, pic: FieldStorage):
 
 
 def editable(tm: training_monitoring, user: User) -> bool:
+    '''Checks if the user is allowed to edit the given training data'''
     if user.admin:
         return True
 
@@ -79,17 +80,21 @@ def editable(tm: training_monitoring, user: User) -> bool:
         return redis_db.sismember(key, str(user.id))
 
     s: set = set()
+    p = redis_db.pipeline()
+    p.multi()
     for t in tm.session.training_session_category.trainers:
         _id = str(t.id)
         s.add(_id)
-        redis_db.sadd(key, _id)
+        p.sadd(key, _id)
 
     for c in tm.goalkeeper.categories:
         for t in c.trainers:
             _id = str(t.id)
             s.add(_id)
-            redis_db.sadd(key, _id)
+            p.sadd(key, _id)
 
+    p.expire(key, os.getenv('REDIS_CACHE_TTL'))
+    p.execute()
     return str(user.id) in s
 
 

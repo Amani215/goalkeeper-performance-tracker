@@ -69,7 +69,7 @@ def get_growth_monitorings(current_user: User):
 @growth_monitoring_api.route('/growth_monitoring', methods=['PUT'])
 @token_required(admin=False)
 def set_param(current_user: User):
-    '''Set the given param(s) to the given value given the match monitoring object ID
+    '''Set the given param(s) to the given value given the growth monitoring object ID
     
     Only users from the same category can edit this object'''
     try:

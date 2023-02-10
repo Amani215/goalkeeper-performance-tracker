@@ -102,6 +102,7 @@ def update_picture(goalkeeper: Goalkeeper, pic: FieldStorage):
 
 
 def editable(goalkeeper: Goalkeeper, user: User) -> bool:
+    '''Checks if the user is allowed to edit the goalkeeper data'''
     if user.admin:
         return True
 

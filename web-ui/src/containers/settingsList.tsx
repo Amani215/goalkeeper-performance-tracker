@@ -1,12 +1,23 @@
 import { Box, IconButton, List, ListItem, ListItemText, TextField } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdAddCircle, MdDeleteOutline } from 'react-icons/md'
+import { useParams } from '../contexts/paramsContext'
 
 type PropType = {
-    items: string[]
+    itemsName: string
 }
 
-function SettingsList({ items }: PropType) {
+function SettingsList({ itemsName }: PropType) {
+    const [items, setItems] = useState<string[]>([])
+
+    const paramsContext = useParams()
+
+    useEffect(() => {
+        if (paramsContext) {
+            paramsContext(itemsName).then(res => setItems(res as string[]))
+        }
+    }, [paramsContext])
+
     return (
         <>
             <Box

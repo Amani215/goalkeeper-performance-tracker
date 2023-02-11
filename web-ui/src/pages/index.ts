@@ -12,6 +12,7 @@ import TrainingPerformancePage from "./trainingPerformance";
 import Matches from "./matches";
 import Match from "./match";
 import MatchPerformancePage from "./matchPerformance";
+import Settings from "./settings";
 import Logout from "./logout";
 
 export {
@@ -29,5 +30,6 @@ export {
   Matches,
   Match,
   MatchPerformancePage,
+  Settings,
   Logout,
 };

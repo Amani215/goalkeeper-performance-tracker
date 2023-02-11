@@ -51,7 +51,7 @@ export default [
   [
     {
       name: "Settings",
-      link: "/",
+      link: "/settings",
       MenuIcon: MdSettings,
       onlyAdmin: true,
     },

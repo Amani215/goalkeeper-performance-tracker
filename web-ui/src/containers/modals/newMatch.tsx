@@ -7,21 +7,25 @@ import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useCategories, useCategoriesReady } from '../../contexts/categoriesContext';
 import { useNewMatch, useNewMatchError } from '../../contexts/matchesContext';
+import { useParams } from '../../contexts/paramsContext';
 import { CategoryDTO } from '../../DTOs';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 
 function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
-    const [, setError] = useState(false)
+    const [_, setError] = useState(false)
+    const [teams, setTeams] = useState<string[]>([])
+    const [matchTypes, setMatchTypes] = useState<string[]>([])
     const [categories, setCategories] = useState<CategoryDTO[]>([])
 
     const newMatch = useNewMatch()
     const newMatchError = useNewMatchError()
 
+    const paramsContext = useParams()
     const categoriesContext = useCategories()
     const categoriesReady = useCategoriesReady()
 
-    const [matchDtae,] = useState<Dayjs>(
+    const [matchDate,] = useState<Dayjs>(
         dayjs(),
     );
 
@@ -30,6 +34,13 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
             setCategories(categoriesContext)
         }
     }, [categoriesReady, categoriesContext])
+
+    useEffect(() => {
+        if (paramsContext) {
+            paramsContext("teams").then(res => setTeams(res as string[]))
+            paramsContext("match_types").then(res => setMatchTypes(res as string[]))
+        }
+    }, [paramsContext])
 
     const handleSubmit = async ({ date, local, visitor, matchType, category }: FormikValues) => {
         if (newMatch != null) {
@@ -42,7 +53,7 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
     const formik = useFormik({
         initialValues: {
-            date: matchDtae,
+            date: matchDate,
             local: '',
             visitor: '',
             matchType: '',
@@ -79,48 +90,51 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                             />
                         </Stack>
                     </LocalizationProvider>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="local"
-                        label="Local Team"
-                        type="local"
-                        id="local"
-                        autoComplete="local"
-                        value={formik.values.local}
-                        error={formik.touched.local && Boolean(formik.errors.local)}
-                        helperText={formik.touched.local && formik.errors.local}
-                        onChange={formik.handleChange}
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="visitor"
-                        label="Visitor Team"
-                        type="visitor"
-                        id="visitor"
-                        autoComplete="visitor"
-                        value={formik.values.visitor}
-                        error={formik.touched.visitor && Boolean(formik.errors.visitor)}
-                        helperText={formik.touched.visitor && formik.errors.visitor}
-                        onChange={formik.handleChange}
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="matchType"
-                        label="Match Type"
-                        type="matchType"
-                        id="matchType"
-                        autoComplete="matchType"
-                        value={formik.values.matchType}
-                        error={formik.touched.matchType && Boolean(formik.errors.matchType)}
-                        helperText={formik.touched.matchType && formik.errors.matchType}
-                        onChange={formik.handleChange}
-                    />
+
+                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
+                        <InputLabel id="demo-simple-select-label">Local Team</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formik.values.local}
+                            label="Local"
+                            onChange={(e) => formik.setFieldValue("local", e.target.value)}
+                        >
+                            {teams.map((team) => (
+                                <MenuItem key={team} value={team}>{team}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
+                    <FormControl fullWidth sx={{ marginBottom: 1 }}>
+                        <InputLabel id="demo-simple-select-label">Visitor Team</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formik.values.visitor}
+                            label="Visitor"
+                            onChange={(e) => formik.setFieldValue("visitor", e.target.value)}
+                        >
+                            {teams.map((team) => (
+                                <MenuItem key={team} value={team}>{team}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
+                    <FormControl fullWidth sx={{ marginBottom: 1 }}>
+                        <InputLabel id="demo-simple-select-label">Match Type</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formik.values.matchType}
+                            label="matchType"
+                            onChange={(e) => formik.setFieldValue("matchType", e.target.value)}
+                        >
+                            {matchTypes.map((matchType) => (
+                                <MenuItem key={matchType} value={matchType}>{matchType}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Category</InputLabel>

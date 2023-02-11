@@ -17,7 +17,7 @@ export default function ParamsProvider(props: PropsWithChildren<{}>) {
     const token = auth?.token
 
     const params: ParamsDelegate = async (param: string) => {
-        const data = await fetch("/api/redis/" + param, {
+        const data = await fetch("/api/settings/" + param, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

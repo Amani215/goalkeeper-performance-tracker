@@ -32,7 +32,7 @@ def create_app():
     from route.training_session import training_session_api
     from route.training_monitoring import training_monitoring_api
     from route.growth_monitoring import growth_monitoring_api
-    from route.redis import redis_api
+    from route.settings import settings_api
 
     # Register routes as blueprints
     app.register_blueprint(user_api)
@@ -44,7 +44,7 @@ def create_app():
     app.register_blueprint(training_session_api)
     app.register_blueprint(training_monitoring_api)
     app.register_blueprint(growth_monitoring_api)
-    app.register_blueprint(redis_api)
+    app.register_blueprint(settings_api)
 
     @app.route('/')
     def index():

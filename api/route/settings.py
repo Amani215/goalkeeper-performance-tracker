@@ -6,13 +6,13 @@ from middleware.token_required import token_required
 import init.redis_init as redis_db
 import service.redis as redis_service
 
-redis_api = Blueprint('redis_api', __name__)
+settings_api = Blueprint('settings_api', __name__)
 
 NO_DATA_PROVIDED_MESSAGE = 'No data was provided'
 POSSIBLE_KEYS = list(redis_db.get_tables().keys())
 
 
-@redis_api.route('/redis', methods=['POST'])
+@settings_api.route('/settings', methods=['POST'])
 @token_required(admin=True)
 def add_item(current_user: User):
     """
@@ -27,7 +27,7 @@ def add_item(current_user: User):
         return {"error": str(err)}, 400
 
 
-@redis_api.route('/redis/<key>', methods=['GET'])
+@settings_api.route('/settings/<key>', methods=['GET'])
 @token_required(admin=False)
 def get_items(current_user: User, key):
     """
@@ -42,7 +42,7 @@ def get_items(current_user: User, key):
         return {"error": str(err)}, 400
 
 
-@redis_api.route('/redis', methods=['DELETE'])
+@settings_api.route('/settings', methods=['DELETE'])
 @token_required(admin=False)
 def delete_item(current_user: User):
     """

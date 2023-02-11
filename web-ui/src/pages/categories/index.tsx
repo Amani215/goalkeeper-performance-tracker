@@ -3,6 +3,7 @@ import CategoriesView from '../../containers/categoriesView'
 import PortalPage from '../../containers/portalPage'
 import CategoriesProvider from '../../contexts/categoriesContext'
 import NewCategory from '../../containers/modals/newCategory'
+import ParamsProvider from '../../contexts/paramsContext'
 
 function Categories() {
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
@@ -12,7 +13,9 @@ function Categories() {
 
     return (
         <CategoriesProvider>
-            <NewCategory {...{ modalIsOpen, setModalIsOpen: handleClose }} />
+            <ParamsProvider>
+                <NewCategory {...{ modalIsOpen, setModalIsOpen: handleClose }} />
+            </ParamsProvider>
 
             <PortalPage>
                 <CategoriesView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />

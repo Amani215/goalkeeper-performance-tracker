@@ -1,16 +1,25 @@
-import { Box, Button, Modal, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNewCategory, useNewCategoryError } from '../../contexts/categoriesContext';
 import { ModalProp } from '../../interfaces/modalProp'
 import categoryValidationSchema from '../../schemas/categoryValidation';
 import { style } from './style';
+import { useParams } from '../../contexts/paramsContext';
 
 function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
-    const [error, setError] = useState(false)
+    const [_, setError] = useState(false)
 
     const newCategory = useNewCategory()
     const newCategoryError = useNewCategoryError()
+
+    const [names, setNames] = useState<string[]>([])
+    const paramsContext = useParams()
+    useEffect(() => {
+        if (paramsContext) {
+            paramsContext("category_names").then(res => setNames(res as string[]))
+        }
+    }, [paramsContext])
 
     const handleSubmit = async ({ name, season }: FormikValues) => {
         if (newCategory != null) {
@@ -46,20 +55,22 @@ function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     sx={{ mt: 1 }}
                 >
 
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="name"
-                        label="Category name"
-                        name="name"
-                        autoComplete="name"
-                        value={formik.values.name}
-                        onChange={formik.handleChange}
-                        autoFocus
-                        error={formik.touched.name && Boolean(formik.errors.name)}
-                        helperText={formik.touched.name && formik.errors.name}
-                    />
+                    <FormControl fullWidth sx={{ marginTop: 1 }}>
+                        <InputLabel id="demo-simple-select-label">Category name</InputLabel>
+                        <Select
+                            required
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formik.values.name}
+                            label="Local"
+                            onChange={(e) => formik.setFieldValue("name", e.target.value)}
+                        >
+                            {names.map((name) => (
+                                <MenuItem key={name} value={name}>{name}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
                     <TextField
                         margin="normal"
                         required

@@ -13,6 +13,7 @@ import Link from '@mui/material/Link';
 import { useSideNavIsOpen, useToggleSideNav } from '../../contexts/pageContext';
 import menuItems from "./items"
 import { Fragment } from 'react';
+import { useAuth } from '../../contexts/authContext';
 
 
 const drawerWidth = 240;
@@ -69,6 +70,7 @@ export default function MiniDrawer() {
     const sideNavIsOpen = useSideNavIsOpen();
     const toggleSideNav = useToggleSideNav();
     const theme = useTheme()
+    const auth = useAuth()
     const { pathname } = useLocation();
     return (
 
@@ -85,6 +87,7 @@ export default function MiniDrawer() {
                         {menu.map((item, index) => (
                             <Link
                                 key={item.name + "collapsed"}
+                                hidden={item.onlyAdmin && !auth?.user.admin}
                                 component={RouterLink}
                                 to={item.link}
                                 underline="none"

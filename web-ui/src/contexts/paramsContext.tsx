@@ -10,8 +10,26 @@ export function useParams() {
     return useContext(paramsContext);
 }
 
+type UpdateParamDelegate = (key: string, value: string) => Promise<null | errorResponse>;
+const newParamContext = createContext<UpdateParamDelegate | null>(null);
+export function useNewParam() {
+    return useContext(newParamContext);
+}
+
+const deleteParamContext = createContext<UpdateParamDelegate | null>(null);
+export function useDeleteParam() {
+    return useContext(deleteParamContext);
+}
+
+const paramUpdatedContext = createContext<boolean>(false);
+export function useParamUpdated() {
+    return useContext(paramUpdatedContext);
+}
+
+
 export default function ParamsProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
+    const [paramUpdated, setParamUpdated] = useState(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -35,9 +53,58 @@ export default function ParamsProvider(props: PropsWithChildren<{}>) {
         }
     }
 
+    const newParam: UpdateParamDelegate = async (key: string, value: string) => {
+        const data = await fetch("/api/settings/" + key, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                value: value
+            })
+        });
+        const data_1 = await data.json();
+        if ("error" in data_1) {
+            setError(true);
+            return data_1 as errorResponse;
+        } else {
+            setError(false);
+            setParamUpdated(true);
+            return null;
+        }
+    }
+
+    const deleteParam: UpdateParamDelegate = async (key: string, value: string) => {
+        const data = await fetch("/api/settings/" + key, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                value: value
+            })
+        });
+        if (data.status == 204) {
+            setParamUpdated(true);
+            return null;
+        }
+        const data_json = await data.json();
+        setError(true);
+        setParamUpdated(false);
+        return data_json as errorResponse;
+    }
+
     return (
         <paramsContext.Provider value={params}>
-            {props.children}
+            <newParamContext.Provider value={newParam}>
+                <deleteParamContext.Provider value={deleteParam}>
+                    <paramUpdatedContext.Provider value={paramUpdated}>
+                        {props.children}
+                    </paramUpdatedContext.Provider>
+                </deleteParamContext.Provider>
+            </newParamContext.Provider>
         </paramsContext.Provider>
     )
 }

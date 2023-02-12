@@ -1,7 +1,7 @@
 import { Box, IconButton, List, ListItem, ListItemText, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { MdAddCircle, MdDeleteOutline } from 'react-icons/md'
-import { useParams } from '../contexts/paramsContext'
+import { useDeleteParam, useNewParam, useParamUpdated, useParams } from '../contexts/paramsContext'
 
 type PropType = {
     itemsName: string
@@ -9,14 +9,34 @@ type PropType = {
 
 function SettingsList({ itemsName }: PropType) {
     const [items, setItems] = useState<string[]>([])
+    const [newItem, setNewItem] = useState<string>("")
 
     const paramsContext = useParams()
+    const newParamContext = useNewParam()
+    const deleteParamContext = useDeleteParam()
+    const paramUpdatedContext = useParamUpdated()
 
     useEffect(() => {
         if (paramsContext) {
             paramsContext(itemsName).then(res => setItems(res as string[]))
         }
-    }, [paramsContext])
+    }, [paramsContext, paramUpdatedContext])
+
+    const handleAdd = () => {
+        if (newParamContext && newItem != "") {
+            newParamContext(itemsName, newItem)
+            setNewItem("")
+        }
+    }
+
+    const handleDelete = (value: string) => {
+        if (deleteParamContext) {
+            deleteParamContext(itemsName, value)
+            if (paramsContext) {
+                paramsContext(itemsName).then(res => setItems(res as string[]))
+            }
+        }
+    }
 
     return (
         <>
@@ -28,10 +48,13 @@ function SettingsList({ itemsName }: PropType) {
                     label="Add item..."
                     variant="outlined"
                     fullWidth
+                    value={newItem}
+                    onChange={e => setNewItem(e.target.value)}
+                    onSubmit={() => handleAdd()}
                 />
                 <IconButton
                     color="primary"
-                    onClick={() => { console.log("Add") }}
+                    onClick={() => { handleAdd() }}
                     size="large">
                     <MdAddCircle size={36} />
                 </IconButton>
@@ -46,7 +69,7 @@ function SettingsList({ itemsName }: PropType) {
                                 <IconButton
                                     edge="end"
                                     aria-label="delete"
-                                    onClick={() => console.log("Delete")}>
+                                    onClick={() => handleDelete(item)}>
                                     <MdDeleteOutline />
                                 </IconButton>
                             }

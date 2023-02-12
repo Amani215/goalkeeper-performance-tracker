@@ -8,7 +8,7 @@ def add_item(key: str, new_value: str):
     '''Add an item to a redis key'''
     if redis_db.exists(key) > 0:
         redis_db.sadd(key, new_value)
-        return redis_db.smembers(key)
+        return {"key": key, "new value": new_value}
     else:
         return {'error': NO_SUCH_KEY}
 
@@ -29,6 +29,6 @@ def delete_item(key: str, value: str):
     '''Delete an item from a set given its key'''
     if redis_db.exists(key) > 0:
         redis_db.srem(key, value)
-        return redis_db.smembers(key)
+        return {'key': key, 'deleted value': value}
     else:
         return {'error': NO_SUCH_KEY}

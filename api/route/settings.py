@@ -25,7 +25,7 @@ def add_item(current_user: User, key):
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
         response = redis_service.add_item(key, request.json['value'])
 
-        return response, 201
+        return jsonify(response), 201
     except PermissionError as err:
         return {"error": str(err)}, 401
     except Exception as err:
@@ -60,7 +60,7 @@ def delete_item(current_user: User, key):
 
         response = redis_service.delete_item(key, request.json['value'])
 
-        return response, 204
+        return jsonify(response), 204
     except PermissionError as err:
         return {"error": str(err)}, 401
     except Exception as err:

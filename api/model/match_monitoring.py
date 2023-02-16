@@ -19,6 +19,9 @@ class match_monitoring(db.Model):
                                       back_populates="match_performances",
                                       foreign_keys=[main_goalkeeper_id])
 
+    match_sequences = db.relationship("match_sequence",
+                                      back_populates="match_performance")
+
     time_played = Column(Integer, unique=False, default=0)
     goals_scored = Column(Integer, unique=False, default=0)
     goals_conceded = Column(Integer, unique=False, default=0)

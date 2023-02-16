@@ -6,13 +6,11 @@ from config import db
 
 class match_sequence(db.Model):
     """Base class for match sequences"""
-    __table_args__ = (db.UniqueConstraint('match_id', 'main_goalkeeper_id'), )
-
     id = Column(String(128),
                 primary_key=True,
                 default=lambda: str(uuid4().hex))
-    match_performance_id = Column(String,
-                                  db.ForeignKey("match_performance.id"))
+    # match_performance_id = Column(String,
+    #                               db.ForeignKey("match_performance.id"))
     match_performance = db.relationship("match_performance",
                                         back_populates="match_sequences")
 

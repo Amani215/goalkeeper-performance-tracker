@@ -62,6 +62,7 @@ def setup_database(_db, _app):
         from model.goalkeeper import Goalkeeper
         from model.match import Match
         from model.match_monitoring import match_monitoring
+        from model.match_sequence import match_sequence
         from model.training_session import training_session
         from model.training_monitoring import training_monitoring
         from model.growth_monitoring import growth_monitoring

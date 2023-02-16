@@ -4,5 +4,31 @@
   "locations": ["Tunis", "Sousse", "Jerba"],
   "results": ["Won", "Defeat", "Null"],
   "match_types": ["Friendly", "Tournament", "Training"],
-  "category_names": ["Seniors", "Juniors", "Academy", "Cadets A", "Cadets B"]
+  "category_names": ["Seniors", "Juniors", "Academy", "Cadets A", "Cadets B"],
+  "action_types": [
+    "Ballon en profondeur (Vitesse : Démarrage / Réaction)",
+    "Centrage",
+    "Coup De Pied De Réparation",
+    "Coup De Tête",
+    "Duel",
+    "Offensif",
+    "Passe en retrait",
+    "Remise Partenaire sous pression (Jeu aux pied)",
+    "Tir"
+  ],
+  "reaction_types": [
+    "Jeu aux Pied (Conservation)",
+    "Relance / Main",
+    "Relance / Pied",
+    " Chute De Face",
+    "Chute Latérale Droite",
+    " Chute Latérale Gauche",
+    "Claquette",
+    "intervention sans parade et sans détente",
+    "Sauvé avec le corps - tête - pieds",
+    "Sortie Aérienne",
+    "Arrêt reflexe (Vitesse gestuelle)",
+    "Ballon en profondeur"
+  ],
+  "action_result": ["Non réussie", "Passif", "Réussie", "Rien à lui reprocher"]
 }

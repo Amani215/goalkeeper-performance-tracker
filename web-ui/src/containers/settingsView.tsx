@@ -68,6 +68,42 @@ function SettingsView() {
                             <SettingsList itemsName="locations" />
                         </AccordionDetails>
                     </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>Action Types</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="action_types" />
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>Reaction Types</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="reaction_types" />
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>Action Result</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="action_result" />
+                        </AccordionDetails>
+                    </Accordion>
                 </Box> :
                 <Typography>User not allowed.</Typography>
             }

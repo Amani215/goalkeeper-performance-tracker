@@ -59,32 +59,6 @@ function MatchFeedback({ matchPerformance, setModalIsOpen }: PropType) {
                         <Grid item xs={3}>
                             <Typography
                                 variant='subtitle1'>
-                                Assets
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={5}>
-                            <Typography
-                                variant='subtitle1'>
-                                {matchPerformance ? matchPerformance.assets : "--"}
-                            </Typography>
-                        </Grid>
-
-                        <Grid item xs={3}>
-                            <Typography
-                                variant='subtitle1'>
-                                Weaknesses
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={5}>
-                            <Typography
-                                variant='subtitle1'>
-                                {matchPerformance ? matchPerformance.flaws : "--"}
-                            </Typography>
-                        </Grid>
-
-                        <Grid item xs={3}>
-                            <Typography
-                                variant='subtitle1'>
                                 Comment
                             </Typography>
                         </Grid>

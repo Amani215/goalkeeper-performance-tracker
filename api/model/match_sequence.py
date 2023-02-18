@@ -10,7 +10,8 @@ class match_sequence(db.Model):
                 primary_key=True,
                 default=lambda: str(uuid4().hex))
 
-    match_performance = db.relationship("match_performance",
+    mstch_performance_id = Column(String, db.ForeignKey("match_monitoring.id"))
+    match_performance = db.relationship("match_monitoring",
                                         back_populates="match_sequences")
 
     sequence_number = Column(Integer, unique=False, default=0)

@@ -77,8 +77,12 @@ def set_param(current_user: User):
 
         possible_params = [
             'time_played', 'goals_scored', 'goals_conceded', 'penalties_saved',
-            'penalties_non_saved', 'yellow_cards', 'red_cards', 'grade',
-            'assets', 'flaws', 'comment'
+            'penalties_non_saved', 'successful_deliveries',
+            'non_successful_deliveries', 'successful_ballon_profondeur',
+            'non_successful_ballon_profondeur', 'successful_hand_relaunch',
+            'non_successful_hand_relaunch', 'successful_foot_relaunch',
+            'non_successful_foot_relaunch', 'balls_touched', 'yellow_cards',
+            'red_cards', 'grade', 'assets', 'flaws', 'comment'
         ]
         for param in possible_params:
             if param in request.json:

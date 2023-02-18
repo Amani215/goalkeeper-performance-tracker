@@ -9,8 +9,7 @@ class match_sequence(db.Model):
     id = Column(String(128),
                 primary_key=True,
                 default=lambda: str(uuid4().hex))
-    # match_performance_id = Column(String,
-    #                               db.ForeignKey("match_performance.id"))
+
     match_performance = db.relationship("match_performance",
                                         back_populates="match_sequences")
 

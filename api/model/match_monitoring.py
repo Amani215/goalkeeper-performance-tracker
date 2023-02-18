@@ -27,6 +27,21 @@ class match_monitoring(db.Model):
     goals_conceded = Column(Integer, unique=False, default=0)
     penalties_saved = Column(Integer, unique=False, default=0)
     penalties_non_saved = Column(Integer, unique=False, default=0)
+
+    # Remise du partenaire
+    successful_deliveries = Column(Integer, unique=False, default=0)
+    non_successful_deliveries = Column(Integer, unique=False, default=0)
+    # Ballons en profondeur
+    successful_ballon_profondeur = Column(Integer, unique=False, default=0)
+    non_successful_ballon_profondeur = Column(Integer, unique=False, default=0)
+    # Relance mains
+    successful_hand_relaunch = Column(Integer, unique=False, default=0)
+    non_successful_hand_relaunch = Column(Integer, unique=False, default=0)
+    # Relance pieds
+    successful_foot_relaunch = Column(Integer, unique=False, default=0)
+    non_successful_foot_relaunch = Column(Integer, unique=False, default=0)
+
+    balls_touched = Column(Integer, unique=False, default=0)
     yellow_cards = Column(Integer, unique=False, default=0)
     red_cards = Column(Integer, unique=False, default=0)
     grade = Column(Integer, unique=False, default=0)
@@ -50,6 +65,16 @@ class match_monitoring(db.Model):
             'goals_conceded': self.goals_conceded,
             'penalties_saved': self.penalties_saved,
             'penalties_non_saved': self.penalties_non_saved,
+            'successful_deliveries': self.successful_deliveries,
+            'non_successful_deliveries': self.non_successful_deliveries,
+            'successful_ballon_profondeur': self.successful_ballon_profondeur,
+            'non_successful_ballon_profondeur':
+            self.non_successful_ballon_profondeur,
+            'successful_hand_relaunch': self.successful_hand_relaunch,
+            'non_successful_hand_relaunch': self.non_successful_hand_relaunch,
+            'successful_foot_relaunch': self.successful_foot_relaunch,
+            'non_successful_foot_relaunch': self.non_successful_foot_relaunch,
+            'balls_touched': self.balls_touched,
             'yellow_cards': self.yellow_cards,
             'red_cards': self.red_cards,
             'grade': self.grade,

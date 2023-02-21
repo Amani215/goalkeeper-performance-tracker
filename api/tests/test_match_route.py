@@ -11,6 +11,7 @@ import service.category as category_service
 URL = '/match'
 CATEGORY_URL = '/match/category'
 ID_URL = '/match?id='
+PERFORMANCES_URL = '/match/performances?id='
 
 
 def test_no_token(client):
@@ -198,3 +199,20 @@ def test_set_get_category(client, authenticated_user, category):
     response = client.get(CATEGORY_URL + "?id=" + match.json['id'],
                           headers=headers)
     assert response.json['id'] == _category['name'] + str(_category['season'])
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_delete_match_performance(client, authenticated_user,
+                                  match_monitoring):
+    '''Test deleting a goalkeeper performance'''
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+
+    test_data = {'goalkeeper_performance_id': str(match_monitoring.id)}
+    response = client.delete(PERFORMANCES_URL + match_monitoring.match_id,
+                             data=json.dumps(test_data),
+                             headers=headers)
+    assert response.status_code == 204

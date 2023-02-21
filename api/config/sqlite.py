@@ -3,13 +3,10 @@ import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-db_host = f'../db/{os.getenv("POSTGRES_DB")}.db'  # No need for different names
-
 Config = {
     'SECRET_KEY': os.getenv('SECRET_KEY'),
     'DEBUG': os.getenv('DEBUG'),
-    'SQLALCHEMY_DATABASE_URI': f'sqlite:///{os.path.join(basedir, db_host)}',
+    'SQLALCHEMY_DATABASE_URI': f'sqlite://{os.getenv("SQLITE_HOST")}',
     'SQLALCHEMY_TRACK_MODIFICATIONS':
     os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
 }

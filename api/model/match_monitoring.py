@@ -2,6 +2,8 @@
 from uuid import uuid4
 from sqlalchemy import Column, String, Integer
 from config import db
+from model.goalkeeper import Goalkeeper
+from model.match import Match
 
 
 class match_monitoring(db.Model):
@@ -49,9 +51,11 @@ class match_monitoring(db.Model):
     flaws = Column(String(128), unique=False, nullable=True)
     comment = Column(String(128), unique=False, nullable=True)
 
-    def __init__(self, goalkeeper, match):
+    def __init__(self, goalkeeper: Goalkeeper, match: Match):
         self.main_goalkeeper = goalkeeper
+        self.main_goalkeeper_id = goalkeeper.id
         self.match = match
+        self.match_id = match.id
 
     @property
     def serialize(self):

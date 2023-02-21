@@ -13,11 +13,14 @@ def test_add_match_monitoring(app, goalkeeper, match):
     match_monitoring_count = len([i.serialize for i in match_monitorings])
 
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
-    match_monitoring_service.add_match_monitoring(_goalkeeper.id, match.id)
+    new_mm = match_monitoring_service.add_match_monitoring(
+        _goalkeeper.id, match.id)
 
     match_monitorings = match_monitoring_service.get_match_monitorings()
     assert len([i.serialize
                 for i in match_monitorings]) == match_monitoring_count + 1
+    assert new_mm.match_id == match.id
+
     # DUPLICATE
     with pytest.raises(Exception):
         match_monitoring_service.add_match_monitoring(_goalkeeper.id, match.id)

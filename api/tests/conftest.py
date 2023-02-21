@@ -106,7 +106,6 @@ def goalkeeper():
 @pytest.fixture()
 def match(category):
     ''' Create a mock match '''
-
     date = random_date.generate()
     match_credentials = {
         'date': date.strftime('%d/%m/%Y'),
@@ -124,6 +123,7 @@ def match(category):
 
 @pytest.fixture()
 def match_monitoring(goalkeeper, match):
+    # Create goalkeeper
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
     goalkeeper_category = {
         'name': random_string.generate(12),
@@ -133,6 +133,7 @@ def match_monitoring(goalkeeper, match):
         goalkeeper_category['name'], goalkeeper_category['season'])
     goalkeeper_service.add_category(_goalkeeper, goalkeeper_category)
 
+    # Add category to match
     match_category = {
         'name': random_string.generate(12),
         'season': random.randint(1500, 2500)
@@ -141,8 +142,9 @@ def match_monitoring(goalkeeper, match):
                                                    match_category['season'])
     match_service.set_category(match, match_category)
 
+    # Create match performance
     match_monitoring_obj = match_monitoring_service.add_match_monitoring(
-        str(_goalkeeper.id), str(match.id))
+        str(_goalkeeper.id), match.id)
     return match_monitoring_obj
 
 

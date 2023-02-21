@@ -1,6 +1,8 @@
 '''Testing the match services'''
 from model.match import Match
 import service.match as match_service
+import service.match_monitoring as match_monitoring_service
+import service.goalkeeper as goalkeeper_service
 from helper import random_string, random_date
 
 
@@ -75,3 +77,19 @@ def test_set_category(app, match, category):
     response = match_service.set_category(_match, category)
 
     assert response['category_id'] == category.id
+
+
+def test_remove_performance(app, match_monitoring):
+    '''Test deleting a goalkeeper performance'''
+    mm_id = match_monitoring.id
+    match = match_service.get_by_id(match_monitoring.match_id)
+    goalkeeper = goalkeeper_service.get_by_id(
+        match_monitoring.main_goalkeeper_id)
+
+    match_service.remove_goalkeeper_performance(match_monitoring.match.id,
+                                                match_monitoring.id)
+
+    assert match_monitoring not in match.goalkeepers_performances
+    assert match_monitoring not in goalkeeper.match_performances
+    assert match_monitoring_service.get_by_id(
+        mm_id)['error'] == 'No row was found when one was required'

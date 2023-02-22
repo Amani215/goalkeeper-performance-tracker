@@ -50,6 +50,18 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
+                            <Typography>Seasons</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="seasons" />
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion >
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
                             <Typography>Match Types</Typography>
                         </AccordionSummary>
                         <AccordionDetails>

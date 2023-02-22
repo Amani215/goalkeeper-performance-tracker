@@ -5,6 +5,7 @@
   "results": ["Won", "Defeat", "Null"],
   "match_types": ["Friendly", "Tournament", "Training"],
   "category_names": ["Seniors", "Juniors", "Academy", "Cadets A", "Cadets B"],
+  "seasons": ["2021-2022", "2022-2023", "2023-2024"],
   "action_types": [
     "Ballon en profondeur (Vitesse : Démarrage / Réaction)",
     "Centrage",

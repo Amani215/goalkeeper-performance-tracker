@@ -14,10 +14,13 @@ function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const newCategoryError = useNewCategoryError()
 
     const [names, setNames] = useState<string[]>([])
+    const [seasons, setSeasons] = useState<string[]>([])
+
     const paramsContext = useParams()
     useEffect(() => {
         if (paramsContext) {
             paramsContext("category_names").then(res => setNames(res as string[]))
+            paramsContext("seasons").then(res => setSeasons(res as string[]))
         }
     }, [paramsContext])
 
@@ -71,20 +74,22 @@ function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         </Select>
                     </FormControl>
 
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="season"
-                        label="Season (year)"
-                        type="season"
-                        id="season"
-                        autoComplete="season"
-                        value={formik.values.season}
-                        error={formik.touched.season && Boolean(formik.errors.season)}
-                        helperText={formik.touched.season && formik.errors.season}
-                        onChange={formik.handleChange}
-                    />
+                    <FormControl fullWidth sx={{ marginTop: 1 }}>
+                        <InputLabel id="demo-simple-select-label">Category season</InputLabel>
+                        <Select
+                            required
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={formik.values.season}
+                            label="Season"
+                            onChange={(e) => formik.setFieldValue("season", e.target.value)}
+                        >
+                            {seasons.map((season) => (
+                                <MenuItem key={season} value={season}>{season}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
                     <Button
                         type="submit"
                         fullWidth

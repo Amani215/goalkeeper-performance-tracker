@@ -12,7 +12,7 @@ def test_add_category(app):
     category_count = len([i.serialize for i in categories])
     category = {
         'name': random_string.generate(12),
-        'season': random.randint(1500, 2500)
+        'season': str(random.randint(1500, 2500))
     }
     category_response = category_service.add_category(category['name'],
                                                       category['season'])
@@ -29,8 +29,10 @@ def test_get_by_id(app):
     ''' Test getting a category by its id '''
 
     category = {
-        'name': random_string.generate(12),
-        'season': random.randint(1500, 2500)
+        'name':
+        random_string.generate(12),
+        'season':
+        str(random.randint(1500, 2500)) + '-' + str(random.randint(1500, 2500))
     }
     category_id = category_service.add_category(category['name'],
                                                 category['season']).id
@@ -46,8 +48,9 @@ def test_get_by_name(app):
     ''' Test getting categories by their name '''
     name1 = random_string.generate(12)
     name2 = random_string.generate(12)
-    season1 = random.randint(1500, 2500)
-    season2 = random.randint(1500, 2500)
+    season1 = str(random.randint(1500, 2500))
+    season2 = str(random.randint(1500, 2500)) + '/' + str(
+        random.randint(1500, 2500))
 
     category_service.add_category(name1, season1)
     category_service.add_category(name1, season2)
@@ -68,8 +71,10 @@ def test_get_by_season(app):
     ''' Test getting categories by their season '''
     name1 = random_string.generate(12)
     name2 = random_string.generate(12)
-    season1 = random.randint(1500, 2500)
-    season2 = random.randint(1500, 2500)
+    season1 = str(random.randint(1500, 2500)) + '/' + str(
+        random.randint(1500, 2500))
+    season2 = str(random.randint(1500, 2500)) + '-' + str(
+        random.randint(1500, 2500))
 
     category_service.add_category(name1, season1)
     category_service.add_category(name1, season2)
@@ -84,3 +89,13 @@ def test_get_by_season(app):
     categories_no_season = category_service.get_by_season(
         random.randint(1500, 2500))
     assert len([i.serialize for i in categories_no_season]) == 0
+
+
+def test_delete(app, category):
+    '''Test deleting a category'''
+    category_id = category.id
+
+    category_service.delete(category_id)
+
+    assert category_service.get_by_id(
+        category_id)["error"] == "No row was found when one was required"

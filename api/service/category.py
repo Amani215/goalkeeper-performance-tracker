@@ -60,3 +60,11 @@ def get_category_goalkeepers(category_id):
         return category.goalkeepers
     except SQLAlchemyError as err:
         return {'error': str(err)}
+
+
+def delete(category_id):
+    '''Delete a ctegory given its ID'''
+    category = get_by_id(category_id)
+
+    db.session.delete(category)
+    db.session.commit()

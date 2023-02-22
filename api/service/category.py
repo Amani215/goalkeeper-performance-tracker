@@ -4,7 +4,7 @@ from config import db
 from model.category import Category
 
 
-def add_category(name: str, season: int):
+def add_category(name: str, season: str):
     '''Adds a new category to the database'''
     category = Category(name, season)
 

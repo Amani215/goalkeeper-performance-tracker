@@ -8,7 +8,7 @@ class Category(db.Model):
     """Class that represents the categories of the goalkeepers"""
     id = Column(String(35), primary_key=True, unique=True)
     name = Column(String(30), unique=False, nullable=False)
-    season = Column(Integer, unique=False, nullable=False)
+    season = Column(String(10), unique=False, nullable=False)
     trainers = db.relationship("User",
                                secondary=trainer_categories,
                                back_populates="categories")
@@ -19,7 +19,7 @@ class Category(db.Model):
     training_sessions = db.relationship(
         "training_session", back_populates="training_session_category")
 
-    def __init__(self, name: str, season: int):
+    def __init__(self, name: str, season: str):
         self.id = name + str(season)
         self.name = name
         self.season = season

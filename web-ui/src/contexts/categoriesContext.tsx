@@ -66,7 +66,7 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
             },
             body: JSON.stringify({
                 name: newCategoryObj.name,
-                season: newCategoryObj.season
+                season: newCategoryObj.season.replace('/', '-')
             })
         })
             .then(data => data.json())

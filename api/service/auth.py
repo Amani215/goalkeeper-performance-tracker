@@ -19,11 +19,7 @@ def authenticate_user(username, password):
         token_schema = TokenSchema(str(result.id)).serialize
         token = jwt.encode(token_schema, os.getenv('SECRET_KEY'), "HS256")
         user: User = result
-        return {
-            'token': token.decode('utf-8'),
-            'user': user.serialize,
-            'exp': token_schema
-        }
+        return {'token': token.decode('utf-8'), 'user': user.serialize}
 
     except SQLAlchemyError as err:
         raise SQLAlchemyError(str(err))

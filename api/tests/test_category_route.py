@@ -114,3 +114,19 @@ def test_get_categories(client, authenticated_user):
     response = client.get(season_url + season2, headers=headers)
     assert sum(1 for _ in range(len(response.json))) == 1
     assert response.status_code == 200
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_delete_category(client, authenticated_user, category):
+    '''Test deleting a category'''
+    category_id = category.id
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+    response = client.delete(URL + '?id=' + category_id, headers=headers)
+    assert response.status_code == 204
+
+    response = client.get(URL + '?id=' + category_id, headers=headers)
+    assert "error" in response.json

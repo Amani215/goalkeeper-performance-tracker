@@ -95,3 +95,23 @@ def get_category_goalkeepers(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@category_api.route('/category', methods=['DELETE'])
+@token_required(admin=True)
+def delete_category(current_user: User):
+    '''
+    Delete category by ID
+    
+    Only admin users are allowed to do this
+    If ID is not provided an error is raised
+    '''
+    try:
+        args = request.args
+
+        category_service.delete(args.get('id'))
+        return {}, 204
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

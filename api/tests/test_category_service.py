@@ -1,9 +1,12 @@
 '''Testing the category services'''
 import random
 import uuid
-from helper import random_string
+
+import pytest
+from helper import random_date, random_string
 from model.category import Category
 import service.category as category_service
+import service.goalkeeper as goalkeeper_service
 
 
 def test_add_category(app):
@@ -99,3 +102,14 @@ def test_delete(app, category):
 
     assert category_service.get_by_id(
         category_id)["error"] == "No row was found when one was required"
+
+
+def test_delete_with_relationship(app, goalkeeper, category):
+    '''Test deleting with category related to goalkeeper'''
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    _category = category_service.get_by_id(category.id)
+
+    goalkeeper_service.add_category(_goalkeeper, _category)
+
+    with pytest.raises(PermissionError):
+        category_service.delete(category.id)

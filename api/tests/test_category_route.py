@@ -130,3 +130,21 @@ def test_delete_category(client, authenticated_user, category):
 
     response = client.get(URL + '?id=' + category_id, headers=headers)
     assert "error" in response.json
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_delete_with_relationship(client, authenticated_user, category):
+    '''Test deleting with category related to user'''
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+    test_json = {
+        "trainer_id": authenticated_user['id'],
+        "category_id": category.id
+    }
+    client.put('/user/category', data=json.dumps(test_json), headers=headers)
+
+    response = client.delete(URL + '?id=' + category.id, headers=headers)
+    assert response.status_code == 401

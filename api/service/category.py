@@ -66,5 +66,11 @@ def delete(category_id):
     '''Delete a ctegory given its ID'''
     category = get_by_id(category_id)
 
-    db.session.delete(category)
-    db.session.commit()
+    if (len([i for i in category.goalkeepers]) > 0
+            or len([i for i in category.trainers]) > 0
+            or len([i for i in category.training_sessions]) > 0
+            or len([i for i in category.matches]) > 0):
+        raise PermissionError("This category is connected to other entities")
+    else:
+        db.session.delete(category)
+        db.session.commit()

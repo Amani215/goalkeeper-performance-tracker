@@ -27,16 +27,30 @@ export function useNewCategoryError() {
     return useContext(newCategoryErrorContext);
 }
 
+// DELETE CATEGORY CONTEXTS
+type DeleteCategoryDelegate = (categoryID: string) => Promise<null>;
+const deleteCategoryContext = createContext<DeleteCategoryDelegate | null>(null);
+export function useDeleteCategory() {
+    return useContext(deleteCategoryContext);
+}
+
+const categoryDeletedContext = createContext<boolean>(false);
+export function useCategoryDeleted() {
+    return useContext(categoryDeletedContext);
+}
+
 export default function CategoriesProvider(props: PropsWithChildren<{}>) {
     const [categories, setCategories] = useState<CategoryDTO[] | null>(null)
     const [loaded, setLoaded] = useState<boolean>(false)
 
     const [newCategoryError, setNewCategoryError] = useState(false)
+    const [categoryDeleted, setCategoryDeleted] = useState(false)
 
     const auth = useAuth()
     const token = auth?.token
 
     const getCategories = async () => {
+        setCategoryDeleted(false)
         const categoriesArray: CategoryDTO[] = await fetch("/api/category", {
             method: "GET",
             headers: {
@@ -82,6 +96,25 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
             })
     }
 
+    const deleteCategory: DeleteCategoryDelegate = async (categoryId: string) => {
+        return fetch("/api/category?id=" + categoryId, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({})
+        })
+            .then(data => {
+                if (data.status == 204) {
+                    setCategoryDeleted(true)
+                } else {
+                    setCategoryDeleted(false)
+                }
+                return null
+            })
+    }
+
     useEffect(() => {
         getCategories()
     }, [loaded])
@@ -91,7 +124,11 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
             <categoriesReadyContext.Provider value={loaded}>
                 <newCategoryContext.Provider value={newCategory}>
                     <newCategoryErrorContext.Provider value={newCategoryError}>
-                        {props.children}
+                        <deleteCategoryContext.Provider value={deleteCategory}>
+                            <categoryDeletedContext.Provider value={categoryDeleted}>
+                                {props.children}
+                            </categoryDeletedContext.Provider>
+                        </deleteCategoryContext.Provider>
                     </newCategoryErrorContext.Provider>
                 </newCategoryContext.Provider>
             </categoriesReadyContext.Provider>

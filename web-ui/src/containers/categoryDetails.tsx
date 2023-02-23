@@ -118,12 +118,13 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                     <ListItem
                                         key={trainer.id}
                                         secondaryAction={
-                                            <IconButton
-                                                edge="end"
-                                                aria-label="delete"
-                                                onClick={e => deleteTrainer(trainer.id)}>
-                                                <MdDeleteOutline />
-                                            </IconButton>
+                                            auth?.user.admin ?
+                                                <IconButton
+                                                    edge="end"
+                                                    aria-label="delete"
+                                                    onClick={e => deleteTrainer(trainer.id)}>
+                                                    <MdDeleteOutline />
+                                                </IconButton> : <></>
                                         }
                                     >
                                         <RouterLink to={`/users/${trainer.id}`}>
@@ -164,12 +165,13 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                     <ListItem
                                         key={goalkeeper.id}
                                         secondaryAction={
-                                            <IconButton
-                                                edge="end"
-                                                aria-label="delete"
-                                                onClick={e => deleteGoalkeeper(goalkeeper.id)}>
-                                                <MdDeleteOutline />
-                                            </IconButton>
+                                            auth?.user.admin ?
+                                                <IconButton
+                                                    edge="end"
+                                                    aria-label="delete"
+                                                    onClick={e => deleteGoalkeeper(goalkeeper.id)}>
+                                                    <MdDeleteOutline />
+                                                </IconButton> : <></>
                                         }
                                     >
                                         <RouterLink to={`/goalkeepers/${goalkeeper.id}`}>

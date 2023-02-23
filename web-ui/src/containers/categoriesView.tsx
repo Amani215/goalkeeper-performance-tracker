@@ -6,11 +6,11 @@ import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
 import { IoFootballOutline } from 'react-icons/io5'
 import { useAuth } from '../contexts/authContext'
-import { useCategories, useCategoriesReady, useCategoryDeleted, useDeleteCategory } from '../contexts/categoriesContext'
+import { useCategories, useCategoriesReady, useCategoryDeleted, useDeleteCategory, useDeleteCategoryError } from '../contexts/categoriesContext'
 import { CategoryDTO } from '../DTOs'
 import { ModalProp } from '../interfaces/modalProp'
 import { Link as RouterLink } from 'react-router-dom';
-import { CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
+import { Alert, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
 import { MdClose } from 'react-icons/md'
 
 
@@ -18,12 +18,15 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
   const [categories, setCategories] = useState<CategoryDTO[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [categoryToDelete, setCategoryToDelete] = useState<string>("")
+  // const [deleteCategoryErrorMessage, setDeleteCategoryError] = useState<string>("")
 
   const auth = useAuth()
   const categoriesContext = useCategories()
   const categoriesReady = useCategoriesReady()
+
   const deleteCategory = useDeleteCategory()
   const categoryDeleted = useCategoryDeleted()
+  const deleteCategoryError = useDeleteCategoryError()
 
   useEffect(() => {
     if (categoriesReady && categoriesContext) {
@@ -83,12 +86,13 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
 
                   }
                   action={
-                    <IconButton
-                      aria-label="delete"
-                      sx={{ marginTop: "25%", marginLeft: 1 }}
-                      onClick={() => handleClickOpen(c.id)}>
-                      <MdClose />
-                    </IconButton>
+                    auth?.user.admin ?
+                      <IconButton
+                        aria-label="delete"
+                        sx={{ marginTop: "25%", marginLeft: 1 }}
+                        onClick={() => handleClickOpen(c.id)}>
+                        <MdClose />
+                      </IconButton> : <></>
                   }
                   title={c.name}
                   subheader={c.season}
@@ -121,6 +125,9 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
           {"Are you sure?"}
         </DialogTitle>
         <DialogContent>
+          {deleteCategoryError != "" ?
+            <Alert severity='error' sx={{ marginBottom: 1 }}>{deleteCategoryError}</Alert>
+            : <></>}
           <DialogContentText id="alert-dialog-description">
             By clicking yes you are going to delete the {categoryToDelete} category permanently.
           </DialogContentText>

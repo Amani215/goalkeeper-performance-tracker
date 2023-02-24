@@ -83,7 +83,7 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label="Match Date"
-                                inputFormat="MM/DD/YYYY"
+                                inputFormat="DD/MM/YYYY"
                                 value={formik.values.date}
                                 onChange={v => formik.setFieldValue("date", v)}
                                 renderInput={(params) => <TextField {...params} />}

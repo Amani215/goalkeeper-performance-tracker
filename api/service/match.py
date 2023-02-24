@@ -96,3 +96,14 @@ def remove_goalkeeper_performance(match_id: str,
 
     match_monitoring_service.delete(goalkeeper_performance_id)
     db.session.commit()
+
+
+def delete(match_id: str):
+    '''Delete a match given its ID'''
+    match = get_by_id(match_id)
+
+    if (len([i for i in match.goalkeepers_performances]) > 0):
+        raise PermissionError("This match is connected to other entities")
+    else:
+        db.session.delete(match)
+        db.session.commit()

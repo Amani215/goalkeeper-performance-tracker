@@ -1,4 +1,5 @@
 '''Testing the match services'''
+import pytest
 from model.match import Match
 import service.match as match_service
 import service.match_monitoring as match_monitoring_service
@@ -93,3 +94,23 @@ def test_remove_performance(app, match_monitoring):
     assert match_monitoring not in goalkeeper.match_performances
     assert match_monitoring_service.get_by_id(
         mm_id)['error'] == 'No row was found when one was required'
+
+
+def test_delete(app, match):
+    '''Test deleting a match'''
+    match_id = match.id
+
+    match_service.delete(match_id)
+
+    assert match_service.get_by_id(
+        match_id)["error"] == "No row was found when one was required"
+
+
+def test_delete_with_relationship(app, goalkeeper, match):
+    '''Test deleting with match related to goalkeeper'''
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+
+    match_monitoring_service.add_match_monitoring(_goalkeeper.id, match.id)
+
+    with pytest.raises(PermissionError):
+        match_service.delete(match.id)

@@ -1,5 +1,5 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from '@mui/material';
-import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import { FormikValues, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react'
@@ -32,7 +32,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
     const handleSubmit = async ({ date, duration, category }: FormikValues) => {
         if (newTraining != null) {
-            const trainingDate = dayjs(date).format('DD/MM/YYYY HH:mm').toString()
+            const trainingDate = dayjs(date).format('DD/MM/YYYY').toString()
             await newTraining(trainingDate, duration, category)
             if (newTrainingError) setError(true)
             else setModalIsOpen()
@@ -66,9 +66,9 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3}>
-                            <DateTimePicker
-                                label="Match Date"
-                                inputFormat="MM/DD/YYYY HH:mm"
+                            <DatePicker
+                                label="Training Date"
+                                inputFormat="DD/MM/YYYY"
                                 value={formik.values.date}
                                 onChange={v => formik.setFieldValue("date", v)}
                                 renderInput={(params) => <TextField {...params} />}

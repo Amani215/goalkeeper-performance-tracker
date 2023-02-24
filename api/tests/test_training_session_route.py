@@ -21,14 +21,9 @@ def test_no_token(client):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_get_training_sessions(client, authenticated_user):
+def test_get_training_sessions(client, json_headers):
     '''Test getting training session routes'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-    response = client.get(URL, headers=headers)
+    response = client.get(URL, headers=json_headers)
     assert sum(1 for _ in range(len(response.json))) == 0
     assert response.status_code == 200
 
@@ -47,34 +42,28 @@ def test_get_training_sessions(client, authenticated_user):
     }
     training_session_obj = client.post(URL,
                                        data=json.dumps(test_json),
-                                       headers=headers)
+                                       headers=json_headers)
 
     response = client.get(ID_URL + training_session_obj.json['id'],
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 200
     assert response.json['id'] == training_session_obj.json['id']
 
-    response = client.get(ID_URL + str(uuid.uuid4), headers=headers)
+    response = client.get(ID_URL + str(uuid.uuid4), headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_add_training_session(client, authenticated_user):
+def test_add_training_session(client, json_headers):
     '''Test add a training session'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-
     category_json = {
         'name': random_string.generate(12),
         'season': random.randint(1500, 2500)
     }
     category = client.post('/category',
                            data=json.dumps(category_json),
-                           headers=headers)
+                           headers=json_headers)
 
     date = random_date.generate_with_time()
     test_json = {
@@ -82,13 +71,17 @@ def test_add_training_session(client, authenticated_user):
         'duration': random.randint(0, 500),
         'category_id': category.json['id']
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 201
     assert 'id' in response.json
 
     ### BAD JSON
     test_json = {}
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert response.json == {'error': 'No data was provided'}
 
@@ -98,7 +91,9 @@ def test_add_training_session(client, authenticated_user):
         'duration': random.randint(0, 500),
         'category_id': category.json['id']
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -108,7 +103,9 @@ def test_add_training_session(client, authenticated_user):
         'time': random.randint(0, 500),
         'category_id': category.json['id']
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -118,7 +115,9 @@ def test_add_training_session(client, authenticated_user):
         'duration': random.randint(0, 500),
         'category_id': random_string.generate(5)
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -128,20 +127,16 @@ def test_add_training_session(client, authenticated_user):
         'duration': random.randint(0, 500),
         'category': category.json['id']
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_set_get_category(client, authenticated_user, category):
+def test_set_get_category(client, json_headers, category):
     '''Test setting and getting a category to a training session'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-
     date = random_date.generate_with_time()
     test_json = {
         'date': date.strftime('%d/%m/%Y %H:%M'),
@@ -150,7 +145,7 @@ def test_set_get_category(client, authenticated_user, category):
     }
     training_session_obj = client.post(URL,
                                        data=json.dumps(test_json),
-                                       headers=headers)
+                                       headers=json_headers)
 
     category = {
         'name': random_string.generate(12),
@@ -164,10 +159,10 @@ def test_set_get_category(client, authenticated_user, category):
     }
     response = client.put(CATEGORY_URL,
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 201
 
     response = client.get(CATEGORY_URL + "?id=" +
                           training_session_obj.json['id'],
-                          headers=headers)
+                          headers=json_headers)
     assert response.json['id'] == category['name'] + str(category['season'])

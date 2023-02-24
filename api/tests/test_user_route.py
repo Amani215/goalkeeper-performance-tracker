@@ -69,31 +69,31 @@ def test_get_users(client, authenticated_user):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_add_user(client, authenticated_user):
+def test_add_user(client, json_headers):
     '''Test add a user'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-
     test_json = {
         'username': random_string.generate(12),
         'password': random_string.generate(12),
         'admin': False
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 201
     assert 'id' in response.json
 
     ### DUPLICATE USERNAME
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
     ### BAD JSON
     test_json = {}
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert response.json == {'error': 'No data was provided'}
 
@@ -102,7 +102,9 @@ def test_add_user(client, authenticated_user):
         'password': random_string.generate(5),
         'admin': False
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -111,7 +113,9 @@ def test_add_user(client, authenticated_user):
         'pass': random_string.generate(5),
         'admin': False
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -120,7 +124,9 @@ def test_add_user(client, authenticated_user):
         'pass': random_string.generate(5),
         'ad': False
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -130,7 +136,9 @@ def test_add_user(client, authenticated_user):
         'password': random_string.generate(5),
         'admin': False
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert response.json == {'error': 'password too short'}
 
@@ -139,7 +147,9 @@ def test_add_user(client, authenticated_user):
         'password': random_string.generate(6),
         'admin': False
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert response.json == {'error': 'username too short'}
 
@@ -148,7 +158,9 @@ def test_add_user(client, authenticated_user):
         'password': random_string.generate(51),
         'admin': False
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert response.json == {'error': 'password too long'}
 
@@ -157,74 +169,68 @@ def test_add_user(client, authenticated_user):
         'password': random_string.generate(50),
         'admin': False
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert response.json == {'error': 'username too long'}
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_set_admin(client, authenticated_user, user):
+def test_set_admin(client, json_headers, user):
     '''Test setting a user to admin'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
     test_data = {'username': user['username'], 'admin': True}
     response = client.put(ADMIN_URL,
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 200
 
-    response = client.get(USERNAME_URL + user['username'], headers=headers)
+    response = client.get(USERNAME_URL + user['username'],
+                          headers=json_headers)
     assert response.json['admin'] == True
 
     ### BAD JSON
-    response = client.put(ADMIN_URL, data=json.dumps({}), headers=headers)
+    response = client.put(ADMIN_URL, data=json.dumps({}), headers=json_headers)
     assert response.status_code == 400
 
     test_data = {'name': user['username'], 'admin': True}
     response = client.put(ADMIN_URL,
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 400
 
     test_data = {'username': user['username'], 'ad': True}
     response = client.put(ADMIN_URL,
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 400
 
     test_data = {'username': random_string.generate(4), 'admin': True}
     response = client.put(ADMIN_URL,
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 400
 
     ### UPDATE DEFAULT ADMIN
     test_data = {'username': os.environ['ADMIN_USERNAME'], 'admin': False}
     response = client.put(ADMIN_URL,
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 401
     assert 'Default admin cannot be changed' in response.json['error']
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_add_remove_category(client, authenticated_user, user):
+def test_add_remove_category(client, json_headers, user):
     '''Test adding and removing a category to a trainer'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
     test_category = {
         'name': random_string.generate(12),
         'season': random.randint(1500, 2500)
     }
     category_service.add_category(test_category['name'],
                                   test_category['season'])
-    response = client.get(USERNAME_URL + user['username'], headers=headers)
+    response = client.get(USERNAME_URL + user['username'],
+                          headers=json_headers)
 
     test_data = {
         'trainer_id': response.json['id'],
@@ -232,13 +238,13 @@ def test_add_remove_category(client, authenticated_user, user):
     }
     response = client.put(CATEGORY_URL,
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 201
 
     ### DELETE
     response = client.delete(CATEGORY_URL,
                              data=json.dumps(test_data),
-                             headers=headers)
+                             headers=json_headers)
     assert response.status_code == 204
 
 

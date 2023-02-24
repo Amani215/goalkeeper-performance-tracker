@@ -24,14 +24,9 @@ def test_no_token(client):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_get_training_monitorings(client, authenticated_user):
+def test_get_training_monitorings(client, json_headers):
     '''Test getting training monitoring routes'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-    response = client.get(URL, headers=headers)
+    response = client.get(URL, headers=json_headers)
     assert sum(1 for _ in range(len(response.json))) == 0
     assert response.status_code == 200
 
@@ -45,7 +40,7 @@ def test_get_training_monitorings(client, authenticated_user):
     }
     goalkeeper = client.post('/goalkeeper',
                              data=json.dumps(test_json),
-                             headers=headers)
+                             headers=json_headers)
 
     category_json = {
         'name': random_string.generate(12),
@@ -62,7 +57,7 @@ def test_get_training_monitorings(client, authenticated_user):
     }
     training_session = client.post('/training_session',
                                    data=json.dumps(test_json),
-                                   headers=headers)
+                                   headers=json_headers)
 
     test_json = {
         'goalkeeper_id': goalkeeper.json['id'],
@@ -70,54 +65,45 @@ def test_get_training_monitorings(client, authenticated_user):
     }
     training_monitoring = client.post(URL,
                                       data=json.dumps(test_json),
-                                      headers=headers)
+                                      headers=json_headers)
 
     response = client.get(ID_URL + training_monitoring.json['id'],
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 200
     assert response.json['id'] == training_monitoring.json['id']
 
-    response = client.get(ID_URL + str(uuid.uuid4), headers=headers)
+    response = client.get(ID_URL + str(uuid.uuid4), headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_add_training_monitoring(client, authenticated_user, goalkeeper,
+def test_add_training_monitoring(client, json_headers, goalkeeper,
                                  training_session):
     '''Test add a training monitoring object'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
     test_json = {
         'goalkeeper_id': str(_goalkeeper.id),
         'session_id': str(training_session.id)
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 201
     assert 'id' in response.json
 
     ### BAD JSON
     test_json = {}
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert response.json == {'error': 'No data was provided'}
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
-def test_set_param_diff_category(client, authenticated_user,
-                                 training_monitoring):
+def test_set_param_diff_category(client, json_headers, training_monitoring):
     '''Test setting a param to a training monitoring object when user has no permissions'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-
     assert training_monitoring.hurt == False
     assert training_monitoring.with_seniors == False
 
@@ -125,7 +111,7 @@ def test_set_param_diff_category(client, authenticated_user,
     test_data = {'hurt': True, 'with_seniors': True, 'comment': comment}
     response = client.put(ID_URL + str(training_monitoring.id),
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
 
     assert response.status_code == 401
     assert 'User cannot edit this data.' in response.json['error']

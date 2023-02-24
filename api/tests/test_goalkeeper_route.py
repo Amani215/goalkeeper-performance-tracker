@@ -6,7 +6,6 @@ import uuid
 import pytest
 
 from helper import random_string, random_date
-from tests.conftest import content_type
 import service.category as category_service
 import service.goalkeeper as goalkeeper_service
 import service.user as user_service
@@ -33,49 +32,40 @@ def test_no_token(client):
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
-def test_get_goalkeepers(client, authenticated_user, goalkeeper):
+def test_get_goalkeepers(client, json_headers, goalkeeper):
     '''Test getting goalkeeper routes'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-    response = client.get(URL, headers=headers)
+    response = client.get(URL, headers=json_headers)
     assert sum(1 for _ in range(len(response.json))) == 1
     assert response.status_code == 200
 
     ### GET BY USERNAME
-    response = client.get(NAME_URL + goalkeeper['name'], headers=headers)
+    response = client.get(NAME_URL + goalkeeper['name'], headers=json_headers)
     assert response.status_code == 200
     assert response.json['name'] == goalkeeper['name']
 
     response = client.get(NAME_URL + random_string.generate(4),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
     ### GET BY ID
     id_url = URL + '?id='
 
-    _goalkeeper = client.get(NAME_URL + goalkeeper['name'], headers=headers)
-    response = client.get(id_url + _goalkeeper.json['id'], headers=headers)
+    _goalkeeper = client.get(NAME_URL + goalkeeper['name'],
+                             headers=json_headers)
+    response = client.get(id_url + _goalkeeper.json['id'],
+                          headers=json_headers)
     assert response.status_code == 200
     assert response.json['id'] == _goalkeeper.json['id']
 
-    response = client.get(id_url + str(uuid.uuid4), headers=headers)
+    response = client.get(id_url + str(uuid.uuid4), headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_add_goalkeeper(client, authenticated_user):
+def test_add_goalkeeper(client, json_headers):
     '''Test add a goalkeeper'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-
     date = random_date.generate()
     test_json = {
         'name': random_string.generate(12),
@@ -83,18 +73,24 @@ def test_add_goalkeeper(client, authenticated_user):
         'month': date.month,
         'year': date.year
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 201
     assert 'id' in response.json
 
     ### DUPLICATE NAME
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
     ### BAD JSON
     test_json = {}
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert response.json == {'error': 'No data was provided'}
 
@@ -105,7 +101,9 @@ def test_add_goalkeeper(client, authenticated_user):
         'month': date.month,
         'year': date.year
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -116,7 +114,9 @@ def test_add_goalkeeper(client, authenticated_user):
         'month': date.month,
         'year': date.year
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -127,7 +127,9 @@ def test_add_goalkeeper(client, authenticated_user):
         'birth month': date.month,
         'year': date.year
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -138,7 +140,9 @@ def test_add_goalkeeper(client, authenticated_user):
         'month': date.month,
         'birth year': date.year
     }
-    response = client.post(URL, data=json.dumps(test_json), headers=headers)
+    response = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -146,20 +150,15 @@ def test_add_goalkeeper(client, authenticated_user):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_add_remove_category(client, authenticated_user, goalkeeper):
+def test_add_remove_category(client, json_headers, goalkeeper):
     '''Test adding and removing a category to a goalkeeper'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
     test_category = {
         'name': random_string.generate(12),
         'season': random.randint(1500, 2500)
     }
     category_service.add_category(test_category['name'],
                                   test_category['season'])
-    response = client.get(NAME_URL + goalkeeper['name'], headers=headers)
+    response = client.get(NAME_URL + goalkeeper['name'], headers=json_headers)
 
     test_data = {
         'goalkeeper_id': response.json['id'],
@@ -167,13 +166,13 @@ def test_add_remove_category(client, authenticated_user, goalkeeper):
     }
     response = client.put(CATEGORY_URL,
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 201
 
     ### DELETE
     response = client.delete(CATEGORY_URL,
                              data=json.dumps(test_data),
-                             headers=headers)
+                             headers=json_headers)
     assert response.status_code == 204
 
 

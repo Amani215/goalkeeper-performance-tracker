@@ -21,14 +21,9 @@ def test_no_token(client):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_get_growth_monitorings(client, authenticated_user):
+def test_get_growth_monitorings(client, json_headers):
     '''Test getting growth monitoring routes'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-    response = client.get(URL, headers=headers)
+    response = client.get(URL, headers=json_headers)
     assert sum(1 for _ in range(len(response.json))) == 0
     assert response.status_code == 200
 
@@ -42,7 +37,7 @@ def test_get_growth_monitorings(client, authenticated_user):
     }
     goalkeeper = client.post('/goalkeeper',
                              data=json.dumps(test_json),
-                             headers=headers)
+                             headers=json_headers)
 
     date = random_date.generate()
     test_json = {
@@ -51,14 +46,14 @@ def test_get_growth_monitorings(client, authenticated_user):
     }
     growth_monitoring = client.post(URL,
                                     data=json.dumps(test_json),
-                                    headers=headers)
+                                    headers=json_headers)
 
     response = client.get(ID_URL + growth_monitoring.json['id'],
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 200
     assert response.json['id'] == growth_monitoring.json['id']
 
-    response = client.get(ID_URL + str(uuid.uuid4), headers=headers)
+    response = client.get(ID_URL + str(uuid.uuid4), headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
 
@@ -142,15 +137,9 @@ def test_set_param(client, authenticated_user, goalkeeper, category):
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
-def test_set_param_diff_category(client, authenticated_user, category,
+def test_set_param_diff_category(client, json_headers, category,
                                  growth_monitoring):
     '''Test setting a param to a growth monitoring object'''
-    headers = {
-        'Content-Type': content_type,
-        'Accept': content_type,
-        'Authorization': authenticated_user['token']
-    }
-
     goalkeeper = goalkeeper_service.get_by_id(growth_monitoring.goalkeeper_id)
     goalkeeper_service.add_category(goalkeeper, category)
 
@@ -160,6 +149,6 @@ def test_set_param_diff_category(client, authenticated_user, category,
     test_data = {'weight': rand_int1, 'annual_growth': rand_int2}
     response = client.put(ID_URL + str(growth_monitoring.id),
                           data=json.dumps(test_data),
-                          headers=headers)
+                          headers=json_headers)
     assert response.status_code == 401
     assert 'User cannot edit this goalkeeper.' in response.json['error']

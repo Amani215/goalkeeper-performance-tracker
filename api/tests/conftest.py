@@ -252,3 +252,14 @@ def authenticated_user(client, admin: bool):
         'username': user.json['username'],
         'token': token
     }
+
+
+@pytest.fixture()
+# @pytest.mark.parametrize(['admin'], [[False]])
+def json_headers(authenticated_user, admin: bool):
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+    return headers

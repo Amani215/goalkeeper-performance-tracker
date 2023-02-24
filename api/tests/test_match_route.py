@@ -6,6 +6,7 @@ import pytest
 
 from helper import random_string, random_date
 import service.category as category_service
+import service.goalkeeper as goalkeeper_service
 
 URL = '/match'
 CATEGORY_URL = '/match/category'
@@ -203,3 +204,29 @@ def test_delete_match_performance(client, json_headers, match_monitoring):
                              data=json.dumps(test_data),
                              headers=json_headers)
     assert response.status_code == 204
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_delete_match(client, json_headers, match):
+    '''Test deleting a match'''
+    match_id = match.id
+
+    response = client.delete(URL + '?id=' + match_id, headers=json_headers)
+    assert response.status_code == 204
+
+    response = client.get(URL + '?id=' + match_id, headers=json_headers)
+    assert "error" in response.json
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_delete_with_relationship(client, json_headers, match, goalkeeper):
+    '''Test deleting with match related to user'''
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    test_json = {"goalkeeper_id": _goalkeeper.id, "match_id": match.id}
+
+    client.post('/match_monitoring',
+                data=json.dumps(test_json),
+                headers=json_headers)
+
+    response = client.delete(URL + '?id=' + match.id, headers=json_headers)
+    assert response.status_code == 401

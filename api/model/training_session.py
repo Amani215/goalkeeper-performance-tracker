@@ -1,7 +1,7 @@
 """imports"""
 import datetime
 from uuid import uuid4
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, Date, String, Integer
 from sqlalchemy.dialects.postgresql import TIMESTAMP
 from config import db
 
@@ -14,9 +14,7 @@ class training_session(db.Model):
     id = Column(String(128),
                 primary_key=True,
                 default=lambda: str(uuid4().hex))
-    date = Column(TIMESTAMP(timezone=False),
-                  nullable=False,
-                  default=datetime.datetime.now())
+    date = Column(Date, unique=False, nullable=False)
     duration = Column(Integer, unique=False, nullable=False)
 
     training_session_category_id = Column(String(35),
@@ -36,7 +34,7 @@ class training_session(db.Model):
         """Return object data in easily serializable format"""
         return {
             'id': self.id,
-            'date': self.date.strftime('%d/%m/%Y %H:%M'),
+            'date': self.date.strftime('%d/%m/%Y'),
             'duration': self.duration,
             'category': self.training_session_category.serialize
         }

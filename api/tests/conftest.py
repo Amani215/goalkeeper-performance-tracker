@@ -154,7 +154,7 @@ def training_session(category):
 
     date = random_date.generate_with_time()
     training_session_credentials = {
-        'date': date.strftime('%d/%m/%Y %H:%M'),
+        'date': date.strftime('%d/%m/%Y'),
         'duration': random.randint(0, 500),
         'category_id': category.id
     }

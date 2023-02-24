@@ -36,7 +36,7 @@ def test_get_training_sessions(client, json_headers):
                                              category_json['season'])
     date = random_date.generate_with_time()
     test_json = {
-        'date': date.strftime('%d/%m/%Y %H:%M'),
+        'date': date.strftime('%d/%m/%Y'),
         'duration': random.randint(0, 500),
         'category_id': category.id
     }
@@ -67,7 +67,7 @@ def test_add_training_session(client, json_headers):
 
     date = random_date.generate_with_time()
     test_json = {
-        'date': date.strftime('%d/%m/%Y %H:%M'),
+        'date': date.strftime('%d/%m/%Y'),
         'duration': random.randint(0, 500),
         'category_id': category.json['id']
     }
@@ -87,7 +87,7 @@ def test_add_training_session(client, json_headers):
 
     date = random_date.generate_with_time()
     test_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime('%d/%m/%Y %H:%M'),
         'duration': random.randint(0, 500),
         'category_id': category.json['id']
     }
@@ -99,7 +99,7 @@ def test_add_training_session(client, json_headers):
 
     date = random_date.generate_with_time()
     test_json = {
-        'date': date.strftime('%d/%m/%Y %H:%M'),
+        'date': date.strftime('%d/%m/%Y'),
         'time': random.randint(0, 500),
         'category_id': category.json['id']
     }
@@ -111,7 +111,7 @@ def test_add_training_session(client, json_headers):
 
     date = random_date.generate_with_time()
     test_json = {
-        'date': date.strftime('%d/%m/%Y %H:%M'),
+        'date': date.strftime('%d/%m/%Y'),
         'duration': random.randint(0, 500),
         'category_id': random_string.generate(5)
     }
@@ -123,7 +123,7 @@ def test_add_training_session(client, json_headers):
 
     date = random_date.generate_with_time()
     test_json = {
-        'date': date.strftime('%d/%m/%Y %H:%M'),
+        'date': date.strftime('%d/%m/%Y'),
         'duration': random.randint(0, 500),
         'category': category.json['id']
     }
@@ -139,7 +139,7 @@ def test_set_get_category(client, json_headers, category):
     '''Test setting and getting a category to a training session'''
     date = random_date.generate_with_time()
     test_json = {
-        'date': date.strftime('%d/%m/%Y %H:%M'),
+        'date': date.strftime('%d/%m/%Y'),
         'duration': random.randint(0, 500),
         'category_id': category.id
     }

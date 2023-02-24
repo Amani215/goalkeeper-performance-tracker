@@ -51,7 +51,7 @@ def test_get_training_monitorings(client, json_headers):
 
     date = random_date.generate_with_time()
     test_json = {
-        'date': date.strftime('%d/%m/%Y %H:%M'),
+        'date': date.strftime('%d/%m/%Y'),
         'duration': random.randint(0, 500),
         'category_id': category.id
     }

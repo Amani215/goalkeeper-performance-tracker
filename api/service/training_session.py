@@ -11,7 +11,7 @@ from config.redis import redis_db
 
 def add_training_session(date: str, duration: int, category_id: str):
     '''Add a new training session to the database'''
-    training_session_date = datetime.strptime(date, '%d/%m/%Y %H:%M')
+    training_session_date = datetime.strptime(date, '%d/%m/%Y')
     category = category_service.get_by_id(category_id)
     training_session_obj = training_session(training_session_date, duration,
                                             category)

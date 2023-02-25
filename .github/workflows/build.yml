@@ -14,7 +14,7 @@ env:
   POSTGRES_HOST: localhost
   POSTGRES_PORT: 5432
   POSTGRES_DB: db
-  SQLITE_HOST: "/tmp/build.db"
+  SQLITE_HOST: "/build.db"
   SECRET_KEY: secret
   SQLALCHEMY_TRACK_MODIFICATIONS: True
   DEBUG: True

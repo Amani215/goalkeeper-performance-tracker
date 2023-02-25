@@ -37,11 +37,31 @@ export function useNewMatchError() {
     return useContext(newMatchErrorContext);
 }
 
+// DELETE CATEGORY CONTEXTS
+type DeleteMatchDelegate = (matchID: string) => Promise<null>;
+const deleteMatchContext = createContext<DeleteMatchDelegate | null>(null);
+export function useDeleteMatch() {
+    return useContext(deleteMatchContext);
+}
+
+const matchDeletedContext = createContext<boolean>(false);
+export function useMatchDeleted() {
+    return useContext(matchDeletedContext);
+}
+
+const deleteMatchErrorContext = createContext<string>("");
+export function useDeleteMatchError() {
+    return useContext(deleteMatchErrorContext);
+}
+
 export default function MatchesProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
     const [newMatchError, setNewMatchError] = useState(false)
     const [newMatchAdded, setNewMatchAdded] = useState(false)
     const [matchesReady, setMatchesReady] = useState<boolean>(false)
+
+    const [matchDeleted, setMatchDeleted] = useState(false)
+    const [deleteMatchError, setDeleteMatchError] = useState("")
 
     const auth = useAuth()
     const token = auth?.token
@@ -101,6 +121,28 @@ export default function MatchesProvider(props: PropsWithChildren<{}>) {
             })
     }
 
+    const deleteMatch: DeleteMatchDelegate = async (matchID: string) => {
+        setDeleteMatchError("")
+        return fetch("/api/match?id=" + matchID, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({})
+        })
+            .then(data => {
+                if (data.status == 204) {
+                    setMatchDeleted(true)
+                } else {
+                    setMatchDeleted(false)
+                    if (data.status == 401) {
+                        setDeleteMatchError("This match is connected to other entities")
+                    }
+                }
+                return null
+            })
+    }
 
     return (
         <matchesContext.Provider value={matches}>
@@ -109,7 +151,13 @@ export default function MatchesProvider(props: PropsWithChildren<{}>) {
                     <newMatchContext.Provider value={newMatch}>
                         <matchAddedContext.Provider value={newMatchAdded}>
                             <newMatchErrorContext.Provider value={newMatchError}>
-                                {props.children}
+                                <deleteMatchContext.Provider value={deleteMatch}>
+                                    <matchDeletedContext.Provider value={matchDeleted}>
+                                        <deleteMatchErrorContext.Provider value={deleteMatchError}>
+                                            {props.children}
+                                        </deleteMatchErrorContext.Provider>
+                                    </matchDeletedContext.Provider>
+                                </deleteMatchContext.Provider>
                             </newMatchErrorContext.Provider>
                         </matchAddedContext.Provider>
                     </newMatchContext.Provider>

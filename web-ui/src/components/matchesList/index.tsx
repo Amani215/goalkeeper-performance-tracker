@@ -1,100 +1,124 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { MatchDTO } from "../../DTOs/MatchDTO";
-import { Box, Card, IconButton, Link, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { MdDelete } from 'react-icons/md';
+import { useState } from 'react';
+import { useDeleteMatch, useDeleteMatchError } from '../../contexts/matchesContext';
 
 type PropType = {
     matches: MatchDTO[]
 }
 
-const columns: GridColDef[] = [
-    {
-        field: 'date',
-        headerName: 'Date',
-        flex: 2,
-        minWidth: 80,
-        renderCell: (params) => {
-            return (
-                <Link
-                    component={RouterLink}
-                    to={`/matches/${params.id}`}
-                    underline="none"
-                    color="inherit">
-                    <Typography>{params.row.date}</Typography>
-                </Link>
-            );
+function MatchesList({ matches }: PropType) {
+    const columns: GridColDef[] = [
+        {
+            field: 'date',
+            headerName: 'Date',
+            flex: 2,
+            minWidth: 80,
+            renderCell: (params) => {
+                return (
+                    <Link
+                        component={RouterLink}
+                        to={`/matches/${params.id}`}
+                        underline="none"
+                        color="inherit">
+                        <Typography>{params.row.date}</Typography>
+                    </Link>
+                );
+            }
+        },
+        {
+            field: 'local',
+            headerName: 'Local',
+            flex: 2,
+            minWidth: 80,
+            renderCell: (params) => {
+                return (
+                    <Link
+                        component={RouterLink}
+                        to={`/matches/${params.id}`}
+                        underline="none"
+                        color="inherit">
+                        <Typography>{params.row.local}</Typography>
+                    </Link>
+                );
+            }
+        },
+        {
+            field: 'visitor',
+            headerName: 'Visitor',
+            flex: 2,
+            minWidth: 80,
+            renderCell: (params) => {
+                return (
+                    <Link
+                        component={RouterLink}
+                        to={`/matches/${params.id}`}
+                        underline="none"
+                        color="inherit">
+                        <Typography>{params.row.visitor}</Typography>
+                    </Link>
+                );
+            }
+        },
+        {
+            field: 'match_type',
+            headerName: 'Match Type',
+            flex: 2,
+            minWidth: 80,
+            renderCell: (params) => {
+                return (
+                    <Link
+                        component={RouterLink}
+                        to={`/matches/${params.id}`}
+                        underline="none"
+                        color="inherit">
+                        <Typography>{params.row.match_type}</Typography>
+                    </Link>
+                );
+            }
+        },
+        {
+            field: 'delete',
+            headerName: 'Delete',
+            flex: 1,
+            minWidth: 30,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params) => {
+                return (
+                    <IconButton onClick={() => handleClickOpen(params.row.id)}>
+                        <MdDelete color='red' />
+                    </IconButton>
+                );
+            }
         }
-    },
-    {
-        field: 'local',
-        headerName: 'Local',
-        flex: 2,
-        minWidth: 80,
-        renderCell: (params) => {
-            return (
-                <Link
-                    component={RouterLink}
-                    to={`/matches/${params.id}`}
-                    underline="none"
-                    color="inherit">
-                    <Typography>{params.row.local}</Typography>
-                </Link>
-            );
-        }
-    },
-    {
-        field: 'visitor',
-        headerName: 'Visitor',
-        flex: 2,
-        minWidth: 80,
-        renderCell: (params) => {
-            return (
-                <Link
-                    component={RouterLink}
-                    to={`/matches/${params.id}`}
-                    underline="none"
-                    color="inherit">
-                    <Typography>{params.row.visitor}</Typography>
-                </Link>
-            );
-        }
-    },
-    {
-        field: 'match_type',
-        headerName: 'Match Type',
-        flex: 2,
-        minWidth: 80,
-        renderCell: (params) => {
-            return (
-                <Link
-                    component={RouterLink}
-                    to={`/matches/${params.id}`}
-                    underline="none"
-                    color="inherit">
-                    <Typography>{params.row.match_type}</Typography>
-                </Link>
-            );
-        }
-    },
-    {
-        field: 'delete',
-        headerName: 'Delete',
-        flex: 1,
-        minWidth: 30,
-        align: 'center',
-        headerAlign: 'center',
-        renderCell: (params) => {
-            return (
-                <IconButton onClick={() => { console.log("delete match: ", params.row.id) }}>
-                    <MdDelete color='red' />
-                </IconButton>
-            );
+    ];
+
+    const [open, setOpen] = useState<boolean>(false)
+    const [matchToDelete, setMatchToDelete] = useState<string>("")
+
+    const deleteMatch = useDeleteMatch()
+    const deleteMatchError = useDeleteMatchError()
+
+    const handleClickOpen = (matchID: string) => {
+        setMatchToDelete(matchID)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setMatchToDelete("")
+        setOpen(false);
+    };
+
+    const handleDelete = async () => {
+        if (deleteMatch) {
+            await deleteMatch(matchToDelete)
         }
     }
-];
 
-function MatchesList({ matches }: PropType) {
     return (
         <>
             {matches.length > 0 ?
@@ -133,6 +157,31 @@ function MatchesList({ matches }: PropType) {
                     </Card>
                 </Box>
             }
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Are you sure?"}
+                </DialogTitle>
+                <DialogContent>
+                    {deleteMatchError != "" ?
+                        <Alert severity='error' sx={{ marginBottom: 1 }}>{deleteMatchError}</Alert>
+                        : <></>}
+                    <DialogContentText id="alert-dialog-description">
+                        By clicking yes you are going to delete this match permanently.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleDelete} autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
 
 

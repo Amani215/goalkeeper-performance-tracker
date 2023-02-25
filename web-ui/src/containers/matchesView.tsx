@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useMatchAdded, useMatches, useMatchesError, useMatchesReady } from '../contexts/matchesContext'
+import { useMatchAdded, useMatchDeleted, useMatches, useMatchesError, useMatchesReady } from '../contexts/matchesContext'
 import { MatchDTO } from '../DTOs/MatchDTO'
 import MatchesList from '../components/matchesList'
 import { ModalProp } from '../interfaces/modalProp'
@@ -15,6 +15,7 @@ function MatchesView({ setModalIsOpen }: ModalProp) {
     const matchesError = useMatchesError()
     const matchesReady = useMatchesReady()
     const matchAdded = useMatchAdded()
+    const matchDeleted = useMatchDeleted()
 
     useEffect(
         () => {
@@ -37,7 +38,7 @@ function MatchesView({ setModalIsOpen }: ModalProp) {
         if (loaded && matchesReady && !matchesError) {
             setError("")
         }
-    }, [loaded, matchesReady, matchesError, matchAdded])
+    }, [loaded, matchesReady, matchesError, matchAdded, matchDeleted])
 
     return (
         <>

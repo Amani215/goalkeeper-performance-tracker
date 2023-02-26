@@ -80,6 +80,58 @@ def test_set_category(app, match, category):
     assert response['category_id'] == category.id
 
 
+def test_set_teams(app, match):
+    '''Test set teams of the match'''
+    match_id = match.id
+
+    # Set no teams
+    response = match_service.set_teams(match=match)
+    assert response.local == match.local
+    assert response.visitor == match.visitor
+    assert match.id == match_id
+
+    # Set local team only
+    new_local = random_string.generate(3)
+    response = match_service.set_teams(match=match, local=new_local)
+    assert response.local == new_local
+    assert match.id == match_id
+
+    # Set visitor team only
+    new_visitor = random_string.generate(3)
+    response = match_service.set_teams(match=match, visitor=new_visitor)
+    assert response.visitor == new_visitor
+    assert match.id == match_id
+
+    # Set both teams
+    new_local = random_string.generate(3)
+    new_visitor = random_string.generate(3)
+    response = match_service.set_teams(match=match,
+                                       local=new_local,
+                                       visitor=new_visitor)
+    assert response.visitor == new_visitor
+    assert response.local == new_local
+    assert match.id == match_id
+
+
+def test_set_date(app, match):
+    '''Test set the date of the match'''
+    # Set no date
+    response = match_service.set_date(match)
+    assert response.date == match.date
+
+    # Set invalid date
+    with pytest.raises(Exception):
+        date = random_date.generate()
+        new_date = date.strftime('%d/%m/%Y %H:%M')
+        match_service.set_date(match, new_date)
+
+    # Set valid date
+    date = random_date.generate()
+    new_date = date.strftime('%d/%m/%Y')
+    response = match_service.set_date(match, new_date)
+    assert response.date.strftime('%d/%m/%Y') == new_date
+
+
 def test_remove_performance(app, match_monitoring):
     '''Test deleting a goalkeeper performance'''
     mm_id = match_monitoring.id

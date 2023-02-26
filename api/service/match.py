@@ -61,6 +61,24 @@ def set_category(match: Match, category: Category):
     return {'match_id': match.id, 'category_id': category.id}
 
 
+def set_teams(match: Match, local: str = None, visitor: str = None) -> Match:
+    '''Set the teams of the match'''
+    if (local is not None):
+        match.local = local
+    if (visitor is not None):
+        match.visitor = visitor
+    db.session.commit()
+    return match
+
+
+def set_date(match: Match, date: str = None) -> Match:
+    '''Set the date of the match'''
+    if (date is not None):
+        match.date = datetime.strptime(date, '%d/%m/%Y')
+    db.session.commit()
+    return match
+
+
 def set_scores(match_id: str, score_local: int = -1, score_visitor: int = -1):
     '''Set the scores. If score is not provided (i.e. it equals -1 then it is not changed.'''
     match = get_by_id(match_id)

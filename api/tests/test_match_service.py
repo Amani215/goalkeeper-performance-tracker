@@ -33,7 +33,7 @@ def test_get_matches(app):
     assert len([i.serialize for i in matches]) == 0
 
 
-def tes_get_by_date(app, category):
+def test_get_by_date(app, category):
     '''Test get matches before or after a certain date'''
     date = random_date.generate(start='01/01/1970', end='31/12/1999')
     match = {
@@ -66,10 +66,10 @@ def tes_get_by_date(app, category):
                             match['match_type'], category.id)
 
     response = match_service.get_by_date_before('01/01/2000')
-    assert response.length == 2
+    assert len([i.serialize for i in response]) == 2
 
     response = match_service.get_by_date_after('02/01/2000')
-    assert response.length == 1
+    assert len([i.serialize for i in response]) == 1
 
 
 def test_set_category(app, match, category):

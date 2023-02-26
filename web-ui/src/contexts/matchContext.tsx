@@ -51,6 +51,20 @@ export function useMatchUpdated() {
     return useContext(matchUpdatedContext);
 }
 
+// UPDATE TEAMS CONTEXT
+type UpdateTeamsDelegate = (id: string, local: string, visitor: string) => Promise<MatchDTO | errorResponse>;
+const updateTeamsContext = createContext<UpdateTeamsDelegate | null>(null);
+export function useUpdateTeams() {
+    return useContext(updateTeamsContext);
+}
+
+// UPDATE DATE CONTEXT
+type UpdateDateDelegate = (id: string, date: string) => Promise<MatchDTO | errorResponse>;
+const updateDateContext = createContext<UpdateDateDelegate | null>(null);
+export function useUpdateDate() {
+    return useContext(updateDateContext);
+}
+
 // ADD GOALKEEPER CONTEXT
 type NewMatchGoalkeeperDelegate = (goalkeeperId: string, matchId: string) => Promise<MatchMonitoringDTO | errorResponse>;
 const newMatchGoalkeeperContext = createContext<NewMatchGoalkeeperDelegate | null>(null);
@@ -202,6 +216,63 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         }
     }
 
+    const updateTeams: UpdateTeamsDelegate = async (id: string, local: string, visitor: string) => {
+        const data = await fetch("/api/match/teams", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                match_id: id,
+                local: local,
+                score_visitor: visitor
+            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setMatchReady(true);
+            setError(false);
+            setMatch(json_data as MatchDTO)
+            setMatchUpdated(true)
+            return json_data as MatchDTO;
+        }
+        else {
+            setError(true);
+            setMatchReady(true);
+            setMatch(null)
+            return json_data as errorResponse;
+        }
+    }
+
+    const updateDate: UpdateDateDelegate = async (id: string, date: string) => {
+        const data = await fetch("/api/match/date", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                match_id: id,
+                date: date
+            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setMatchReady(true);
+            setError(false);
+            setMatch(json_data as MatchDTO)
+            setMatchUpdated(true)
+            return json_data as MatchDTO;
+        }
+        else {
+            setError(true);
+            setMatchReady(true);
+            setMatch(null)
+            return json_data as errorResponse;
+        }
+    }
+
     type contextProvider = {
         ctx: React.Context<any>,
         value: any
@@ -234,6 +305,14 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         {
             ctx: updateScoresContext,
             value: updateScores
+        },
+        {
+            ctx: updateTeamsContext,
+            value: updateTeams
+        },
+        {
+            ctx: updateDateContext,
+            value: updateDate
         },
         {
             ctx: matchUpdatedContext,

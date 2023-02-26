@@ -2,7 +2,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { MatchDTO } from "../../DTOs/MatchDTO";
 import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { MdDelete } from 'react-icons/md';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import { useState } from 'react';
 import { useDeleteMatch, useDeleteMatchError } from '../../contexts/matchesContext';
 
@@ -81,17 +81,22 @@ function MatchesList({ matches }: PropType) {
             }
         },
         {
-            field: 'delete',
-            headerName: 'Delete',
+            field: 'actions',
+            headerName: 'Actions',
             flex: 1,
             minWidth: 30,
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {
                 return (
-                    <IconButton onClick={() => handleClickOpen(params.row.id)}>
-                        <MdDelete color='red' />
-                    </IconButton>
+                    <Box>
+                        <IconButton title='Edit match' onClick={() => console.log("modify")}>
+                            <MdEdit />
+                        </IconButton>
+                        <IconButton title='Delete match' onClick={() => handleClickOpen(params.row.id)}>
+                            <MdDelete />
+                        </IconButton>
+                    </Box>
                 );
             }
         }

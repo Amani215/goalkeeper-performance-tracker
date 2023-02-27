@@ -33,7 +33,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
         }
     }, [match])
 
-    // Match object
+    // Match object attributes
     const [date, setDate] = useState<Dayjs>(dayjs())
     const [local, setLocal] = useState<string>('')
     const [visitor, setVisitor] = useState<string>('')
@@ -62,8 +62,13 @@ function UpdateMatch({ match, modalProp }: PropType) {
 
     // Update
     const handleSubmit = async ({ date, local, visitor, matchType, category }: FormikValues) => {
-        if (updateTeams != null) { }
-        if (updateDate != null) { }
+        if (updateTeams) {
+            await updateTeams(match ? match.id : '', local, visitor)
+        }
+        if (updateDate) {
+            await updateDate(match ? match.id : '', dayjs(date).format('DD/MM/YYYY').toString())
+        }
+        modalProp.setModalIsOpen()
     };
 
     const formik = useFormik({

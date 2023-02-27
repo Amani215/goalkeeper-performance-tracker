@@ -5,6 +5,7 @@ import PortalPage from '../../containers/portalPage'
 import CategoriesProvider from '../../contexts/categoriesContext'
 import MatchesProvider from '../../contexts/matchesContext'
 import ParamsProvider from '../../contexts/paramsContext'
+import MatchProvider from '../../contexts/matchContext'
 
 function Matches() {
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
@@ -19,7 +20,9 @@ function Matches() {
                     <NewMatch {...{ modalIsOpen, setModalIsOpen: handleClose }} />
 
                     <PortalPage>
-                        <MatchesView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
+                        <MatchProvider>
+                            <MatchesView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
+                        </MatchProvider>
                     </PortalPage>
                 </CategoriesProvider>
             </ParamsProvider>

@@ -226,7 +226,7 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
             body: JSON.stringify({
                 match_id: id,
                 local: local,
-                score_visitor: visitor
+                visitor: visitor
             })
         });
         const json_data = await data.json();

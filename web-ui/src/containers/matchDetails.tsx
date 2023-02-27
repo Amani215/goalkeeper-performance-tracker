@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md'
 import { TbFileChart } from 'react-icons/tb'
@@ -57,9 +57,23 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
         }
     }, [performancesReady, performancesUpdated])
 
-    const deleteGoalkeeperPerformance = (gpId: string) => {
+    const [deleteGoalkeeperDialogIsOpen, setDeleteGoalkeeperDialogIsOpen] = useState<boolean>(false)
+    const [goalkeeperToDelete, setGoalkeeperToDelete] = useState<MatchMonitoringDTO | null>(null)
+
+    const handleCloseDeleteGoalkeeperDialog = () => {
+        setDeleteGoalkeeperDialogIsOpen(false)
+        setGoalkeeperToDelete(null)
+    }
+
+    const handleOpenDeleteGoalkeeperDialog = (goalkeeper: MatchMonitoringDTO) => {
+        setDeleteGoalkeeperDialogIsOpen(true)
+        setGoalkeeperToDelete(goalkeeper)
+    }
+
+    const deleteGoalkeeperPerformance = () => {
         if (deleteMatchGoalkeeper) {
-            deleteMatchGoalkeeper(gpId, id ? id : "")
+            deleteMatchGoalkeeper(goalkeeperToDelete ? goalkeeperToDelete.id : '', id ? id : "")
+            setDeleteGoalkeeperDialogIsOpen(false)
         }
     }
 
@@ -145,7 +159,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                                                 <TbFileChart />
                                             </IconButton>
                                         </RouterLink>
-                                        <IconButton edge="end" aria-label="delete" onClick={() => { deleteGoalkeeperPerformance(gp.id) }}>
+                                        <IconButton edge="end" aria-label="delete" onClick={() => { handleOpenDeleteGoalkeeperDialog(gp) }}>
                                             <MdDeleteOutline />
                                         </IconButton>
                                     </>}>
@@ -163,6 +177,21 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                     }
                 </Paper>
 
+                <Dialog
+                    open={deleteGoalkeeperDialogIsOpen}
+                    onClose={handleCloseDeleteGoalkeeperDialog}
+                >
+                    <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            By clicking yes, you are going to delete {goalkeeperToDelete?.goalkeeper.name} from the list of goalkeepers permanently.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDeleteGoalkeeperDialog}>Cancel</Button>
+                        <Button onClick={() => deleteGoalkeeperPerformance()} autoFocus>Yes</Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
         </>
     )

@@ -5,12 +5,14 @@ import { Link as RouterLink } from 'react-router-dom';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useState } from 'react';
 import { useDeleteMatch, useDeleteMatchError } from '../../contexts/matchesContext';
+import UpdateMatch from '../../containers/modals/updateMatch';
 
 type PropType = {
     matches: MatchDTO[]
 }
 
 function MatchesList({ matches }: PropType) {
+    // Columns
     const columns: GridColDef[] = [
         {
             field: 'date',
@@ -90,10 +92,10 @@ function MatchesList({ matches }: PropType) {
             renderCell: (params) => {
                 return (
                     <Box>
-                        <IconButton title='Edit match' onClick={() => console.log("modify")}>
+                        <IconButton title='Edit match' onClick={() => handleOpenUpdateModal(params.row)}>
                             <MdEdit />
                         </IconButton>
-                        <IconButton title='Delete match' onClick={() => handleClickOpen(params.row.id)}>
+                        <IconButton title='Delete match' onClick={() => handleOpenDeleteDialog(params.row.id)}>
                             <MdDelete />
                         </IconButton>
                     </Box>
@@ -102,26 +104,40 @@ function MatchesList({ matches }: PropType) {
         }
     ];
 
-    const [open, setOpen] = useState<boolean>(false)
+    // Delete Dialog
+    const [deleteDialogIsOpen, setDeleteDialogIsOpen] = useState<boolean>(false)
     const [matchToDelete, setMatchToDelete] = useState<string>("")
 
     const deleteMatch = useDeleteMatch()
     const deleteMatchError = useDeleteMatchError()
 
-    const handleClickOpen = (matchID: string) => {
+    const handleOpenDeleteDialog = (matchID: string) => {
         setMatchToDelete(matchID)
-        setOpen(true);
+        setDeleteDialogIsOpen(true);
     };
 
-    const handleClose = () => {
+    const handleCloseDeleteDialog = () => {
         setMatchToDelete("")
-        setOpen(false);
+        setDeleteDialogIsOpen(false);
     };
 
     const handleDelete = async () => {
         if (deleteMatch) {
             await deleteMatch(matchToDelete)
         }
+    }
+
+    // Update Modal
+    const [updateModalIsOpen, setUpdateModalIsOpen] = useState<boolean>(false)
+    const [matchToUpdate, setMatchToUpdate] = useState<MatchDTO | null>(null)
+
+    const handleOpenUpdateModal = (match: MatchDTO) => {
+        setMatchToUpdate(match)
+        setUpdateModalIsOpen(true)
+    }
+    const handleCloseUpdateModal = () => {
+        setMatchToUpdate(null)
+        setUpdateModalIsOpen(false)
     }
 
     return (
@@ -164,8 +180,8 @@ function MatchesList({ matches }: PropType) {
             }
 
             <Dialog
-                open={open}
-                onClose={handleClose}
+                open={deleteDialogIsOpen}
+                onClose={handleCloseDeleteDialog}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -181,12 +197,17 @@ function MatchesList({ matches }: PropType) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
                     <Button onClick={handleDelete} autoFocus>
                         Yes
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <UpdateMatch match={matchToUpdate} modalProp={{
+                modalIsOpen: updateModalIsOpen,
+                setModalIsOpen: handleCloseUpdateModal
+            }} />
         </>
 
 

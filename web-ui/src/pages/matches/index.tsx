@@ -14,15 +14,15 @@ function Matches() {
 
     return (
         <MatchesProvider>
-            <CategoriesProvider>
-                <ParamsProvider>
+            <ParamsProvider>
+                <CategoriesProvider>
                     <NewMatch {...{ modalIsOpen, setModalIsOpen: handleClose }} />
-                </ParamsProvider>
-            </CategoriesProvider>
 
-            <PortalPage>
-                <MatchesView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
-            </PortalPage>
+                    <PortalPage>
+                        <MatchesView {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
+                    </PortalPage>
+                </CategoriesProvider>
+            </ParamsProvider>
         </MatchesProvider>
     )
 }

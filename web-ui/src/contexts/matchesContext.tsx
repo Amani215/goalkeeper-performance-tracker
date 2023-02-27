@@ -37,7 +37,7 @@ export function useNewMatchError() {
     return useContext(newMatchErrorContext);
 }
 
-// DELETE CATEGORY CONTEXTS
+// DELETE MATCH CONTEXTS
 type DeleteMatchDelegate = (matchID: string) => Promise<null>;
 const deleteMatchContext = createContext<DeleteMatchDelegate | null>(null);
 export function useDeleteMatch() {

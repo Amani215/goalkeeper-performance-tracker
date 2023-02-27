@@ -4,6 +4,7 @@ import { useMatchAdded, useMatchDeleted, useMatches, useMatchesError, useMatches
 import { MatchDTO } from '../DTOs/MatchDTO'
 import MatchesList from '../components/matchesList'
 import { ModalProp } from '../interfaces/modalProp'
+import { useMatchUpdated } from '../contexts/matchContext'
 
 function MatchesView({ setModalIsOpen }: ModalProp) {
     const [pastMatches, setPastMatches] = useState<MatchDTO[]>([])
@@ -16,6 +17,7 @@ function MatchesView({ setModalIsOpen }: ModalProp) {
     const matchesReady = useMatchesReady()
     const matchAdded = useMatchAdded()
     const matchDeleted = useMatchDeleted()
+    const matchUpdated = useMatchUpdated()
 
     useEffect(
         () => {
@@ -38,7 +40,7 @@ function MatchesView({ setModalIsOpen }: ModalProp) {
         if (loaded && matchesReady && !matchesError) {
             setError("")
         }
-    }, [loaded, matchesReady, matchesError, matchAdded, matchDeleted])
+    }, [loaded, matchesReady, matchesError, matchAdded, matchDeleted, matchUpdated])
 
     return (
         <>

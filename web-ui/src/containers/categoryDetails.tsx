@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
@@ -75,16 +75,46 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
         }
     }, [goalkeepersReady, goalkeeperAdded, goalkeeperDeleted])
 
-    // DELETE EVENTS
-    const deleteGoalkeeper = async (goalkeeperId: string) => {
+    // DELETE GOALKEEPER
+    const [goalkeeperToDelete, setGoalkeeperToDelete] = useState<GoalkeeperDTO | null>(null)
+    const [deleteGoalkeeperDialogIsOpen, setDeleteGoalkeeperDialogIsOpen] = useState<boolean>(false)
+
+    const handleOpenDeleteGoalkeeperDialog = (goalkeeper: GoalkeeperDTO) => {
+        setGoalkeeperToDelete(goalkeeper)
+        setDeleteGoalkeeperDialogIsOpen(true)
+    }
+
+    const handleCloseDeleteGoalkeeperDialog = () => {
+        setDeleteGoalkeeperDialogIsOpen(false)
+        setGoalkeeperToDelete(null)
+    }
+
+    const deleteGoalkeeper = async () => {
         if (deleteGoalkeeperContext) {
-            await deleteGoalkeeperContext(goalkeeperId, id as string)
+            await deleteGoalkeeperContext(goalkeeperToDelete ? goalkeeperToDelete.id : '', id as string)
+            setDeleteGoalkeeperDialogIsOpen(false)
         }
     }
 
-    const deleteTrainer = async (userId: string) => {
+
+    // DELETE TRAINER
+    const [trainerToDelete, setTrainerToDelete] = useState<UserDTO | null>()
+    const [deleteCoachDialogIsOpen, setDeleteCoachDialogIsOpen] = useState<boolean>(false)
+
+    const handleOpenDeleteCoachDialog = (trainer: UserDTO) => {
+        setTrainerToDelete(trainer)
+        setDeleteCoachDialogIsOpen(true)
+    }
+
+    const handleCloseDeleteCoachDialog = () => {
+        setDeleteCoachDialogIsOpen(false)
+        setTrainerToDelete(null)
+    }
+
+    const deleteTrainer = async () => {
         if (deleteTrainerContext) {
-            await deleteTrainerContext(userId, id as string)
+            await deleteTrainerContext(trainerToDelete ? trainerToDelete.id : '', id as string)
+            setDeleteCoachDialogIsOpen(false)
         }
     }
 
@@ -122,7 +152,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                                 <IconButton
                                                     edge="end"
                                                     aria-label="delete"
-                                                    onClick={e => deleteTrainer(trainer.id)}>
+                                                    onClick={e => handleOpenDeleteCoachDialog(trainer)}>
                                                     <MdDeleteOutline />
                                                 </IconButton> : <></>
                                         }
@@ -169,7 +199,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                                 <IconButton
                                                     edge="end"
                                                     aria-label="delete"
-                                                    onClick={e => deleteGoalkeeper(goalkeeper.id)}>
+                                                    onClick={e => handleOpenDeleteGoalkeeperDialog(goalkeeper)}>
                                                     <MdDeleteOutline />
                                                 </IconButton> : <></>
                                         }
@@ -195,6 +225,40 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                     </Card>
                 </Grid>
             </Grid>
+
+            {/* Delete Coach Dialog */}
+            <Dialog
+                open={deleteCoachDialogIsOpen}
+                onClose={handleCloseDeleteCoachDialog}
+            >
+                <DialogTitle id="alert-dialog-title"> {"Are you sure?"} </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        By clicking yes, you are going to delete {trainerToDelete?.username} from the list of coaches permanently.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDeleteCoachDialog}>Cancel</Button>
+                    <Button onClick={() => deleteTrainer()} autoFocus>Yes</Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Delete Goalkeeper Dialog */}
+            <Dialog
+                open={deleteGoalkeeperDialogIsOpen}
+                onClose={handleCloseDeleteGoalkeeperDialog}
+            >
+                <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        By clicking yes, you are going to delete {goalkeeperToDelete?.name} from the list of goalkeepers permanently.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDeleteGoalkeeperDialog}>Cancel</Button>
+                    <Button onClick={() => deleteGoalkeeper()} autoFocus>Yes</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     )
 }

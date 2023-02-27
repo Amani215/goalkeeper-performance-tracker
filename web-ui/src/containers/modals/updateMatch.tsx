@@ -10,7 +10,7 @@ import { useParams } from '../../contexts/paramsContext';
 import { CategoryDTO } from '../../DTOs';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
-import { useUpdateDate, useUpdateTeams } from '../../contexts/matchContext';
+import { useUpdateMatch } from '../../contexts/matchContext';
 import { MatchDTO } from '../../DTOs/MatchDTO';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 
@@ -19,8 +19,7 @@ type PropType = {
     modalProp: ModalProp
 }
 function UpdateMatch({ match, modalProp }: PropType) {
-    const updateDate = useUpdateDate()
-    const updateTeams = useUpdateTeams()
+    const updateMatch = useUpdateMatch()
 
     dayjs.extend(customParseFormat)
     useEffect(() => {
@@ -62,13 +61,17 @@ function UpdateMatch({ match, modalProp }: PropType) {
 
     // Update
     const handleSubmit = async ({ date, local, visitor, matchType, category }: FormikValues) => {
-        if (updateTeams) {
-            await updateTeams(match ? match.id : '', local, visitor)
+        if (updateMatch) {
+            await updateMatch(match ? match.id : '',
+                {
+                    date: dayjs(date).format('DD/MM/YYYY').toString(),
+                    local: local,
+                    visitor: visitor,
+                    match_type: matchType,
+                    category_id: category
+                })
+            modalProp.setModalIsOpen()
         }
-        if (updateDate) {
-            await updateDate(match ? match.id : '', dayjs(date).format('DD/MM/YYYY').toString())
-        }
-        modalProp.setModalIsOpen()
     };
 
     const formik = useFormik({

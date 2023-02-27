@@ -1,5 +1,5 @@
 import React, { createContext, PropsWithChildren, useContext, useState } from 'react';
-import { MatchDTO } from '../DTOs/MatchDTO';
+import { MatchDTO, NewMatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
@@ -51,18 +51,11 @@ export function useMatchUpdated() {
     return useContext(matchUpdatedContext);
 }
 
-// UPDATE TEAMS CONTEXT
-type UpdateTeamsDelegate = (id: string, local: string, visitor: string) => Promise<MatchDTO | errorResponse>;
-const updateTeamsContext = createContext<UpdateTeamsDelegate | null>(null);
-export function useUpdateTeams() {
-    return useContext(updateTeamsContext);
-}
-
-// UPDATE DATE CONTEXT
-type UpdateDateDelegate = (id: string, date: string) => Promise<MatchDTO | errorResponse>;
-const updateDateContext = createContext<UpdateDateDelegate | null>(null);
-export function useUpdateDate() {
-    return useContext(updateDateContext);
+// UPDATE MATCH CONTEXT
+type UpdateMatchDelegate = (id: string, newMatchObj: NewMatchDTO) => Promise<MatchDTO | errorResponse>;
+const updateMatchContext = createContext<UpdateMatchDelegate | null>(null);
+export function useUpdateMatch() {
+    return useContext(updateMatchContext);
 }
 
 // ADD GOALKEEPER CONTEXT
@@ -216,8 +209,8 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         }
     }
 
-    const updateTeams: UpdateTeamsDelegate = async (id: string, local: string, visitor: string) => {
-        const data = await fetch("/api/match/teams", {
+    const updateMatch: UpdateMatchDelegate = async (id: string, newMatchObj: NewMatchDTO) => {
+        const data = await fetch("/api/match", {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
@@ -225,47 +218,24 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
             },
             body: JSON.stringify({
                 match_id: id,
-                local: local,
-                visitor: visitor
+                category_id: newMatchObj.category_id,
+                local: newMatchObj.local,
+                visitor: newMatchObj.visitor,
+                date: newMatchObj.date,
+                match_type: newMatchObj.match_type
             })
         });
         const json_data = await data.json();
+        console.log(json_data)
         if ('id' in json_data) {
+            setMatchUpdated(true)
             setMatchReady(true);
             setError(false);
             setMatch(json_data as MatchDTO)
-            setMatchUpdated(true)
             return json_data as MatchDTO;
         }
         else {
-            setError(true);
-            setMatchReady(true);
-            setMatch(null)
-            return json_data as errorResponse;
-        }
-    }
-
-    const updateDate: UpdateDateDelegate = async (id: string, date: string) => {
-        const data = await fetch("/api/match/date", {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `bearer ${token}`
-            },
-            body: JSON.stringify({
-                match_id: id,
-                date: date
-            })
-        });
-        const json_data = await data.json();
-        if ('id' in json_data) {
-            setMatchReady(true);
-            setError(false);
-            setMatch(json_data as MatchDTO)
-            setMatchUpdated(true)
-            return json_data as MatchDTO;
-        }
-        else {
+            setMatchUpdated(false)
             setError(true);
             setMatchReady(true);
             setMatch(null)
@@ -307,12 +277,8 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
             value: updateScores
         },
         {
-            ctx: updateTeamsContext,
-            value: updateTeams
-        },
-        {
-            ctx: updateDateContext,
-            value: updateDate
+            ctx: updateMatchContext,
+            value: updateMatch
         },
         {
             ctx: matchUpdatedContext,

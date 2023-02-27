@@ -128,7 +128,7 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
 
     useEffect(() => {
         getCategories()
-    }, [loaded])
+    }, [loaded, categoryDeleted])
 
     return (
         <categoriesContext.Provider value={categories}>

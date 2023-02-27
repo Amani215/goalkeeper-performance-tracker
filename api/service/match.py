@@ -73,8 +73,16 @@ def set_teams(match: Match, local: str = None, visitor: str = None) -> Match:
 
 def set_date(match: Match, date: str = None) -> Match:
     '''Set the date of the match'''
-    if (date is not None):
+    if (date is not None and date != ''):
         match.date = datetime.strptime(date, '%d/%m/%Y')
+    db.session.commit()
+    return match
+
+
+def set_match_type(match: Match, match_type: str = None) -> Match:
+    '''Set the type of the match'''
+    if (match_type is not None):
+        match.match_type = match_type
     db.session.commit()
     return match
 

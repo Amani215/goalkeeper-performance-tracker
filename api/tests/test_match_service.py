@@ -90,6 +90,12 @@ def test_set_teams(app, match):
     assert response.visitor == match.visitor
     assert match.id == match_id
 
+    # Set empty teams
+    response = match_service.set_teams(match=match, local='', visitor='')
+    assert response.local == match.local
+    assert response.visitor == match.visitor
+    assert match.id == match_id
+
     # Set local team only
     new_local = random_string.generate(3)
     response = match_service.set_teams(match=match, local=new_local)
@@ -119,6 +125,10 @@ def test_set_date(app, match):
     response = match_service.set_date(match)
     assert response.date == match.date
 
+    # Set empty date
+    response = match_service.set_date(match, date='')
+    assert response.date == match.date
+
     # Set invalid date
     with pytest.raises(Exception):
         date = random_date.generate()
@@ -130,6 +140,28 @@ def test_set_date(app, match):
     new_date = date.strftime('%d/%m/%Y')
     response = match_service.set_date(match, new_date)
     assert response.date.strftime('%d/%m/%Y') == new_date
+
+
+def test_set_match_type(app, match):
+    '''Test set teams of the match'''
+    match_id = match.id
+
+    # Set no match_type
+    response = match_service.set_match_type(match=match)
+    assert response.match_type == match.match_type
+    assert match.id == match_id
+
+    # Set empty match_type
+    response = match_service.set_match_type(match=match, match_type='')
+    assert response.match_type == match.match_type
+    assert match.id == match_id
+
+    # Set valid match_type
+    new_match_type = random_string.generate(3)
+    response = match_service.set_match_type(match=match,
+                                            match_type=new_match_type)
+    assert response.match_type == new_match_type
+    assert match.id == match_id
 
 
 def test_remove_performance(app, match_monitoring):

@@ -32,6 +32,23 @@ function MatchesList({ matches }: PropType) {
             }
         },
         {
+            field: 'category',
+            headerName: 'Category',
+            flex: 2,
+            minWidth: 100,
+            renderCell: (params) => {
+                return (
+                    <Link
+                        component={RouterLink}
+                        to={`/matches/${params.id}`}
+                        underline="none"
+                        color="inherit">
+                        <Typography>{params.row.category.id}</Typography>
+                    </Link>
+                );
+            }
+        },
+        {
             field: 'local',
             headerName: 'Local',
             flex: 2,
@@ -86,7 +103,7 @@ function MatchesList({ matches }: PropType) {
             field: 'actions',
             headerName: 'Actions',
             flex: 1,
-            minWidth: 30,
+            minWidth: 80,
             align: 'center',
             headerAlign: 'center',
             renderCell: (params) => {

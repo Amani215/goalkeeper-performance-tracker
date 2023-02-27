@@ -89,38 +89,24 @@ def get_category(current_user: User):
         return {'error': str(err)}, 400
 
 
-@match_api.route('/match/category', methods=['PUT'])
+@match_api.route('/match', methods=['PUT'])
 @token_required(admin=True)
-def set_category(current_user: User):
+def update_match(current_user: User):
     '''Set the given category as the category of the given match'''
     try:
         if not request.json:
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
 
         match_id = request.json['match_id']
-        category_id = request.json['category_id']
-
-        match: Match = match_service.get_by_id(match_id)
-        category: Category = category_service.get_by_id(category_id)
-        match_service.set_category(match, category)
-        return {}, 201
-    except PermissionError as err:
-        return {'error': str(err)}, 401
-    except Exception as err:
-        return {'error': str(err)}, 400
-
-
-@match_api.route('/match/teams', methods=['PUT'])
-@token_required(admin=True)
-def set_teams(current_user: User):
-    '''Set the given team to the given match'''
-    try:
-        if not request.json:
-            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
-
-        match_id = request.json['match_id']
         match: Match = match_service.get_by_id(match_id)
 
+        # Update category
+        if 'category_id' in request.json:
+            category_id = request.json['category_id']
+            category: Category = category_service.get_by_id(category_id)
+            match_service.set_category(match, category)
+
+        # Update teams
         if 'local' in request.json and 'visitor' in request.json:
             match = match_service.set_teams(match,
                                             local=request.json['local'],
@@ -131,32 +117,89 @@ def set_teams(current_user: User):
             match = match_service.set_teams(match,
                                             visitor=request.json['visitor'])
 
-        return match.serialize, 200
-    except PermissionError as err:
-        return {'error': str(err)}, 401
-    except Exception as err:
-        return {'error': str(err)}, 400
-
-
-@match_api.route('/match/date', methods=['PUT'])
-@token_required(admin=True)
-def set_date(current_user: User):
-    '''Set the given date to the given match'''
-    try:
-        if not request.json:
-            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
-
-        match_id = request.json['match_id']
-        match: Match = match_service.get_by_id(match_id)
-
+        # Update date
         if 'date' in request.json:
             match = match_service.set_date(match, date=request.json['date'])
 
-        return match.serialize, 200
+        # Update type
+        if 'match_type' in request.json:
+            match = match_service.set_match_type(
+                match, match_type=request.json['match_type'])
+
+        return {}, 200
     except PermissionError as err:
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+# @match_api.route('/match/teams', methods=['PUT'])
+# @token_required(admin=True)
+# def set_teams(current_user: User):
+#     '''Set the given team to the given match'''
+#     try:
+#         if not request.json:
+#             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+#         match_id = request.json['match_id']
+#         match: Match = match_service.get_by_id(match_id)
+
+#         if 'local' in request.json and 'visitor' in request.json:
+#             match = match_service.set_teams(match,
+#                                             local=request.json['local'],
+#                                             visitor=request.json['visitor'])
+#         elif 'local' in request.json:
+#             match = match_service.set_teams(match, local=request.json['local'])
+#         elif 'visitor' in request.json:
+#             match = match_service.set_teams(match,
+#                                             visitor=request.json['visitor'])
+
+#         return match.serialize, 200
+#     except PermissionError as err:
+#         return {'error': str(err)}, 401
+#     except Exception as err:
+#         return {'error': str(err)}, 400
+
+# @match_api.route('/match/date', methods=['PUT'])
+# @token_required(admin=True)
+# def set_date(current_user: User):
+#     '''Set the given date to the given match'''
+#     try:
+#         if not request.json:
+#             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+#         match_id = request.json['match_id']
+#         match: Match = match_service.get_by_id(match_id)
+
+#         if 'date' in request.json:
+#             match = match_service.set_date(match, date=request.json['date'])
+
+#         return match.serialize, 200
+#     except PermissionError as err:
+#         return {'error': str(err)}, 401
+#     except Exception as err:
+#         return {'error': str(err)}, 400
+
+# @match_api.route('/match/match_type', methods=['PUT'])
+# @token_required(admin=True)
+# def set_match_type(current_user: User):
+#     '''Set the given type to the given match'''
+#     try:
+#         if not request.json:
+#             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+#         match_id = request.json['match_id']
+#         match: Match = match_service.get_by_id(match_id)
+
+#         if 'match_type' in request.json:
+#             match = match_service.set_match_type(
+#                 match, match_type=request.json['match_type'])
+
+#         return match.serialize, 200
+#     except PermissionError as err:
+#         return {'error': str(err)}, 401
+#     except Exception as err:
+#         return {'error': str(err)}, 400
 
 
 @match_api.route('/match/score', methods=['PUT'])

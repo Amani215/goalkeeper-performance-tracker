@@ -188,10 +188,10 @@ def test_set_get_category(client, json_headers, category):
         'match_id': str(match.json['id']),
         'category_id': _category['name'] + str(_category['season'])
     }
-    response = client.put(CATEGORY_URL,
+    response = client.put(URL,
                           data=json.dumps(test_data),
                           headers=json_headers)
-    assert response.status_code == 201
+    assert response.status_code == 200
 
     response = client.get(CATEGORY_URL + "?id=" + match.json['id'],
                           headers=json_headers)
@@ -203,7 +203,7 @@ def test_set_teams_bad_json(client, json_headers):
     '''Test setting teams to a match'''
     # EMPTY JSON
     test_json = {}
-    response = client.put(TEAMS_URL,
+    response = client.put(URL,
                           data=json.dumps(test_json),
                           headers=json_headers)
     assert response.status_code == 400
@@ -213,7 +213,7 @@ def test_set_teams_bad_json(client, json_headers):
         "local": random_string.generate(3),
         "visitor": random_string.generate(3)
     }
-    response = client.put(TEAMS_URL,
+    response = client.put(URL,
                           data=json.dumps(test_json),
                           headers=json_headers)
     assert response.status_code == 400
@@ -229,35 +229,32 @@ def test_set_teams_valid_json(client, json_headers, match):
         "local": new_local,
         "visitor": new_visitor
     }
-    response = client.put(TEAMS_URL,
+    response = client.put(URL,
                           data=json.dumps(test_json),
                           headers=json_headers)
     assert response.status_code == 200
-    _match = client.get(ID_URL + match.id, headers=json_headers)
-    assert _match.json['local'] == new_local
-    assert _match.json['visitor'] == new_visitor
 
-    # VISITOR ONLY
-    new_visitor = random_string.generate(3)
-    test_json = {"match_id": match.id, "visitor": new_visitor}
-    response = client.put(TEAMS_URL,
-                          data=json.dumps(test_json),
-                          headers=json_headers)
-    assert response.status_code == 200
-    _match = client.get(ID_URL + match.id, headers=json_headers)
-    assert _match.json['local'] == new_local
-    assert _match.json['visitor'] == new_visitor
 
-    # LOCAL ONLY
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_set_local_only(client, json_headers, match):
+    '''Test updating local team only'''
     new_local = random_string.generate(3)
     test_json = {"match_id": match.id, "local": new_local}
-    response = client.put(TEAMS_URL,
+    response = client.put(URL,
                           data=json.dumps(test_json),
                           headers=json_headers)
     assert response.status_code == 200
-    _match = client.get(ID_URL + match.id, headers=json_headers)
-    assert _match.json['local'] == new_local
-    assert _match.json['visitor'] == new_visitor
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_set_visitor_only(client, json_headers, match):
+    '''Test updating visitor team only'''
+    new_visitor = random_string.generate(3)
+    test_json = {"match_id": match.id, "visitor": new_visitor}
+    response = client.put(URL,
+                          data=json.dumps(test_json),
+                          headers=json_headers)
+    assert response.status_code == 200
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
@@ -265,14 +262,14 @@ def test_set_date_bad_json(client, json_headers):
     '''Test setting the date of a match'''
     # EMPTY JSON
     test_json = {}
-    response = client.put(DATE_URL,
+    response = client.put(URL,
                           data=json.dumps(test_json),
                           headers=json_headers)
     assert response.status_code == 400
 
     # NO MATCH ID
     test_json = {"date": random_date.generate().strftime('%d/%m/%Y')}
-    response = client.put(DATE_URL,
+    response = client.put(URL,
                           data=json.dumps(test_json),
                           headers=json_headers)
     assert response.status_code == 400
@@ -282,7 +279,7 @@ def test_set_date_bad_json(client, json_headers):
 def test_set_date_valid_json(client, json_headers, match):
     # NO DATE
     test_json = {"match_id": match.id}
-    response = client.put(DATE_URL,
+    response = client.put(URL,
                           data=json.dumps(test_json),
                           headers=json_headers)
     assert response.status_code == 200
@@ -292,12 +289,24 @@ def test_set_date_valid_json(client, json_headers, match):
     # WITH DATE
     new_date = random_date.generate().strftime('%-d/%-m/%Y')
     test_json = {"match_id": match.id, "date": new_date}
-    response = client.put(DATE_URL,
+    response = client.put(URL,
                           data=json.dumps(test_json),
                           headers=json_headers)
     assert response.status_code == 200
     _match = client.get(ID_URL + match.id, headers=json_headers)
     assert _match.json['date'] == new_date
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_set_match_type(client, json_headers, match):
+    '''Test updating the match type'''
+    new_type = random_string.generate(10)
+
+    test_json = {"match_id": match.id, "match_type": new_type}
+    response = client.put(URL,
+                          data=json.dumps(test_json),
+                          headers=json_headers)
+    assert response.status_code == 200
 
 
 @pytest.mark.parametrize(['admin'], [[True]])

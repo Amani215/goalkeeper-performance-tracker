@@ -82,7 +82,7 @@ def set_param(current_user: User):
             'non_successful_ballon_profondeur', 'successful_hand_relaunch',
             'non_successful_hand_relaunch', 'successful_foot_relaunch',
             'non_successful_foot_relaunch', 'balls_touched', 'yellow_cards',
-            'red_cards', 'grade', 'assets', 'flaws', 'comment'
+            'red_cards', 'grade', 'comment'
         ]
         for param in possible_params:
             if param in request.json:

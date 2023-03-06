@@ -22,8 +22,6 @@ export interface MatchMonitoringDTO {
   yellow_cards: number;
   red_cards: number;
   grade: number;
-  assets: string;
-  flaws: string;
   comment: string;
 }
 
@@ -37,7 +35,5 @@ export interface UpdateMatchMonitoringDTO {
   yellow_cards: number;
   red_cards: number;
   grade: number;
-  assets: string;
-  flaws: string;
   comment: string;
 }

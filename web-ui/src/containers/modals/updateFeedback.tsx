@@ -43,8 +43,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
         penalties_non_saved,
         yellow_cards,
         red_cards,
-        grade,
-        assets, flaws, comment }: FormikValues): Promise<void> => {
+        grade, comment }: FormikValues): Promise<void> => {
         const newMatchMonitoring: UpdateMatchMonitoringDTO = {
             id: matchPerformance ? matchPerformance.id : "",
             time_played: time_played,
@@ -55,8 +54,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
             yellow_cards: yellow_cards,
             red_cards: red_cards,
             grade: grade,
-            assets: assets,
-            flaws: flaws,
             comment: comment
         }
         if (updateMatchPerformance) {
@@ -75,8 +72,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
             yellow_cards: 0,
             red_cards: 0,
             grade: 0,
-            assets: "",
-            flaws: "",
             comment: ""
         },
         onSubmit: handleSubmit
@@ -93,8 +88,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                 yellow_cards: matchPerformance.yellow_cards,
                 red_cards: matchPerformance.red_cards,
                 grade: matchPerformance.grade,
-                assets: matchPerformance.assets,
-                flaws: matchPerformance.flaws,
                 comment: matchPerformance.comment
             }
             );
@@ -234,31 +227,6 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                             />
                         </Grid>
                     </Grid>
-
-                    <TextField
-                        margin="normal"
-                        size="small"
-                        fullWidth
-                        id="assets"
-                        label="Assets"
-                        name="assets"
-                        autoComplete="assets"
-                        value={formik.values.assets}
-                        onChange={formik.handleChange}
-                        autoFocus
-                    />
-                    <TextField
-                        margin="normal"
-                        size="small"
-                        fullWidth
-                        id="flaws"
-                        label="Flaws"
-                        name="flaws"
-                        autoComplete="flaws"
-                        value={formik.values.flaws}
-                        onChange={formik.handleChange}
-                        autoFocus
-                    />
                     <TextField
                         margin="normal"
                         size="small"

@@ -47,8 +47,6 @@ class match_monitoring(db.Model):
     yellow_cards = Column(Integer, unique=False, default=0)
     red_cards = Column(Integer, unique=False, default=0)
     grade = Column(Integer, unique=False, default=0)
-    assets = Column(String(128), unique=False, nullable=True)
-    flaws = Column(String(128), unique=False, nullable=True)
     comment = Column(String(128), unique=False, nullable=True)
 
     def __init__(self, goalkeeper: Goalkeeper, match: Match):
@@ -82,7 +80,5 @@ class match_monitoring(db.Model):
             'yellow_cards': self.yellow_cards,
             'red_cards': self.red_cards,
             'grade': self.grade,
-            'assets': self.assets,
-            'flaws': self.flaws,
             'comment': self.comment
         }

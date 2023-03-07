@@ -64,13 +64,19 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
                     variant='h5'
                     sx={{ fontWeight: "bold", textDecoration: 'none', color: "black" }}
                     align='center'>
-                    {matchPerformance?.match?.match_type} {matchPerformance?.match?.local}-{matchPerformance?.match?.visitor} {matchPerformance?.match?.date}
+                    {matchPerformance?.match?.match_type} {matchPerformance?.match?.date}
 
                 </Typography>
                 <Typography
                     variant='h6'
                     align='center'>
                     {matchPerformance?.match?.category.name} {matchPerformance?.match?.category.season}
+                </Typography>
+                <Typography
+                    variant='h6'
+                    align='center'
+                    sx={{ fontWeight: "bold", textDecoration: 'none', color: "black" }}>
+                    {matchPerformance?.match?.local} {matchPerformance?.match?.score_local} -  {matchPerformance?.match?.score_visitor} {matchPerformance?.match?.visitor}
                 </Typography>
             </Box>
 
@@ -106,7 +112,7 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
                     </Box>
                     <Box
                         display="flex"
-                        flexDirection="row"
+                        flexDirection="column"
                         justifyContent="center"
                         alignItems="center">
                         {categories.length > 0 ?

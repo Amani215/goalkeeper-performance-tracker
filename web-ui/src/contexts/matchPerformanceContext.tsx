@@ -83,11 +83,18 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
                 goals_conceded: Number(newMatchMonitoring.goals_conceded),
                 penalties_saved: Number(newMatchMonitoring.penalties_saved),
                 penalties_non_saved: Number(newMatchMonitoring.penalties_non_saved),
+                balls_touched: Number(newMatchMonitoring.balls_touched),
+                non_successful_ballon_profondeur: Number(newMatchMonitoring.non_successful_ballon_profondeur),
+                non_successful_deliveries: Number(newMatchMonitoring.non_successful_deliveries),
+                non_successful_foot_relaunch: Number(newMatchMonitoring.non_successful_foot_relaunch),
+                non_successful_hand_relaunch: Number(newMatchMonitoring.non_successful_hand_relaunch),
+                successful_ballon_profondeur: Number(newMatchMonitoring.successful_ballon_profondeur),
+                successful_deliveries: Number(newMatchMonitoring.successful_deliveries),
+                successful_foot_relaunch: Number(newMatchMonitoring.successful_foot_relaunch),
+                successful_hand_relaunch: Number(newMatchMonitoring.successful_hand_relaunch),
                 yellow_cards: Number(newMatchMonitoring.yellow_cards),
                 red_cards: Number(newMatchMonitoring.red_cards),
                 grade: Number(newMatchMonitoring.grade),
-                assets: newMatchMonitoring.assets,
-                flaws: newMatchMonitoring.flaws,
                 comment: newMatchMonitoring.comment
             })
         });

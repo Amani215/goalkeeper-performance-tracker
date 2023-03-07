@@ -32,6 +32,15 @@ export interface UpdateMatchMonitoringDTO {
   goals_conceded: number;
   penalties_saved: number;
   penalties_non_saved: number;
+  balls_touched: number;
+  non_successful_ballon_profondeur: number;
+  non_successful_deliveries: number;
+  non_successful_foot_relaunch: number;
+  non_successful_hand_relaunch: number;
+  successful_ballon_profondeur: number;
+  successful_deliveries: number;
+  successful_foot_relaunch: number;
+  successful_hand_relaunch: number;
   yellow_cards: number;
   red_cards: number;
   grade: number;

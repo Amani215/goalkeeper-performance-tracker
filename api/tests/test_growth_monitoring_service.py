@@ -1,9 +1,10 @@
 '''Testing the match monitoring services'''
 import pytest
 import random
+from sqlalchemy.exc import SQLAlchemyError
 import service.growth_monitoring as growth_monitoring_service
 import service.goalkeeper as goalkeeper_service
-from helper import random_date
+from helper import random_date, random_string
 
 
 def test_add_growth_monitoring(app, goalkeeper):
@@ -31,6 +32,19 @@ def test_get_growth_monitorings(app):
 
     growth_monitorings = growth_monitoring_service.get_growth_monitorings()
     assert len([i.serialize for i in growth_monitorings]) == 0
+
+
+def test_get_by_id(app, growth):
+    '''Test get growth monitoring object by ID'''
+    growth_monitoring_obj = growth_monitoring_service.get_by_id(growth.id)
+    assert growth_monitoring_obj.id == growth.id
+
+
+def test_get_by_goalkeeper_id(app, growth):
+    '''Test get growth monitoring object by goalkeeper ID'''
+    growth_monitoring_obj = growth_monitoring_service.get_by_goalkeeper_id(
+        growth.goalkeeper_id)
+    assert len(growth_monitoring_obj) == 1
 
 
 def test_update_params(app, goalkeeper):
@@ -66,3 +80,13 @@ def test_update_params(app, goalkeeper):
     response = growth_monitoring_service.update_param(growth_monitoring_obj.id,
                                                       "annual_growth", rand)
     assert response.annual_growth == rand
+
+
+def test_delete(app, growth):
+    '''Test deleting a growth object'''
+    growth_id = growth.id
+
+    growth_monitoring_service.delete(growth_id)
+
+    assert growth_monitoring_service.get_by_id(
+        growth_id)["error"] == "No row was found when one was required"

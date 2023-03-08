@@ -122,6 +122,19 @@ def match(category):
 
 
 @pytest.fixture()
+def growth(goalkeeper):
+    ''' Create a mock growth monitoring object '''
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    date = random_date.generate()
+    growth_credentials = {
+        'date': date.strftime('%d/%m/%Y'),
+        'goalkeeper_id': str(_goalkeeper.id)
+    }
+    return growth_monitoring_service.add_growth_monitoring(
+        growth_credentials['goalkeeper_id'], growth_credentials['date'])
+
+
+@pytest.fixture()
 def match_monitoring(goalkeeper, match):
     # Create goalkeeper
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])

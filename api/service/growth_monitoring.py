@@ -35,6 +35,16 @@ def get_by_id(id: str):
         return {'error': str(err)}
 
 
+def get_by_goalkeeper_id(goalkeeper_id: str):
+    '''Get growth monitoring by goalkeepr ID'''
+    try:
+        growth_monitoring_obj: growth_monitoring = growth_monitoring.query.filter_by(
+            goalkeeper_id=goalkeeper_id).all()
+        return growth_monitoring_obj
+    except SQLAlchemyError as err:
+        return {'error': str(err)}
+
+
 def update_param(grwoth_monitoring_id: str, param_name: str, param_value: int):
     '''Update params'''
     growth_monitoring_obj = get_by_id(grwoth_monitoring_id)
@@ -43,3 +53,11 @@ def update_param(grwoth_monitoring_id: str, param_name: str, param_value: int):
 
     db.session.commit()
     return growth_monitoring_obj
+
+
+def delete(id: str):
+    '''Deletes the given growth object from the database'''
+    growth_monitoring_obj = get_by_id(id)
+
+    db.session.delete(growth_monitoring_obj)
+    db.session.commit()

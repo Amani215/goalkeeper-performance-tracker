@@ -337,18 +337,14 @@ function GoalkeeperDetails() {
                                     justifyContent="center"
                                     alignItems="center">
                                     <Box
-                                        display="flex"
-                                        flexDirection="column"
-                                        justifyContent="center"
-                                        alignItems="center"
                                         component="img"
                                         sx={{
-                                            maxHeight: { xs: "100%", sm: "100%", md: "24rem" },
-                                            maxWidth: { xs: "100%", sm: 350, md: "24rem" },
+                                            height: "16rem",
+                                            width: "16rem",
                                         }}
-                                        alt="Example Goalkeeper"
-                                        src={goalkeeper?.picture ? goalkeeper.picture : `${process.env.PUBLIC_URL}/assets/placeholder.png`}
-                                    /></Box>
+                                        src={goalkeeper ? goalkeeper?.picture : `${process.env.PUBLIC_URL}/assets/placeholder.png`}
+                                    />
+                                </Box>
                                 <Box
                                     display="flex"
                                     flexDirection="column"

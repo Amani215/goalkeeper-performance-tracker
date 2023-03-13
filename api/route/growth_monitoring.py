@@ -9,6 +9,7 @@ from middleware.token_required import token_required
 growth_monitoring_api = Blueprint('growth_monitoring_api', __name__)
 
 NO_DATA_PROVIDED_MESSAGE = 'No data was provided'
+NOT_EDITABLE_MESSAGE = 'User cannot edit this goalkeeper.'
 
 
 @growth_monitoring_api.route('/growth_monitoring', methods=['POST'])
@@ -28,7 +29,7 @@ def add_growth_monitoring(current_user: User):
         goalkeeper_id = request.json['goalkeeper_id']
         goalkeeper = goalkeeper_service.get_by_id(goalkeeper_id)
         if (goalkeeper_service.editable(goalkeeper, current_user) == False):
-            raise PermissionError('User cannot edit this goalkeeper.')
+            raise PermissionError(NOT_EDITABLE_MESSAGE)
 
         date = request.json['date']
         response = growth_monitoring_service.add_growth_monitoring(
@@ -47,6 +48,7 @@ def get_growth_monitorings(current_user: User):
     '''Get all requested growth monitoring objects
 
     If id is provided then then only the growth monitoring object with that id is returned
+    If gid is provided then then only the growth monitoring objects with that goalkeeper id is returned    
     '''
     try:
         args = request.args
@@ -54,6 +56,10 @@ def get_growth_monitorings(current_user: User):
         if args.get('id') is not None:
             growth_monitoring_obj = growth_monitoring_service.get_by_id(
                 args.get("id"))
+        elif args.get('gid') is not None:
+            growth_monitorings = growth_monitoring_service.get_by_goalkeeper_id(
+                args.get("gid"))
+            return jsonify([i.serialize for i in growth_monitorings])
         else:
             growth_monitorings = growth_monitoring_service.get_growth_monitorings(
             )
@@ -82,7 +88,7 @@ def set_param(current_user: User):
 
         goalkeeper = growth_monitoring_service.get_by_id(gm_id).goalkeeper
         if (goalkeeper_service.editable(goalkeeper, current_user) == False):
-            raise PermissionError('User cannot edit this goalkeeper.')
+            raise PermissionError(NOT_EDITABLE_MESSAGE)
 
         possible_params = [
             'weight', 'height', 'torso_height', 'thoracic_perimeter',
@@ -94,6 +100,25 @@ def set_param(current_user: User):
                                                        request.json[param])
 
         return {}, 201
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
+@growth_monitoring_api.route('/growth_monitoring', methods=['DELETE'])
+@token_required(admin=False)
+def delete(current_user: User):
+    '''
+    Delete growth monitoring object by ID
+    
+    If ID is not provided an error is raised
+    '''
+    try:
+        args = request.args
+
+        growth_monitoring_service.delete(args.get('id'))
+        return {}, 204
     except PermissionError as err:
         return {'error': str(err)}, 401
     except Exception as err:

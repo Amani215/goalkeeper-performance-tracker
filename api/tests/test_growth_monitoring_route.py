@@ -57,6 +57,34 @@ def test_get_growth_monitorings(client, json_headers):
     assert response.status_code == 400
     assert 'error' in response.json
 
+    ### GET BY GOALKEEPER ID
+    test_json = {
+        'name': random_string.generate(12),
+        'day': date.day,
+        'month': date.month,
+        'year': date.year
+    }
+    goalkeeper_2 = client.post('/goalkeeper',
+                               data=json.dumps(test_json),
+                               headers=json_headers)
+
+    date = random_date.generate()
+    test_json = {
+        'goalkeeper_id': goalkeeper_2.json['id'],
+        'date': date.strftime('%d/%m/%Y')
+    }
+    client.post(URL, data=json.dumps(test_json), headers=json_headers)
+
+    response = client.get('/growth_monitoring?gid=' + goalkeeper_2.json['id'],
+                          headers=json_headers)
+    assert response.status_code == 200
+    assert sum(1 for _ in range(len(response.json))) == 1
+
+    response = client.get('/growth_monitoring?gid=' + str(uuid.uuid4),
+                          headers=json_headers)
+    assert response.status_code == 200
+    assert sum(1 for _ in range(len(response.json))) == 0
+
 
 @pytest.mark.parametrize(['admin'], [[False]])
 def test_add_growth_monitoring(client, authenticated_user, goalkeeper,
@@ -152,3 +180,15 @@ def test_set_param_diff_category(client, json_headers, category,
                           headers=json_headers)
     assert response.status_code == 401
     assert 'User cannot edit this goalkeeper.' in response.json['error']
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_delete(client, json_headers, growth_monitoring):
+    '''Test deleting a growth monitoring object'''
+    gm_id = growth_monitoring.id
+
+    response = client.delete(ID_URL + gm_id, headers=json_headers)
+    assert response.status_code == 204
+
+    response = client.get(ID_URL + gm_id, headers=json_headers)
+    assert "error" in response.json

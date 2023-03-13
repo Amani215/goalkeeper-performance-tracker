@@ -14,6 +14,7 @@ import service.user as user_service
 URL = '/training_monitoring'
 ID_URL = '/training_monitoring?id='
 FORM_URL = '/training_monitoring/form?id='
+IMAGE_URL = 'tests/assets/image.jpeg'
 
 
 def test_no_token(client):
@@ -176,8 +177,7 @@ def test_add_form_diff_category(client, authenticated_user,
     url = FORM_URL + str(training_monitoring.id)
 
     test_data = {
-        'training_form':
-        (io.BytesIO(b'test_picture'), 'tests/assets/image.jpeg'),
+        'training_form': (io.BytesIO(b'test_picture'), IMAGE_URL),
     }
     response = client.put(url, data=test_data, headers=headers)
 
@@ -203,8 +203,7 @@ def test_add_form_session_category(client, authenticated_user,
         training_monitoring.session.training_session_category)
 
     test_data = {
-        'training_form':
-        (io.BytesIO(b'test_picture'), 'tests/assets/image.jpeg'),
+        'training_form': (io.BytesIO(b'test_picture'), IMAGE_URL),
     }
     response = client.put(url, data=test_data, headers=headers)
 
@@ -224,8 +223,7 @@ def test_add_form_goalkeeper_category(client, authenticated_user,
                               training_monitoring.goalkeeper.categories[0])
 
     test_data = {
-        'training_form':
-        (io.BytesIO(b'test_picture'), 'tests/assets/image.jpeg'),
+        'training_form': (io.BytesIO(b'test_picture'), IMAGE_URL),
     }
     response = client.put(url, data=test_data, headers=headers)
 

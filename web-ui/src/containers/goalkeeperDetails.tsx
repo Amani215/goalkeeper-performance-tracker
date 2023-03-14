@@ -1,4 +1,4 @@
-import { Chip, Divider, IconButton, Link, List, ListItem, ListItemText, Paper, Typography } from '@mui/material'
+import { Chip, Link, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid'
 import dayjs from 'dayjs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
-import { useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useGoalkeeperTrainings, useGoalkeeperTrainingsReady, useUpdatePicture } from '../contexts/goalkeeperContext'
+import { useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperGrowthContext, useGoalkeeperGrowthReady, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useGoalkeeperTrainings, useGoalkeeperTrainingsReady, useUpdatePicture } from '../contexts/goalkeeperContext'
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO'
 import { IoFootball } from "react-icons/io5"
 import { CategoryDTO } from '../DTOs'
@@ -14,7 +14,88 @@ import { DataGrid } from '@mui/x-data-grid/DataGrid'
 import { GridColDef } from '@mui/x-data-grid'
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO'
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
+import { GrowthDTO } from '../DTOs/GrowthDTO'
 
+const growthColumns: GridColDef[] = [
+    {
+        field: 'date',
+        headerName: 'Date',
+        headerAlign: 'center',
+        flex: 1,
+        minWidth: 60,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Typography>{params.row.date}</Typography>
+            );
+        }
+    },
+    {
+        field: 'height',
+        headerName: 'Height',
+        headerAlign: 'center',
+        flex: 1,
+        minWidth: 60,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Typography>{params.row.height} cm</Typography>
+            );
+        }
+    },
+    {
+        field: 'weight',
+        headerName: 'Weight',
+        headerAlign: 'center',
+        flex: 1,
+        minWidth: 60,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Typography>{params.row.weight} kg</Typography>
+            );
+        }
+    },
+    {
+        field: 'torso_height',
+        headerName: 'Torso Height',
+        headerAlign: 'center',
+        flex: 1,
+        minWidth: 60,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Typography>{params.row.torso_height} cm</Typography>
+            );
+        }
+    },
+    {
+        field: 'thoracic_perimeter',
+        headerName: 'Thoracic Perimeter',
+        headerAlign: 'center',
+        flex: 1,
+        minWidth: 60,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Typography>{params.row.thoracic_perimeter} cm</Typography>
+            );
+        }
+    },
+    {
+        field: 'annual_growth',
+        headerName: 'Annual Growth',
+        headerAlign: 'center',
+        flex: 1,
+        minWidth: 60,
+        align: "center",
+        renderCell: (params) => {
+            return (
+                <Typography>{params.row.annual_growth} cm</Typography>
+            );
+        }
+    },
+]
 
 const matchColumns: GridColDef[] = [
     {
@@ -152,6 +233,10 @@ function GoalkeeperDetails() {
     const trainings = useGoalkeeperTrainings()
     const trainingsReady = useGoalkeeperTrainingsReady()
 
+    const [growthRows, setGrowthRows] = useState<GrowthDTO[]>([] as GrowthDTO[])
+    const growth = useGoalkeeperGrowthContext()
+    const growthReady = useGoalkeeperGrowthReady()
+
     const [birthday, setBirthday] = useState<string>("")
 
     useEffect(() => { setLoaded(true) }, [])
@@ -201,6 +286,15 @@ function GoalkeeperDetails() {
             })
         }
     }, [trainingsReady])
+
+    useEffect(() => {
+        if (growth) {
+            growth(id ? id : "").then((data) => {
+                if (growthReady)
+                    setGrowthRows(data as GrowthDTO[])
+            })
+        }
+    }, [growthReady])
 
     const uploadPicture = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {
@@ -372,6 +466,18 @@ function GoalkeeperDetails() {
                         </Grid>
                     </Grid>
 
+                    {/* GROWTH */}
+                    <Typography fontWeight="bold" mt={2} mb={1}>Growth</Typography>
+                    {growthRows.length > 0 ?
+                        < DataGrid
+                            rows={growthRows || []}
+                            columns={growthColumns}
+                            pageSize={3}
+                            rowsPerPageOptions={[3]}
+                        /> : <></>
+                    }
+
+                    {/* MATCHES */}
                     <Typography fontWeight="bold" mt={2} mb={1}>Match performances</Typography>
                     {matchRows.length > 0 ?
                         < DataGrid
@@ -382,8 +488,9 @@ function GoalkeeperDetails() {
                         /> : <></>
                     }
 
+                    {/* TRAININGS */}
                     <Typography fontWeight="bold" mt={2} mb={1}>Training performances</Typography>
-                    {matchRows.length > 0 ?
+                    {trainingRows.length > 0 ?
                         < DataGrid
                             rows={trainingRows || []}
                             columns={trainingColumns}

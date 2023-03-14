@@ -5,6 +5,7 @@ import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
+import { GrowthDTO } from '../DTOs/GrowthDTO';
 
 // GET GOALKEEPER CONTEXTS
 type GoalkeeperDelegate = (id: string) => Promise<GoalkeeperDTO | errorResponse>;
@@ -59,6 +60,18 @@ export function useGoalkeeperTrainingsReady() {
     return useContext(goalkeeperTrainingsReadyContext);
 }
 
+// GET GROWTH MONITORING OBJECTS CONTEXTS
+type GoalkeeperGrowthDelegate = (id: string) => Promise<GrowthDTO[] | []>;
+const goalkeeperGrowthContext = createContext<GoalkeeperGrowthDelegate | null>(null);
+export function useGoalkeeperGrowthContext() {
+    return useContext(goalkeeperGrowthContext);
+}
+
+const goalkeeperGrowthReadyContext = createContext<boolean>(false);
+export function useGoalkeeperGrowthReady() {
+    return useContext(goalkeeperGrowthReadyContext);
+}
+
 // PROFILE PIC CONTEXT
 type PictureDelegate = (id: string, formdata: FormData) => Promise<string | errorResponse>;
 const updatePictureContext = createContext<PictureDelegate | null>(null);
@@ -74,6 +87,8 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
     const [goalkeeperCategoriesReady, setGoalkeeperCategoriesReady] = useState<boolean>(false)
     const [goalkeeperMatchesReady, setGoalkeeperMatchesReady] = useState<boolean>(false)
     const [goalkeeperTrainingsReady, setGoalkeeperTrainingsReady] = useState<boolean>(false)
+    const [goalkeeperGrowthReady, setGoalkeeperGrowthReady] = useState<boolean>(false)
+
 
     const auth = useAuth()
     const token = auth?.token
@@ -160,6 +175,27 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
         }
     }
 
+    const growth: GoalkeeperGrowthDelegate = async (id: string) => {
+        const data = await fetch("/api/growth_monitoring?gid=" + id, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        });
+        const json_data = await data.json();
+        if (data.status == 200) {
+            setGoalkeeperGrowthReady(true);
+            setError(false);
+            return json_data as GrowthDTO[];
+        }
+        else {
+            setError(true);
+            setGoalkeeperGrowthReady(true);
+            return [];
+        }
+    }
+
     const picture: PictureDelegate = (id: string, formdata: FormData) => {
         return fetch("/api/goalkeeper/picture?id=" + id, {
             method: "PUT",
@@ -182,9 +218,13 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
                                 <goalkeeperMatchesReadyContext.Provider value={goalkeeperMatchesReady}>
                                     <goalkeeperTrainingsContext.Provider value={trainings}>
                                         <goalkeeperTrainingsReadyContext.Provider value={goalkeeperTrainingsReady}>
-                                            <updatePictureContext.Provider value={picture}>
-                                                {props.children}
-                                            </updatePictureContext.Provider>
+                                            <goalkeeperGrowthContext.Provider value={growth}>
+                                                <goalkeeperGrowthReadyContext.Provider value={goalkeeperGrowthReady}>
+                                                    <updatePictureContext.Provider value={picture}>
+                                                        {props.children}
+                                                    </updatePictureContext.Provider>
+                                                </goalkeeperGrowthReadyContext.Provider>
+                                            </goalkeeperGrowthContext.Provider>
                                         </goalkeeperTrainingsReadyContext.Provider>
                                     </goalkeeperTrainingsContext.Provider>
                                 </goalkeeperMatchesReadyContext.Provider>

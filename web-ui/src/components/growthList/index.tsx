@@ -5,12 +5,14 @@ import { useState } from 'react';
 import { GrowthDTO } from '../../DTOs/GrowthDTO';
 import UpdateGrowth from '../../containers/modals/updateGrowth';
 import { useDeleteGrowth, useDeleteGrowthError } from '../../contexts/growthContext';
+import NewGrowth from '../../containers/modals/newGrowth';
 
 type PropType = {
+    goalkeeperID: string,
     growthList: GrowthDTO[]
 }
 
-function GrowthList({ growthList }: PropType) {
+function GrowthList({ goalkeeperID, growthList }: PropType) {
     // Columns
     const columns: GridColDef[] = [
         {
@@ -149,8 +151,29 @@ function GrowthList({ growthList }: PropType) {
         setUpdateModalIsOpen(false)
     }
 
+    // Add Modal
+    const [addModalIsOpen, setAddModalIsOpen] = useState<boolean>(false)
+
+    const handleOpenAddModal = () => setAddModalIsOpen(true)
+    const handleCloseAddModal = () => setAddModalIsOpen(false)
+
     return (
         <>
+            <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                mt={3}
+                mb={1}>
+                <Typography fontWeight="bold" mt={2} mb={1}>Growth</Typography>
+
+                <Button
+                    variant="contained"
+                    onClick={() => { handleOpenAddModal() }}
+                >Add
+                </Button>
+            </Box>
+
             {growthList.length > 0 ?
                 <div style={{ display: 'flex' }}>
                     <div style={{ height: 400, width: '100%', flexGrow: 1 }}>
@@ -217,6 +240,12 @@ function GrowthList({ growthList }: PropType) {
                 modalIsOpen: updateModalIsOpen,
                 setModalIsOpen: handleCloseUpdateModal
             }} />
+
+            <NewGrowth
+                goalkeeperID={goalkeeperID} modalProp={{
+                    modalIsOpen: addModalIsOpen,
+                    setModalIsOpen: handleCloseAddModal
+                }} />
         </>
 
 

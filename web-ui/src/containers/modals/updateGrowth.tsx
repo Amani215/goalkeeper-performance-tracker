@@ -10,6 +10,7 @@ import { style } from './style';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { GrowthDTO } from '../../DTOs/GrowthDTO';
 import { useUpdateGrowth } from '../../contexts/growthContext';
+import growthValidationSchema from '../../schemas/growthValidation';
 
 type PropType = {
     growth: GrowthDTO | null,
@@ -63,7 +64,8 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
             torsoHeight: torsoHeight,
             thoracicPerimeter: thoracicPerimeter
         },
-        onSubmit: handleSubmit
+        onSubmit: handleSubmit,
+        validationSchema: growthValidationSchema
     })
 
     useEffect(() => {
@@ -98,6 +100,81 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
                             />
                         </Stack>
                     </LocalizationProvider>
+
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="annualGrowth"
+                        label="Annual Growth"
+                        name="annualGrowth"
+                        autoComplete="annualGrowth"
+                        value={formik.values.annualGrowth}
+                        onChange={formik.handleChange}
+                        autoFocus
+                        error={formik.touched.annualGrowth && Boolean(formik.errors.annualGrowth)}
+                        helperText={formik.touched.annualGrowth && formik.errors.annualGrowth}
+                    />
+
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="height"
+                        label="Height"
+                        name="height"
+                        autoComplete="height"
+                        value={formik.values.height}
+                        onChange={formik.handleChange}
+                        autoFocus
+                        error={formik.touched.height && Boolean(formik.errors.height)}
+                        helperText={formik.touched.height && formik.errors.height}
+                    />
+
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="weight"
+                        label="Weight"
+                        name="weight"
+                        autoComplete="weight"
+                        value={formik.values.weight}
+                        onChange={formik.handleChange}
+                        autoFocus
+                        error={formik.touched.weight && Boolean(formik.errors.weight)}
+                        helperText={formik.touched.weight && formik.errors.weight}
+                    />
+
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="torsoHeight"
+                        label="TorsoHeight"
+                        name="torsoHeight"
+                        autoComplete="torsoHeight"
+                        value={formik.values.torsoHeight}
+                        onChange={formik.handleChange}
+                        autoFocus
+                        error={formik.touched.torsoHeight && Boolean(formik.errors.torsoHeight)}
+                        helperText={formik.touched.torsoHeight && formik.errors.torsoHeight}
+                    />
+
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="thoracicPerimeter"
+                        label="Thoracic Perimeter"
+                        name="thoracicPerimeter"
+                        autoComplete="thoracicPerimeter"
+                        value={formik.values.thoracicPerimeter}
+                        onChange={formik.handleChange}
+                        autoFocus
+                        error={formik.touched.thoracicPerimeter && Boolean(formik.errors.thoracicPerimeter)}
+                        helperText={formik.touched.thoracicPerimeter && formik.errors.thoracicPerimeter}
+                    />
 
                     <Button
                         type="submit"

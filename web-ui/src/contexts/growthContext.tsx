@@ -11,6 +11,11 @@ export function useUpdateGrowth() {
     return useContext(updateGrowthContext);
 }
 
+const growthUpdatedContext = createContext<boolean>(false);
+export function useGrowthUpdated() {
+    return useContext(growthUpdatedContext);
+}
+
 // PROVIDER
 export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Element {
     const [error, setError] = useState(false)
@@ -63,6 +68,10 @@ export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Elemen
         {
             ctx: updateGrowthContext,
             value: updateGrowth
+        },
+        {
+            ctx: growthUpdatedContext,
+            value: growthUpdated
         }
     ]
 

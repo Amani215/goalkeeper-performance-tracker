@@ -2,9 +2,9 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useState } from 'react';
-import { useDeleteMatch, useDeleteMatchError } from '../../contexts/matchesContext';
 import { GrowthDTO } from '../../DTOs/GrowthDTO';
 import UpdateGrowth from '../../containers/modals/updateGrowth';
+import { useDeleteGrowth, useDeleteGrowthError } from '../../contexts/growthContext';
 
 type PropType = {
     growthList: GrowthDTO[]
@@ -104,7 +104,7 @@ function GrowthList({ growthList }: PropType) {
                         <IconButton title='Edit' onClick={() => handleOpenUpdateModal(params.row)}>
                             <MdEdit />
                         </IconButton>
-                        <IconButton title='Delete' onClick={() => handleOpenDeleteDialog(params.row)}>
+                        <IconButton title='Delete' onClick={() => handleOpenDeleteDialog(params.row.id)}>
                             <MdDelete />
                         </IconButton>
                     </Box>
@@ -117,8 +117,8 @@ function GrowthList({ growthList }: PropType) {
     const [deleteDialogIsOpen, setDeleteDialogIsOpen] = useState<boolean>(false)
     const [growthToDelete, setGrowthToDelete] = useState<string>("")
 
-    const deleteGrowth = useDeleteMatch()
-    const deleteGrowthError = useDeleteMatchError()
+    const deleteGrowth = useDeleteGrowth()
+    const deleteGrowthError = useDeleteGrowthError()
 
     const handleOpenDeleteDialog = (growthID: string) => {
         setGrowthToDelete(growthID)
@@ -132,7 +132,7 @@ function GrowthList({ growthList }: PropType) {
 
     const handleDelete = async () => {
         if (deleteGrowth) {
-            await deleteGrowth(growthToDelete)
+            await deleteGrowth(growthToDelete).then(() => setDeleteDialogIsOpen(false))
         }
     }
 
@@ -181,7 +181,7 @@ function GrowthList({ growthList }: PropType) {
                             color: '#616161'
                         }}>
                             <Typography
-                                variant='subtitle2'>No matches in this section.
+                                variant='subtitle2'>No data in this section yet.
                             </Typography>
                         </div>
                     </Card>

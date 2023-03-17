@@ -16,12 +16,28 @@ export function useGrowthUpdated() {
     return useContext(growthUpdatedContext);
 }
 
+// DELETE GROWTH CONTEXTS
+type DeleteGrowthDelegate = (growthID: string) => Promise<null>;
+const deleteGrowthContext = createContext<DeleteGrowthDelegate | null>(null);
+export function useDeleteGrowth() {
+    return useContext(deleteGrowthContext);
+}
+
+const growthDeletedContext = createContext<boolean>(false);
+export function useGrowthDeleted() {
+    return useContext(growthDeletedContext);
+}
+
+const deleteGrowthErrorContext = createContext<string>("");
+export function useDeleteGrowthError() {
+    return useContext(deleteGrowthErrorContext);
+}
+
 // PROVIDER
 export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Element {
-    const [error, setError] = useState(false)
-    const [growthReady, setGrowthReady] = useState<boolean>(false)
+    const [error, setError] = useState<string>("")
     const [growthUpdated, setGrowthUpdated] = useState<boolean>(false)
-    const [growth, setGrowth] = useState<GrowthDTO | null>(null)
+    const [growthDeleted, setGrowthDeleted] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -46,18 +62,34 @@ export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Elemen
         console.log(json_data)
         if ('id' in json_data) {
             setGrowthUpdated(true)
-            setGrowthReady(true);
-            setError(false);
-            setGrowth(json_data as GrowthDTO)
             return json_data as GrowthDTO;
         }
         else {
             setGrowthUpdated(false)
-            setError(true);
-            setGrowthReady(true);
-            setGrowth(null)
             return json_data as errorResponse;
         }
+    }
+
+    const deleteGrowth: DeleteGrowthDelegate = async (growthID: string) => {
+        setError("")
+        setGrowthDeleted(false)
+        console.log(growthID)
+        return fetch("/api/growth_monitoring?id=" + growthID, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        })
+            .then(data => {
+                if (data.status == 204) {
+                    setGrowthDeleted(true)
+                } else {
+                    setGrowthDeleted(false)
+                    setError("Could not delete this object")
+                }
+                return null
+            })
     }
 
     type contextProvider = {
@@ -72,6 +104,18 @@ export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Elemen
         {
             ctx: growthUpdatedContext,
             value: growthUpdated
+        },
+        {
+            ctx: deleteGrowthContext,
+            value: deleteGrowth
+        },
+        {
+            ctx: growthDeletedContext,
+            value: growthDeleted
+        },
+        {
+            ctx: deleteGrowthErrorContext,
+            value: error
         }
     ]
 

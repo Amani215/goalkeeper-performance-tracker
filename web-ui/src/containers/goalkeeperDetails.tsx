@@ -16,7 +16,7 @@ import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO'
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { GrowthDTO } from '../DTOs/GrowthDTO'
 import GrowthList from '../components/growthList'
-import { useGrowthUpdated } from '../contexts/growthContext'
+import { useGrowthDeleted, useGrowthUpdated } from '../contexts/growthContext'
 
 
 const matchColumns: GridColDef[] = [
@@ -159,6 +159,7 @@ function GoalkeeperDetails() {
     const growth = useGoalkeeperGrowthContext()
     const growthReady = useGoalkeeperGrowthReady()
     const growthUpdated = useGrowthUpdated()
+    const growthDeleted = useGrowthDeleted()
 
     const [birthday, setBirthday] = useState<string>("")
 
@@ -217,7 +218,7 @@ function GoalkeeperDetails() {
                     setGrowthRows(data as GrowthDTO[])
             })
         }
-    }, [growthReady, growthUpdated])
+    }, [growthReady, growthUpdated, growthDeleted])
 
     const uploadPicture = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {

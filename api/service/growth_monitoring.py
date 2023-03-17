@@ -55,6 +55,14 @@ def update_param(growth_monitoring_id: str, param_name: str, param_value: int):
     return growth_monitoring_obj
 
 
+def set_date(growth: growth_monitoring, date: str = None) -> growth_monitoring:
+    '''Set the date of the growth monitoring'''
+    if (date is not None and date != ''):
+        growth.date = datetime.strptime(date, '%d/%m/%Y')
+    db.session.commit()
+    return growth
+
+
 def delete(id: str):
     '''Deletes the given growth object from the database'''
     growth_monitoring_obj = get_by_id(id)

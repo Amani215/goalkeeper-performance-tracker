@@ -1,6 +1,7 @@
 '''Match monitoring routes (get, post, etc.)'''
 from flask import jsonify, request
 from flask.blueprints import Blueprint
+from model import growth_monitoring
 from model.user import User
 import service.growth_monitoring as growth_monitoring_service
 import service.goalkeeper as goalkeeper_service
@@ -90,16 +91,23 @@ def set_param(current_user: User):
         if (goalkeeper_service.editable(goalkeeper, current_user) == False):
             raise PermissionError(NOT_EDITABLE_MESSAGE)
 
+        growth: growth_monitoring = growth_monitoring_service.get_by_id(gm_id)
+
         possible_params = [
             'weight', 'height', 'torso_height', 'thoracic_perimeter',
             'annual_growth'
         ]
         for param in possible_params:
             if param in request.json:
-                growth_monitoring_service.update_param(gm_id, param,
-                                                       request.json[param])
+                growth = growth_monitoring_service.update_param(
+                    gm_id, param, request.json[param])
 
-        return {}, 201
+        # Update date
+        if 'date' in request.json:
+            growth = growth_monitoring_service.set_date(
+                growth, date=request.json['date'])
+
+        return growth.serialize, 201
     except PermissionError as err:
         return {'error': str(err)}, 401
     except Exception as err:

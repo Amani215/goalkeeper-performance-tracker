@@ -5,7 +5,7 @@ import { GrowthDTO, UpdateGrowthDTO } from '../DTOs/GrowthDTO';
 
 
 // UPDATE GROWTH CONTEXT
-type UpdateGrowthDelegate = (id: string, newGrowthObj: UpdateGrowthDTO) => Promise<GrowthDTO | errorResponse>;
+type UpdateGrowthDelegate = (id: string, growthObj: UpdateGrowthDTO) => Promise<GrowthDTO | errorResponse>;
 const updateGrowthContext = createContext<UpdateGrowthDelegate | null>(null);
 export function useUpdateGrowth() {
     return useContext(updateGrowthContext);
@@ -21,7 +21,7 @@ export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Elemen
     const auth = useAuth()
     const token = auth?.token
 
-    const updateGrowth: UpdateGrowthDelegate = async (id: string, newGrowthObj: UpdateGrowthDTO) => {
+    const updateGrowth: UpdateGrowthDelegate = async (id: string, growthObj: UpdateGrowthDTO) => {
         const data = await fetch("/api/growth_monitoring?id=" + id, {
             method: "PUT",
             headers: {
@@ -29,11 +29,12 @@ export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Elemen
                 'Authorization': `bearer ${token}`
             },
             body: JSON.stringify({
-                height: newGrowthObj.height,
-                weight: newGrowthObj.weight,
-                annual_growth: newGrowthObj.annual_growth,
-                torso_height: newGrowthObj.torso_height,
-                thoracic_perimeter: newGrowthObj.thoracic_perimeter
+                date: growthObj.date,
+                height: growthObj.height,
+                weight: growthObj.weight,
+                annual_growth: growthObj.annual_growth,
+                torso_height: growthObj.torso_height,
+                thoracic_perimeter: growthObj.thoracic_perimeter
             })
         });
         const json_data = await data.json();

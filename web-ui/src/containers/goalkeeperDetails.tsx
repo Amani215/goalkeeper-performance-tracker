@@ -1,4 +1,4 @@
-import { Chip, Link, Typography } from '@mui/material'
+import { Chip, IconButton, Link, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
@@ -15,87 +15,8 @@ import { GridColDef } from '@mui/x-data-grid'
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO'
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { GrowthDTO } from '../DTOs/GrowthDTO'
+import GrowthList from '../components/growthList'
 
-const growthColumns: GridColDef[] = [
-    {
-        field: 'date',
-        headerName: 'Date',
-        headerAlign: 'center',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.date}</Typography>
-            );
-        }
-    },
-    {
-        field: 'height',
-        headerName: 'Height',
-        headerAlign: 'center',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.height} cm</Typography>
-            );
-        }
-    },
-    {
-        field: 'weight',
-        headerName: 'Weight',
-        headerAlign: 'center',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.weight} kg</Typography>
-            );
-        }
-    },
-    {
-        field: 'torso_height',
-        headerName: 'Torso Height',
-        headerAlign: 'center',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.torso_height} cm</Typography>
-            );
-        }
-    },
-    {
-        field: 'thoracic_perimeter',
-        headerName: 'Thoracic Perimeter',
-        headerAlign: 'center',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.thoracic_perimeter} cm</Typography>
-            );
-        }
-    },
-    {
-        field: 'annual_growth',
-        headerName: 'Annual Growth',
-        headerAlign: 'center',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.annual_growth} cm</Typography>
-            );
-        }
-    },
-]
 
 const matchColumns: GridColDef[] = [
     {
@@ -468,14 +389,7 @@ function GoalkeeperDetails() {
 
                     {/* GROWTH */}
                     <Typography fontWeight="bold" mt={2} mb={1}>Growth</Typography>
-                    {growthRows.length > 0 ?
-                        < DataGrid
-                            rows={growthRows || []}
-                            columns={growthColumns}
-                            pageSize={3}
-                            rowsPerPageOptions={[3]}
-                        /> : <></>
-                    }
+                    <GrowthList growthList={growthRows} />
 
                     {/* MATCHES */}
                     <Typography fontWeight="bold" mt={2} mb={1}>Match performances</Typography>

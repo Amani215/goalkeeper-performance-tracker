@@ -7,9 +7,18 @@ export interface GrowthDTO {
   id: string;
   goalkeeper_id: string;
   date: string;
-  annual_growth: string;
-  height: string;
-  weight: string;
-  torso_height: string;
-  thoracic_perimeter: string;
+  annual_growth: number;
+  height: number;
+  weight: number;
+  torso_height: number;
+  thoracic_perimeter: number;
+}
+
+export interface UpdateGrowthDTO {
+  date: string;
+  annual_growth: number;
+  height: number;
+  weight: number;
+  torso_height: number;
+  thoracic_perimeter: number;
 }

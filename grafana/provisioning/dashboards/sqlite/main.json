@@ -49,8 +49,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 8,
+        "h": 8,
+        "w": 6,
         "x": 0,
         "y": 0
       },
@@ -120,7 +120,7 @@
       "gridPos": {
         "h": 4,
         "w": 3,
-        "x": 8,
+        "x": 6,
         "y": 0
       },
       "id": 9,
@@ -183,7 +183,7 @@
       "gridPos": {
         "h": 4,
         "w": 3,
-        "x": 11,
+        "x": 9,
         "y": 0
       },
       "id": 8,
@@ -221,25 +221,25 @@
         "type": "frser-sqlite-datasource",
         "uid": "P2D2EEF3E092AF52B"
       },
-      "description": "Based on the 3 latest matches",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-BlPu"
+            "mode": "thresholds"
           },
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 82,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineWidth": 0,
+            "lineWidth": 1,
             "scaleDistribution": {
               "type": "linear"
             }
@@ -251,24 +251,47 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 100
+              },
+              {
+                "color": "semi-dark-yellow",
+                "value": 150
+              },
+              {
+                "color": "light-blue",
+                "value": 160
+              },
+              {
+                "color": "dark-orange",
+                "value": 170
+              },
+              {
+                "color": "dark-red",
+                "value": 180
+              },
+              {
+                "color": "semi-dark-blue",
+                "value": 190
               }
             ]
-          },
-          "unit": "short"
+          }
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 10,
-        "x": 14,
+        "h": 10,
+        "w": 12,
+        "x": 12,
         "y": 0
       },
-      "id": 12,
+      "id": 16,
       "options": {
-        "barRadius": 0.5,
-        "barWidth": 0.38,
-        "colorByField": "Goalkeeper",
+        "barRadius": 0,
+        "barWidth": 0.43,
+        "colorByField": "Height",
         "groupWidth": 0.7,
         "legend": {
           "calcs": [],
@@ -276,14 +299,13 @@
           "placement": "bottom",
           "showLegend": true
         },
-        "orientation": "horizontal",
-        "showValue": "auto",
+        "orientation": "vertical",
+        "showValue": "always",
         "stacking": "none",
         "tooltip": {
-          "mode": "multi",
+          "mode": "single",
           "sort": "none"
         },
-        "xField": "Goalkeeper",
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
@@ -294,14 +316,14 @@
             "type": "frser-sqlite-datasource",
             "uid": "P2D2EEF3E092AF52B"
           },
-          "queryText": "SELECT  g.name as \"Goalkeeper\", AVG(gp.grade) as \"Grade Average\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  mm.main_goalkeeper_id, mm.grade\n  FROM    match_monitoring mm\n          INNER JOIN\n          (\n              SELECT id\n              FROM match\n              where date <= date('now')\n              ORDER BY \"date\" DESC\n              limit 3\n          ) m ON  mm.match_id = m.id\n)gp ON gp.main_goalkeeper_id = g.id\ngroup by g.id\nORDER BY AVG(gp.grade) DESC\nlimit 5",
+          "queryText": "SELECT  g.name as \"Goalkeeper\", MAX(gg.height) as \"Height\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  gm.goalkeeper_id, gm.height\n  FROM    growth_monitoring gm\n)gg ON gg.goalkeeper_id = g.id\ngroup by g.id\nORDER BY MAX(gg.height) DESC\nlimit 5",
           "queryType": "table",
-          "rawQueryText": "SELECT  g.name as \"Goalkeeper\", AVG(gp.grade) as \"Grade Average\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  mm.main_goalkeeper_id, mm.grade\n  FROM    match_monitoring mm\n          INNER JOIN\n          (\n              SELECT id\n              FROM match\n              where date <= date('now')\n              ORDER BY \"date\" DESC\n              limit 3\n          ) m ON  mm.match_id = m.id\n)gp ON gp.main_goalkeeper_id = g.id\ngroup by g.id\nORDER BY AVG(gp.grade) DESC\nlimit 5",
+          "rawQueryText": "SELECT  g.name as \"Goalkeeper\", MAX(gg.height) as \"Height\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  gm.goalkeeper_id, gm.height\n  FROM    growth_monitoring gm\n)gg ON gg.goalkeeper_id = g.id\ngroup by g.id\nORDER BY MAX(gg.height) DESC\nlimit 5",
           "refId": "A",
           "timeColumns": ["time", "ts"]
         }
       ],
-      "title": "Leaderboard ",
+      "title": "Tallest Goalkeepers",
       "type": "barchart"
     },
     {
@@ -332,9 +354,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 5,
         "w": 6,
-        "x": 8,
+        "x": 6,
         "y": 4
       },
       "id": 10,
@@ -389,10 +411,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 8,
+        "h": 9,
+        "w": 6,
         "x": 0,
-        "y": 7
+        "y": 8
       },
       "id": 7,
       "options": {
@@ -437,71 +459,6 @@
         "type": "frser-sqlite-datasource",
         "uid": "P2D2EEF3E092AF52B"
       },
-      "description": "Top 5 absentees based on the last 3 months",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 14,
-        "y": 7
-      },
-      "id": 14,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": ["sum"],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "9.2.5",
-      "targets": [
-        {
-          "datasource": {
-            "type": "frser-sqlite-datasource",
-            "uid": "P2D2EEF3E092AF52B"
-          },
-          "queryText": "SELECT  g.name as \"Goalkeeper\", COUNT(tp.absent) as \"Number of Absences\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  tm.goalkeeper_id, tm.absent\n  FROM    training_monitoring tm\n          INNER JOIN\n          (\n              SELECT id\n              FROM training_session\n              where date <= date('now') and date>= date('now', '-3 month')\n              ORDER BY \"date\" DESC\n              limit 3\n          ) t ON  tm.session_id = t.id\n)tp ON tp.goalkeeper_id = g.id\nwhere tp.absent=true\ngroup by g.id\nORDER BY COUNT(tp.absent) DESC\nlimit 5",
-          "queryType": "table",
-          "rawQueryText": "SELECT  g.name as \"Goalkeeper\", COUNT(tp.absent) as \"Number of Absences\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  tm.goalkeeper_id, tm.absent\n  FROM    training_monitoring tm\n          INNER JOIN\n          (\n              SELECT id\n              FROM training_session\n              where date <= date('now') and date>= date('now', '-3 month')\n              ORDER BY \"date\" DESC\n              limit 3\n          ) t ON  tm.session_id = t.id\n)tp ON tp.goalkeeper_id = g.id\nwhere tp.absent=true\ngroup by g.id\nORDER BY COUNT(tp.absent) DESC\nlimit 5",
-          "refId": "A",
-          "timeColumns": ["time", "ts"]
-        }
-      ],
-      "title": "Absence",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "frser-sqlite-datasource",
-        "uid": "P2D2EEF3E092AF52B"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -519,10 +476,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 6,
-        "x": 8,
-        "y": 8
+        "x": 6,
+        "y": 9
       },
       "id": 4,
       "options": {
@@ -561,6 +518,71 @@
       ],
       "title": "Coaches per Category",
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "P2D2EEF3E092AF52B"
+      },
+      "description": "Top 5 absentees based on the last 3 months",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 14,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": ["sum"],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "9.2.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "frser-sqlite-datasource",
+            "uid": "P2D2EEF3E092AF52B"
+          },
+          "queryText": "SELECT  g.name as \"Goalkeeper\", COUNT(tp.absent) as \"Number of Absences\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  tm.goalkeeper_id, tm.absent\n  FROM    training_monitoring tm\n          INNER JOIN\n          (\n              SELECT id\n              FROM training_session\n              where date <= date('now') and date>= date('now', '-3 month')\n              ORDER BY \"date\" DESC\n              limit 3\n          ) t ON  tm.session_id = t.id\n)tp ON tp.goalkeeper_id = g.id\nwhere tp.absent=true\ngroup by g.id\nORDER BY COUNT(tp.absent) DESC\nlimit 5",
+          "queryType": "table",
+          "rawQueryText": "SELECT  g.name as \"Goalkeeper\", COUNT(tp.absent) as \"Number of Absences\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  tm.goalkeeper_id, tm.absent\n  FROM    training_monitoring tm\n          INNER JOIN\n          (\n              SELECT id\n              FROM training_session\n              where date <= date('now') and date>= date('now', '-3 month')\n              ORDER BY \"date\" DESC\n              limit 3\n          ) t ON  tm.session_id = t.id\n)tp ON tp.goalkeeper_id = g.id\nwhere tp.absent=true\ngroup by g.id\nORDER BY COUNT(tp.absent) DESC\nlimit 5",
+          "refId": "A",
+          "timeColumns": ["time", "ts"]
+        }
+      ],
+      "title": "Absence",
+      "type": "table"
     }
   ],
   "schemaVersion": 37,

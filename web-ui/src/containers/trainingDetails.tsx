@@ -2,11 +2,11 @@ import { Avatar, Box, Button, Divider, IconButton, List, ListItem, ListItemAvata
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady } from '../contexts/trainingContext';
+import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady, useUpdateTrainingForm } from '../contexts/trainingContext';
 import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { ModalProp } from '../interfaces/modalProp';
-import { useUpdateTrainingForm } from '../contexts/trainingPerformanceContext';
+
 
 function TrainingDetails({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();

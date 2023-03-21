@@ -58,6 +58,13 @@ export function useDeleteTrainingGoalkeeper() {
     return useContext(deleteTrainingGoalkeeperContext);
 }
 
+// UPDATE TRAINING FORM CONTEXT
+type FileDelegate = (id: string, formdata: FormData) => Promise<string | errorResponse>;
+const updateTrainingFormContext = createContext<FileDelegate | null>(null);
+export function useUpdateTrainingForm() {
+    return useContext(updateTrainingFormContext);
+}
+
 // PROVIDER
 export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Element {
     const [error, setError] = useState(false)
@@ -158,6 +165,18 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         return data_json as errorResponse;
     }
 
+    const trainingForm: FileDelegate = (id: string, formdata: FormData) => {
+        return fetch("/api/training_session/form?id=" + id, {
+            method: "PUT",
+            headers: {
+                'Accept': '*/*',
+                'Authorization': `bearer ${token}`
+            },
+            body: formdata
+        })
+            .then(data => data.json())
+    }
+
     type contextProvider = {
         ctx: React.Context<any>,
         value: any
@@ -199,6 +218,10 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
             ctx: deleteTrainingGoalkeeperContext,
             value: deleteTrainingPerformance
         },
+        {
+            ctx: updateTrainingFormContext,
+            value: trainingForm
+        }
     ]
 
     return (

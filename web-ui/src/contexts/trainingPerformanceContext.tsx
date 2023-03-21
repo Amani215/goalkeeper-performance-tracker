@@ -26,7 +26,7 @@ export function useTrainingPerformanceReady() {
     return useContext(trainingPerformanceReadyContext);
 }
 
-// UPDATE TRAININF PERFORMANCE CONTEXTS
+// UPDATE TRAINING PERFORMANCE CONTEXTS
 type UpdateTrainingPerformanceDelegate = (newTrainingMonitoring: UpdateTrainingMonitoringDTO) => Promise<TrainingMonitoringDTO | errorResponse>;
 const updateTrainingPerformanceContext = createContext<UpdateTrainingPerformanceDelegate | null>(null);
 export function useUpdateTrainingPerformance() {
@@ -36,13 +36,6 @@ export function useUpdateTrainingPerformance() {
 const trainingPerformanceUpdatedContext = createContext<boolean>(false);
 export function useTrainingPerformanceUpdated() {
     return useContext(trainingPerformanceUpdatedContext);
-}
-
-// UPDATE TRAINING FORM CONTEXT
-type FileDelegate = (id: string, formdata: FormData) => Promise<string | errorResponse>;
-const updateTrainingFormContext = createContext<FileDelegate | null>(null);
-export function useUpdateTrainingForm() {
-    return useContext(updateTrainingFormContext);
 }
 
 // PROVIDER
@@ -110,18 +103,6 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
         }
     }
 
-    const trainingForm: FileDelegate = (id: string, formdata: FormData) => {
-        return fetch("/api/training_monitoring/form?id=" + id, {
-            method: "PUT",
-            headers: {
-                'Accept': '*/*',
-                'Authorization': `bearer ${token}`
-            },
-            body: formdata
-        })
-            .then(data => data.json())
-    }
-
     return (
         <getTrainingPerformanceContext.Provider value={getTrainingPerformance}>
             <trainingPerformanceContext.Provider value={trainingPerformance}>
@@ -129,9 +110,7 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
                     <trainingPerformanceReadyContext.Provider value={trainingPerformanceReady}>
                         <updateTrainingPerformanceContext.Provider value={updateTrainingPerformance}>
                             <trainingPerformanceUpdatedContext.Provider value={trainingPerformanceUpdated}>
-                                <updateTrainingFormContext.Provider value={trainingForm}>
-                                    {props.children}
-                                </updateTrainingFormContext.Provider>
+                                {props.children}
                             </trainingPerformanceUpdatedContext.Provider>
                         </updateTrainingPerformanceContext.Provider>
                     </trainingPerformanceReadyContext.Provider>

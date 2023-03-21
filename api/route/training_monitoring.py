@@ -89,36 +89,3 @@ def set_param(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
-
-
-@training_monitoring_api.route('/training_monitoring/form', methods=['PUT'])
-@token_required(admin=False)
-def add_training_form(current_user: User):
-    '''Add a form to the training monitoring
-    
-    A file has to be passed in request.files and training monitoring ID in the JSON body
-    A token is required for the user to be able to upload the file
-    The file is automatically uploaded to the given training monitoring object'''
-    try:
-        args = request.args
-
-        if ((request.files.get('training_form') is None)
-                or (args.get('id') is None)):
-            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
-
-        training_monitoring_obj = training_monitoring_service.get_by_id(
-            args.get("id"))
-        if (training_monitoring_service.editable(training_monitoring_obj,
-                                                 current_user) == False):
-            raise PermissionError('User cannot edit this data.')
-
-        form = request.files['training_form']
-
-        form_url = training_monitoring_service.update_training_form(
-            args.get('id'), form)
-        return {'url': form_url}, 201
-
-    except PermissionError as err:
-        return {'error': str(err)}, 401
-    except Exception as err:
-        return {'error': str(err)}, 400

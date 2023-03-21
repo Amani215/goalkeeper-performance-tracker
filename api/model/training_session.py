@@ -1,8 +1,6 @@
 """imports"""
-import datetime
 from uuid import uuid4
 from sqlalchemy import Column, Date, String, Integer
-from sqlalchemy.dialects.postgresql import TIMESTAMP
 from config import db
 
 
@@ -23,6 +21,7 @@ class training_session(db.Model):
         "Category", back_populates="training_sessions")
     goalkeepers_performances = db.relationship("training_monitoring",
                                                back_populates="session")
+    training_form = Column(String(128), unique=False, nullable=True)
 
     def __init__(self, date, duration, category):
         self.date = date
@@ -36,5 +35,6 @@ class training_session(db.Model):
             'id': self.id,
             'date': self.date.strftime('%d/%m/%Y'),
             'duration': self.duration,
-            'category': self.training_session_category.serialize
+            'category': self.training_session_category.serialize,
+            'training_form': self.training_form
         }

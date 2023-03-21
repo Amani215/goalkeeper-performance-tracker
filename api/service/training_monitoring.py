@@ -1,5 +1,4 @@
 '''Training monitoring services (add, update, etc.)'''
-from cgi import FieldStorage
 import os
 from sqlalchemy.exc import SQLAlchemyError
 from config import db
@@ -7,7 +6,6 @@ from model.training_monitoring import training_monitoring
 from model.user import User
 import service.goalkeeper as goalkeeper_service
 import service.training_session as training_session_service
-from service.s3 import upload_file
 from config.redis import redis_db
 
 
@@ -57,17 +55,6 @@ def update_comment(training_monitoring_id: str, comment: str):
 
     db.session.commit()
     return training_monitoring_obj
-
-
-def update_training_form(training_monitoring_id: str, pic: FieldStorage):
-    '''Set or change the link to the training form of the training monitoring object'''
-    training_monitoring_obj = get_by_id(training_monitoring_id)
-
-    form_url = upload_file(pic, os.getenv('TRAINING_FORMS_BUCKET'))
-    training_monitoring_obj.training_form = form_url
-
-    db.session.commit()
-    return form_url
 
 
 def editable(tm: training_monitoring, user: User) -> bool:

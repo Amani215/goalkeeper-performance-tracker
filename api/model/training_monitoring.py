@@ -25,7 +25,6 @@ class training_monitoring(db.Model):
     hurt = Column(Boolean, unique=False, default=False)
     with_seniors = Column(Boolean, unique=False, default=False)
     with_national_team = Column(Boolean, unique=False, default=False)
-    training_form = Column(String(128), unique=False, nullable=True)
     comment = Column(String(128), unique=False, nullable=True)
 
     def __init__(self, goalkeeper, session):
@@ -44,6 +43,5 @@ class training_monitoring(db.Model):
             'hurt': self.hurt,
             'with_seniors': self.with_seniors,
             'with_national_team': self.with_national_team,
-            'training_form': self.training_form,
             'comment': self.comment
         }

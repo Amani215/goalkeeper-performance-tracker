@@ -1,9 +1,12 @@
 '''Training session services (add, update, etc.)'''
+from cgi import FieldStorage
 from datetime import datetime
+import os
 from sqlalchemy.exc import SQLAlchemyError
 from config import db
 from model.training_session import training_session
 import service.category as category_service
+from service.s3 import upload_file
 import service.training_monitoring as training_monitoring_service
 import service.goalkeeper as goalkeeper_service
 from config.redis import redis_db
@@ -77,3 +80,14 @@ def remove_goalkeeper_performance(session_id: str,
 
     training_monitoring_service.delete(goalkeeper_performance_id)
     db.session.commit()
+
+
+def update_training_form(training_id: str, pic: FieldStorage):
+    '''Set or change the link to the training form of the training monitoring object'''
+    training_obj = get_by_id(training_id)
+
+    form_url = upload_file(pic, os.getenv('TRAINING_FORMS_BUCKET'))
+    training_obj.training_form = form_url
+
+    db.session.commit()
+    return form_url

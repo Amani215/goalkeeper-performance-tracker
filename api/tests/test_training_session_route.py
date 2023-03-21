@@ -1,4 +1,5 @@
 '''Testing the training session endpoints'''
+import io
 import json
 import random
 import uuid
@@ -11,6 +12,8 @@ import service.category as category_service
 URL = '/training_session'
 CATEGORY_URL = '/training_session/category'
 ID_URL = '/training_session?id='
+FORM_URL = '/training_session/form?id='
+IMAGE_URL = 'tests/assets/image.jpeg'
 
 
 def test_no_token(client):
@@ -166,3 +169,22 @@ def test_set_get_category(client, json_headers, category):
                           training_session_obj.json['id'],
                           headers=json_headers)
     assert response.json['id'] == category['name'] + str(category['season'])
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_add_form_diff_category(client, authenticated_user, training_session):
+    '''Test adding a form to the given training session route'''
+    headers = {'Accept': '*/*', 'Authorization': authenticated_user['token']}
+    url = FORM_URL + str(training_session.id)
+
+    test_data = {
+        'training_form': (io.BytesIO(b'test_picture'), IMAGE_URL),
+    }
+    response = client.put(url, data=test_data, headers=headers)
+
+    assert response.status_code == 201
+
+    ### BAD JSON
+    response = client.put(url, data={}, headers=headers)
+    assert response.status_code == 400
+    assert 'No data was provided' in response.json['error']

@@ -1,12 +1,12 @@
 import { Avatar, Box, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
-import { TbFileChart } from 'react-icons/tb';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady } from '../contexts/trainingContext';
 import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { ModalProp } from '../interfaces/modalProp';
+import { useUpdateTrainingForm } from '../contexts/trainingPerformanceContext';
 
 function TrainingDetails({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
@@ -48,6 +48,18 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
         }
     }
 
+    const updateTrainingForm = useUpdateTrainingForm()
+    const uploadTrainingForm = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files != null) {
+            const formdata = new FormData()
+            formdata.append("training_form", e.target.files[0])
+            if (updateTrainingForm) {
+                updateTrainingForm(id ? id : "", formdata).then((data) => { console.log(data) })
+            }
+            console.log(e.target.files[0])
+        }
+    }
+
     useEffect(() => {
         if (performancesContext) {
             performancesContext(id ? id : "").then((data) => {
@@ -83,6 +95,19 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                         {training?.duration} min
                     </Typography>
 
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        mb={2}>
+                        <Button component="label" variant="contained">
+                            Upload Form
+                            <input
+                                hidden
+                                accept="application/pdf"
+                                multiple type="file"
+                                onChange={e => uploadTrainingForm(e)} />
+                        </Button>
+                    </Box>
 
                     <Paper
                         elevation={2}
@@ -98,11 +123,6 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                 {goalkeeperPerformances.map((gp) => (
                                     <div key={gp.id}>
                                         <ListItem secondaryAction={<>
-                                            <RouterLink to={`/training-performance/${gp.id}`}>
-                                                <IconButton edge="end" aria-label="delete" sx={{ marginRight: '1px' }}>
-                                                    <TbFileChart />
-                                                </IconButton>
-                                            </RouterLink>
                                             <IconButton edge="end" aria-label="delete" onClick={() => { deleteGoalkeeperPerformance(gp.id) }}>
                                                 <MdDeleteOutline />
                                             </IconButton>

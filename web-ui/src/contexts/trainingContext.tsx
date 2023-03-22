@@ -165,16 +165,21 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         return data_json as errorResponse;
     }
 
-    const trainingForm: FileDelegate = (id: string, formdata: FormData) => {
-        return fetch("/api/training_session/form?id=" + id, {
+    const trainingForm: FileDelegate = async (id: string, formdata: FormData) => {
+        const data = await fetch("/api/training_session/form?id=" + id, {
             method: "PUT",
             headers: {
                 'Accept': '*/*',
                 'Authorization': `bearer ${token}`
             },
             body: formdata
-        })
-            .then(data => data.json())
+        });
+        const data_json = await data.json();
+        if ("url" in data_json){
+            return data_json["url"]
+        }else{
+            return data_json["error"]
+        }
     }
 
     type contextProvider = {

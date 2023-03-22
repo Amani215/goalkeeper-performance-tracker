@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material';
+import { Avatar, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material';
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
@@ -64,7 +64,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
         if (performancesContext) {
             performancesContext(id ? id : "").then((data) => {
                 if (performancesReady)
-                    setGoalkeeperPerformances(data != null ? data as TrainingMonitoringDTO[] : goalkeeperPerformances)
+                    setGoalkeeperPerformances(data != null ? data : goalkeeperPerformances)
             })
         }
     }, [performancesReady, performancesUpdated])
@@ -97,7 +97,9 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
 
                     <Box
                         display="flex"
-                        flexDirection="column"
+                        flexDirection="row"
+                        alignItems="center"
+                        alignContent="center"
                         mb={2}>
                         <Button component="label" variant="contained">
                             Upload Form
@@ -107,6 +109,18 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                 multiple type="file"
                                 onChange={e => uploadTrainingForm(e)} />
                         </Button>
+                        <Box ml={1}>
+                            {training?.training_form ?
+                                <Button variant="outlined">
+                                    <Link target="_blank" href={training.training_form} underline="none">
+                                        Download Form
+                                    </Link>
+                                </Button>
+                                : <Typography>No training form uploaded.</Typography>
+                            }
+                        </Box>
+
+
                     </Box>
 
                     <Paper
@@ -148,7 +162,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                             </Box>
                         }
                     </Paper>
-                </Box>
+                </Box >
             }
         </>
     )

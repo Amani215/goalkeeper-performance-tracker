@@ -5,4 +5,5 @@ export interface TrainingDTO {
   date: string;
   duration: number;
   category: CategoryDTO;
+  training_form: string;
 }

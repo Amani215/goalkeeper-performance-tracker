@@ -10,6 +10,7 @@ from service.s3 import upload_file
 import service.training_monitoring as training_monitoring_service
 import service.goalkeeper as goalkeeper_service
 from config.redis import redis_db
+from service.training_monitoring import add_training_monitoring
 
 
 def add_training_session(date: str, duration: int, category_id: str):
@@ -21,6 +22,10 @@ def add_training_session(date: str, duration: int, category_id: str):
 
     db.session.add(training_session_obj)
     db.session.commit()
+
+    for goalkeeper in category.goalkeepers:
+        add_training_monitoring(goalkeeper_id=goalkeeper.id,
+                                session_id=training_session_obj.id)
 
     return training_session_obj
 

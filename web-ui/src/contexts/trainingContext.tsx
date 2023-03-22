@@ -73,7 +73,7 @@ export function useTrainingUpdated() {
 // PROVIDER
 export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Element {
     const [error, setError] = useState(false)
-    const [updated, setUpdated] = useState<boolean>(false)
+    const [updated, setUpdated] = useState(false)
     const [trainingReady, setTrainingReady] = useState<boolean>(false)
     const [training, setTraining] = useState<TrainingDTO | null>(null)
     const [trainingPerformancesReady, setTrainingPerformancesReady] = useState<boolean>(false)
@@ -235,7 +235,7 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
             ctx: updateTrainingFormContext,
             value: trainingForm
         },
-        { 
+        {
             ctx: trainingUpdatedContext,
             value: updated
         }

@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Divider, IconButton, Link, List, ListItem, ListIte
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady, useUpdateTrainingForm } from '../contexts/trainingContext';
+import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady, useTrainingUpdated, useUpdateTrainingForm } from '../contexts/trainingContext';
 import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { ModalProp } from '../interfaces/modalProp';
@@ -18,6 +18,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
     const trainingContext = useGetTraining()
     const trainingError = useTrainingError()
     const trainingReady = useTrainingReady()
+    const trainingUpdated = useTrainingUpdated()
 
     const [goalkeeperPerformances, setGoalkeeperPerformances] = useState<TrainingMonitoringDTO[]>([])
     const performancesContext = useTrainingPerformances()
@@ -40,7 +41,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
         if (loaded && trainingReady && !trainingError) {
             setError("")
         }
-    }, [loaded, trainingReady, trainingError, id])
+    }, [loaded, trainingReady, trainingError, id, trainingUpdated])
 
     const deleteGoalkeeperPerformance = (gpId: string) => {
         if (deleteTrainingGoalkeeper) {

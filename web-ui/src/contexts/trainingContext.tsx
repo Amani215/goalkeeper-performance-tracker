@@ -65,9 +65,15 @@ export function useUpdateTrainingForm() {
     return useContext(updateTrainingFormContext);
 }
 
+const trainingUpdatedContext = createContext<boolean>(false);
+export function useTrainingUpdated() {
+    return useContext(trainingUpdatedContext);
+}
+
 // PROVIDER
 export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Element {
     const [error, setError] = useState(false)
+    const [updated, setUpdated] = useState<boolean>(false)
     const [trainingReady, setTrainingReady] = useState<boolean>(false)
     const [training, setTraining] = useState<TrainingDTO | null>(null)
     const [trainingPerformancesReady, setTrainingPerformancesReady] = useState<boolean>(false)
@@ -77,6 +83,7 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
     const token = auth?.token
 
     const getTraining: TrainingDelegate = async (id: string) => {
+        setUpdated(false)
         const data = await fetch("/api/training_session?id=" + id, {
             method: "GET",
             headers: {
@@ -175,9 +182,10 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
             body: formdata
         });
         const data_json = await data.json();
-        if ("url" in data_json){
+        if ("url" in data_json) {
+            setUpdated(true)
             return data_json["url"]
-        }else{
+        } else {
             return data_json["error"]
         }
     }
@@ -226,6 +234,10 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         {
             ctx: updateTrainingFormContext,
             value: trainingForm
+        },
+        { 
+            ctx: trainingUpdatedContext,
+            value: updated
         }
     ]
 

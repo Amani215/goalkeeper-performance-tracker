@@ -7,6 +7,7 @@ import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { ModalProp } from '../interfaces/modalProp';
 import { useTrainingPerformanceUpdated, useUpdateTrainingPerformance } from '../contexts/trainingPerformanceContext';
+import UpdateAttendance from './modals/updateAttendance';
 
 
 function TrainingDetails({ setModalIsOpen }: ModalProp) {
@@ -25,9 +26,6 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
     const performancesContext = useTrainingPerformances()
     const performancesReady = useTrainingPerformancesReady()
     const performancesUpdated = useTrainingGoalkeepersUpdated()
-    const deleteTrainingGoalkeeper = useDeleteTrainingGoalkeeper()
-    const updateAttendanceContext = useUpdateTrainingPerformance()
-    const attendanceUpdated = useTrainingPerformanceUpdated()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -46,6 +44,8 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
         }
     }, [loaded, trainingReady, trainingError, id, trainingUpdated])
 
+    // DELETE GOALKEEPER
+    const deleteTrainingGoalkeeper = useDeleteTrainingGoalkeeper()
     const [deleteGoalkeeperDialogIsOpen, setDeleteGoalkeeperDialogIsOpen] = useState<boolean>(false)
     const [goalkeeperToDelete, setGoalkeeperToDelete] = useState<TrainingMonitoringDTO | null>(null)
 
@@ -66,15 +66,31 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
         }
     }
 
-    const updateAttendance = (gpId: string) => {
-        if (updateAttendanceContext) {
-            updateAttendanceContext({
-                id: gpId,
-                attendance: 'present'
-            })
-        }
+    // UPDATE ATTENDANCE
+    const [updateModalIsOpen, setUpdateModalIsOpen] = useState<boolean>(false)
+    const [goalkeeperToUpdate, setGoalkeeperToUpdate] = useState<TrainingMonitoringDTO | null>(null)
+
+    // const updateAttendanceContext = useUpdateTrainingPerformance()
+    const attendanceUpdated = useTrainingPerformanceUpdated()
+    // const updateAttendance = (gpId: string) => {
+    //     if (updateAttendanceContext) {
+    //         updateAttendanceContext({
+    //             id: gpId,
+    //             attendance: 'present'
+    //         })
+    //     }
+    // }
+
+    const handleOpenUpdateModal = (tm: TrainingMonitoringDTO) => {
+        setGoalkeeperToUpdate(tm)
+        setUpdateModalIsOpen(true)
+    }
+    const handleCloseUpdateModal = () => {
+        setGoalkeeperToUpdate(null)
+        setUpdateModalIsOpen(false)
     }
 
+    // UPDATE TRAINING FORM
     const updateTrainingForm = useUpdateTrainingForm()
     const uploadTrainingForm = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {
@@ -87,6 +103,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
         }
     }
 
+    // LOAD GOALKEEPERS
     useEffect(() => {
         if (performancesContext) {
             performancesContext(id ? id : "").then((data) => {
@@ -164,7 +181,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                 {goalkeeperPerformances.map((gp) => (
                                     <div key={gp.id}>
                                         <ListItem secondaryAction={<>
-                                            <IconButton edge="end" aria-label="update" onClick={() => { updateAttendance(gp.id) }}>
+                                            <IconButton edge="end" aria-label="update" onClick={() => { handleOpenUpdateModal(gp) }}>
                                                 <MdMode />
                                             </IconButton>
                                             <IconButton edge="end" aria-label="delete" onClick={() => { handleOpenDeleteGoalkeeperDialog(gp) }}>
@@ -195,6 +212,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                 </Box >
             }
 
+            {/* ARE YOU SURE DIALOG */}
             <Dialog
                 open={deleteGoalkeeperDialogIsOpen}
                 onClose={handleCloseDeleteGoalkeeperDialog}
@@ -210,6 +228,11 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                     <Button onClick={() => deleteGoalkeeperPerformance()} autoFocus>Yes</Button>
                 </DialogActions>
             </Dialog>
+
+            <UpdateAttendance tm={goalkeeperToUpdate} modalProp={{
+                modalIsOpen: updateModalIsOpen,
+                setModalIsOpen: handleCloseUpdateModal
+            }} />
         </>
     )
 }

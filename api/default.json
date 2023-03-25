@@ -33,10 +33,10 @@
   ],
   "action_result": ["Non réussie", "Passif", "Réussie", "Rien à lui reprocher"],
   "attendance": [
-    "absent",
-    "dismissed",
-    "hurt",
-    "with_seniors",
-    "with_national_team"
+    "A|bsent",
+    "Dismissed",
+    "Hurt",
+    "With Seniors",
+    "With National Team"
   ]
 }

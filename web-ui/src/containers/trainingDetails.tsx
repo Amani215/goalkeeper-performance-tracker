@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material';
+import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton, Link, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material';
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { MdDeleteOutline, MdMode } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
@@ -46,9 +46,23 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
         }
     }, [loaded, trainingReady, trainingError, id, trainingUpdated])
 
-    const deleteGoalkeeperPerformance = (gpId: string) => {
+    const [deleteGoalkeeperDialogIsOpen, setDeleteGoalkeeperDialogIsOpen] = useState<boolean>(false)
+    const [goalkeeperToDelete, setGoalkeeperToDelete] = useState<TrainingMonitoringDTO | null>(null)
+
+    const handleCloseDeleteGoalkeeperDialog = () => {
+        setDeleteGoalkeeperDialogIsOpen(false)
+        setGoalkeeperToDelete(null)
+    }
+
+    const handleOpenDeleteGoalkeeperDialog = (goalkeeper: TrainingMonitoringDTO) => {
+        setDeleteGoalkeeperDialogIsOpen(true)
+        setGoalkeeperToDelete(goalkeeper)
+    }
+
+    const deleteGoalkeeperPerformance = () => {
         if (deleteTrainingGoalkeeper) {
-            deleteTrainingGoalkeeper(gpId, id ? id : "")
+            deleteTrainingGoalkeeper(goalkeeperToDelete ? goalkeeperToDelete.id : "", id ? id : "")
+                .then(() => handleCloseDeleteGoalkeeperDialog())
         }
     }
 
@@ -153,7 +167,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                             <IconButton edge="end" aria-label="update" onClick={() => { updateAttendance(gp.id) }}>
                                                 <MdMode />
                                             </IconButton>
-                                            <IconButton edge="end" aria-label="delete" onClick={() => { deleteGoalkeeperPerformance(gp.id) }}>
+                                            <IconButton edge="end" aria-label="delete" onClick={() => { handleOpenDeleteGoalkeeperDialog(gp) }}>
                                                 <MdDeleteOutline />
                                             </IconButton>
                                         </>}>
@@ -180,6 +194,22 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                     </Paper>
                 </Box >
             }
+
+            <Dialog
+                open={deleteGoalkeeperDialogIsOpen}
+                onClose={handleCloseDeleteGoalkeeperDialog}
+            >
+                <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        By clicking yes, you are going to delete {goalkeeperToDelete?.goalkeeper.name} from the list of goalkeepers permanently.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDeleteGoalkeeperDialog}>Cancel</Button>
+                    <Button onClick={() => deleteGoalkeeperPerformance()} autoFocus>Yes</Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }

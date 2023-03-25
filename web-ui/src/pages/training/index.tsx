@@ -4,6 +4,7 @@ import TrainingDetails from '../../containers/trainingDetails'
 import TrainingProvider from '../../contexts/trainingContext'
 import NewTrainingGoalkeeper from '../../containers/modals/newTrainingGoalkeeper'
 import GoalkeepersProvider from '../../contexts/goalkeepersContext'
+import TrainingPerformanceProvider from '../../contexts/trainingPerformanceContext'
 
 function Training() {
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
@@ -17,7 +18,9 @@ function Training() {
                     <NewTrainingGoalkeeper {...{ modalIsOpen, setModalIsOpen: handleClose }} />
                 </GoalkeepersProvider>
 
-                <TrainingDetails {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
+                <TrainingPerformanceProvider>
+                    <TrainingDetails {...{ modalIsOpen, setModalIsOpen: handleOpen }} />
+                </TrainingPerformanceProvider>
             </TrainingProvider>
         </PortalPage>
     )

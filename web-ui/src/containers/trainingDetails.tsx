@@ -1,11 +1,12 @@
 import { Avatar, Box, Button, Divider, IconButton, Link, List, ListItem, ListItemAvatar, ListItemText, Paper, Typography } from '@mui/material';
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { MdDeleteOutline } from 'react-icons/md';
+import { MdDeleteOutline, MdMode } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady, useTrainingUpdated, useUpdateTrainingForm } from '../contexts/trainingContext';
 import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { ModalProp } from '../interfaces/modalProp';
+import { useTrainingPerformanceUpdated, useUpdateTrainingPerformance } from '../contexts/trainingPerformanceContext';
 
 
 function TrainingDetails({ setModalIsOpen }: ModalProp) {
@@ -25,6 +26,8 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
     const performancesReady = useTrainingPerformancesReady()
     const performancesUpdated = useTrainingGoalkeepersUpdated()
     const deleteTrainingGoalkeeper = useDeleteTrainingGoalkeeper()
+    const updateAttendanceContext = useUpdateTrainingPerformance()
+    const attendanceUpdated = useTrainingPerformanceUpdated()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -49,6 +52,15 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
         }
     }
 
+    const updateAttendance = (gpId: string) => {
+        if (updateAttendanceContext) {
+            updateAttendanceContext({
+                id: gpId,
+                attendance: 'present'
+            })
+        }
+    }
+
     const updateTrainingForm = useUpdateTrainingForm()
     const uploadTrainingForm = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files != null) {
@@ -68,7 +80,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                     setGoalkeeperPerformances(data != null ? data : goalkeeperPerformances)
             })
         }
-    }, [performancesReady, performancesUpdated])
+    }, [performancesReady, performancesUpdated, attendanceUpdated])
 
     return (
         <>
@@ -138,6 +150,9 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                 {goalkeeperPerformances.map((gp) => (
                                     <div key={gp.id}>
                                         <ListItem secondaryAction={<>
+                                            <IconButton edge="end" aria-label="update" onClick={() => { updateAttendance(gp.id) }}>
+                                                <MdMode />
+                                            </IconButton>
                                             <IconButton edge="end" aria-label="delete" onClick={() => { deleteGoalkeeperPerformance(gp.id) }}>
                                                 <MdDeleteOutline />
                                             </IconButton>
@@ -147,7 +162,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                                     <Avatar src={gp.goalkeeper.picture}></Avatar>
                                                 </RouterLink>
                                             </ListItemAvatar>
-                                            <ListItemText primary={gp.goalkeeper.name} />
+                                            <ListItemText primary={gp.goalkeeper.name} secondary={gp.attendance} />
                                         </ListItem>
                                         <Divider />
                                     </div>

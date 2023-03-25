@@ -79,12 +79,7 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
                 'Authorization': `bearer ${token}`
             },
             body: JSON.stringify({
-                absent: newTrainingMonitoring.absent,
-                dismissed: newTrainingMonitoring.dismissed,
-                hurt: newTrainingMonitoring.hurt,
-                with_seniors: newTrainingMonitoring.with_seniors,
-                with_national_team: newTrainingMonitoring.with_national_team,
-                comment: newTrainingMonitoring.comment
+                attendance: newTrainingMonitoring.attendance
             })
         });
         const json_data = await data.json();

@@ -1,9 +1,6 @@
 '''Testing the auth endpoints'''
-
 import json
-
 import pytest
-
 from helper import random_string
 
 URL = '/auth'

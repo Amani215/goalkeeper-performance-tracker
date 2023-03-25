@@ -574,9 +574,9 @@
             "type": "frser-sqlite-datasource",
             "uid": "P2D2EEF3E092AF52B"
           },
-          "queryText": "SELECT  g.name as \"Goalkeeper\", COUNT(tp.absent) as \"Number of Absences\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  tm.goalkeeper_id, tm.absent\n  FROM    training_monitoring tm\n          INNER JOIN\n          (\n              SELECT id\n              FROM training_session\n              where date <= date('now') and date>= date('now', '-3 month')\n              ORDER BY \"date\" DESC\n              limit 3\n          ) t ON  tm.session_id = t.id\n)tp ON tp.goalkeeper_id = g.id\nwhere tp.absent=true\ngroup by g.id\nORDER BY COUNT(tp.absent) DESC\nlimit 5",
+          "queryText": "SELECT Goalkeeper, Absences\nFROM (\n  select g.name as \"Goalkeeper\", count(attendance) as \"Absences\" from training_monitoring tm\n  join goalkeeper g on tm.goalkeeper_id = g.id\n  join training_session ts on tm.session_id = ts.id\n  where attendance= 'absent' and ts.date <= date('now') and ts.date >= date('now', '-3 month')\n  group by goalkeeper_id\n)\nORDER BY Absences DESC\nlimit 5\n\n",
           "queryType": "table",
-          "rawQueryText": "SELECT  g.name as \"Goalkeeper\", COUNT(tp.absent) as \"Number of Absences\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  tm.goalkeeper_id, tm.absent\n  FROM    training_monitoring tm\n          INNER JOIN\n          (\n              SELECT id\n              FROM training_session\n              where date <= date('now') and date>= date('now', '-3 month')\n              ORDER BY \"date\" DESC\n              limit 3\n          ) t ON  tm.session_id = t.id\n)tp ON tp.goalkeeper_id = g.id\nwhere tp.absent=true\ngroup by g.id\nORDER BY COUNT(tp.absent) DESC\nlimit 5",
+          "rawQueryText": "SELECT Goalkeeper, Absences\nFROM (\n  select g.name as \"Goalkeeper\", count(attendance) as \"Absences\" from training_monitoring tm\n  join goalkeeper g on tm.goalkeeper_id = g.id\n  join training_session ts on tm.session_id = ts.id\n  where attendance= 'absent' and ts.date <= date('now') and ts.date >= date('now', '-3 month')\n  group by goalkeeper_id\n)\nORDER BY Absences DESC\nlimit 5\n\n",
           "refId": "A",
           "timeColumns": ["time", "ts"]
         }

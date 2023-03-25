@@ -5,21 +5,10 @@ export interface TrainingMonitoringDTO {
   id: string;
   goalkeeper: GoalkeeperDTO;
   session: TrainingDTO;
-  absent: boolean;
-  dismissed: boolean;
-  hurt: boolean;
-  with_seniors: boolean;
-  with_national_team: boolean;
-  training_form: string;
-  comment: string;
+  attendance: string;
 }
 
 export interface UpdateTrainingMonitoringDTO {
   id: string;
-  absent: boolean;
-  dismissed: boolean;
-  hurt: boolean;
-  with_seniors: boolean;
-  with_national_team: boolean;
-  comment: string;
+  attendance: string;
 }

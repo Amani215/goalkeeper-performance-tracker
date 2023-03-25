@@ -3,10 +3,11 @@ import random
 import uuid
 
 import pytest
-from helper import random_date, random_string
+from helper import random_string
 from model.category import Category
 import service.category as category_service
 import service.goalkeeper as goalkeeper_service
+import service.user as user_service
 
 
 def test_add_category(app):
@@ -51,8 +52,8 @@ def test_get_by_name(app):
     ''' Test getting categories by their name '''
     name1 = random_string.generate(12)
     name2 = random_string.generate(12)
-    season1 = str(random.randint(1500, 2500))
-    season2 = str(random.randint(1500, 2500)) + '/' + str(
+    season1: str = str(random.randint(1500, 2500))
+    season2: str = str(random.randint(1500, 2500)) + '/' + str(
         random.randint(1500, 2500))
 
     category_service.add_category(name1, season1)
@@ -74,9 +75,9 @@ def test_get_by_season(app):
     ''' Test getting categories by their season '''
     name1 = random_string.generate(12)
     name2 = random_string.generate(12)
-    season1 = str(random.randint(1500, 2500)) + '/' + str(
+    season1: str = str(random.randint(1500, 2500)) + '/' + str(
         random.randint(1500, 2500))
-    season2 = str(random.randint(1500, 2500)) + '-' + str(
+    season2: str = str(random.randint(1500, 2500)) + '-' + str(
         random.randint(1500, 2500))
 
     category_service.add_category(name1, season1)
@@ -113,3 +114,37 @@ def test_delete_with_relationship(app, goalkeeper, category):
 
     with pytest.raises(PermissionError):
         category_service.delete(category.id)
+
+
+def test_get_trainers(app, user, category):
+    '''Test getting the list of trainers'''
+    trainers = category_service.get_category_trainers(category_id=category.id)
+    assert len(trainers) == 0
+
+    _user = user_service.get_by_username(user['username'])
+    user_service.add_category(user=_user, category=category)
+    trainers = category_service.get_category_trainers(category_id=category.id)
+    assert len(trainers) == 1
+
+    # INVALID INPUT
+    response = category_service.get_category_trainers(
+        category_id=random_string.generate(8))
+    assert 'error' in response
+
+
+def test_get_goalkeepers(app, goalkeeper, category):
+    '''Test getting the list of goalkeepers'''
+    goalkeepers = category_service.get_category_goalkeepers(
+        category_id=category.id)
+    assert len(goalkeepers) == 0
+
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    goalkeeper_service.add_category(goalkeeper=_goalkeeper, category=category)
+    goalkeepers = category_service.get_category_goalkeepers(
+        category_id=category.id)
+    assert len(goalkeepers) == 1
+
+    # INVALID INPUT
+    response = category_service.get_category_goalkeepers(
+        category_id=random_string.generate(8))
+    assert 'error' in response

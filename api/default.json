@@ -33,7 +33,8 @@
   ],
   "action_result": ["Non réussie", "Passif", "Réussie", "Rien à lui reprocher"],
   "attendance": [
-    "A|bsent",
+    "Present",
+    "Absent",
     "Dismissed",
     "Hurt",
     "With Seniors",

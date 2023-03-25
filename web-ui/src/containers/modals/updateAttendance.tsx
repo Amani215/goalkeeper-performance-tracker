@@ -57,13 +57,13 @@ function UpdateAttendance({ tm, modalProp }: PropType) {
                 >
 
                     <FormControl fullWidth sx={{ marginTop: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Category name</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Attendance</InputLabel>
                         <Select
                             required
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={formik.values.attendance}
-                            label="Local"
+                            label="Attendance"
                             onChange={(e) => formik.setFieldValue("attendance", e.target.value)}
                         >
                             {options.map((option) => (

@@ -113,19 +113,14 @@ const trainingColumns: GridColDef[] = [
         }
     },
     {
-        field: 'id',
-        headerName: 'Performance Sheet',
+        field: 'attendance',
+        headerName: 'Attendance',
         flex: 1,
         minWidth: 10,
         align: "center",
         renderCell: (params) => {
             return (
-                <Link
-                    component={RouterLink}
-                    to={`/training-performance/${params.row.id}`}
-                    color="inherit">
-                    <Typography>Link</Typography>
-                </Link>
+                <Typography>{params.row.attendance}</Typography>
             );
         }
     }
@@ -405,8 +400,8 @@ function GoalkeeperDetails() {
                         /> : <></>
                     }
 
-                    {/* TRAININGS */}
-                    <Typography fontWeight="bold" mt={2} mb={1}>Training performances</Typography>
+                    {/* ATTENDANCE */}
+                    <Typography fontWeight="bold" mt={2} mb={1}>Training Attendance</Typography>
                     {trainingRows.length > 0 ?
                         < DataGrid
                             rows={trainingRows || []}

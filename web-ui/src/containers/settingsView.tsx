@@ -116,6 +116,18 @@ function SettingsView() {
                             <SettingsList itemsName="action_result" />
                         </AccordionDetails>
                     </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>Attendance</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="attendance" />
+                        </AccordionDetails>
+                    </Accordion>
                 </Box> :
                 <Typography>User not allowed.</Typography>
             }

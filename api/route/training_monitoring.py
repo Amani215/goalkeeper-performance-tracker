@@ -60,7 +60,7 @@ def get_training_monitorings(current_user: User):
 @training_monitoring_api.route('/training_monitoring', methods=['PUT'])
 @token_required(admin=False)
 def set_param(current_user: User):
-    '''Set the given param(s) to the given value given the training monitoring object ID'''
+    '''Set the attendance to the given value given the training monitoring object ID'''
     try:
         args = request.args
 
@@ -73,16 +73,8 @@ def set_param(current_user: User):
                                                  current_user) == False):
             raise PermissionError('User cannot edit this data.')
 
-        possible_bool_params = [
-            'absent', 'dismissed', 'hurt', 'with_seniors', 'with_national_team'
-        ]
-        for param in possible_bool_params:
-            if param in request.json:
-                response = training_monitoring_service.update_bool_param(
-                    args.get('id'), param, request.json[param])
-        if 'comment' in request.json:
-            response = training_monitoring_service.update_comment(
-                args.get('id'), request.json['comment'])
+        response = training_monitoring_service.update_attendance(
+            args.get('id'), request.json['attendance'])
 
         return response.serialize, 201
     except PermissionError as err:

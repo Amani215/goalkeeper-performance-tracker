@@ -31,5 +31,12 @@
     "Arrêt reflexe (Vitesse gestuelle)",
     "Ballon en profondeur"
   ],
-  "action_result": ["Non réussie", "Passif", "Réussie", "Rien à lui reprocher"]
+  "action_result": ["Non réussie", "Passif", "Réussie", "Rien à lui reprocher"],
+  "attendance": [
+    "absent",
+    "dismissed",
+    "hurt",
+    "with_seniors",
+    "with_national_team"
+  ]
 }

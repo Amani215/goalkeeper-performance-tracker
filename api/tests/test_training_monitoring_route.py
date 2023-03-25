@@ -104,11 +104,7 @@ def test_add_training_monitoring(client, json_headers, goalkeeper,
 @pytest.mark.parametrize(['admin'], [[False]])
 def test_set_param_diff_category(client, json_headers, training_monitoring):
     '''Test setting a param to a training monitoring object when user has no permissions'''
-    assert training_monitoring.hurt == False
-    assert training_monitoring.with_seniors == False
-
-    comment = random_string.generate(100)
-    test_data = {'hurt': True, 'with_seniors': True, 'comment': comment}
+    test_data = {'attendance': random_string.generate(100)}
     response = client.put(ID_URL + str(training_monitoring.id),
                           data=json.dumps(test_data),
                           headers=json_headers)
@@ -131,16 +127,13 @@ def test_set_param_session_category(client, authenticated_user,
         authenticated_user,
         training_monitoring.session.training_session_category)
 
-    comment = random_string.generate(100)
-    test_data = {'hurt': True, 'with_seniors': True, 'comment': comment}
+    test_data = {'attendance': random_string.generate(100)}
     response = client.put(ID_URL + str(training_monitoring.id),
                           data=json.dumps(test_data),
                           headers=headers)
 
     assert response.status_code == 201
-    assert response.json['hurt'] == True
-    assert response.json['with_seniors'] == True
-    assert response.json['comment'] == comment
+    assert response.json['attendance'] == test_data['attendance']
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
@@ -156,13 +149,10 @@ def test_set_param_goalkeeper_category(client, authenticated_user,
     user_service.add_category(authenticated_user,
                               training_monitoring.goalkeeper.categories[0])
 
-    comment = random_string.generate(100)
-    test_data = {'hurt': True, 'with_seniors': True, 'comment': comment}
+    test_data = {'attendance': random_string.generate(100)}
     response = client.put(ID_URL + str(training_monitoring.id),
                           data=json.dumps(test_data),
                           headers=headers)
 
     assert response.status_code == 201
-    assert response.json['hurt'] == True
-    assert response.json['with_seniors'] == True
-    assert response.json['comment'] == comment
+    assert response.json['attendance'] == test_data['attendance']

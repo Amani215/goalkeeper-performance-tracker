@@ -37,21 +37,10 @@ def get_by_id(id: str):
         return {'error': str(err)}
 
 
-def update_bool_param(training_monitoring_id: str, param_name: str,
-                      param_value: bool):
-    '''Update a boolean param'''
+def update_attendance(training_monitoring_id: str, attendance: str):
+    '''Update the attendance'''
     training_monitoring_obj = get_by_id(training_monitoring_id)
-
-    training_monitoring_obj.__setattr__(param_name, param_value)
-
-    db.session.commit()
-    return training_monitoring_obj
-
-
-def update_comment(training_monitoring_id: str, comment: str):
-    '''Update the comment'''
-    training_monitoring_obj = get_by_id(training_monitoring_id)
-    training_monitoring_obj.comment = comment
+    training_monitoring_obj.attendance = attendance
 
     db.session.commit()
     return training_monitoring_obj

@@ -20,12 +20,7 @@ class training_monitoring(db.Model):
                                  back_populates="training_performances",
                                  foreign_keys=[goalkeeper_id])
 
-    absent = Column(Boolean, unique=False, default=False)
-    dismissed = Column(Boolean, unique=False, default=False)
-    hurt = Column(Boolean, unique=False, default=False)
-    with_seniors = Column(Boolean, unique=False, default=False)
-    with_national_team = Column(Boolean, unique=False, default=False)
-    comment = Column(String(128), unique=False, nullable=True)
+    attendance = Column(String(128), unique=False, nullable=True)
 
     def __init__(self, goalkeeper, session):
         self.goalkeeper = goalkeeper
@@ -38,10 +33,5 @@ class training_monitoring(db.Model):
             'id': self.id,
             'goalkeeper': self.goalkeeper.serialize,
             'session': self.session.serialize,
-            'absent': self.absent,
-            'dismissed': self.dismissed,
-            'hurt': self.hurt,
-            'with_seniors': self.with_seniors,
-            'with_national_team': self.with_national_team,
-            'comment': self.comment
+            'attendance': self.attendance
         }

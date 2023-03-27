@@ -14,6 +14,7 @@ TEAMS_URL = '/match/teams'
 DATE_URL = '/match/date'
 ID_URL = '/match?id='
 PERFORMANCES_URL = '/match/performances?id='
+SCORE_URL = '/match/score?id='
 
 
 def test_no_token(client):
@@ -395,4 +396,21 @@ def test_delete_with_relationship(client, json_headers, match, goalkeeper):
 @pytest.mark.parametrize(['admin'], [[True]])
 def test_set_scores(client, json_headers, match):
     '''Test setting the match scores'''
-    pass
+    mid = match.id
+
+    # NO ID
+    test_json = {'score_local': 2, 'score_visitor': 1}
+    response = client.put(SCORE_URL,
+                          data=json.dumps(test_json),
+                          headers=json_headers)
+    assert response.status_code == 400
+    assert 'error' in response.json
+
+    # VALID
+    test_json = {'score_local': 2, 'score_visitor': 1}
+    response = client.put(SCORE_URL + mid,
+                          data=json.dumps(test_json),
+                          headers=json_headers)
+    assert response.status_code == 201
+    assert response.json['score_local'] == 2
+    assert response.json['score_visitor'] == 1

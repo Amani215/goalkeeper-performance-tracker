@@ -13,6 +13,8 @@ import service.user as user_service
 URL = '/goalkeeper'
 PICTURE_URL = '/goalkeeper/picture'
 CATEGORY_URL = '/goalkeeper/category'
+MATCH_URL = '/goalkeeper/match_performances'
+TRAINING_URL = '/goalkeeper/training_performances'
 NAME_URL = '/goalkeeper?name='
 PIC = 'tests/assets/image.jpeg'
 
@@ -158,16 +160,22 @@ def test_add_remove_category(client, json_headers, goalkeeper):
     }
     category_service.add_category(test_category['name'],
                                   test_category['season'])
-    response = client.get(NAME_URL + goalkeeper['name'], headers=json_headers)
+    _goalkeeper = client.get(NAME_URL + goalkeeper['name'],
+                             headers=json_headers)
 
     test_data = {
-        'goalkeeper_id': response.json['id'],
+        'goalkeeper_id': _goalkeeper.json['id'],
         'category_id': test_category['name'] + str(test_category['season'])
     }
     response = client.put(CATEGORY_URL,
                           data=json.dumps(test_data),
                           headers=json_headers)
     assert response.status_code == 201
+
+    categories = client.get(CATEGORY_URL + '?id=' + _goalkeeper.json['id'],
+                            headers=json_headers)
+    assert categories.status_code == 200
+    assert len(categories.json) == 1
 
     ### DELETE
     response = client.delete(CATEGORY_URL,
@@ -208,3 +216,51 @@ def test_add_picture(client, authenticated_user, goalkeeper, category):
     response = client.put(url, data=test_data, headers=headers)
     assert response.status_code == 200
     assert 'url' in response.json
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_get_categories(client, goalkeeper, json_headers):
+    '''Test getting the goalkeeper's categories'''
+    _goalkeeper = client.get(NAME_URL + goalkeeper['name'],
+                             headers=json_headers)
+    categories = client.get(CATEGORY_URL + '?id=' + _goalkeeper.json['id'],
+                            headers=json_headers)
+    assert categories.status_code == 200
+    assert len(categories.json) == 0
+
+    categories = client.get(CATEGORY_URL, headers=json_headers)
+    assert categories.status_code == 400
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_get_match_performances(client, goalkeeper, json_headers):
+    '''Test getting the goalkeeper's match performances'''
+    _goalkeeper = client.get(NAME_URL + goalkeeper['name'],
+                             headers=json_headers)
+    matches = client.get(MATCH_URL + '?id=' + _goalkeeper.json['id'],
+                         headers=json_headers)
+    assert matches.status_code == 200
+    assert len(matches.json) == 0
+
+    # MISSING ID
+    matches = client.get(MATCH_URL, headers=json_headers)
+    assert matches.status_code == 400
+    assert 'error' in matches.json
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_get_training_performances(client, goalkeeper, training_session,
+                                   json_headers):
+    '''Test getting the goalkeeper's training performances'''
+    _goalkeeper = client.get(NAME_URL + goalkeeper['name'],
+                             headers=json_headers)
+
+    trainings = client.get(TRAINING_URL + '?id=' + _goalkeeper.json['id'],
+                           headers=json_headers)
+    assert trainings.status_code == 200
+    assert len(trainings.json) == 0
+
+    # MISSING ID
+    trainings = client.get(TRAINING_URL, headers=json_headers)
+    assert trainings.status_code == 400
+    assert 'error' in trainings.json

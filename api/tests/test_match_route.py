@@ -197,6 +197,11 @@ def test_set_get_category(client, json_headers, category):
                           headers=json_headers)
     assert response.json['id'] == _category['name'] + str(_category['season'])
 
+    # NO ID
+    response = client.get(CATEGORY_URL, headers=json_headers)
+    assert response.status_code == 400
+    assert 'error' in response.json
+
 
 @pytest.mark.parametrize(['admin'], [[True]])
 def test_set_teams_bad_json(client, json_headers):
@@ -310,13 +315,51 @@ def test_set_match_type(client, json_headers, match):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
+def test_get_match_performances(client, json_headers, match, goalkeeper):
+    '''Test getting the match goalkeeper performances'''
+    mid = match.id
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+
+    # VALID
+    performances = client.get(PERFORMANCES_URL + mid, headers=json_headers)
+    assert performances.status_code == 200
+    assert len(performances.json) == 0
+
+    test_json = {'goalkeeper_id': _goalkeeper.id, 'match_id': mid}
+    client.post('match_monitoring',
+                data=json.dumps(test_json),
+                headers=json_headers)
+    performances = client.get(PERFORMANCES_URL + mid, headers=json_headers)
+    assert performances.status_code == 200
+    assert len(performances.json) == 1
+
+    # NO ID
+    performances = client.get(PERFORMANCES_URL, headers=json_headers)
+    assert performances.status_code == 400
+    assert 'error' in performances.json
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
 def test_delete_match_performance(client, json_headers, match_monitoring):
     '''Test deleting a goalkeeper performance'''
+    mid = match_monitoring.match_id
     test_data = {'goalkeeper_performance_id': str(match_monitoring.id)}
-    response = client.delete(PERFORMANCES_URL + match_monitoring.match_id,
+
+    # VALID TEST
+    response = client.delete(PERFORMANCES_URL + mid,
                              data=json.dumps(test_data),
                              headers=json_headers)
     assert response.status_code == 204
+
+    # NO ID
+    response = client.delete(PERFORMANCES_URL,
+                             data=json.dumps(test_data),
+                             headers=json_headers)
+    assert response.status_code == 400
+
+    # NO DATA
+    response = client.delete(PERFORMANCES_URL + mid, headers=json_headers)
+    assert response.status_code == 400
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
@@ -329,6 +372,10 @@ def test_delete_match(client, json_headers, match):
 
     response = client.get(URL + '?id=' + match_id, headers=json_headers)
     assert "error" in response.json
+
+    # NO ID
+    response = client.delete(URL, headers=json_headers)
+    assert response.status_code == 400
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
@@ -343,3 +390,9 @@ def test_delete_with_relationship(client, json_headers, match, goalkeeper):
 
     response = client.delete(URL + '?id=' + match.id, headers=json_headers)
     assert response.status_code == 401
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_set_scores(client, json_headers, match):
+    '''Test setting the match scores'''
+    pass

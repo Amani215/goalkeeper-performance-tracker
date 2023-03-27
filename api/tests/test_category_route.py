@@ -6,6 +6,8 @@ from helper import random_string
 from tests.conftest import content_type
 
 URL = '/category'
+TRAINERS_URL = '/category/trainers?id='
+GOALKEEPERS_URL = '/category/goalkeepers?id='
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
@@ -120,6 +122,12 @@ def test_delete_category(client, json_headers, category):
     '''Test deleting a category'''
     category_id = category.id
 
+    # NO ID
+    response = client.get(URL + '?id=', headers=json_headers)
+    assert response.status_code == 400
+    assert "error" in response.json
+
+    # VALID
     response = client.delete(URL + '?id=' + category_id, headers=json_headers)
     assert response.status_code == 204
 
@@ -143,3 +151,77 @@ def test_delete_with_relationship(client, authenticated_user, category):
 
     response = client.delete(URL + '?id=' + category.id, headers=headers)
     assert response.status_code == 401
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_get_trainers(client, user, json_headers):
+    '''Test getting the category trainers'''
+    # NO ID
+    trainers = client.get(TRAINERS_URL, headers=json_headers)
+    assert trainers.status_code == 400
+    assert 'error' in trainers.json
+
+    # VALID
+    test_json = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500, 2500)
+    }
+    category = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
+
+    trainers = client.get(TRAINERS_URL + category.json['id'],
+                          headers=json_headers)
+    assert trainers.status_code == 200
+    assert len(trainers.json) == 0
+
+    _user = client.get('/user?username=' + user['username'],
+                       headers=json_headers)
+    test_json = {
+        'trainer_id': _user.json['id'],
+        'category_id': category.json['id']
+    }
+    client.put('/user/category',
+               data=json.dumps(test_json),
+               headers=json_headers)
+    trainers = client.get(TRAINERS_URL + category.json['id'],
+                          headers=json_headers)
+    assert trainers.status_code == 200
+    assert len(trainers.json) == 1
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_get_goalkeepers(client, goalkeeper, json_headers):
+    '''Test getting the category goalkeepers'''
+    # NO ID
+    goalkeepers = client.get(GOALKEEPERS_URL, headers=json_headers)
+    assert goalkeepers.status_code == 400
+    assert 'error' in goalkeepers.json
+
+    # VALID
+    test_json = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500, 2500)
+    }
+    category = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
+
+    goalkeepers = client.get(GOALKEEPERS_URL + category.json['id'],
+                             headers=json_headers)
+    assert goalkeepers.status_code == 200
+    assert len(goalkeepers.json) == 0
+
+    _goalkeeper = client.get('/goalkeeper?name=' + goalkeeper['name'],
+                             headers=json_headers)
+    test_json = {
+        'goalkeeper_id': _goalkeeper.json['id'],
+        'category_id': category.json['id']
+    }
+    client.put('/goalkeeper/category',
+               data=json.dumps(test_json),
+               headers=json_headers)
+    goalkeepers = client.get(GOALKEEPERS_URL + category.json['id'],
+                             headers=json_headers)
+    assert goalkeepers.status_code == 200
+    assert len(goalkeepers.json) == 1

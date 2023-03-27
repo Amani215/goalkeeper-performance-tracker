@@ -5,7 +5,7 @@ Flask==2.2
 Flask-WTF==1.0.1
 
 # For ORM in Postgress
-psycopg2-binary==2.8.4
+# psycopg2-binary==2.8.4
 Flask-SQLAlchemy==3.0.2
 
 # For redis

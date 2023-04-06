@@ -29,6 +29,7 @@ def create_app():
     from route.goalkeeper import goalkeeper_api
     from route.match import match_api
     from route.match_monitoring import match_monitoring_api
+    from route.match_sequence import match_sequence_api
     from route.training_session import training_session_api
     from route.training_monitoring import training_monitoring_api
     from route.growth_monitoring import growth_monitoring_api
@@ -41,6 +42,7 @@ def create_app():
     app.register_blueprint(goalkeeper_api)
     app.register_blueprint(match_api)
     app.register_blueprint(match_monitoring_api)
+    app.register_blueprint(match_sequence_api)
     app.register_blueprint(training_session_api)
     app.register_blueprint(training_monitoring_api)
     app.register_blueprint(growth_monitoring_api)

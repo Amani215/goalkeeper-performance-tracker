@@ -6,17 +6,10 @@ from model.user import User
 from service.match_monitoring import get_by_id as get_performance_by_id, editable as editable_performance
 
 
-def add_match_sequence(match_performance_id: str,
-                       sequence_number=0,
-                       action_type='',
-                       reaction_type='',
-                       action_result='',
-                       comment=''):
+def add_match_sequence(match_performance_id: str):
     '''Add a match sequence'''
     match_performance = get_performance_by_id(match_performance_id)
-    new_match_sequence = match_sequence(match_performance, sequence_number,
-                                        action_type, reaction_type,
-                                        action_result, comment)
+    new_match_sequence = match_sequence(match_performance)
 
     db.session.add(new_match_sequence)
     db.session.commit()

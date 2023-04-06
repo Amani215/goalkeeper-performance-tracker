@@ -20,19 +20,8 @@ class match_sequence(db.Model):
     action_result = Column(String(128), unique=False, default="")
     comment = Column(String(128), unique=False, default="")
 
-    def __init__(self,
-                 match_performance,
-                 sequence_number=0,
-                 action_type='',
-                 reaction_type='',
-                 action_result='',
-                 comment=''):
+    def __init__(self, match_performance):
         self.match_performance = match_performance
-        self.sequence_number = sequence_number
-        self.action_type = action_type
-        self.reaction_type = reaction_type
-        self.action_result = action_result
-        self.comment = comment
 
     @property
     def serialize(self):

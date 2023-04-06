@@ -8,6 +8,7 @@ from app import create_app
 from config import db
 from config.s3 import s3_client, s3_resource
 from helper import random_string, random_date
+from service.match_sequence import add_match_sequence
 import service.category as category_service
 import service.user as user_service
 import service.goalkeeper as goalkeeper_service
@@ -159,6 +160,12 @@ def match_monitoring(goalkeeper, match):
     match_monitoring_obj = match_monitoring_service.add_match_monitoring(
         str(_goalkeeper.id), match.id)
     return match_monitoring_obj
+
+
+@pytest.fixture()
+def match_sequence(match_monitoring):
+    ms = add_match_sequence(match_monitoring.id)
+    return ms
 
 
 @pytest.fixture()

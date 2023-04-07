@@ -87,6 +87,11 @@ def delete(current_user: User):
     try:
         args = request.args
 
+        ms = match_sequence_service.get_by_id(args.get("id"))
+
+        if (match_sequence_service.editable(ms, current_user) == False):
+            raise PermissionError('User cannot edit this data.')
+
         match_sequence_service.delete(args.get('id'))
         return {}, 204
     except PermissionError as err:

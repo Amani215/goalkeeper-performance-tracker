@@ -15,6 +15,7 @@ def add_training_monitoring(goalkeeper_id: str, session_id: str):
     session = training_session_service.get_by_id(session_id)
 
     training_monitoring_obj = training_monitoring(goalkeeper, session)
+    training_monitoring_obj.attendance_time = session.duration
 
     db.session.add(training_monitoring_obj)
     db.session.commit()
@@ -41,6 +42,17 @@ def update_attendance(training_monitoring_id: str, attendance: str):
     '''Update the attendance'''
     training_monitoring_obj = get_by_id(training_monitoring_id)
     training_monitoring_obj.attendance = attendance
+    if attendance.upper() == 'ABSENT':
+        training_monitoring_obj.attendance_time = 0
+
+    db.session.commit()
+    return training_monitoring_obj
+
+
+def update_attendance_time(training_monitoring_id: str, attendance_time: int):
+    '''Update the attendance timme'''
+    training_monitoring_obj = get_by_id(training_monitoring_id)
+    training_monitoring_obj.attendance_time = attendance_time
 
     db.session.commit()
     return training_monitoring_obj

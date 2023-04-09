@@ -1,6 +1,6 @@
 """imports"""
 from uuid import uuid4
-from sqlalchemy import Column, String, Boolean
+from sqlalchemy import Column, String, Integer
 from config import db
 
 
@@ -21,6 +21,7 @@ class training_monitoring(db.Model):
                                  foreign_keys=[goalkeeper_id])
 
     attendance = Column(String(128), unique=False, nullable=True)
+    attendance_time = Column(Integer, unique=False, default=0)
 
     def __init__(self, goalkeeper, session):
         self.goalkeeper = goalkeeper
@@ -33,5 +34,6 @@ class training_monitoring(db.Model):
             'id': self.id,
             'goalkeeper': self.goalkeeper.serialize,
             'session': self.session.serialize,
-            'attendance': self.attendance
+            'attendance': self.attendance,
+            'attendance_time': self.attendance_time
         }

@@ -149,10 +149,15 @@ def test_set_param_goalkeeper_category(client, authenticated_user,
     user_service.add_category(authenticated_user,
                               training_monitoring.goalkeeper.categories[0])
 
-    test_data = {'attendance': random_string.generate(100)}
+    # VALID
+    test_data = {
+        'attendance': random_string.generate(100),
+        'attendance_time': random.randint(0, 200)
+    }
     response = client.put(ID_URL + str(training_monitoring.id),
                           data=json.dumps(test_data),
                           headers=headers)
 
     assert response.status_code == 201
     assert response.json['attendance'] == test_data['attendance']
+    assert response.json['attendance_time'] == test_data['attendance_time']

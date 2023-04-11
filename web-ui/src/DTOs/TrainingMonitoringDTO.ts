@@ -6,9 +6,11 @@ export interface TrainingMonitoringDTO {
   goalkeeper: GoalkeeperDTO;
   session: TrainingDTO;
   attendance: string;
+  attendance_time: string;
 }
 
 export interface UpdateTrainingMonitoringDTO {
   id: string;
   attendance: string;
+  attendance_time: string;
 }

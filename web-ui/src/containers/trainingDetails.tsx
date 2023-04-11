@@ -6,7 +6,7 @@ import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrain
 import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { ModalProp } from '../interfaces/modalProp';
-import { useTrainingPerformanceUpdated, useUpdateTrainingPerformance } from '../contexts/trainingPerformanceContext';
+import { useTrainingPerformanceUpdated } from '../contexts/trainingPerformanceContext';
 import UpdateAttendance from './modals/updateAttendance';
 
 
@@ -72,14 +72,6 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
 
     // const updateAttendanceContext = useUpdateTrainingPerformance()
     const attendanceUpdated = useTrainingPerformanceUpdated()
-    // const updateAttendance = (gpId: string) => {
-    //     if (updateAttendanceContext) {
-    //         updateAttendanceContext({
-    //             id: gpId,
-    //             attendance: 'present'
-    //         })
-    //     }
-    // }
 
     const handleOpenUpdateModal = (tm: TrainingMonitoringDTO) => {
         setGoalkeeperToUpdate(tm)
@@ -193,7 +185,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                                     <Avatar src={gp.goalkeeper.picture}></Avatar>
                                                 </RouterLink>
                                             </ListItemAvatar>
-                                            <ListItemText primary={gp.goalkeeper.name} secondary={gp.attendance} />
+                                            <ListItemText primary={gp.goalkeeper.name} secondary={`${gp.attendance} - ${gp.attendance_time}`} />
                                         </ListItem>
                                         <Divider />
                                     </div>

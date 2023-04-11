@@ -20,7 +20,10 @@ class training_monitoring(db.Model):
                                  back_populates="training_performances",
                                  foreign_keys=[goalkeeper_id])
 
-    attendance = Column(String(128), unique=False, nullable=True)
+    attendance = Column(String(128),
+                        unique=False,
+                        nullable=True,
+                        default='Present')
     attendance_time = Column(Integer, unique=False, default=0)
 
     def __init__(self, goalkeeper, session):

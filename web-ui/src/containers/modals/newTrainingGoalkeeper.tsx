@@ -1,7 +1,6 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGoalkeepers, useGoalkeepersReady } from '../../contexts/goalkeepersContext';
 import { useNewTrainingGoalkeeper } from '../../contexts/trainingContext';

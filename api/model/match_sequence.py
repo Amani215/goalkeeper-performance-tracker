@@ -28,7 +28,7 @@ class match_sequence(db.Model):
         """Return object data in easily serializable format"""
         return {
             'id': self.id,
-            'match_performance': self.match_performance.serialize,
+            'match_performance_id': self.match_performance_id,
             'sequence_number': self.sequence_number,
             'action_type': self.action_type,
             'reaction_type': self.reaction_type,

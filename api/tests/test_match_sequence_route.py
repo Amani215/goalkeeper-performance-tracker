@@ -9,6 +9,7 @@ from tests.conftest import content_type
 
 URL = '/match_sequence'
 ID_URL = '/match_sequence?id='
+MMID_URL = '/match_sequence?mmid='
 
 NO_DATA_PROVIDED = 'No data was provided'
 
@@ -51,6 +52,15 @@ def test_get_by_id(client, json_headers, match_sequence):
     response = client.get(ID_URL + str(uuid.uuid4), headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_get_by_mmid(client, json_headers, match_sequence):
+    '''Test getting by match monitoring ID'''
+    mmid = match_sequence.match_performance_id
+    response = client.get(MMID_URL + mmid, headers=json_headers)
+    assert response.status_code == 200
+    assert sum(1 for _ in range(len(response.json))) == 1
 
 
 @pytest.mark.parametrize(['admin'], [[False]])

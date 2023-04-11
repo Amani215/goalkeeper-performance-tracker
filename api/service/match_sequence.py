@@ -26,6 +26,16 @@ def get_by_id(id: str):
         return {'error': str(err)}
 
 
+def get_by_mmid(mmid: str):
+    '''Get match sequences corresponding to the match monitoring ID'''
+    try:
+        ms: match_sequence = match_sequence.query.filter_by(
+            match_performance_id=mmid).all()
+        return ms
+    except SQLAlchemyError as err:
+        return {'error': str(err)}
+
+
 def update_param(match_sequence_id: str, param_name: str, param_value):
     '''Set the param to the given value'''
     ms = get_by_id(match_sequence_id)

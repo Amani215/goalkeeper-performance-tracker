@@ -34,11 +34,16 @@ def get_match_sequence(current_user: User):
     try:
         args = request.args
 
-        if args.get('id') is None:
+        if args.get('id') is None and args.get('mmid') is None:
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+        if args.get('id') is not None:
+            return match_sequence_service.get_by_id(args.get('id')).serialize
+        elif args.get('mmid') is not None:
+            ms = match_sequence_service.get_by_mmid(args.get('mmid'))
+            return jsonify([i.serialize for i in ms])
+        else:
+            return {}, 404
 
-        ms = match_sequence_service.get_by_id(args.get('id'))
-        return ms.serialize
     except PermissionError as err:
         return {'error': str(err)}, 401
     except Exception as err:

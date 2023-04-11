@@ -15,6 +15,13 @@ def test_get_by_id(app, match_sequence):
     assert ms.id == match_sequence.id
 
 
+def test_get_by_mmid(app, match_sequence):
+    '''Test get match sequences corresponding to the match monitoring ID'''
+    ms = match_sequence_service.get_by_mmid(
+        match_sequence.match_performance_id)
+    assert len(ms) == 1
+
+
 def test_update_param(app, match_sequence):
     '''Test updating a param of a sequence'''
     new_comment = random_string.generate(10)

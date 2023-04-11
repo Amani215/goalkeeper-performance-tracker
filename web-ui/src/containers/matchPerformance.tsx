@@ -4,10 +4,12 @@ import { IoFootball } from 'react-icons/io5';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import MatchFeedback from '../components/matchFeedback'
 import { useGoalkeeperCategories, useGoalkeeperCategoriesReady } from '../contexts/goalkeeperContext';
-import { useGetMatchPerformance, useMatchPerformanceError, useMatchPerformanceReady } from '../contexts/matchPerformanceContext';
+import { useGetMatchPerformance, useGetMatchSequences, useMatchPerformanceError, useMatchPerformanceReady, useMatchSequences } from '../contexts/matchPerformanceContext';
 import { CategoryDTO } from '../DTOs';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { ModalProp } from '../interfaces/modalProp';
+import { MatchSequenceDTO } from '../DTOs/MatchSequenceDTO';
+import SequencesList from '../components/sequencesList';
 
 function MatchPerformance({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
@@ -23,6 +25,10 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
     const [categories, setCategories] = useState<CategoryDTO[]>([])
     const goalkeeperCategoriesContext = useGoalkeeperCategories()
     const goalkeeperCategoriesReady = useGoalkeeperCategoriesReady()
+
+    const [sequences, setSequences] = useState<MatchSequenceDTO[]>([])
+    const matchSequencesContext = useGetMatchSequences()
+    const matchSequences = useMatchSequences()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -49,6 +55,16 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
             })
         }
     }, [loaded, matchPerformanceReady, matchPerformanceError, id, goalkeeperCategoriesReady])
+
+    useEffect(() => {
+        if (matchSequencesContext) {
+            matchSequencesContext(id ? id : "").then(
+                data => {
+                    setSequences(data as MatchSequenceDTO[])
+                }
+            )
+        }
+    }, [loaded, matchPerformanceError, matchSequences])
 
     return (
         <>
@@ -81,10 +97,11 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
             </Box>
 
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 12, md: 12 }}>
-                <Grid item xs={4} sm={8} md={8} order={{ xs: 2, sm: 2, md: 2 }}>
+                <Grid item xs={4} sm={6} md={6} order={{ xs: 2, sm: 2, md: 2 }}>
                     <MatchFeedback matchPerformance={matchPerformance} setModalIsOpen={setModalIsOpen} />
                 </Grid>
-                <Grid item xs={4} sm={4} md={4} order={{ xs: 1, sm: 1, md: 1 }}>
+                <Grid item xs={4} sm={6} md={6} order={{ xs: 1, sm: 1, md: 1 }}>
+                    {/* GOALKEEPER SECTION */}
                     <Box
                         component={RouterLink}
                         to={`/goalkeepers/${matchPerformance ? matchPerformance.goalkeeper?.id : ""}`}
@@ -112,7 +129,7 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
                     </Box>
                     <Box
                         display="flex"
-                        flexDirection="column"
+                        flexDirection="row"
                         justifyContent="center"
                         alignItems="center">
                         {categories.length > 0 ?
@@ -137,6 +154,9 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
                                 No associated categories yet.
                             </Box>}
                     </Box>
+
+                    {/* MATCH SEQUENCES SECTION */}
+                    <SequencesList sequences={sequences} />
                 </Grid>
             </Grid>
         </>

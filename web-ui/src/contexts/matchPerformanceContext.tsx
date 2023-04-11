@@ -2,6 +2,7 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { MatchMonitoringDTO, UpdateMatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
+import { MatchSequenceDTO } from '../DTOs/MatchSequenceDTO';
 
 // GET MATCH PERFORMANCE CONTEXTS
 type MatchPerformanceDelegate = (id: string) => Promise<MatchMonitoringDTO | errorResponse>;
@@ -37,10 +38,23 @@ export function useMatchPerformanceUpdated() {
     return useContext(matchPerformanceUpdatedContext);
 }
 
+// GET MATCH SEQUENCES
+type MatchSequencesDelegate = (id: string) => Promise<MatchSequenceDTO[] | errorResponse>;
+const getMatchSequencesContext = createContext<MatchSequencesDelegate | null>(null);
+export function useGetMatchSequences() {
+    return useContext(getMatchSequencesContext);
+}
+
+const matchSequencesContext = createContext<MatchSequenceDTO[] | null>(null)
+export function useMatchSequences() {
+    return useContext(matchSequencesContext);
+}
+
 // PROVIDER
 export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
     const [matchPerformance, setMatchPerformance] = useState<MatchMonitoringDTO | null>(null)
+    const [matchSequences, setMatchSequences] = useState<MatchSequenceDTO[] | null>(null)
     const [matchPerformanceReady, setMatchPerformanceReady] = useState<boolean>(false)
     const [matchPerformanceUpdated, setMatchPerformanceUpdated] = useState<boolean>(false)
 
@@ -113,6 +127,29 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
             return json_data as errorResponse;
         }
     }
+
+    const getMatchSequences: MatchSequencesDelegate = async (id: string) => {
+        id = matchPerformance ? matchPerformance.id : ""
+        const data = await fetch("/api/match_sequence?mmid=" + id, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        });
+        const json_data = await data.json();
+        if ('error' in json_data) {
+            setError(true);
+            setMatchSequences(null)
+            return json_data as errorResponse;
+        }
+        else {
+            setError(false);
+            setMatchSequences(json_data as MatchSequenceDTO[])
+            return json_data as MatchSequenceDTO[];
+        }
+    }
+
     return (
         <getMatchPerformanceContext.Provider value={getMatchPerformance}>
             <matchPerformanceContext.Provider value={matchPerformance}>
@@ -120,7 +157,11 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
                     <matchPerformanceReadyContext.Provider value={matchPerformanceReady}>
                         <updateMatchPerformanceContext.Provider value={updateMatchPerformance}>
                             <matchPerformanceUpdatedContext.Provider value={matchPerformanceUpdated}>
-                                {props.children}
+                                <getMatchSequencesContext.Provider value={getMatchSequences}>
+                                    <matchSequencesContext.Provider value={matchSequences}>
+                                        {props.children}
+                                    </matchSequencesContext.Provider>
+                                </getMatchSequencesContext.Provider>
                             </matchPerformanceUpdatedContext.Provider>
                         </updateMatchPerformanceContext.Provider>
                     </matchPerformanceReadyContext.Provider>

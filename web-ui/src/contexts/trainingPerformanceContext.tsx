@@ -2,7 +2,6 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { TrainingMonitoringDTO, UpdateTrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
-import React from 'react'
 
 // GET TRAINING PERFORMANCE CONTEXTS
 type TrainingPerformanceDelegate = (id: string) => Promise<TrainingMonitoringDTO | errorResponse>;
@@ -79,7 +78,8 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
                 'Authorization': `bearer ${token}`
             },
             body: JSON.stringify({
-                attendance: newTrainingMonitoring.attendance
+                attendance: newTrainingMonitoring.attendance,
+                attendance_time: newTrainingMonitoring.attendance_time
             })
         });
         const json_data = await data.json();

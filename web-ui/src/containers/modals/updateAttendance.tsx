@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { ModalProp } from '../../interfaces/modalProp'
@@ -23,11 +23,12 @@ function UpdateAttendance({ tm, modalProp }: PropType) {
         }
     }, [paramsContext])
 
-    const handleSubmit = async ({ attendance }: FormikValues) => {
+    const handleSubmit = async ({ attendance, attendanceTime }: FormikValues) => {
         if (updateAttendance != null) {
             updateAttendance({
                 id: tm ? tm.id : "",
-                attendance: attendance
+                attendance: attendance,
+                attendance_time: attendanceTime
             }).then(() => modalProp.setModalIsOpen())
         }
     };
@@ -35,9 +36,20 @@ function UpdateAttendance({ tm, modalProp }: PropType) {
     const formik = useFormik({
         initialValues: {
             attendance: tm ? tm.attendance : "",
+            attendanceTime: tm ? tm.attendance_time : 0
         },
         onSubmit: handleSubmit
     })
+
+    useEffect(() => {
+        if (tm) {
+            formik.setValues({
+                attendance: tm.attendance,
+                attendanceTime: tm.attendance_time
+            }
+            );
+        }
+    }, [tm]);
 
     return (
         <Modal
@@ -71,6 +83,21 @@ function UpdateAttendance({ tm, modalProp }: PropType) {
                             ))}
                         </Select>
                     </FormControl>
+
+                    <TextField
+                        margin="normal"
+                        size="small"
+                        required
+                        fullWidth
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                        id="attendanceTime"
+                        label="Attendance Time"
+                        name="attendanceTime"
+                        autoComplete="attendanceTime"
+                        value={formik.values.attendanceTime}
+                        onChange={formik.handleChange}
+                        autoFocus
+                    />
 
                     <Button
                         type="submit"

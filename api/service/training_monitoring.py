@@ -54,6 +54,9 @@ def update_attendance_time(training_monitoring_id: str, attendance_time: int):
     training_monitoring_obj = get_by_id(training_monitoring_id)
     training_monitoring_obj.attendance_time = attendance_time
 
+    if training_monitoring_obj.attendance.upper() == 'ABSENT':
+        training_monitoring_obj.attendance_time = 0
+
     db.session.commit()
     return training_monitoring_obj
 

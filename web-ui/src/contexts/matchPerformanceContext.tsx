@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react'
+import React, { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { MatchMonitoringDTO, UpdateMatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
@@ -38,6 +38,13 @@ export function useMatchPerformanceUpdated() {
     return useContext(matchPerformanceUpdatedContext);
 }
 
+// ADD MATCH SEQUENCE
+type NewMatchSequencesDelegate = (id: string) => Promise<null>;
+const addMatchSequenceContext = createContext<NewMatchSequencesDelegate | null>(null);
+export function useAddMatchSequences() {
+    return useContext(addMatchSequenceContext);
+}
+
 // GET MATCH SEQUENCES
 type MatchSequencesDelegate = (id: string) => Promise<MatchSequenceDTO[] | errorResponse>;
 const getMatchSequencesContext = createContext<MatchSequencesDelegate | null>(null);
@@ -50,6 +57,25 @@ export function useMatchSequences() {
     return useContext(matchSequencesContext);
 }
 
+const matchSequencesReadyContext = createContext<boolean>(false);
+export function useMatchSequencesReady() {
+    return useContext(matchSequencesReadyContext);
+}
+
+// UPDATE MATCH SEQUENCE
+
+// DELETE MATCH SEQUENCE
+type DeleteMatchSequencesDelegate = (id: string) => Promise<null>;
+const deleteMatchSequenceContext = createContext<DeleteMatchSequencesDelegate | null>(null);
+export function useDeleteMatchSequence() {
+    return useContext(deleteMatchSequenceContext);
+}
+
+const matchSequencesUpdatedContext = createContext<boolean>(false);
+export function useMatchSequencesUpdated() {
+    return useContext(matchSequencesUpdatedContext);
+}
+
 // PROVIDER
 export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
@@ -57,6 +83,9 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
     const [matchSequences, setMatchSequences] = useState<MatchSequenceDTO[] | null>(null)
     const [matchPerformanceReady, setMatchPerformanceReady] = useState<boolean>(false)
     const [matchPerformanceUpdated, setMatchPerformanceUpdated] = useState<boolean>(false)
+
+    const [sequencesUpdated, setSequencesUpdated] = useState<boolean>(false)
+    const [sequencesReady, setSequencesReady] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -128,7 +157,31 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
         }
     }
 
+    const addSequence: NewMatchSequencesDelegate = async (id: string) => {
+        setError(false)
+        return fetch("/api/match_sequence", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                'match_performance_id': id
+            })
+        })
+            .then(data => {
+                if (data.status == 201) {
+                    setSequencesUpdated(true)
+                } else {
+                    setSequencesUpdated(false)
+                    setError(true)
+                }
+                return null
+            })
+    }
+
     const getMatchSequences: MatchSequencesDelegate = async (id: string) => {
+        setSequencesReady(false);
         id = matchPerformance ? matchPerformance.id : ""
         const data = await fetch("/api/match_sequence?mmid=" + id, {
             method: "GET",
@@ -141,32 +194,99 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
         if ('error' in json_data) {
             setError(true);
             setMatchSequences(null)
+            setSequencesUpdated(false)
             return json_data as errorResponse;
         }
         else {
             setError(false);
+            setSequencesReady(true);
+            setSequencesUpdated(false)
             setMatchSequences(json_data as MatchSequenceDTO[])
             return json_data as MatchSequenceDTO[];
         }
     }
 
+    const deleteSequence: DeleteMatchSequencesDelegate = async (id: string) => {
+        setError(false)
+        return fetch("/api/match_sequence?id=" + id, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        })
+            .then(data => {
+                if (data.status == 204) {
+                    setSequencesUpdated(true)
+                } else {
+                    setSequencesUpdated(false)
+                    setError(true)
+                }
+                return null
+            })
+    }
+
+    type contextProvider = {
+        ctx: React.Context<any>,
+        value: any
+    }
+    const providers: contextProvider[] = [
+        {
+            ctx: getMatchPerformanceContext,
+            value: getMatchPerformance
+        },
+        {
+            ctx: matchPerformanceContext,
+            value: matchPerformance
+        },
+        {
+            ctx: matchPerformanceErrorContext,
+            value: error
+        },
+        {
+            ctx: matchPerformanceReadyContext,
+            value: matchPerformanceReady
+        },
+        {
+            ctx: updateMatchPerformanceContext,
+            value: updateMatchPerformance
+        },
+        {
+            ctx: matchPerformanceUpdatedContext,
+            value: matchPerformanceUpdated
+        },
+        {
+            ctx: getMatchSequencesContext,
+            value: getMatchSequences
+        },
+        {
+            ctx: addMatchSequenceContext,
+            value: addSequence
+        },
+        {
+            ctx: matchSequencesContext,
+            value: matchSequences
+        },
+        {
+            ctx: matchSequencesReadyContext,
+            value: sequencesReady
+        },
+        {
+            ctx: deleteMatchSequenceContext,
+            value: deleteSequence
+        },
+        {
+            ctx: matchSequencesUpdatedContext,
+            value: sequencesUpdated
+        }
+    ]
+
     return (
-        <getMatchPerformanceContext.Provider value={getMatchPerformance}>
-            <matchPerformanceContext.Provider value={matchPerformance}>
-                <matchPerformanceErrorContext.Provider value={error}>
-                    <matchPerformanceReadyContext.Provider value={matchPerformanceReady}>
-                        <updateMatchPerformanceContext.Provider value={updateMatchPerformance}>
-                            <matchPerformanceUpdatedContext.Provider value={matchPerformanceUpdated}>
-                                <getMatchSequencesContext.Provider value={getMatchSequences}>
-                                    <matchSequencesContext.Provider value={matchSequences}>
-                                        {props.children}
-                                    </matchSequencesContext.Provider>
-                                </getMatchSequencesContext.Provider>
-                            </matchPerformanceUpdatedContext.Provider>
-                        </updateMatchPerformanceContext.Provider>
-                    </matchPerformanceReadyContext.Provider>
-                </matchPerformanceErrorContext.Provider>
-            </matchPerformanceContext.Provider>
-        </getMatchPerformanceContext.Provider>
-    )
+        <>
+            {providers.reduce(
+                (Ctx1: React.ReactNode, Ctx2: contextProvider) => React.createElement(Ctx2.ctx.Provider, {
+                    value: Ctx2.value
+                }, Ctx1)
+                , props.children)}
+        </>)
 }

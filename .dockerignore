@@ -1,0 +1,5 @@
+web-ui/node_modules
+api/run.sh
+api/db/*.db
+api/db/.gitignore
+api/Dockerfile

@@ -4,12 +4,12 @@ import { IoFootball } from 'react-icons/io5';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import MatchFeedback from '../components/matchFeedback'
 import { useGoalkeeperCategories, useGoalkeeperCategoriesReady } from '../contexts/goalkeeperContext';
-import { useGetMatchPerformance, useGetMatchSequences, useMatchPerformanceError, useMatchPerformanceReady, useMatchSequences } from '../contexts/matchPerformanceContext';
+import { useGetMatchPerformance, useGetMatchSequences, useMatchPerformanceError, useMatchPerformanceReady, useMatchSequences, useMatchSequencesReady, useMatchSequencesUpdated } from '../contexts/matchPerformanceContext';
 import { CategoryDTO } from '../DTOs';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { ModalProp } from '../interfaces/modalProp';
 import { MatchSequenceDTO } from '../DTOs/MatchSequenceDTO';
-import SequencesList from '../components/sequencesList';
+import SequencesList from '../containers/sequencesList';
 
 function MatchPerformance({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
@@ -28,7 +28,8 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
 
     const [sequences, setSequences] = useState<MatchSequenceDTO[]>([])
     const matchSequencesContext = useGetMatchSequences()
-    const matchSequences = useMatchSequences()
+    const matchSequencesReady = useMatchSequencesReady()
+    const matchSequencesUpdated = useMatchSequencesUpdated()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -64,7 +65,7 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
                 }
             )
         }
-    }, [loaded, matchPerformanceError, matchSequences])
+    }, [loaded, matchPerformanceError, matchSequencesReady, matchSequencesUpdated])
 
     return (
         <>

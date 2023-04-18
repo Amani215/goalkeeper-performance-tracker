@@ -161,12 +161,12 @@ function MatchesList({ matches }: PropType) {
         <>
             {matches.length > 0 ?
                 <div style={{ display: 'flex' }}>
-                    <div style={{ height: 400, width: '100%', flexGrow: 1 }}>
+                    <div style={{ height: 700, width: '100%', flexGrow: 1 }}>
                         <DataGrid
                             rows={matches || []}
                             columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]}
                         />
                     </div>
                 </div> :

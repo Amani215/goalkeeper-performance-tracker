@@ -4,7 +4,7 @@ import { errorResponse } from "../interfaces/errorResponse";
 import { useAuth } from "./authContext";
 
 // GET MATCHES CONTEXT
-type MatchesDelegate = (past: boolean) => Promise<MatchDTO[] | errorResponse>;
+type MatchesDelegate = () => Promise<MatchDTO[] | errorResponse>;
 const matchesContext = createContext<MatchesDelegate | null>(null);
 export function useMatches() {
     return useContext(matchesContext);
@@ -66,14 +66,10 @@ export default function MatchesProvider(props: PropsWithChildren<{}>) {
     const auth = useAuth()
     const token = auth?.token
 
-    const matches: MatchesDelegate = async (past: boolean) => {
+    const matches: MatchesDelegate = async () => {
         setNewMatchAdded(false)
 
-        const arg = past ? "?before=" : "?after="
-        const today = new Date()
-        const date = today.getDate() + '/' + today.getMonth() + '/' + today.getFullYear()
-
-        const data = await fetch("/api/match" + arg + date, {
+        const data = await fetch("/api/match", {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',

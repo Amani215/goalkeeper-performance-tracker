@@ -7,8 +7,7 @@ import { ModalProp } from '../interfaces/modalProp'
 import { useMatchUpdated } from '../contexts/matchContext'
 
 function MatchesView({ setModalIsOpen }: ModalProp) {
-    const [pastMatches, setPastMatches] = useState<MatchDTO[]>([])
-    const [upcomingMatches, setUpcomingMatches] = useState<MatchDTO[]>([])
+    const [matches, setMatches] = useState<MatchDTO[]>([])
     const [error, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
@@ -27,11 +26,8 @@ function MatchesView({ setModalIsOpen }: ModalProp) {
 
     useEffect(() => {
         if (matchesContext) {
-            matchesContext(true).then(
-                data => setPastMatches(data as MatchDTO[])
-            )
-            matchesContext(false).then(
-                data => setUpcomingMatches(data as MatchDTO[])
+            matchesContext().then(
+                data => setMatches(data as MatchDTO[])
             )
         }
         if (loaded && matchesReady && matchesError) {
@@ -61,18 +57,7 @@ function MatchesView({ setModalIsOpen }: ModalProp) {
                         >Add Match
                         </Button>
                     </Box>
-                    <Typography
-                        variant='h6'
-                        ml={1} mt={1}>
-                        Upcoming Matches
-                    </Typography>
-                    <MatchesList matches={upcomingMatches} />
-                    <Typography
-                        variant='h6'
-                        ml={1} mt={4}>
-                        Past Matches
-                    </Typography>
-                    <MatchesList matches={pastMatches} />
+                    <MatchesList matches={matches} />
                 </>
             }
         </>

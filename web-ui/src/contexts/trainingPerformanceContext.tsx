@@ -58,6 +58,7 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
         const json_data = await data.json();
         if ('id' in json_data) {
             setTrainingPerformanceReady(true);
+            setTrainingPerformanceUpdated(false);
             setTrainingPerformance(json_data as TrainingMonitoringDTO)
             setError(false);
             return json_data as TrainingMonitoringDTO;
@@ -65,6 +66,7 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
         else {
             setError(true);
             setTrainingPerformanceReady(true);
+            setTrainingPerformanceUpdated(false);
             setTrainingPerformance(null)
             return json_data as errorResponse;
         }
@@ -78,8 +80,8 @@ export default function TrainingPerformanceProvider(props: PropsWithChildren<{}>
                 'Authorization': `bearer ${token}`
             },
             body: JSON.stringify({
-                attendance: newTrainingMonitoring.attendance,
-                attendance_time: newTrainingMonitoring.attendance_time
+                'attendance': newTrainingMonitoring.attendance,
+                'attendance_time': newTrainingMonitoring.attendance_time
             })
         });
         const json_data = await data.json();

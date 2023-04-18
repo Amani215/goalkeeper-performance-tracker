@@ -83,7 +83,6 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
     const token = auth?.token
 
     const getTraining: TrainingDelegate = async (id: string) => {
-        setUpdated(false)
         const data = await fetch("/api/training_session?id=" + id, {
             method: "GET",
             headers: {
@@ -95,19 +94,20 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         if ('error' in json_data) {
             setError(true);
             setTrainingReady(true);
-            setTraining(null)
+            setUpdated(false);
+            setTraining(null);
             return json_data as errorResponse;
         }
         else {
             setTrainingReady(true);
             setError(false);
+            setUpdated(false);
             setTraining(json_data as TrainingDTO)
             return json_data as TrainingDTO;
         }
     }
 
     const trainingPerformances: TrainingPerformancesDelegate = async (id: string) => {
-        setTrainingPerformancesUpdated(false)
         const data = await fetch("/api/training_session/performances?id=" + id, {
             method: "GET",
             headers: {
@@ -118,12 +118,14 @@ export default function TrainingProvider(props: PropsWithChildren<{}>): JSX.Elem
         const json_data = await data.json();
         if ('error' in json_data) {
             setError(true);
-            setTrainingPerformancesReady(true)
+            setTrainingPerformancesReady(true);
+            setTrainingPerformancesUpdated(false);
             return null;
         }
         else {
             setError(false);
-            setTrainingPerformancesReady(true)
+            setTrainingPerformancesReady(true);
+            setTrainingPerformancesUpdated(false);
             return json_data as TrainingMonitoringDTO[];
         }
     }

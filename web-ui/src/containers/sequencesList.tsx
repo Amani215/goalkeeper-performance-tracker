@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { MatchSequenceDTO } from '../DTOs/MatchSequenceDTO';
 import { useAddMatchSequences, useDeleteMatchSequence } from '../contexts/matchPerformanceContext';
 import { useParams } from 'react-router-dom';
+import UpdateSequence from './modals/updateSequence';
 
 type PropType = {
     sequences: MatchSequenceDTO[]
@@ -78,9 +79,9 @@ function SequencesList({ sequences }: PropType) {
             renderCell: (params) => {
                 return (
                     <Box>
-                        {/* <IconButton title='Edit sequence' onClick={() => handleOpenUpdateModal(params.row)}>
+                        <IconButton title='Edit sequence' onClick={() => handleOpenUpdateModal(params.row)}>
                             <MdEdit />
-                        </IconButton> */}
+                        </IconButton>
                         <IconButton title='Delete sequence' onClick={() => handleOpenDeleteDialog(params.row.id)}>
                             <MdDelete />
                         </IconButton>
@@ -122,17 +123,17 @@ function SequencesList({ sequences }: PropType) {
     }
 
     // Update Modal
-    // const [updateModalIsOpen, setUpdateModalIsOpen] = useState<boolean>(false)
-    // const [sequenceToUpdate, setSequenceToUpdate] = useState<MatchSequenceDTO | null>(null)
+    const [updateModalIsOpen, setUpdateModalIsOpen] = useState<boolean>(false)
+    const [sequenceToUpdate, setSequenceToUpdate] = useState<MatchSequenceDTO | null>(null)
 
-    // const handleOpenUpdateModal = (sequence: MatchSequenceDTO) => {
-    //     setSequenceToUpdate(sequence)
-    //     setUpdateModalIsOpen(true)
-    // }
-    // const handleCloseUpdateModal = () => {
-    //     setSequenceToUpdate(null)
-    //     setUpdateModalIsOpen(false)
-    // }
+    const handleOpenUpdateModal = (sequence: MatchSequenceDTO) => {
+        setSequenceToUpdate(sequence)
+        setUpdateModalIsOpen(true)
+    }
+    const handleCloseUpdateModal = () => {
+        setSequenceToUpdate(null)
+        setUpdateModalIsOpen(false)
+    }
 
     return (
         <>
@@ -204,10 +205,10 @@ function SequencesList({ sequences }: PropType) {
                 </DialogActions>
             </Dialog>
 
-            {/* <UpdateMatch match={sequenceToUpdate} modalProp={{
+            <UpdateSequence sequence={sequenceToUpdate} modalProp={{
                 modalIsOpen: updateModalIsOpen,
                 setModalIsOpen: handleCloseUpdateModal
-            }} /> */}
+            }} />
         </>
 
 

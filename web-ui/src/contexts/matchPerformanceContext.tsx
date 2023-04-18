@@ -2,7 +2,7 @@ import React, { createContext, PropsWithChildren, useContext, useState } from 'r
 import { MatchMonitoringDTO, UpdateMatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
-import { MatchSequenceDTO } from '../DTOs/MatchSequenceDTO';
+import { MatchSequenceDTO, NewMatchSequenceDTO } from '../DTOs/MatchSequenceDTO';
 
 // GET MATCH PERFORMANCE CONTEXTS
 type MatchPerformanceDelegate = (id: string) => Promise<MatchMonitoringDTO | errorResponse>;
@@ -63,6 +63,11 @@ export function useMatchSequencesReady() {
 }
 
 // UPDATE MATCH SEQUENCE
+type UpdateMatchSequenceDelegate = (matchSequence: NewMatchSequenceDTO) => Promise<MatchSequenceDTO | errorResponse>;
+const updateMatchSequenceContext = createContext<UpdateMatchSequenceDelegate | null>(null);
+export function useUpdateMatchSequence() {
+    return useContext(updateMatchSequenceContext);
+}
 
 // DELETE MATCH SEQUENCE
 type DeleteMatchSequencesDelegate = (id: string) => Promise<null>;
@@ -180,6 +185,34 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
             })
     }
 
+    const updateSequence: UpdateMatchSequenceDelegate = async (matchSequence: NewMatchSequenceDTO) => {
+        const data = await fetch("/api/match_sequence?id=" + matchSequence.id, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                'sequence_number': matchSequence.sequence_number,
+                'action_type': matchSequence.action_type,
+                'reaction_type': matchSequence.reaction_type,
+                'action_result': matchSequence.action_result,
+                'comment': matchSequence.comment
+            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setError(false);
+            setSequencesUpdated(true);
+            return json_data as MatchSequenceDTO;
+        }
+        else {
+            setError(true);
+            setSequencesUpdated(false);
+            return json_data as errorResponse;
+        }
+    }
+
     const getMatchSequences: MatchSequencesDelegate = async (id: string) => {
         setSequencesReady(false);
         id = matchPerformance ? matchPerformance.id : ""
@@ -262,6 +295,10 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
         {
             ctx: addMatchSequenceContext,
             value: addSequence
+        },
+        {
+            ctx: updateMatchSequenceContext,
+            value: updateSequence
         },
         {
             ctx: matchSequencesContext,

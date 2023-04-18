@@ -7,3 +7,12 @@ export interface MatchSequenceDTO {
   action_result: string;
   comment: string;
 }
+
+export interface NewMatchSequenceDTO {
+  id: string;
+  sequence_number: number;
+  action_type: string;
+  reaction_type: string;
+  action_result: string;
+  comment: string;
+}

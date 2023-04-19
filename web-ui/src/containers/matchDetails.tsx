@@ -7,9 +7,11 @@ import { useDeleteMatchGoalkeeper, useGetMatch, useMatchError, useMatchGoalkeepe
 import { MatchDTO } from '../DTOs/MatchDTO';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { MultiModalProp } from '../interfaces/modalProp';
+import { useTranslation } from 'react-i18next'
 
 function MatchDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
+    const { t } = useTranslation();
 
     const [match, setMatch] = useState<MatchDTO | null>(null)
     const [, setError] = useState("")
@@ -107,7 +109,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                             <Box
                                 display="flex" justifyContent="flex-end"
                                 mb={2}>
-                                <Button onClick={() => { modal1.setModalIsOpen() }}>Edit Score</Button>
+                                <Button onClick={() => { modal1.setModalIsOpen() }}>{t("edit")} Score</Button>
                             </Box>
                             <Box
                                 display="flex"
@@ -125,7 +127,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                             <Box
                                 display="flex" justifyContent="flex-end"
                                 mb={2}>
-                                <Button onClick={() => { modal1.setModalIsOpen() }}>Edit Score</Button>
+                                <Button onClick={() => { modal1.setModalIsOpen() }}>{t("edit")} Score</Button>
                             </Box>
                             <Box
                                 display="flex"
@@ -146,7 +148,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                     <Box
                         display="flex" justifyContent="flex-end"
                         mb={2}>
-                        <Button onClick={() => { modal2.setModalIsOpen() }}>Add Goalkeeper</Button>
+                        <Button onClick={() => { modal2.setModalIsOpen() }}>{t("add_goalkeeper")}</Button>
                     </Box>
                     {goalkeeperPerformances.length > 0 ?
                         <List
@@ -181,15 +183,15 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                     open={deleteGoalkeeperDialogIsOpen}
                     onClose={handleCloseDeleteGoalkeeperDialog}
                 >
-                    <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{t("are_you_sure")}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             By clicking yes, you are going to delete {goalkeeperToDelete?.goalkeeper.name} from the list of goalkeepers permanently.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCloseDeleteGoalkeeperDialog}>Cancel</Button>
-                        <Button onClick={() => deleteGoalkeeperPerformance()} autoFocus>Yes</Button>
+                        <Button onClick={handleCloseDeleteGoalkeeperDialog}>{t("cancel")}</Button>
+                        <Button onClick={() => deleteGoalkeeperPerformance()} autoFocus>{t("yes")}</Button>
                     </DialogActions>
                 </Dialog>
             </Box>

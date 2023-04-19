@@ -15,6 +15,9 @@
   "local": "Local",
   "visitor": "Visiteur",
 
+  "training": "Entrainement",
+  "year_and_month": "Mois et Année",
+
   "users": "Utilisateurs",
   "goalkeepers": "Gardiens de But",
   "categories": "Catégories",
@@ -26,11 +29,19 @@
   "add": "Ajouter",
   "edit": "Modifier",
   "add_user": "Ajouter un Utilisateur",
+  "add_coach": "Ajouter un Coach",
   "add_goalkeeper": "Ajouter un Gardien",
   "add_category": "Ajouter une Catégorie",
+  "add_training": "Ajouter un Entrainement",
+  "add_form": "Ajouter un Formulaire",
+  "download_form": "Télécharger le formulaire",
 
   "change_pic": "Changer de Photo",
   "no_categories": "Aucune catégorie trouvée.",
+  "no_training": "Aucun entrainement trouvé.",
+  "no_training_form": "Aucun formulaire ajouté.",
+  "no_goalkeepers": "Aucun gardien de but trouvé.",
+  "no_coaches": "Aucun coach ajouté.",
   "are_you_sure": "Vous êtes sûr?",
   "yes": "Oui",
   "cancel": "Annuler"

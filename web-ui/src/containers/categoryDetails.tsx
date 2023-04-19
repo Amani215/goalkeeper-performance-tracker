@@ -7,10 +7,12 @@ import { CategoryDTO, UserDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
 import { MultiModalProp } from '../interfaces/modalProp';
+import { useTranslation } from 'react-i18next';
 
 function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
     const auth = useAuth()
+    const { t } = useTranslation()
 
     const [category, setCategory] = useState<CategoryDTO | null>(null)
     const [, setError] = useState("")
@@ -137,7 +139,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                         {auth?.user.admin ?
                             <Box display="flex" justifyContent="flex-end">
                                 <Button onClick={() => { modal1.setModalIsOpen() }}>
-                                    Add a Coach
+                                    {t("add_coach")}
                                 </Button>
                             </Box> : <></>
                         }
@@ -172,7 +174,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                 flexDirection="column"
                                 justifyContent="center"
                                 alignItems="center">
-                                No coaches yet.
+                                {t("no_coaches")}
                             </Box>
                         }
 
@@ -184,7 +186,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                         {auth?.user.admin ?
                             <Box display="flex" justifyContent="flex-end">
                                 <Button onClick={() => { modal2.setModalIsOpen() }}>
-                                    Add a Goalkeeper
+                                    {t("add_goalkeeper")}
                                 </Button>
                             </Box> : <></>
                         }
@@ -219,7 +221,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                 flexDirection="column"
                                 justifyContent="center"
                                 alignItems="center">
-                                No goalkeepers yet.
+                                {t("no_goalkeepers")}
                             </Box>
                         }
                     </Card>

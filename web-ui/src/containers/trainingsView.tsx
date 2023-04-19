@@ -7,8 +7,10 @@ import dayjs, { Dayjs } from 'dayjs'
 import React, { useState } from 'react'
 import { GrafanaPanel } from '../components/grafana'
 import { ModalProp } from '../interfaces/modalProp'
+import { useTranslation } from 'react-i18next'
 
 function TrainingsView({ setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation();
     const [date, setDate] = useState<Dayjs>(dayjs())
 
     return (
@@ -22,7 +24,7 @@ function TrainingsView({ setModalIsOpen }: ModalProp) {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         views={['year', 'month']}
-                        label="Year and Month"
+                        label={t("year_and_month")}
                         minDate={dayjs('01/01/2012', 'DD/MM/YYYY')}
                         maxDate={dayjs('01/12/2050', 'DD/MM/YYYY')}
                         value={date}
@@ -40,7 +42,7 @@ function TrainingsView({ setModalIsOpen }: ModalProp) {
                     <Button
                         variant="contained"
                         onClick={() => { setModalIsOpen() }}
-                    >Add Training
+                    >{t("add_training")}
                     </Button>
                 </Box>
             </Box>

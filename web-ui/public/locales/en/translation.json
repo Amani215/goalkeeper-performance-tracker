@@ -16,6 +16,9 @@
   "local": "Local",
   "visitor": "Visitor",
 
+  "training": "Training",
+  "year_and_month": "Year and Month",
+
   "users": "Users",
   "goalkeepers": "Goalkeepers",
   "categories": "Categories",
@@ -27,11 +30,19 @@
   "add": "Add",
   "edit": "Edit",
   "add_user": "Add user",
+  "add_coach": "Add a Coach",
   "add_goalkeeper": "Add Goalkeeper",
   "add_category": "Add Category",
+  "add_training": "Add Training",
+  "add_form": "Add Form",
+  "download_form": "Download Form",
 
   "change_pic": "Change Picture",
   "no_categories": "No categories yet.",
+  "no_training": "Could not find training.",
+  "no_training_form": "No training form added.",
+  "no_goalkeepers": "No goalkeepers yet.",
+  "no_coaches": "No coaches yet.",
   "are_you_sure": "Are you sure?",
   "yes": "Yes",
   "cancel": "Cancel"

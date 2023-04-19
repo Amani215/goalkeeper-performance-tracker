@@ -8,10 +8,12 @@ import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { ModalProp } from '../interfaces/modalProp';
 import { useTrainingPerformanceUpdated } from '../contexts/trainingPerformanceContext';
 import UpdateAttendance from './modals/updateAttendance';
+import { useTranslation } from 'react-i18next';
 
 
 function TrainingDetails({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
+    const { t } = useTranslation();
 
     const [training, setTraining] = useState<TrainingDTO | null>(null)
     const [error, setError] = useState("")
@@ -108,7 +110,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
     return (
         <>
             {error != "" ?
-                <Typography>Could not find training.</Typography> :
+                <Typography>{t("no_training")}</Typography> :
                 <Box
                     display="flex"
                     flexDirection="column"
@@ -118,7 +120,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                     <Typography
                         variant='h4'
                         mb={2}>
-                        {`Training ${training?.category?.id}`}
+                        {`${t("training")} ${training?.category?.id}`}
                     </Typography>
                     <Typography
                         variant='h6'
@@ -138,7 +140,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                         alignContent="center"
                         mb={2}>
                         <Button component="label" variant="contained">
-                            Upload Form
+                            {t("add_form")}
                             <input
                                 hidden
                                 accept="application/pdf"
@@ -149,10 +151,10 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                             {training?.training_form ?
                                 <Button variant="outlined">
                                     <Link target="_blank" href={training.training_form} underline="none">
-                                        Download Form
+                                        {t("download_form")}
                                     </Link>
                                 </Button>
-                                : <Typography>No training form uploaded.</Typography>
+                                : <Typography>{t("no_training_form")}</Typography>
                             }
                         </Box>
 
@@ -165,7 +167,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                         <Box
                             display="flex" justifyContent="flex-end"
                             mb={2}>
-                            <Button variant='contained' onClick={() => { setModalIsOpen() }}>Add Goalkeeper</Button>
+                            <Button variant='contained' onClick={() => { setModalIsOpen() }}>{t("add_goalkeeper")}</Button>
                         </Box>
                         {goalkeeperPerformances.length > 0 ?
                             <List
@@ -197,7 +199,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
                                 justifyContent="center"
                                 alignItems="center"
                             >
-                                <Typography>No goalkeepers yet.</Typography>
+                                <Typography>{t("no_goalkeepers")}</Typography>
                             </Box>
                         }
                     </Paper>

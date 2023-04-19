@@ -6,6 +6,7 @@ import { GrowthDTO } from '../../DTOs/GrowthDTO';
 import UpdateGrowth from '../../containers/modals/updateGrowth';
 import { useDeleteGrowth, useDeleteGrowthError } from '../../contexts/growthContext';
 import NewGrowth from '../../containers/modals/newGrowth';
+import { useTranslation } from 'react-i18next';
 
 type PropType = {
     goalkeeperID: string,
@@ -13,6 +14,8 @@ type PropType = {
 }
 
 function GrowthList({ goalkeeperID, growthList }: PropType) {
+    const { t } = useTranslation();
+
     // Columns
     const columns: GridColDef[] = [
         {
@@ -30,7 +33,7 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
         },
         {
             field: 'height',
-            headerName: 'Height',
+            headerName: `${t("height")}`,
             headerAlign: 'center',
             flex: 1,
             minWidth: 60,
@@ -43,7 +46,7 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
         },
         {
             field: 'weight',
-            headerName: 'Weight',
+            headerName: `${t("weight")}`,
             headerAlign: 'center',
             flex: 1,
             minWidth: 60,
@@ -56,7 +59,7 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
         },
         {
             field: 'torso_height',
-            headerName: 'Torso Height',
+            headerName: `${t("torso_height")}`,
             headerAlign: 'center',
             flex: 1,
             minWidth: 60,
@@ -69,7 +72,7 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
         },
         {
             field: 'thoracic_perimeter',
-            headerName: 'Thoracic Perimeter',
+            headerName: `${t("thoracic_perimeter")}`,
             headerAlign: 'center',
             flex: 1,
             minWidth: 60,
@@ -82,7 +85,7 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
         },
         {
             field: 'annual_growth',
-            headerName: 'Annual Growth',
+            headerName: `${t("annual_growth")}`,
             headerAlign: 'center',
             flex: 1,
             minWidth: 60,
@@ -165,12 +168,12 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
                 justifyContent="space-between"
                 mt={3}
                 mb={1}>
-                <Typography fontWeight="bold" mt={2} mb={1}>Growth</Typography>
+                <Typography fontWeight="bold" mt={2} mb={1}>{t("growth")}</Typography>
 
                 <Button
                     variant="contained"
                     onClick={() => { handleOpenAddModal() }}
-                >Add
+                >{t("add")}
                 </Button>
             </Box>
 
@@ -204,7 +207,7 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
                             color: '#616161'
                         }}>
                             <Typography
-                                variant='subtitle2'>No data in this section yet.
+                                variant='subtitle2'>{t("no_data")}
                             </Typography>
                         </div>
                     </Card>
@@ -218,7 +221,7 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Are you sure?"}
+                    {t("are_you_sure")}
                 </DialogTitle>
                 <DialogContent>
                     {deleteGrowthError != "" ?
@@ -229,9 +232,9 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+                    <Button onClick={handleCloseDeleteDialog}>{t("cancel")}</Button>
                     <Button onClick={handleDelete} autoFocus>
-                        Yes
+                        {t("yes")}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -9,12 +9,15 @@ import { useNewMatch, useNewMatchError } from '../../contexts/matchesContext';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useNewGrowth } from '../../contexts/growthContext';
+import { useTranslation } from 'react-i18next';
 
 type PropType = {
     goalkeeperID: string,
     modalProp: ModalProp
 }
 function NewGrowth({ goalkeeperID, modalProp }: PropType) {
+    const { t } = useTranslation();
+
     const newGrowth = useNewGrowth()
 
     const [growthDate,] = useState<Dayjs>(
@@ -46,7 +49,7 @@ function NewGrowth({ goalkeeperID, modalProp }: PropType) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Monitor Growth
+                    {t("monitor_growth")}
                 </Typography>
                 <Box
                     component="form"
@@ -72,7 +75,7 @@ function NewGrowth({ goalkeeperID, modalProp }: PropType) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add
+                        {t("add")}
                     </Button>
                 </Box>
             </Box>

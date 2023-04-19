@@ -8,9 +8,11 @@ import { GoalkeeperDTO } from '../../DTOs/GoalkeeperDTO';
 import { ModalProp } from '../../interfaces/modalProp'
 
 import { style } from './style';
+import { useTranslation } from 'react-i18next';
 
 function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const { id } = useParams();
+    const { t } = useTranslation();
 
     const [goalkeepers, setGoalkeepers] = useState<GoalkeeperDTO[]>([] as GoalkeeperDTO[])
 
@@ -50,7 +52,7 @@ function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Add a Goalkeeper
+                    {t("add_goalkeeper")}
                 </Typography>
                 <Box
                     component="form"
@@ -58,12 +60,12 @@ function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     sx={{ mt: 1 }}
                 >
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Goalkeeper</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("goalkeeper")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={formik.values.goalkeeperId}
-                            label="Goalkeeper"
+                            label={t("goalkeeper")}
                             onChange={(e) => formik.setFieldValue("goalkeeperId", e.target.value)}
                         >
                             {goalkeepers.map((goalkeeper) => (
@@ -78,7 +80,7 @@ function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add
+                        {t("add")}
                     </Button>
                 </Box>
             </Box>

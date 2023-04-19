@@ -17,117 +17,119 @@ import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { GrowthDTO } from '../DTOs/GrowthDTO'
 import GrowthList from '../components/growthList'
 import { useGrowthAdded, useGrowthDeleted, useGrowthUpdated } from '../contexts/growthContext'
+import { useTranslation } from 'react-i18next'
 
-
-const matchColumns: GridColDef[] = [
-    {
-        field: 'match',
-        headerName: 'Match',
-        flex: 1,
-        minWidth: 60,
-        renderCell: (params) => {
-            return (
-                <Link
-                    component={RouterLink}
-                    to={`/matches/${params.row.match.id}`}
-                    underline="none"
-                    color="inherit">
-                    <Typography>
-                        {params.row.match.match_type} {params.row.match.local}-{params.row.match.visitor}</Typography>
-                </Link>
-            );
-        }
-    },
-    {
-        field: 'date',
-        headerName: 'Date',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.match.date}</Typography>
-            );
-        }
-    },
-    {
-        field: 'category',
-        headerName: 'Category',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.match.category.id}</Typography>
-            );
-        }
-    },
-    {
-        field: 'id',
-        headerName: 'Performance Sheet',
-        flex: 1,
-        minWidth: 10,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Link
-                    component={RouterLink}
-                    to={`/match-performance/${params.row.id}`}
-                    color="inherit">
-                    <Typography>Link</Typography>
-                </Link>
-            );
-        }
-    }
-]
-
-const trainingColumns: GridColDef[] = [
-    {
-        field: 'training',
-        headerName: 'Training',
-        flex: 1,
-        minWidth: 60,
-        renderCell: (params) => {
-            return (
-                <Link
-                    component={RouterLink}
-                    to={`/trainings/${params.row.session.id}`}
-                    underline="none"
-                    color="inherit">
-                    <Typography>
-                        {params.row.session.category.id} Training</Typography>
-                </Link>
-            );
-        }
-    },
-    {
-        field: 'date',
-        headerName: 'Date',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.session.date}</Typography>
-            );
-        }
-    },
-    {
-        field: 'attendance',
-        headerName: 'Attendance',
-        flex: 1,
-        minWidth: 10,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <Typography>{params.row.attendance}</Typography>
-            );
-        }
-    }
-]
 
 function GoalkeeperDetails() {
     const { id } = useParams();
+    const { t } = useTranslation()
+
+    const matchColumns: GridColDef[] = [
+        {
+            field: 'match',
+            headerName: 'Match',
+            flex: 1,
+            minWidth: 60,
+            renderCell: (params) => {
+                return (
+                    <Link
+                        component={RouterLink}
+                        to={`/matches/${params.row.match.id}`}
+                        underline="none"
+                        color="inherit">
+                        <Typography>
+                            {params.row.match.match_type} {params.row.match.local}-{params.row.match.visitor}</Typography>
+                    </Link>
+                );
+            }
+        },
+        {
+            field: 'date',
+            headerName: 'Date',
+            flex: 1,
+            minWidth: 60,
+            align: "center",
+            renderCell: (params) => {
+                return (
+                    <Typography>{params.row.match.date}</Typography>
+                );
+            }
+        },
+        {
+            field: 'category',
+            headerName: `${t("category")}`,
+            flex: 1,
+            minWidth: 60,
+            align: "center",
+            renderCell: (params) => {
+                return (
+                    <Typography>{params.row.match.category.id}</Typography>
+                );
+            }
+        },
+        {
+            field: 'id',
+            headerName: `${t("performance_sheet")}`,
+            flex: 1,
+            minWidth: 10,
+            align: "center",
+            renderCell: (params) => {
+                return (
+                    <Link
+                        component={RouterLink}
+                        to={`/match-performance/${params.row.id}`}
+                        color="inherit">
+                        <Typography>{t("link")}</Typography>
+                    </Link>
+                );
+            }
+        }
+    ]
+
+    const trainingColumns: GridColDef[] = [
+        {
+            field: 'training',
+            headerName: `${t("training")}`,
+            flex: 1,
+            minWidth: 60,
+            renderCell: (params) => {
+                return (
+                    <Link
+                        component={RouterLink}
+                        to={`/trainings/${params.row.session.id}`}
+                        underline="none"
+                        color="inherit">
+                        <Typography>
+                            {params.row.session.category.id} Training</Typography>
+                    </Link>
+                );
+            }
+        },
+        {
+            field: 'date',
+            headerName: 'Date',
+            flex: 1,
+            minWidth: 60,
+            align: "center",
+            renderCell: (params) => {
+                return (
+                    <Typography>{params.row.session.date}</Typography>
+                );
+            }
+        },
+        {
+            field: 'attendance',
+            headerName: `${t("attendance")}`,
+            flex: 1,
+            minWidth: 10,
+            align: "center",
+            renderCell: (params) => {
+                return (
+                    <Typography>{params.row.attendance}</Typography>
+                );
+            }
+        }
+    ]
 
     const [goalkeeper, setGoalkeeper] = useState<GoalkeeperDTO | null>(null)
     const [error, setError] = useState("")
@@ -242,7 +244,7 @@ function GoalkeeperDetails() {
                             <Card sx={{ padding: 2, height: "100%" }}>
                                 <Box display="flex" justifyContent="flex-end">
                                     <Button>
-                                        Edit
+                                        {t("edit")}
                                     </Button>
                                 </Box>
 
@@ -251,7 +253,7 @@ function GoalkeeperDetails() {
                                         <Typography
                                             variant='subtitle1'
                                             sx={{ fontWeight: 'bold' }}>
-                                            Name
+                                            {t("name")}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={5}>
@@ -280,7 +282,7 @@ function GoalkeeperDetails() {
                                             variant='subtitle1'
                                             sx={{ fontWeight: 'bold' }}
                                             mr={2}>
-                                            Birthday
+                                            {t("birthdate")}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={5}>
@@ -295,7 +297,7 @@ function GoalkeeperDetails() {
                                             variant='subtitle1'
                                             sx={{ fontWeight: 'bold' }}
                                             mr={2}>
-                                            Phone Number
+                                            {t("phone")}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={5}>
@@ -309,7 +311,7 @@ function GoalkeeperDetails() {
                                         <Typography
                                             variant='subtitle1'
                                             sx={{ fontWeight: 'bold' }}>
-                                            Associated Categories
+                                            {t("associated_categories")}
                                         </Typography>
                                     </Grid>
 
@@ -336,7 +338,7 @@ function GoalkeeperDetails() {
                                                 </Grid>
                                             ))
                                             : <Box pl={1}>
-                                                No associated categories yet.
+                                                {t("no_categories")}
                                             </Box>}
                                     </Grid>
                                 </Grid>
@@ -372,7 +374,7 @@ function GoalkeeperDetails() {
                                         UID: {id}
                                     </Typography>
                                     <Button component="label">
-                                        Change Picture
+                                        {t("change_pic")}
                                         <input
                                             hidden
                                             accept="image/*"
@@ -390,7 +392,7 @@ function GoalkeeperDetails() {
                     <GrowthList goalkeeperID={id ? id : ""} growthList={growthRows} />
 
                     {/* MATCHES */}
-                    <Typography fontWeight="bold" mt={2} mb={1}>Match performances</Typography>
+                    <Typography fontWeight="bold" mt={2} mb={1}>{t("match_performances")}</Typography>
                     {matchRows.length > 0 ?
                         < DataGrid
                             rows={matchRows || []}
@@ -401,7 +403,7 @@ function GoalkeeperDetails() {
                     }
 
                     {/* ATTENDANCE */}
-                    <Typography fontWeight="bold" mt={2} mb={1}>Training Attendance</Typography>
+                    <Typography fontWeight="bold" mt={2} mb={1}>{t("training_attendance")}</Typography>
                     {trainingRows.length > 0 ?
                         < DataGrid
                             rows={trainingRows || []}

@@ -6,17 +6,34 @@
   "associated_categories": "Catégories Associées",
   "profile_pic": "Photo de Profil",
 
+  "goalkeeper": "Gardien de But",
   "name": "Nom",
   "birthdate": "Date de Naissance",
+  "phone": "Numéro de téléphone",
   "picture": "Photo",
 
+  "category": "Catégorie",
   "category_name": "Nom de la Catégorie",
   "season": "Saison",
   "local": "Local",
   "visitor": "Visiteur",
+  "link": "Lien",
 
   "training": "Entrainement",
   "year_and_month": "Mois et Année",
+  "attendance": "Assiduité",
+  "training_attendance": "Assiduité d'entrainements",
+
+  "performance_sheet": "Feuille de Performance",
+  "match_performances": "Performances de Matchs",
+
+  "growth": "Croissance",
+  "monitor_growth": "Suivi de Croissance",
+  "height": "Taille",
+  "weight": "Poids",
+  "torso_height": "Hauteur du Torse",
+  "thoracic_perimeter": "Périmètre Thoracique",
+  "annual_growth": "Croissance Annuelle",
 
   "users": "Utilisateurs",
   "goalkeepers": "Gardiens de But",
@@ -42,6 +59,7 @@
   "no_training_form": "Aucun formulaire ajouté.",
   "no_goalkeepers": "Aucun gardien de but trouvé.",
   "no_coaches": "Aucun coach ajouté.",
+  "no_data": "Aucune donnée dans cette section.",
   "are_you_sure": "Vous êtes sûr?",
   "yes": "Oui",
   "cancel": "Annuler"

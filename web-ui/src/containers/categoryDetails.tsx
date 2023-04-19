@@ -233,15 +233,15 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                 open={deleteCoachDialogIsOpen}
                 onClose={handleCloseDeleteCoachDialog}
             >
-                <DialogTitle id="alert-dialog-title"> {"Are you sure?"} </DialogTitle>
+                <DialogTitle id="alert-dialog-title"> {t("are_you_sure")} </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         By clicking yes, you are going to delete {trainerToDelete?.username} from the list of coaches permanently.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteCoachDialog}>Cancel</Button>
-                    <Button onClick={() => deleteTrainer()} autoFocus>Yes</Button>
+                    <Button onClick={handleCloseDeleteCoachDialog}>{t("cancel")}</Button>
+                    <Button onClick={() => deleteTrainer()} autoFocus>{t("yes")}</Button>
                 </DialogActions>
             </Dialog>
 
@@ -250,15 +250,15 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                 open={deleteGoalkeeperDialogIsOpen}
                 onClose={handleCloseDeleteGoalkeeperDialog}
             >
-                <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{t("are_you_sure")}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         By clicking yes, you are going to delete {goalkeeperToDelete?.name} from the list of goalkeepers permanently.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteGoalkeeperDialog}>Cancel</Button>
-                    <Button onClick={() => deleteGoalkeeper()} autoFocus>Yes</Button>
+                    <Button onClick={handleCloseDeleteGoalkeeperDialog}>{t("cancel")}</Button>
+                    <Button onClick={() => deleteGoalkeeper()} autoFocus>{t("yes")}</Button>
                 </DialogActions>
             </Dialog>
         </Box>

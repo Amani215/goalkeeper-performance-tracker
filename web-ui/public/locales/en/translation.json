@@ -7,17 +7,34 @@
   "associated_categories": "Associated Categories",
   "profile_pic": "Profile Pic",
 
+  "goalkeeper": "Goalkeeper",
   "name": "Name",
   "birthdate": "Birth Date",
+  "phone": "Phone Number",
   "picture": "Picture",
 
+  "category": "Category",
   "category_name": "Category Name",
   "season": "Season",
   "local": "Local",
   "visitor": "Visitor",
+  "link": "Link",
 
   "training": "Training",
   "year_and_month": "Year and Month",
+  "attendance": "Attendance",
+  "training_attendance": "Training Attendance",
+
+  "performance_sheet": "Performance Sheet",
+  "match_performances": "Match performances",
+
+  "growth": "Growth",
+  "monitor_growth": "Monitor Growth",
+  "height": "Height",
+  "weight": "Weight",
+  "torso_height": "Torso Height",
+  "thoracic_perimeter": "Thoracic Perimeter",
+  "annual_growth": "Annual Growth",
 
   "users": "Users",
   "goalkeepers": "Goalkeepers",
@@ -43,6 +60,7 @@
   "no_training_form": "No training form added.",
   "no_goalkeepers": "No goalkeepers yet.",
   "no_coaches": "No coaches yet.",
+  "no_data": "No data in this section yet.",
   "are_you_sure": "Are you sure?",
   "yes": "Yes",
   "cancel": "Cancel"

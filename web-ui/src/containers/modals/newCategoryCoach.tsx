@@ -7,10 +7,12 @@ import { useUsers, useUsersReady } from '../../contexts/usersContext';
 import { UserDTO } from '../../DTOs';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
+import { useTranslation } from 'react-i18next';
 
 
 function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const { id } = useParams();
+    const { t } = useTranslation();
 
     const [coaches, setCoaches] = useState<UserDTO[]>([] as UserDTO[])
 
@@ -50,7 +52,7 @@ function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2" mb={2}>
-                    Add a Coach
+                    {t("add_coach")}
                 </Typography>
                 <Box
                     component="form"
@@ -80,7 +82,7 @@ function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add
+                        {t("add")}
                     </Button>
                 </Box>
             </Box>

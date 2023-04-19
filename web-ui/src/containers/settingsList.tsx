@@ -2,12 +2,15 @@ import { Box, IconButton, List, ListItem, ListItemText, TextField } from '@mui/m
 import React, { useEffect, useState } from 'react'
 import { MdAddCircle, MdDeleteOutline } from 'react-icons/md'
 import { useDeleteParam, useNewParam, useParamUpdated, useParams } from '../contexts/paramsContext'
+import { useTranslation } from 'react-i18next';
 
 type PropType = {
     itemsName: string
 }
 
 function SettingsList({ itemsName }: PropType) {
+    const { t } = useTranslation();
+
     const [items, setItems] = useState<string[]>([])
     const [newItem, setNewItem] = useState<string>("")
 
@@ -45,7 +48,7 @@ function SettingsList({ itemsName }: PropType) {
                 justifyContent="flex-end">
                 <TextField
                     id="outlined-basic"
-                    label="Add item..."
+                    label={`${t("add")}...`}
                     variant="outlined"
                     fullWidth
                     value={newItem}
@@ -84,7 +87,7 @@ function SettingsList({ itemsName }: PropType) {
                     flexDirection="column"
                     justifyContent="center"
                     alignItems="center">
-                    No data available.
+                    {t("no_data")}
                 </Box>
             }
         </>

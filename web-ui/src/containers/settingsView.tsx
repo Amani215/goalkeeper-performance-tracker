@@ -2,8 +2,10 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '
 import { MdExpandMore } from 'react-icons/md'
 import { useAuth } from '../contexts/authContext'
 import SettingsList from './settingsList'
+import { useTranslation } from 'react-i18next';
 
 function SettingsView() {
+    const { t } = useTranslation();
     const auth = useAuth()
 
     return (
@@ -26,7 +28,7 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Teams</Typography>
+                            <Typography>{t("teams")}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SettingsList itemsName="teams" />
@@ -38,7 +40,7 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Category Names</Typography>
+                            <Typography>{t("category_names")}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SettingsList itemsName="category_names" />
@@ -50,7 +52,7 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Seasons</Typography>
+                            <Typography>{t("seasons")}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SettingsList itemsName="seasons" />
@@ -62,7 +64,7 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Match Types</Typography>
+                            <Typography>{t("match_types")}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SettingsList itemsName="match_types" />
@@ -74,7 +76,7 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Locations</Typography>
+                            <Typography>{t("locations")}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SettingsList itemsName="locations" />
@@ -86,7 +88,7 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Action Types</Typography>
+                            <Typography>{t("action_types")}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SettingsList itemsName="action_types" />
@@ -98,7 +100,7 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Reaction Types</Typography>
+                            <Typography>{t("reaction_types")}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SettingsList itemsName="reaction_types" />
@@ -110,7 +112,7 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Action Result</Typography>
+                            <Typography>{t("action_result")}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SettingsList itemsName="action_result" />
@@ -122,14 +124,14 @@ function SettingsView() {
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography>Attendance</Typography>
+                            <Typography>{t("attendance")}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SettingsList itemsName="attendance" />
                         </AccordionDetails>
                     </Accordion>
                 </Box> :
-                <Typography>User not allowed.</Typography>
+                <Typography>{t("user_not_allowed")}</Typography>
             }
 
         </Box>

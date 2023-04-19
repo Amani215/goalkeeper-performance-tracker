@@ -63,6 +63,15 @@
   "settings": "Paramètres",
   "Dashboard": "Tableau de Bord",
 
+  "teams": "Equipes",
+  "category_names": "Noms de Catégories",
+  "seasons": "Saisons",
+  "match_types": "Types de Match",
+  "locations": "Emplacements",
+  "action_types": "Types d'action",
+  "reaction_types": "Types de Réaction",
+  "action_result": "Résultats d'actions",
+
   "add": "Ajouter",
   "edit": "Modifier",
   "update": "Mettre à Jour",
@@ -89,5 +98,7 @@
   "no_sequences": "Aucune séquence trouvée.",
   "are_you_sure": "Vous êtes sûr?",
   "yes": "Oui",
-  "cancel": "Annuler"
+  "cancel": "Annuler",
+
+  "user_not_allowed": "Utilisateur non autorisé."
 }

@@ -64,6 +64,15 @@
   "settings": "Settings",
   "Dashboard": "Dashboard",
 
+  "teams": "Teams",
+  "category_names": "Category Names",
+  "seasons": "Seasons",
+  "match_types": "Match Types",
+  "locations": "Locations",
+  "action_types": "Action Types",
+  "reaction_types": "Reaction Types",
+  "action_result": "Action Result",
+
   "add": "Add",
   "edit": "Edit",
   "update": "Update",
@@ -90,5 +99,7 @@
   "no_sequences": "No sequences yet.",
   "are_you_sure": "Are you sure?",
   "yes": "Yes",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+
+  "user_not_allowed": "User not allowed."
 }

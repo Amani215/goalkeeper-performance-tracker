@@ -38,7 +38,7 @@ export default function AccountPopover(props: IProps) {
       <IconButton
         onClick={handleOpen}
         sx={{
-          p: 0,
+          p: 1,
           ...(open && {
             "&:before": {
               zIndex: 1,
@@ -82,7 +82,7 @@ export default function AccountPopover(props: IProps) {
           justifyContent="center"
           alignItems="center"
         >
-          <Avatar src={props.profile_pic} alt="photoURL" sx={{ width: 64, height: 64 }} />
+          <Avatar src={props.profile_pic} alt="photoURL" sx={{ width: 56, height: 56 }} />
           <Typography sx={{ fontWeight: 'bold' }} variant="subtitle1" align="center" noWrap>
             {props.username}
           </Typography>

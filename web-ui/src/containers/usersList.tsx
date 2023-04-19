@@ -7,39 +7,41 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import { ModalProp } from '../interfaces/modalProp';
 import { useAuth } from '../contexts/authContext';
-
-const columns: GridColDef[] = [
-    {
-        field: 'profile_pic',
-        headerName: 'Profile Pic',
-        flex: 1,
-        minWidth: 60,
-        align: "center",
-        renderCell: (params) => {
-            return (
-                <RouterLink to={`/users/${params.id}`}>
-                    <Avatar src={params.row.profile_pic} sx={{ width: 32, height: 32 }} />
-                </RouterLink>
-            );
-        }
-    },
-    {
-        field: 'username',
-        headerName: 'Username',
-        flex: 3, minWidth: 100
-    },
-    {
-        field: 'admin',
-        headerName: 'Admin',
-        flex: 1,
-        type: 'boolean',
-        minWidth: 80
-    }
-];
+import { useTranslation } from 'react-i18next';
 
 export default function UsersList({
     setModalIsOpen
 }: ModalProp) {
+    const { t } = useTranslation();
+    const columns: GridColDef[] = [
+        {
+            field: 'profile_pic',
+            headerName: `${t("profile_pic")}`,
+            flex: 1,
+            minWidth: 60,
+            align: "center",
+            renderCell: (params) => {
+                return (
+                    <RouterLink to={`/users/${params.id}`}>
+                        <Avatar src={params.row.profile_pic} sx={{ width: 32, height: 32 }} />
+                    </RouterLink>
+                );
+            }
+        },
+        {
+            field: 'username',
+            headerName: `${t("username")}`,
+            flex: 3, minWidth: 100
+        },
+        {
+            field: 'admin',
+            headerName: 'Admin',
+            flex: 1,
+            type: 'boolean',
+            minWidth: 80
+        }
+    ];
+
     const [rows, setRows] = useState<UserDTO[]>([] as UserDTO[])
     const auth = useAuth()
 
@@ -58,7 +60,7 @@ export default function UsersList({
                 <Box
                     display="flex" justifyContent="flex-end"
                     mb={2}>
-                    <Button variant="contained" onClick={() => { setModalIsOpen() }}>Add User</Button>
+                    <Button variant="contained" onClick={() => { setModalIsOpen() }}>{t("add_user")}</Button>
                 </Box> : <></>
             }
 

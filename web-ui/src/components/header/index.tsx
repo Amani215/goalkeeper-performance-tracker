@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AccountPopover from './AccountPopover';
 import { LoginDTO } from '../../DTOs/LoginDTO';
-import { Switch } from '@mui/material';
+import { Switch, styled } from '@mui/material';
 import { useState } from 'react';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -12,14 +12,13 @@ import { useTranslation } from 'react-i18next';
 interface IProps {
   auth: LoginDTO | null
 }
-
 export default function Header({ auth }: IProps) {
   const { t } = useTranslation();
   const [english, setEnglish] = useState<boolean>(false);
 
   const changeLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEnglish(event.target.checked);
-    if (english) {
+    if (!english) {
       i18next.changeLanguage('en')
     } else {
       i18next.changeLanguage('fr')
@@ -35,10 +34,12 @@ export default function Header({ auth }: IProps) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>GPT</Typography>
 
           <div>
+            EN
             <Switch
               checked={english}
               onChange={changeLanguage}
               color="default" />
+            FR
             <AccountPopover
               id={auth?.user ? auth.user.id : ""}
               username={auth?.user ? auth.user.username : ""}

@@ -6,6 +6,26 @@ import SideNav from '../components/sideNav'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
 import { Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+
+function PageName() {
+    const { t } = useTranslation();
+    const location = useLocation()
+    if (location.pathname.split('/')[2]) return <></>
+
+    const pageName: string = location.pathname.split('/')[1] || "Dashboard"
+    return <Typography
+        variant='h5'
+        sx={{
+            textTransform: 'capitalize',
+            fontWeight: 'bold'
+        }}
+        style={{ color: '#757575' }}
+        mb={2}>
+        {t(pageName)}
+    </Typography>
+}
+
 
 //Menu, headers, footer...
 const PortalPage = ({ children }: PropsWithChildren<{}>) => {
@@ -24,19 +44,7 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
             setRedirect(true)
         }
     }, [loaded, authReady, auth?.user])
-    function PageName() {
-        if (location.pathname.split('/')[2]) return <></>
-        return <Typography
-            variant='h5'
-            sx={{
-                textTransform: 'capitalize',
-                fontWeight: 'bold'
-            }}
-            style={{ color: '#757575' }}
-            mb={2}>
-            {location.pathname.split('/')[1] || "Dashboard"}
-        </Typography>
-    }
+
     if (redirect) {
         return <Navigate to="/login" state={{ from: location }} replace />
     }

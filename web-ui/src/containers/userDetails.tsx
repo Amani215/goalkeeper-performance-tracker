@@ -10,9 +10,11 @@ import { useUpdateProfilePic, useGetUser, useUserCategories, useUserCategoriesRe
 import { CategoryDTO, UserDTO } from '../DTOs'
 import { IoFootball } from "react-icons/io5"
 import { ModalProp } from '../interfaces/modalProp'
+import { useTranslation } from 'react-i18next'
 
 function UserDetails({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
+    const { t } = useTranslation();
 
     const [isCurrentUser, setIsCurrentUser] = useState(false)
     const [user, setUser] = useState<UserDTO | null>(null)
@@ -93,7 +95,7 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
                                     <Button
                                         disabled={user?.admin}
                                         onClick={() => { setModalIsOpen() }}>
-                                        Edit
+                                        {t("edit")}
                                     </Button>
                                 </Box> : <></>
                             }
@@ -103,7 +105,7 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
                                     <Typography
                                         variant='subtitle1'
                                         sx={{ fontWeight: 'bold' }}>
-                                        Name
+                                        {t("username")}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={5}>
@@ -117,7 +119,7 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
                                     <Typography
                                         variant='subtitle1'
                                         sx={{ fontWeight: 'bold' }}>
-                                        Status
+                                        {t("status")}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={5}>
@@ -131,7 +133,7 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
                                     <Typography
                                         variant='subtitle1'
                                         sx={{ fontWeight: 'bold' }}>
-                                        Associated Categories
+                                        {t("associated_categories")}
                                     </Typography>
                                 </Grid>
 
@@ -158,7 +160,7 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
                                             </Grid>
                                         ))
                                         : <Box pl={1}>
-                                            No associated categories yet.
+                                            {t("no_categories")}
                                         </Box>
                                     }
                                 </Grid>
@@ -201,7 +203,7 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
                                 </Typography>
                                 {isCurrentUser ?
                                     <Button component="label">
-                                        Change Picture
+                                        {t("change_pic")}
                                         <input
                                             hidden
                                             accept="image/*"

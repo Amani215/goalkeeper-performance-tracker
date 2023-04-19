@@ -1,3 +1,28 @@
 {
-  "test": "This is a test"
+  "test": "This is a test",
+
+  "username": "Username",
+  "password": "Password",
+  "status": "Status",
+  "associated_categories": "Associated Categories",
+  "profile_pic": "Profile Pic",
+
+  "name": "Name",
+  "birthday": "Birthday",
+  "picture": "Picture",
+
+  "users": "Users",
+  "goalkeepers": "Goalkeepers",
+  "categories": "Categories",
+  "trainings": "Trainings",
+  "matches": "Matches",
+  "settings": "Settings",
+  "Dashboard": "Dashboard",
+
+  "add": "Add",
+  "edit": "Edit",
+  "add_user": "Add user",
+  "add_goalkeeper": "Add Goalkeeper",
+  "change_pic": "Change Picture",
+  "no_categories": "No categories yet."
 }

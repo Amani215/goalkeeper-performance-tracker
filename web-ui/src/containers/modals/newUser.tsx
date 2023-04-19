@@ -5,8 +5,10 @@ import { useNewUser, useNewUserError } from '../../contexts/usersContext';
 import { ModalProp } from '../../interfaces/modalProp'
 import userValidationSchema from '../../schemas/userValidation';
 import { style } from './style';
+import { useTranslation } from 'react-i18next';
 
 function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation();
     const [error, setError] = useState(false)
 
     const newUser = useNewUser()
@@ -38,7 +40,7 @@ function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Add a User
+                    {t("add_user")}
                 </Typography>
                 <Box
                     component="form"
@@ -50,7 +52,7 @@ function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         required
                         fullWidth
                         id="username"
-                        label="Username"
+                        label={t("username")}
                         name="username"
                         autoComplete="username"
                         value={formik.values.username}
@@ -64,7 +66,7 @@ function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         required
                         fullWidth
                         name="password"
-                        label="Password"
+                        label={t("password")}
                         type="password"
                         id="password"
                         autoComplete="current-password"
@@ -85,7 +87,7 @@ function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add
+                        {t("add")}
                     </Button>
                 </Box>
             </Box>

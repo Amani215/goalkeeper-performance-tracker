@@ -1,3 +1,27 @@
 {
-  "test": "Ceci est un test"
+  "test": "Ceci est un test",
+  "username": "Nom d'utilisateur",
+  "password": "Mot de passe",
+  "status": "Statut",
+  "associated_categories": "Catégories Associées",
+  "profile_pic": "Photo de Profil",
+
+  "name": "Nom",
+  "birthday": "Date de Naissance",
+  "picture": "Photo",
+
+  "users": "Utilisateurs",
+  "goalkeepers": "Gardiens de But",
+  "categories": "Catégories",
+  "trainings": "Entrainements",
+  "matches": "Matchs",
+  "settings": "Paramètres",
+  "Dashboard": "Tableau de Bord",
+
+  "add": "Ajouter",
+  "edit": "Modifier",
+  "add_user": "Ajouter un Utilisateur",
+  "add_goalkeeper": "Ajouter un Gardien",
+  "change_pic": "Changer de Photo",
+  "no_categories": "Aucune catégorie trouvée."
 }

@@ -34,12 +34,12 @@ export default function Header({ auth }: IProps) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>GPT</Typography>
 
           <div>
-            EN
+            FR
             <Switch
               checked={english}
               onChange={changeLanguage}
               color="default" />
-            FR
+            EN
             <AccountPopover
               id={auth?.user ? auth.user.id : ""}
               username={auth?.user ? auth.user.username : ""}

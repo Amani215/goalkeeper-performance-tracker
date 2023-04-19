@@ -10,8 +10,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { style } from './style';
+import { useTranslation } from 'react-i18next';
 
 function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation()
     const [error, setError] = useState(false)
 
     const newGoalkeeper = useNewGoalkeeper()
@@ -49,7 +51,7 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Add a Goalkeeper
+                    {t("add_goalkeeper")}
                 </Typography>
                 <Box
                     component="form"
@@ -62,7 +64,7 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         required
                         fullWidth
                         id="name"
-                        label="Name"
+                        label={t("name")}
                         name="name"
                         autoComplete="name"
                         value={formik.values.name}
@@ -74,7 +76,7 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
-                                label="Birth Date"
+                                label={t("birthdate")}
                                 inputFormat="MM/DD/YYYY"
                                 value={formik.values.birthday}
                                 onChange={v => formik.setFieldValue("birthday", v)}
@@ -90,7 +92,7 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add
+                        {t("add")}
                     </Button>
                 </Box>
             </Box>

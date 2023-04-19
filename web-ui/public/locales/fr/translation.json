@@ -7,8 +7,13 @@
   "profile_pic": "Photo de Profil",
 
   "name": "Nom",
-  "birthday": "Date de Naissance",
+  "birthdate": "Date de Naissance",
   "picture": "Photo",
+
+  "category_name": "Nom de la Catégorie",
+  "season": "Saison",
+  "local": "Local",
+  "visitor": "Visiteur",
 
   "users": "Utilisateurs",
   "goalkeepers": "Gardiens de But",
@@ -22,6 +27,11 @@
   "edit": "Modifier",
   "add_user": "Ajouter un Utilisateur",
   "add_goalkeeper": "Ajouter un Gardien",
+  "add_category": "Ajouter une Catégorie",
+
   "change_pic": "Changer de Photo",
-  "no_categories": "Aucune catégorie trouvée."
+  "no_categories": "Aucune catégorie trouvée.",
+  "are_you_sure": "Vous êtes sûr?",
+  "yes": "Oui",
+  "cancel": "Annuler"
 }

@@ -8,8 +8,13 @@
   "profile_pic": "Profile Pic",
 
   "name": "Name",
-  "birthday": "Birthday",
+  "birthdate": "Birth Date",
   "picture": "Picture",
+
+  "category_name": "Category Name",
+  "season": "Season",
+  "local": "Local",
+  "visitor": "Visitor",
 
   "users": "Users",
   "goalkeepers": "Goalkeepers",
@@ -23,6 +28,11 @@
   "edit": "Edit",
   "add_user": "Add user",
   "add_goalkeeper": "Add Goalkeeper",
+  "add_category": "Add Category",
+
   "change_pic": "Change Picture",
-  "no_categories": "No categories yet."
+  "no_categories": "No categories yet.",
+  "are_you_sure": "Are you sure?",
+  "yes": "Yes",
+  "cancel": "Cancel"
 }

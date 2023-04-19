@@ -12,9 +12,11 @@ import { ModalProp } from '../interfaces/modalProp'
 import { Link as RouterLink } from 'react-router-dom';
 import { Alert, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
 import { MdClose } from 'react-icons/md'
+import { useTranslation } from 'react-i18next'
 
 
 function CategoriesView({ setModalIsOpen }: ModalProp) {
+  const { t } = useTranslation()
   const [categories, setCategories] = useState<CategoryDTO[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [categoryToDelete, setCategoryToDelete] = useState<string>("")
@@ -61,7 +63,7 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
           <Button
             variant="contained"
             onClick={() => { setModalIsOpen() }}
-          >Add Category
+          >{t("add_category")}
           </Button>
         </Box> : <></>
       }
@@ -112,7 +114,7 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
               </Card>
             ))
             :
-            <Typography variant="body1">No categories yet.</Typography>}
+            <Typography variant="body1">{t("no_categories")}</Typography>}
       </Grid>
 
       <Dialog
@@ -122,7 +124,7 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Are you sure?"}
+          {t("are_you_sure")}
         </DialogTitle>
         <DialogContent>
           {deleteCategoryError != "" ?
@@ -133,9 +135,9 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>{t("cancel")}</Button>
           <Button onClick={handleDelete} autoFocus>
-            Yes
+            {t("yes")}
           </Button>
         </DialogActions>
       </Dialog>

@@ -6,8 +6,10 @@ import { ModalProp } from '../../interfaces/modalProp'
 import categoryValidationSchema from '../../schemas/categoryValidation';
 import { style } from './style';
 import { useParams } from '../../contexts/paramsContext';
+import { useTranslation } from 'react-i18next';
 
 function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation()
     const [_, setError] = useState(false)
 
     const newCategory = useNewCategory()
@@ -50,7 +52,7 @@ function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Add a Category
+                    {t("add_category")}
                 </Typography>
                 <Box
                     component="form"
@@ -59,13 +61,13 @@ function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
                 >
 
                     <FormControl fullWidth sx={{ marginTop: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Category name</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("category_name")}</InputLabel>
                         <Select
                             required
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={formik.values.name}
-                            label="Local"
+                            label={t("local")}
                             onChange={(e) => formik.setFieldValue("name", e.target.value)}
                         >
                             {names.map((name) => (
@@ -75,13 +77,13 @@ function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     </FormControl>
 
                     <FormControl fullWidth sx={{ marginTop: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Category season</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("season")}</InputLabel>
                         <Select
                             required
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={formik.values.season}
-                            label="Season"
+                            label={t("season")}
                             onChange={(e) => formik.setFieldValue("season", e.target.value)}
                         >
                             {seasons.map((season) => (
@@ -96,7 +98,7 @@ function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add
+                        {t("add")}
                     </Button>
                 </Box>
             </Box>

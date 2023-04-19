@@ -18,31 +18,31 @@ export default [
       onlyAdmin: false,
     },
     {
-      name: "Users",
+      name: "users",
       link: "/users",
       MenuIcon: MdSupervisorAccount,
       onlyAdmin: false,
     },
     {
-      name: "Goalkeepers",
+      name: "goalkeepers",
       link: "/goalkeepers",
       MenuIcon: MdSportsHandball,
       onlyAdmin: false,
     },
     {
-      name: "Categories",
+      name: "categories",
       link: "/categories",
       MenuIcon: MdCategory,
       onlyAdmin: false,
     },
     {
-      name: "Trainings",
+      name: "trainings",
       link: "/trainings",
       MenuIcon: MdToday,
       onlyAdmin: false,
     },
     {
-      name: "Matches",
+      name: "matches",
       link: "/matches",
       MenuIcon: MdSportsScore,
       onlyAdmin: false,
@@ -50,7 +50,7 @@ export default [
   ],
   [
     {
-      name: "Settings",
+      name: "settings",
       link: "/settings",
       MenuIcon: MdSettings,
       onlyAdmin: true,

@@ -14,7 +14,7 @@ import { useSideNavIsOpen, useToggleSideNav } from '../../contexts/pageContext';
 import menuItems from "./items"
 import { Fragment } from 'react';
 import { useAuth } from '../../contexts/authContext';
-
+import { useTranslation } from 'react-i18next';
 
 const drawerWidth = 240;
 
@@ -67,6 +67,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
+    const { t } = useTranslation();
+
     const sideNavIsOpen = useSideNavIsOpen();
     const toggleSideNav = useToggleSideNav();
     const theme = useTheme()
@@ -112,7 +114,7 @@ export default function MiniDrawer() {
                                         >
                                             <item.MenuIcon />
                                         </ListItemIcon>
-                                        <ListItemText primary={item.name} sx={{ opacity: sideNavIsOpen ? 1 : 0 }} />
+                                        <ListItemText primary={t(item.name)} sx={{ opacity: sideNavIsOpen ? 1 : 0 }} />
                                     </ListItemButton>
                                 </ListItem>
                             </Link>

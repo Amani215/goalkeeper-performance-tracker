@@ -6,12 +6,15 @@ import { MatchSequenceDTO } from '../DTOs/MatchSequenceDTO';
 import { useAddMatchSequences, useDeleteMatchSequence } from '../contexts/matchPerformanceContext';
 import { useParams } from 'react-router-dom';
 import UpdateSequence from './modals/updateSequence';
+import { useTranslation } from 'react-i18next'
 
 type PropType = {
     sequences: MatchSequenceDTO[]
 }
 
 function SequencesList({ sequences }: PropType) {
+    const { t } = useTranslation();
+
     // Columns
     const columns: GridColDef[] = [
         {
@@ -49,7 +52,7 @@ function SequencesList({ sequences }: PropType) {
         },
         {
             field: 'action_result',
-            headerName: 'Result',
+            headerName: `${t("result")}`,
             flex: 2,
             minWidth: 80,
             renderCell: (params) => {
@@ -60,7 +63,7 @@ function SequencesList({ sequences }: PropType) {
         },
         {
             field: 'comment',
-            headerName: 'Comment',
+            headerName: `${t("comment")}`,
             flex: 2,
             minWidth: 80,
             renderCell: (params) => {
@@ -142,7 +145,7 @@ function SequencesList({ sequences }: PropType) {
                 <Button
                     variant='contained'
                     sx={{ marginBottom: 1, marginTop: 2 }}
-                    onClick={() => { add() }}>Add Sequence</Button>
+                    onClick={() => { add() }}>{t("add_sequence")}</Button>
             </Box>
             {sequences.length > 0 ?
                 <Box
@@ -176,7 +179,7 @@ function SequencesList({ sequences }: PropType) {
                             color: '#616161'
                         }}>
                             <Typography
-                                variant='subtitle2'>No sequences in this section.
+                                variant='subtitle2'>{t("no_sequences")}
                             </Typography>
                         </div>
                     </Card>
@@ -190,7 +193,7 @@ function SequencesList({ sequences }: PropType) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Are you sure?"}
+                    {t("are_you_sure")}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
@@ -198,9 +201,9 @@ function SequencesList({ sequences }: PropType) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+                    <Button onClick={handleCloseDeleteDialog}>{t("cancel")}</Button>
                     <Button onClick={handleDelete} autoFocus>
-                        Yes
+                        {t("yes")}
                     </Button>
                 </DialogActions>
             </Dialog>

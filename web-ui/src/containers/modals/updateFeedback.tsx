@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useMatchPerformance, useUpdateMatchPerformance } from '../../contexts/matchPerformanceContext';
 import { MatchMonitoringDTO, UpdateMatchMonitoringDTO } from '../../DTOs/MatchMonitoringDTO';
 import { ModalProp } from '../../interfaces/modalProp'
+import { useTranslation } from 'react-i18next'
 
 
 const style = {
@@ -21,6 +22,8 @@ const style = {
 };
 
 function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation();
+
     const [loaded, setLoaded] = useState(false)
 
     const [matchPerformance, setmatchPerformance] = useState<MatchMonitoringDTO | null>(null)
@@ -137,7 +140,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Update Feedback
+                    {t("update_feedback")}
                 </Typography>
                 <Box
                     component="form"
@@ -151,7 +154,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         fullWidth
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         id="time_played"
-                        label="Time Played"
+                        label={t("time_played")}
                         name="time_played"
                         autoComplete="time_played"
                         value={formik.values.time_played}
@@ -166,7 +169,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         fullWidth
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         id="balls_touched"
-                        label="Balls Touched"
+                        label={t("balls_touched")}
                         name="balls_touched"
                         autoComplete="balls_touched"
                         value={formik.values.balls_touched}
@@ -182,7 +185,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="penalties_saved"
-                                label="Penalties Saved"
+                                label={t("penalties_saved")}
                                 name="penalties_saved"
                                 autoComplete="penalties_saved"
                                 value={formik.values.penalties_saved}
@@ -198,7 +201,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="penalties_non_saved"
-                                label="Penalties Non Saved"
+                                label={t("penalties_non_saved")}
                                 name="penalties_non_saved"
                                 autoComplete="penalties_non_saved"
                                 value={formik.values.penalties_non_saved}
@@ -217,7 +220,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="yellow_cards"
-                                label="Yellow Cards"
+                                label={t("yellow_cards")}
                                 name="yellow_cards"
                                 autoComplete="yellow_cards"
                                 value={formik.values.yellow_cards}
@@ -233,7 +236,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="red_cards"
-                                label="Red Cards"
+                                label={t("red_cards")}
                                 name="red_cards"
                                 autoComplete="red_cards"
                                 value={formik.values.red_cards}
@@ -252,7 +255,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="successful_deliveries"
-                                label="Successful Deliveries"
+                                label={t("successful_deliveries")}
                                 name="successful_deliveries"
                                 autoComplete="successful_deliveries"
                                 value={formik.values.successful_deliveries}
@@ -268,7 +271,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="non_successful_deliveries"
-                                label="Unsuccessful Deliveries"
+                                label={t("non_successful_deliveries")}
                                 name="non_successful_deliveries"
                                 autoComplete="non_successful_deliveries"
                                 value={formik.values.non_successful_deliveries}
@@ -287,7 +290,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="successful_ballon_profondeur"
-                                label="Successful Ballon en Profondeur"
+                                label={t("successful_ballon_profondeur")}
                                 name="successful_ballon_profondeur"
                                 autoComplete="successful_ballon_profondeur"
                                 value={formik.values.successful_ballon_profondeur}
@@ -303,7 +306,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="non_successful_ballon_profondeur"
-                                label="Unsuccessful Ballon en Profondeur"
+                                label={t("non_successful_ballon_profondeur")}
                                 name="non_successful_ballon_profondeur"
                                 autoComplete="non_successful_ballon_profondeur"
                                 value={formik.values.non_successful_ballon_profondeur}
@@ -322,7 +325,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="successful_hand_relaunch"
-                                label="Successful Hand Relaunches"
+                                label={t("successful_hand_relaunch")}
                                 name="successful_hand_relaunch"
                                 autoComplete="successful_hand_relaunch"
                                 value={formik.values.successful_hand_relaunch}
@@ -338,7 +341,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="non_successful_hand_relaunch"
-                                label="Unsuccessful Hand Relaunches"
+                                label={t("non_successful_hand_relaunch")}
                                 name="non_successful_hand_relaunch"
                                 autoComplete="non_successful_hand_relaunch"
                                 value={formik.values.non_successful_hand_relaunch}
@@ -357,7 +360,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="successful_foot_relaunch"
-                                label="Successful Foot Relaunches"
+                                label={t("successful_foot_relaunch")}
                                 name="successful_foot_relaunch"
                                 autoComplete="successful_foot_relaunch"
                                 value={formik.values.successful_foot_relaunch}
@@ -373,7 +376,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                                 fullWidth
                                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                                 id="non_successful_foot_relaunch"
-                                label="Unsuccessful Foot Relaunches"
+                                label={t("non_successful_foot_relaunch")}
                                 name="non_successful_foot_relaunch"
                                 autoComplete="non_successful_foot_relaunch"
                                 value={formik.values.non_successful_foot_relaunch}
@@ -390,7 +393,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         fullWidth
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         id="grade"
-                        label="Grade"
+                        label={t("grade")}
                         name="grade"
                         autoComplete="grade"
                         value={formik.values.grade}
@@ -402,7 +405,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         size="small"
                         fullWidth
                         id="comment"
-                        label="Comment"
+                        label={t("comment")}
                         name="comment"
                         autoComplete="comment"
                         value={formik.values.comment}
@@ -415,7 +418,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Update
+                        {t("update")}
                     </Button>
                 </Box>
             </Box>

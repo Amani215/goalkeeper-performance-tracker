@@ -28,6 +28,7 @@
   "match_type": "Match Type",
   "performance_sheet": "Performance Sheet",
   "match_performances": "Match performances",
+  "time_played": "Time Played",
 
   "growth": "Growth",
   "monitor_growth": "Monitor Growth",
@@ -36,6 +37,23 @@
   "torso_height": "Torso Height",
   "thoracic_perimeter": "Thoracic Perimeter",
   "annual_growth": "Annual Growth",
+  "balls_touched": "Balls Touched",
+  "penalties_saved": "Penalties Saved",
+  "penalties_non_saved": "Penalties Not Saved",
+  "yellow_cards": "Yellow Cards",
+  "red_cards": "Red cards",
+  "successful_deliveries": "Successful Deliveries",
+  "non_successful_deliveries": "Non Successful Deliveries",
+  "successful_ballon_profondeur": "Successful Ballon Profondeur",
+  "non_successful_ballon_profondeur": "Non Successful Ballon Profondeur",
+  "successful_hand_relaunch": "Successful Hand Relaunch",
+  "non_successful_hand_relaunch": "Non Successful Hand Relaunch",
+  "successful_foot_relaunch": "Successful Foot Relaunch",
+  "non_successful_foot_relaunch": "Non Successful Foot Relaunch",
+  "grade": "Grade",
+  "comment": "Comment",
+
+  "result": "Result",
 
   "users": "Users",
   "goalkeepers": "Goalkeepers",
@@ -47,6 +65,7 @@
 
   "add": "Add",
   "edit": "Edit",
+  "update": "Update",
   "add_user": "Add user",
   "add_coach": "Add a Coach",
   "add_goalkeeper": "Add Goalkeeper",
@@ -54,6 +73,8 @@
   "add_training": "Add Training",
   "add_form": "Add Form",
   "add_match": "Add Match",
+  "add_sequence": "Add Sequence",
+  "update_feedback": "Update Feedback",
   "download_form": "Download Form",
 
   "change_pic": "Change Picture",
@@ -64,6 +85,7 @@
   "no_coaches": "No coaches yet.",
   "no_data": "No data in this section yet.",
   "no_matches": "No matches yet.",
+  "no_sequences": "No sequences yet.",
   "are_you_sure": "Are you sure?",
   "yes": "Yes",
   "cancel": "Cancel"

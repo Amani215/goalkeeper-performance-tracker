@@ -10,9 +10,11 @@ import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { ModalProp } from '../interfaces/modalProp';
 import { MatchSequenceDTO } from '../DTOs/MatchSequenceDTO';
 import SequencesList from '../containers/sequencesList';
+import { useTranslation } from 'react-i18next'
 
 function MatchPerformance({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
+    const { t } = useTranslation();
 
     const [matchPerformance, setMatchPerformance] = useState<MatchMonitoringDTO | null>(null)
     const [, setError] = useState("")
@@ -152,7 +154,7 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
                                 </Grid>
                             ))
                             : <Box pl={1}>
-                                No associated categories yet.
+                                {t("no_categories")}
                             </Box>}
                     </Box>
 

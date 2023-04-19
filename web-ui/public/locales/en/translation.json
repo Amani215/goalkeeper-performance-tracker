@@ -54,6 +54,7 @@
   "comment": "Comment",
 
   "result": "Result",
+  "sequence_number": "Sequence Number",
 
   "users": "Users",
   "goalkeepers": "Goalkeepers",
@@ -75,6 +76,7 @@
   "add_match": "Add Match",
   "add_sequence": "Add Sequence",
   "update_feedback": "Update Feedback",
+  "update_sequence": "Update Sequence",
   "download_form": "Download Form",
 
   "change_pic": "Change Picture",

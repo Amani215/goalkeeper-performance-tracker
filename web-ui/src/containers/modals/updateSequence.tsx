@@ -7,12 +7,14 @@ import { style } from './style';
 import { useUpdateMatch } from '../../contexts/matchContext';
 import { MatchSequenceDTO } from '../../DTOs/MatchSequenceDTO';
 import { useUpdateMatchSequence } from '../../contexts/matchPerformanceContext';
+import { useTranslation } from 'react-i18next'
 
 type PropType = {
     sequence: MatchSequenceDTO | null,
     modalProp: ModalProp
 }
 function UpdateSequence({ sequence, modalProp }: PropType) {
+    const { t } = useTranslation();
     const updateSequence = useUpdateMatchSequence()
 
     useEffect(() => {
@@ -85,7 +87,7 @@ function UpdateSequence({ sequence, modalProp }: PropType) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Update Sequence {sequenceNumber}
+                    {t("update_sequence")} {sequenceNumber}
                 </Typography>
                 <Box
                     component="form"
@@ -99,7 +101,7 @@ function UpdateSequence({ sequence, modalProp }: PropType) {
                         fullWidth
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         id="sequenceNumber"
-                        label="Sequence Number"
+                        label={t("sequence_number")}
                         name="sequenceNumber"
                         autoComplete="sequenceNumber"
                         value={formik.values.sequenceNumber}
@@ -138,12 +140,12 @@ function UpdateSequence({ sequence, modalProp }: PropType) {
                     </FormControl>
 
                     <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Action Result</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("result")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={formik.values.result}
-                            label="Result"
+                            label={t("result")}
                             onChange={(e) => formik.setFieldValue("result", e.target.value)}
                         >
                             {results.map((result) => (
@@ -157,7 +159,7 @@ function UpdateSequence({ sequence, modalProp }: PropType) {
                         size="small"
                         fullWidth
                         id="comment"
-                        label="Comment"
+                        label={t("comment")}
                         name="comment"
                         autoComplete="comment"
                         value={formik.values.comment}
@@ -171,7 +173,7 @@ function UpdateSequence({ sequence, modalProp }: PropType) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Update
+                        {t("update")}
                     </Button>
                 </Box>
             </Box>

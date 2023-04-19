@@ -45,6 +45,7 @@
   "comment": "Commentaire",
 
   "result": "Résultat",
+  "sequence_number": "Numéro de Séquence",
 
   "growth": "Croissance",
   "monitor_growth": "Suivi de Croissance",
@@ -74,6 +75,7 @@
   "add_match": "Ajouter un Match",
   "add_sequence": "Ajouter une Séquence",
   "update_feedback": "Mettre à Jour le Suivi",
+  "update_sequence": "Mettre à Jour la Séquence",
   "download_form": "Télécharger le formulaire",
 
   "change_pic": "Changer de Photo",

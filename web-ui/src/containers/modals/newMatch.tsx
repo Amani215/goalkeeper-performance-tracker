@@ -11,8 +11,11 @@ import { useParams } from '../../contexts/paramsContext';
 import { CategoryDTO } from '../../DTOs';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
+import { useTranslation } from 'react-i18next';
 
 function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation();
+
     const [_, setError] = useState(false)
     const [teams, setTeams] = useState<string[]>([])
     const [matchTypes, setMatchTypes] = useState<string[]>([])
@@ -71,7 +74,7 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Add a Match
+                    {t("add_match")}
                 </Typography>
                 <Box
                     component="form"
@@ -82,7 +85,7 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
-                                label="Match Date"
+                                label="Date"
                                 inputFormat="DD/MM/YYYY"
                                 value={formik.values.date}
                                 onChange={v => formik.setFieldValue("date", v)}
@@ -92,12 +95,12 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     </LocalizationProvider>
 
                     <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Local Team</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("local")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={formik.values.local}
-                            label="Local"
+                            label={t("local")}
                             onChange={(e) => formik.setFieldValue("local", e.target.value)}
                         >
                             {teams.map((team) => (
@@ -107,12 +110,12 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     </FormControl>
 
                     <FormControl fullWidth sx={{ marginBottom: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Visitor Team</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("visitor")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={formik.values.visitor}
-                            label="Visitor"
+                            label={t("visitor")}
                             onChange={(e) => formik.setFieldValue("visitor", e.target.value)}
                         >
                             {teams.map((team) => (
@@ -122,12 +125,12 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     </FormControl>
 
                     <FormControl fullWidth sx={{ marginBottom: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Match Type</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("match_type")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={formik.values.matchType}
-                            label="matchType"
+                            label={t("match_type")}
                             onChange={(e) => formik.setFieldValue("matchType", e.target.value)}
                         >
                             {matchTypes.map((matchType) => (
@@ -137,12 +140,12 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     </FormControl>
 
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("category")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={formik.values.category}
-                            label="Category"
+                            label={t("category")}
                             onChange={(e) => formik.setFieldValue("category", e.target.value)}
                         >
                             {categories.map((category) => (
@@ -157,7 +160,7 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add
+                        {t("add")}
                     </Button>
                 </Box>
             </Box>

@@ -5,8 +5,11 @@ import { MatchDTO } from '../DTOs/MatchDTO'
 import MatchesList from '../components/matchesList'
 import { ModalProp } from '../interfaces/modalProp'
 import { useMatchUpdated } from '../contexts/matchContext'
+import { useTranslation } from 'react-i18next'
 
 function MatchesView({ setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation();
+
     const [matches, setMatches] = useState<MatchDTO[]>([])
     const [error, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
@@ -54,7 +57,7 @@ function MatchesView({ setModalIsOpen }: ModalProp) {
                         <Button
                             variant="contained"
                             onClick={() => { setModalIsOpen() }}
-                        >Add Match
+                        >{t("add_match")}
                         </Button>
                     </Box>
                     <MatchesList matches={matches} />

@@ -16,8 +16,6 @@
   "category": "Category",
   "category_name": "Category Name",
   "season": "Season",
-  "local": "Local",
-  "visitor": "Visitor",
   "link": "Link",
 
   "training": "Training",
@@ -25,6 +23,9 @@
   "attendance": "Attendance",
   "training_attendance": "Training Attendance",
 
+  "local": "Local",
+  "visitor": "Visitor",
+  "match_type": "Match Type",
   "performance_sheet": "Performance Sheet",
   "match_performances": "Match performances",
 
@@ -52,6 +53,7 @@
   "add_category": "Add Category",
   "add_training": "Add Training",
   "add_form": "Add Form",
+  "add_match": "Add Match",
   "download_form": "Download Form",
 
   "change_pic": "Change Picture",
@@ -61,6 +63,7 @@
   "no_goalkeepers": "No goalkeepers yet.",
   "no_coaches": "No coaches yet.",
   "no_data": "No data in this section yet.",
+  "no_matches": "No matches yet.",
   "are_you_sure": "Are you sure?",
   "yes": "Yes",
   "cancel": "Cancel"

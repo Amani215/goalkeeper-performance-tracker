@@ -6,12 +6,15 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 import { useState } from 'react';
 import { useDeleteMatch, useDeleteMatchError } from '../../contexts/matchesContext';
 import UpdateMatch from '../../containers/modals/updateMatch';
+import { useTranslation } from 'react-i18next';
 
 type PropType = {
     matches: MatchDTO[]
 }
 
 function MatchesList({ matches }: PropType) {
+    const { t } = useTranslation();
+
     // Columns
     const columns: GridColDef[] = [
         {
@@ -33,7 +36,7 @@ function MatchesList({ matches }: PropType) {
         },
         {
             field: 'category',
-            headerName: 'Category',
+            headerName: `${t("category")}`,
             flex: 2,
             minWidth: 100,
             renderCell: (params) => {
@@ -50,7 +53,7 @@ function MatchesList({ matches }: PropType) {
         },
         {
             field: 'local',
-            headerName: 'Local',
+            headerName: `${t("local")}`,
             flex: 2,
             minWidth: 80,
             renderCell: (params) => {
@@ -67,7 +70,7 @@ function MatchesList({ matches }: PropType) {
         },
         {
             field: 'visitor',
-            headerName: 'Visitor',
+            headerName: `${t("visitor")}`,
             flex: 2,
             minWidth: 80,
             renderCell: (params) => {
@@ -84,7 +87,7 @@ function MatchesList({ matches }: PropType) {
         },
         {
             field: 'match_type',
-            headerName: 'Match Type',
+            headerName: `${t("match_type")}`,
             flex: 2,
             minWidth: 80,
             renderCell: (params) => {
@@ -189,7 +192,7 @@ function MatchesList({ matches }: PropType) {
                             color: '#616161'
                         }}>
                             <Typography
-                                variant='subtitle2'>No matches in this section.
+                                variant='subtitle2'>{t("no_matches")}
                             </Typography>
                         </div>
                     </Card>
@@ -203,7 +206,7 @@ function MatchesList({ matches }: PropType) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Are you sure?"}
+                    {t("are_you_sure")}
                 </DialogTitle>
                 <DialogContent>
                     {deleteMatchError != "" ?
@@ -214,9 +217,9 @@ function MatchesList({ matches }: PropType) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+                    <Button onClick={handleCloseDeleteDialog}>{t("cancel")}</Button>
                     <Button onClick={handleDelete} autoFocus>
-                        Yes
+                        {t("yes")}
                     </Button>
                 </DialogActions>
             </Dialog>

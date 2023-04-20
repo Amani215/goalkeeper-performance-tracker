@@ -76,13 +76,13 @@ def set_param(current_user: User):
             raise PermissionError('User cannot edit this data.')
 
         possible_params = [
-            'time_played', 'goals_scored', 'goals_conceded', 'penalties_saved',
-            'penalties_non_saved', 'successful_deliveries',
-            'non_successful_deliveries', 'successful_ballon_profondeur',
-            'non_successful_ballon_profondeur', 'successful_hand_relaunch',
-            'non_successful_hand_relaunch', 'successful_foot_relaunch',
-            'non_successful_foot_relaunch', 'balls_touched', 'yellow_cards',
-            'red_cards', 'grade', 'comment'
+            'goalkeeper_order', 'time_played', 'goals_scored',
+            'goals_conceded', 'penalties_saved', 'penalties_non_saved',
+            'successful_deliveries', 'non_successful_deliveries',
+            'successful_ballon_profondeur', 'non_successful_ballon_profondeur',
+            'successful_hand_relaunch', 'non_successful_hand_relaunch',
+            'successful_foot_relaunch', 'non_successful_foot_relaunch',
+            'balls_touched', 'yellow_cards', 'red_cards', 'grade', 'comment'
         ]
         for param in possible_params:
             if param in request.json:

@@ -24,6 +24,7 @@ class match_monitoring(db.Model):
     match_sequences = db.relationship("match_sequence",
                                       back_populates="match_performance")
 
+    goalkeeper_order = Column(Integer, unique=False, default=1)
     time_played = Column(Integer, unique=False, default=0)
     goals_scored = Column(Integer, unique=False, default=0)
     goals_conceded = Column(Integer, unique=False, default=0)
@@ -62,6 +63,7 @@ class match_monitoring(db.Model):
             'id': self.id,
             'goalkeeper': self.main_goalkeeper.serialize,
             'match': self.match.serialize,
+            'goalkeeper_order': self.goalkeeper_order,
             'time_played': self.time_played,
             'goals_scored': self.goals_scored,
             'goals_conceded': self.goals_conceded,

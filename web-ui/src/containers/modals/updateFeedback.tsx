@@ -39,6 +39,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
     }, [loaded, matchPerformanceContext])
 
     const handleSubmit = async ({
+        goalkeeper_order,
         time_played,
         goals_scored,
         goals_conceded,
@@ -58,6 +59,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
         grade, comment }: FormikValues): Promise<void> => {
         const newMatchMonitoring: UpdateMatchMonitoringDTO = {
             id: matchPerformance ? matchPerformance.id : "",
+            goalkeeper_order: goalkeeper_order,
             time_played: time_played,
             goals_scored: goals_scored,
             goals_conceded: goals_conceded,
@@ -85,6 +87,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
     const formik = useFormik({
         initialValues: {
+            goalkeeper_order: 1,
             time_played: 0,
             goals_scored: 0,
             goals_conceded: 0,
@@ -110,6 +113,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
     useEffect(() => {
         if (matchPerformance) {
             formik.setValues({
+                goalkeeper_order: matchPerformance.goalkeeper_order,
                 time_played: matchPerformance.time_played,
                 goals_scored: matchPerformance.goals_scored,
                 goals_conceded: matchPerformance.goals_conceded,
@@ -147,6 +151,21 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     onSubmit={formik.handleSubmit}
                     sx={{ mt: 1 }}
                 >
+                    <TextField
+                        margin="normal"
+                        size="small"
+                        required
+                        fullWidth
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                        id="goalkeeper_order"
+                        label={t("goalkeeper_order")}
+                        name="goalkeeper_order"
+                        autoComplete="goalkeeper_order"
+                        value={formik.values.goalkeeper_order}
+                        onChange={formik.handleChange}
+                        autoFocus
+                    />
+
                     <TextField
                         margin="normal"
                         size="small"

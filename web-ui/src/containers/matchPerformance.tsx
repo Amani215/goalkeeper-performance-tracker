@@ -127,7 +127,7 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
                             variant='h6'
                             sx={{ fontWeight: 'bold' }}
                             mt={1}>
-                            {matchPerformance ? matchPerformance.goalkeeper?.name : "--"}
+                            {matchPerformance ? `${matchPerformance.goalkeeper?.name} (${matchPerformance.goalkeeper_order})` : "--"}
                         </Typography>
                     </Box>
                     <Box

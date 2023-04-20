@@ -5,6 +5,7 @@ export interface MatchMonitoringDTO {
   id: string;
   goalkeeper: GoalkeeperDTO;
   match: MatchDTO;
+  goalkeeper_order: number;
   time_played: number;
   goals_scored: number;
   goals_conceded: number;
@@ -27,6 +28,7 @@ export interface MatchMonitoringDTO {
 
 export interface UpdateMatchMonitoringDTO {
   id: string;
+  goalkeeper_order: number;
   time_played: number;
   goals_scored: number;
   goals_conceded: number;

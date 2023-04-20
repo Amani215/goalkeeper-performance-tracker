@@ -170,7 +170,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                                                 <Avatar src={gp.goalkeeper.picture}></Avatar>
                                             </RouterLink>
                                         </ListItemAvatar>
-                                        <ListItemText primary={gp.goalkeeper.name} />
+                                        <ListItemText primary={`${gp.goalkeeper.name} (${gp.goalkeeper_order})`} />
                                     </ListItem><Divider />
                                 </div>
                             ))}

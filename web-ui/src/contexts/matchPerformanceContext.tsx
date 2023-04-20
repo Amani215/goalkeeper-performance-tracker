@@ -126,6 +126,7 @@ export default function MatchPerformanceProvider(props: PropsWithChildren<{}>) {
                 'Authorization': `bearer ${token}`
             },
             body: JSON.stringify({
+                goalkeeper_order: Number(newMatchMonitoring.goalkeeper_order),
                 time_played: Number(newMatchMonitoring.time_played),
                 goals_scored: Number(newMatchMonitoring.goals_scored),
                 goals_conceded: Number(newMatchMonitoring.goals_conceded),

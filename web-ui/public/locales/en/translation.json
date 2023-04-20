@@ -39,6 +39,8 @@
   "torso_height": "Torso Height",
   "thoracic_perimeter": "Thoracic Perimeter",
   "annual_growth": "Annual Growth",
+
+  "goalkeeper_order": "Goalkeeper's Order",
   "balls_touched": "Balls Touched",
   "penalties_saved": "Penalties Saved",
   "penalties_non_saved": "Penalties Not Saved",

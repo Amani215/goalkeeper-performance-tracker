@@ -186,7 +186,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                     <DialogTitle id="alert-dialog-title">{t("are_you_sure")}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            By clicking yes, you are going to delete {goalkeeperToDelete?.goalkeeper.name} from the list of goalkeepers permanently.
+                            {t("deleting_goalkeeper_match_warning")}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>

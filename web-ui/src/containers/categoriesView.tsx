@@ -131,7 +131,7 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
             <Alert severity='error' sx={{ marginBottom: 1 }}>{deleteCategoryError}</Alert>
             : <></>}
           <DialogContentText id="alert-dialog-description">
-            By clicking yes you are going to delete the {categoryToDelete} category permanently.
+            {t("deleting_category_warning")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

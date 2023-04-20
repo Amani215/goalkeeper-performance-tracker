@@ -103,6 +103,12 @@
   "no_matches": "Aucun match trouvé.",
   "no_sequences": "Aucune séquence trouvée.",
   "are_you_sure": "Vous êtes sûr?",
+  "deleting_category_warning": "En cliquant oui, vous allez supprimer cette catégorie pour toujours.",
+  "deleting_goalkeeper_category_warning": "En cliquant oui, vous allez supprimer ce gardien de cette catégorie pour toujours.",
+  "deleting_coach_category_warning": "En cliquant oui, vous allez supprimer ce coach de cette catégorie pour toujours.",
+  "deleting_goalkeeper_match_warning": "En cliquant oui, vous allez supprimer ce gardien de ce match pour toujours.",
+  "deleting_sequence_warning": "En cliquant oui, vous allez supprimer cette séquence pour toujours.",
+  "deleting_goalkeeper_training_warning": "En cliquant oui, vous allez supprimer ce gardien de cet entrainement pour toujours.",
   "yes": "Oui",
   "cancel": "Annuler",
 

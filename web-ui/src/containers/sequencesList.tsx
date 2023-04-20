@@ -197,7 +197,7 @@ function SequencesList({ sequences }: PropType) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        By clicking yes you are going to delete this sequence permanently.
+                        {t("deleting_sequence_warning")}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

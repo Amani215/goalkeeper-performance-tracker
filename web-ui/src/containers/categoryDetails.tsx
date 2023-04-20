@@ -236,7 +236,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                 <DialogTitle id="alert-dialog-title"> {t("are_you_sure")} </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        By clicking yes, you are going to delete {trainerToDelete?.username} from the list of coaches permanently.
+                        {t("deleting_coach_category_warning")}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -253,7 +253,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                 <DialogTitle id="alert-dialog-title">{t("are_you_sure")}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        By clicking yes, you are going to delete {goalkeeperToDelete?.name} from the list of goalkeepers permanently.
+                        {t("deleting_goalkeeper_category_warning")}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

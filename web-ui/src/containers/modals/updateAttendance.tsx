@@ -6,12 +6,14 @@ import { style } from './style';
 import { useParams } from '../../contexts/paramsContext';
 import { useUpdateTrainingPerformance } from '../../contexts/trainingPerformanceContext';
 import { TrainingMonitoringDTO } from '../../DTOs/TrainingMonitoringDTO';
+import { useTranslation } from 'react-i18next';
 
 type PropType = {
     tm: TrainingMonitoringDTO | null,
     modalProp: ModalProp
 }
 function UpdateAttendance({ tm, modalProp }: PropType) {
+    const { t } = useTranslation();
     const updateAttendance = useUpdateTrainingPerformance()
 
     const [options, setOptions] = useState<string[]>([])
@@ -60,7 +62,7 @@ function UpdateAttendance({ tm, modalProp }: PropType) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Update Attendance
+                    {t("update_attendance")}
                 </Typography>
                 <Box
                     component="form"
@@ -69,7 +71,7 @@ function UpdateAttendance({ tm, modalProp }: PropType) {
                 >
 
                     <FormControl fullWidth sx={{ marginTop: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Attendance</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("attendance")}</InputLabel>
                         <Select
                             required
                             labelId="demo-simple-select-label"
@@ -91,7 +93,7 @@ function UpdateAttendance({ tm, modalProp }: PropType) {
                         fullWidth
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         id="attendanceTime"
-                        label="Attendance Time"
+                        label={t("attendance_time")}
                         name="attendanceTime"
                         autoComplete="attendanceTime"
                         value={formik.values.attendanceTime}
@@ -105,7 +107,7 @@ function UpdateAttendance({ tm, modalProp }: PropType) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Update
+                        {t("update")}
                     </Button>
                 </Box>
             </Box>

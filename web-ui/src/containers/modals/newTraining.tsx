@@ -9,8 +9,10 @@ import { CategoryDTO } from '../../DTOs/CategoryDTO';
 import { ModalProp } from '../../interfaces/modalProp'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { style } from './style';
+import { useTranslation } from 'react-i18next';
 
 function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation();
     const [, setError] = useState(false)
     const [categories, setCategories] = useState<CategoryDTO[]>([])
 
@@ -56,7 +58,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Add a Training
+                    {t("add_training")}
                 </Typography>
                 <Box
                     component="form"
@@ -67,7 +69,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3}>
                             <DatePicker
-                                label="Training Date"
+                                label="Date"
                                 inputFormat="DD/MM/YYYY"
                                 value={formik.values.date}
                                 onChange={v => formik.setFieldValue("date", v)}
@@ -83,7 +85,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         fullWidth
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                         id="duration"
-                        label="Duration"
+                        label={t("duration")}
                         name="duration"
                         autoComplete="duration"
                         value={formik.values.duration}
@@ -92,7 +94,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     />
 
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("category")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -112,7 +114,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Add
+                        {t("add")}
                     </Button>
                 </Box>
             </Box>

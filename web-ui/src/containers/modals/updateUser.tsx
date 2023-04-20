@@ -5,8 +5,10 @@ import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { UserDTO } from '../../DTOs/UserDTO';
 import { useUpdateUserStatus, useUser } from '../../contexts/userContext';
+import { useTranslation } from 'react-i18next';
 
 function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation();
     const [loaded, setLoaded] = useState(false)
 
     const [user, setUser] = useState<UserDTO | null>(null)
@@ -51,7 +53,7 @@ function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Update User Status
+                    {t("update_user_status")}
                 </Typography>
                 <Box
                     component="form"
@@ -77,7 +79,7 @@ function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Update
+                        {t("update")}
                     </Button>
                 </Box>
             </Box>

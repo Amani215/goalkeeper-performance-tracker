@@ -21,7 +21,9 @@
   "training": "Training",
   "year_and_month": "Year and Month",
   "attendance": "Attendance",
+  "attendance_time": "Attendance Time",
   "training_attendance": "Training Attendance",
+  "duration": "Duration",
 
   "local": "Local",
   "visitor": "Visitor",
@@ -86,6 +88,10 @@
   "add_sequence": "Add Sequence",
   "update_feedback": "Update Feedback",
   "update_sequence": "Update Sequence",
+  "update_attendance": "Update Attendance",
+  "update_match": "Update Match",
+  "update_scores": "Update Scores",
+  "update_user_status": "Update User Status",
   "download_form": "Download Form",
 
   "change_pic": "Change Picture",

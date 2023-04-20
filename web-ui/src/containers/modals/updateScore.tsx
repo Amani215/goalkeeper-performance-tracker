@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { useMatch, useMatchError, useMatchReady, useUpdateScores } from '../../contexts/matchContext';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
+import { useTranslation } from 'react-i18next';
 
 function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
+    const { t } = useTranslation();
     const [, setError] = useState(false)
     const [loaded, setLoaded] = useState(false)
 
@@ -68,7 +70,7 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Update Scores
+                    {t("update_scores")}
                 </Typography>
                 <Box
                     component="form"
@@ -113,7 +115,7 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Update
+                        {t("update")}
                     </Button>
                 </Box>
             </Box>

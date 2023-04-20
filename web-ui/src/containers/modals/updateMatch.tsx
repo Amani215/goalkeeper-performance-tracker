@@ -13,12 +13,14 @@ import { style } from './style';
 import { useUpdateMatch } from '../../contexts/matchContext';
 import { MatchDTO } from '../../DTOs/MatchDTO';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { useTranslation } from 'react-i18next';
 
 type PropType = {
     match: MatchDTO | null,
     modalProp: ModalProp
 }
 function UpdateMatch({ match, modalProp }: PropType) {
+    const { t } = useTranslation();
     const updateMatch = useUpdateMatch()
 
     dayjs.extend(customParseFormat)
@@ -98,7 +100,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Update Match
+                    {t("update_match")}
                 </Typography>
                 <Box
                     component="form"
@@ -109,7 +111,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
-                                label="Match Date"
+                                label="Date"
                                 inputFormat="DD/MM/YYYY"
                                 value={formik.values.date}
                                 onChange={v => formik.setFieldValue("date", v)}
@@ -119,7 +121,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
                     </LocalizationProvider>
 
                     <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Local Team</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("local")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -134,7 +136,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
                     </FormControl>
 
                     <FormControl fullWidth sx={{ marginBottom: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Visitor Team</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("visitor")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -149,7 +151,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
                     </FormControl>
 
                     <FormControl fullWidth sx={{ marginBottom: 1 }}>
-                        <InputLabel id="demo-simple-select-label">Match Type</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("match_type")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -164,7 +166,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
                     </FormControl>
 
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <InputLabel id="demo-simple-select-label">{t("category")}</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
@@ -184,7 +186,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Update
+                        {t("update")}
                     </Button>
                 </Box>
             </Box>

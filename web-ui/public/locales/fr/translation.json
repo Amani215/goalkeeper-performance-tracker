@@ -20,7 +20,9 @@
   "training": "Entrainement",
   "year_and_month": "Mois et Année",
   "attendance": "Assiduité",
+  "attendance_time": "Temps de Présence",
   "training_attendance": "Assiduité d'entrainements",
+  "duration": "Durée",
 
   "local": "Local",
   "visitor": "Visiteur",
@@ -85,6 +87,10 @@
   "add_sequence": "Ajouter une Séquence",
   "update_feedback": "Mettre à Jour le Suivi",
   "update_sequence": "Mettre à Jour la Séquence",
+  "update_attendance": "Mettre à Jour l'assiduité",
+  "update_match": "Mettre à Jour le Match",
+  "update_scores": "Mettre à Jour les Scores",
+  "update_user_status": "Mettre à Jour le Statut de l'utilisateur",
   "download_form": "Télécharger le formulaire",
 
   "change_pic": "Changer de Photo",

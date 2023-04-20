@@ -11,12 +11,14 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { GrowthDTO } from '../../DTOs/GrowthDTO';
 import { useUpdateGrowth } from '../../contexts/growthContext';
 import growthValidationSchema from '../../schemas/growthValidation';
+import { useTranslation } from 'react-i18next';
 
 type PropType = {
     growth: GrowthDTO | null,
     modalProp: ModalProp
 }
 function UpdateGrowth({ growth, modalProp }: PropType) {
+    const { t } = useTranslation();
     const updateGrowth = useUpdateGrowth()
 
     dayjs.extend(customParseFormat)
@@ -81,7 +83,7 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Update
+                    {t("update")}
                 </Typography>
                 <Box
                     component="form"
@@ -92,7 +94,7 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
-                                label="Match Date"
+                                label="Date"
                                 inputFormat="DD/MM/YYYY"
                                 value={formik.values.date}
                                 onChange={v => formik.setFieldValue("date", v)}
@@ -106,7 +108,7 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
                         required
                         fullWidth
                         id="annualGrowth"
-                        label="Annual Growth"
+                        label={t("annual_growth")}
                         name="annualGrowth"
                         autoComplete="annualGrowth"
                         value={formik.values.annualGrowth}
@@ -121,7 +123,7 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
                         required
                         fullWidth
                         id="height"
-                        label="Height"
+                        label={t("height")}
                         name="height"
                         autoComplete="height"
                         value={formik.values.height}
@@ -136,7 +138,7 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
                         required
                         fullWidth
                         id="weight"
-                        label="Weight"
+                        label={t("weight")}
                         name="weight"
                         autoComplete="weight"
                         value={formik.values.weight}
@@ -151,7 +153,7 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
                         required
                         fullWidth
                         id="torsoHeight"
-                        label="TorsoHeight"
+                        label={t("torso_height")}
                         name="torsoHeight"
                         autoComplete="torsoHeight"
                         value={formik.values.torsoHeight}
@@ -166,7 +168,7 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
                         required
                         fullWidth
                         id="thoracicPerimeter"
-                        label="Thoracic Perimeter"
+                        label={t("thoracic_perimeter")}
                         name="thoracicPerimeter"
                         autoComplete="thoracicPerimeter"
                         value={formik.values.thoracicPerimeter}
@@ -182,7 +184,7 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Update
+                        {t("update")}
                     </Button>
                 </Box>
             </Box>

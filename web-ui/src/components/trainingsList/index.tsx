@@ -1,10 +1,8 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { MdDelete, MdEdit } from 'react-icons/md';
+import { MdDelete } from 'react-icons/md';
 import { useState } from 'react';
-import { useDeleteMatch, useDeleteMatchError } from '../../contexts/matchesContext';
-import UpdateMatch from '../../containers/modals/updateMatch';
 import { useTranslation } from 'react-i18next';
 import { TrainingDTO } from '../../DTOs/TrainingDTO';
 import { useDeleteTrainingError, useDeletetraining } from '../../contexts/trainingsContext';

@@ -2,11 +2,10 @@ import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogConten
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { MdDeleteOutline, MdMode } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
-import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady, useTrainingUpdated, useUpdateTrainingForm } from '../contexts/trainingContext';
+import { useDeleteTrainingGoalkeeper, useGetTraining, useTrainingError, useTrainingGoalkeepersUpdated, useTrainingPerformanceUpdated, useTrainingPerformances, useTrainingPerformancesReady, useTrainingReady, useTrainingUpdated, useUpdateTrainingForm } from '../contexts/trainingContext';
 import { TrainingDTO } from '../DTOs/TrainingDTO';
 import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
 import { ModalProp } from '../interfaces/modalProp';
-import { useTrainingPerformanceUpdated } from '../contexts/trainingPerformanceContext';
 import UpdateAttendance from './modals/updateAttendance';
 import { useTranslation } from 'react-i18next';
 
@@ -99,12 +98,14 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
 
     // LOAD GOALKEEPERS
     useEffect(() => {
+        console.log("attendance: ", attendanceUpdated)
         if (performancesContext) {
             performancesContext(id ? id : "").then((data) => {
                 if (performancesReady)
                     setGoalkeeperPerformances(data != null ? data : goalkeeperPerformances)
             })
         }
+        console.log("attendance: ", attendanceUpdated)
     }, [performancesReady, performancesUpdated, attendanceUpdated])
 
     return (

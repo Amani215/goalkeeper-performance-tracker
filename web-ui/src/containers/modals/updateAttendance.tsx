@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useParams } from '../../contexts/paramsContext';
-import { useUpdateTrainingPerformance } from '../../contexts/trainingPerformanceContext';
 import { TrainingMonitoringDTO } from '../../DTOs/TrainingMonitoringDTO';
 import { useTranslation } from 'react-i18next';
+import { useUpdateTrainingPerformance } from '../../contexts/trainingContext';
 
 type PropType = {
     tm: TrainingMonitoringDTO | null,

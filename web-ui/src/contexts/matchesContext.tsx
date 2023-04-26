@@ -2,6 +2,7 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { MatchDTO, NewMatchDTO } from "../DTOs/MatchDTO";
 import { errorResponse } from "../interfaces/errorResponse";
 import { useAuth } from "./authContext";
+import { useTranslation } from "react-i18next";
 
 // GET MATCHES CONTEXT
 type MatchesDelegate = () => Promise<MatchDTO[] | errorResponse>;
@@ -63,6 +64,7 @@ export default function MatchesProvider(props: PropsWithChildren<{}>) {
     const [matchDeleted, setMatchDeleted] = useState(false)
     const [deleteMatchError, setDeleteMatchError] = useState("")
 
+    const { t } = useTranslation();
     const auth = useAuth()
     const token = auth?.token
 
@@ -133,7 +135,7 @@ export default function MatchesProvider(props: PropsWithChildren<{}>) {
                 } else {
                     setMatchDeleted(false)
                     if (data.status == 401) {
-                        setDeleteMatchError("This match is connected to other entities")
+                        setDeleteMatchError(`${t("match_connected_error")}`)
                     }
                 }
                 return null

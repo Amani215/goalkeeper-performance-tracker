@@ -105,6 +105,7 @@
   "no_data": "No data in this section yet.",
   "no_matches": "No matches yet.",
   "no_sequences": "No sequences yet.",
+  "no_trainings": "No trainings yet.",
   "are_you_sure": "Are you sure?",
   "deleting_category_warning": "By clicking yes you are going to delete this category permanently.",
   "deleting_goalkeeper_category_warning": "By clicking yes, you are going to delete this goalkeeper from this category permanently.",
@@ -112,8 +113,12 @@
   "deleting_goalkeeper_match_warning": "By clicking yes, you are going to delete this goalkeeper from this match permanently.",
   "deleting_sequence_warning": "By clicking yes you are going to delete this sequence permanently.",
   "deleting_goalkeeper_training_warning": "By clicking yes, you are going to delete this goalkeeper from this training permanently.",
+  "deleting_training_warning": "By clicking yes you are going to delete this training permanently.",
   "yes": "Yes",
   "cancel": "Cancel",
 
-  "user_not_allowed": "User not allowed."
+  "user_not_allowed": "User not allowed.",
+
+  "match_connected_error": "This match is connected to other entities",
+  "training_connected_error": "This training is connected to other entities"
 }

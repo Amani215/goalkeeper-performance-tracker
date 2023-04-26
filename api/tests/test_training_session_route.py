@@ -288,3 +288,40 @@ def test_remove_goalkeepers(client, json_headers, goalkeeper):
                              headers=json_headers)
     assert goalkeepers.status_code == 200
     assert len(goalkeepers.json) == 0
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_delete_training_session(client, json_headers, training_session):
+    '''Test deleting a training session'''
+    training_session_id = training_session.id
+
+    response = client.delete(URL + '?id=' + training_session_id,
+                             headers=json_headers)
+    assert response.status_code == 204
+
+    response = client.get(URL + '?id=' + training_session_id,
+                          headers=json_headers)
+    assert "error" in response.json
+
+    # NO ID
+    response = client.delete(URL, headers=json_headers)
+    assert response.status_code == 400
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_delete_with_relationship(client, json_headers, training_session,
+                                  goalkeeper):
+    '''Test deleting with training session related to goalkeeper'''
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+    test_json = {
+        "goalkeeper_id": _goalkeeper.id,
+        "session_id": training_session.id
+    }
+
+    client.post('/training_monitoring',
+                data=json.dumps(test_json),
+                headers=json_headers)
+
+    response = client.delete(URL + '?id=' + training_session.id,
+                             headers=json_headers)
+    assert response.status_code == 401

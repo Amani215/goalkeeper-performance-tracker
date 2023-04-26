@@ -96,3 +96,14 @@ def update_training_form(training_id: str, pic: FieldStorage):
 
     db.session.commit()
     return form_url
+
+
+def delete(training_id: str):
+    '''Delete a training session given its ID'''
+    ts = get_by_id(training_id)
+
+    if (len([i for i in ts.goalkeepers_performances]) > 0):
+        raise PermissionError("This training is connected to other entities")
+    else:
+        db.session.delete(ts)
+        db.session.commit()

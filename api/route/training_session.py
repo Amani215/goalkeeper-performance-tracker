@@ -168,3 +168,23 @@ def add_training_form(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@training_session_api.route('/training_session', methods=['DELETE'])
+@token_required(admin=True)
+def delete_training_session(current_user: User):
+    '''
+    Delete training session by ID
+    
+    Only admin users are allowed to do this
+    If ID is not provided an error is raised
+    '''
+    try:
+        args = request.args
+
+        training_session_service.delete(args.get('id'))
+        return {}, 204
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

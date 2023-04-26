@@ -1,7 +1,11 @@
 '''Testing the match services'''
 import random
+
+import pytest
 import service.training_session as training_session_service
 import service.category as category_service
+import service.goalkeeper as goalkeeper_service
+import service.training_monitoring as training_monitoring_service
 from helper import random_string, random_date
 
 
@@ -97,3 +101,24 @@ def test_update_category(app, category):
     training_session = training_session_service.update_category(
         training_session.id, new_category.id)
     assert training_session.training_session_category_id == new_category.id
+
+
+def test_delete(app, training_session):
+    '''Test deleting a training session'''
+    training_id = training_session.id
+
+    training_session_service.delete(training_id)
+
+    assert training_session_service.get_by_id(
+        training_id)["error"] == "No row was found when one was required"
+
+
+def test_delete_with_relationship(app, goalkeeper, training_session):
+    '''Test deleting with match related to goalkeeper'''
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+
+    training_monitoring_service.add_training_monitoring(
+        _goalkeeper.id, training_session.id)
+
+    with pytest.raises(PermissionError):
+        training_session_service.delete(training_session.id)

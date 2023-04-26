@@ -574,9 +574,9 @@
             "type": "frser-sqlite-datasource",
             "uid": "P2D2EEF3E092AF52B"
           },
-          "queryText": "SELECT Goalkeeper, Absences\nFROM (\n  select g.name as \"Goalkeeper\", count(attendance) as \"Absences\" from training_monitoring tm\n  join goalkeeper g on tm.goalkeeper_id = g.id\n  join training_session ts on tm.session_id = ts.id\n  where attendance= 'absent' and ts.date <= date('now') and ts.date >= date('now', '-3 month')\n  group by goalkeeper_id\n)\nORDER BY Absences DESC\nlimit 5\n\n",
+          "queryText": "SELECT  g.name as \"Goalkeeper\", COUNT(m.attendance) as \"Absences\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  tm.goalkeeper_id, tm.attendance\n  FROM    training_monitoring tm\n)m ON m.goalkeeper_id = g.id\ngroup by g.id\nORDER BY COUNT(m.attendance) DESC\nlimit 5",
           "queryType": "table",
-          "rawQueryText": "SELECT Goalkeeper, Absences\nFROM (\n  select g.name as \"Goalkeeper\", count(attendance) as \"Absences\" from training_monitoring tm\n  join goalkeeper g on tm.goalkeeper_id = g.id\n  join training_session ts on tm.session_id = ts.id\n  where attendance= 'absent' and ts.date <= date('now') and ts.date >= date('now', '-3 month')\n  group by goalkeeper_id\n)\nORDER BY Absences DESC\nlimit 5\n\n",
+          "rawQueryText": "SELECT  g.name as \"Goalkeeper\", COUNT(m.attendance) as \"Absences\"\nFROM    goalkeeper g\nINNER JOIN(\n  SELECT  tm.goalkeeper_id, tm.attendance\n  FROM    training_monitoring tm\n)m ON m.goalkeeper_id = g.id\ngroup by g.id\nORDER BY COUNT(m.attendance) DESC\nlimit 5",
           "refId": "A",
           "timeColumns": ["time", "ts"]
         }

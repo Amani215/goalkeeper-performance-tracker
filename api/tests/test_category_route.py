@@ -8,6 +8,7 @@ from tests.conftest import content_type
 URL = '/category'
 TRAINERS_URL = '/category/trainers?id='
 GOALKEEPERS_URL = '/category/goalkeepers?id='
+ID_URL = '/category?id='
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
@@ -225,3 +226,22 @@ def test_get_goalkeepers(client, goalkeeper, json_headers):
                              headers=json_headers)
     assert goalkeepers.status_code == 200
     assert len(goalkeepers.json) == 1
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_set_archived(client, json_headers):
+    '''Test set the archived attribute'''
+    test_json = {
+        'name': random_string.generate(12),
+        'season': random.randint(1500, 2500)
+    }
+    category = client.post(URL,
+                           data=json.dumps(test_json),
+                           headers=json_headers)
+    assert category.json['archived'] == False
+    client.put(ID_URL + category.json['id'],
+               data=json.dumps({'archived': True}),
+               headers=json_headers)
+
+    category = client.get(ID_URL + category.json['id'], headers=json_headers)
+    assert category.json['archived'] == True

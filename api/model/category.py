@@ -1,5 +1,5 @@
 """imports"""
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Boolean, Column, String
 from config import db
 from model.association_tables import trainer_categories, goalkeeper_categories
 
@@ -18,6 +18,7 @@ class Category(db.Model):
     matches = db.relationship("Match", back_populates="match_category")
     training_sessions = db.relationship(
         "training_session", back_populates="training_session_category")
+    archived = Column(Boolean, unique=False, default=False)
 
     def __init__(self, name: str, season: str):
         self.id = name + str(season)
@@ -27,4 +28,9 @@ class Category(db.Model):
     @property
     def serialize(self):
         """Return object data in easily serializable format"""
-        return {'id': self.id, 'name': self.name, 'season': self.season}
+        return {
+            'id': self.id,
+            'name': self.name,
+            'season': self.season,
+            'archived': self.archived
+        }

@@ -148,3 +148,10 @@ def test_get_goalkeepers(app, goalkeeper, category):
     response = category_service.get_category_goalkeepers(
         category_id=random_string.generate(8))
     assert 'error' in response
+
+
+def test_set_archived(app, category):
+    '''Test set the archived attribute'''
+    assert category.archived == False
+    category_service.set_archived(category.id, True)
+    assert category.archived == True

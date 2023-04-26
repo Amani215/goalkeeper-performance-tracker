@@ -62,6 +62,19 @@ def get_category_goalkeepers(category_id):
         return {'error': str(err)}
 
 
+def set_archived(category_id: str, archived: bool):
+    '''Set archived to the given value'''
+    try:
+        category: Category = Category.query.filter_by(id=category_id).one()
+        category.archived = archived
+
+        db.session.commit()
+
+        return category
+    except SQLAlchemyError as err:
+        return {'error': str(err)}
+
+
 def delete(category_id):
     '''Delete a ctegory given its ID'''
     category = get_by_id(category_id)

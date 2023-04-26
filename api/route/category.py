@@ -97,6 +97,24 @@ def get_category_goalkeepers(current_user: User):
         return {'error': str(err)}, 400
 
 
+@category_api.route('/category', methods=['PUT'])
+@token_required(admin=True)
+def set_archived(current_user: User):
+    '''Set the archived attribute'''
+    try:
+        args = request.args
+        if not request.json:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+        category = category_service.set_archived(args.get('id'),
+                                                 request.json['archived'])
+        return category.serialize
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
 @category_api.route('/category', methods=['DELETE'])
 @token_required(admin=True)
 def delete_category(current_user: User):

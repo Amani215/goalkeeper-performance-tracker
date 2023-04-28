@@ -117,6 +117,16 @@ def test_get_categories(client, json_headers):
     assert sum(1 for _ in range(len(response.json))) == 1
     assert response.status_code == 200
 
+    ### GET BY ARCHIVED
+    archived_url = URL + '?archived='
+    response = client.get(archived_url + 'True', headers=json_headers)
+    assert sum(1 for _ in range(len(response.json))) == 0
+    assert response.status_code == 200
+
+    response = client.get(archived_url + 'False', headers=json_headers)
+    assert sum(1 for _ in range(len(response.json))) == 3
+    assert response.status_code == 200
+
 
 @pytest.mark.parametrize(['admin'], [[True]])
 def test_delete_category(client, json_headers, category):

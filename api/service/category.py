@@ -44,6 +44,14 @@ def get_by_season(category_season):
         return {'error': str(err)}
 
 
+def get_by_archived(archived: bool):
+    '''Get categories given their archived attribute'''
+    try:
+        return Category.query.filter_by(archived=archived)
+    except SQLAlchemyError as err:
+        return {'error': str(err)}
+
+
 def get_category_trainers(category_id):
     '''Get coaches that have that category'''
     try:

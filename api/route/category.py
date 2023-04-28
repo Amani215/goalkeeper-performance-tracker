@@ -51,6 +51,11 @@ def get_categories(current_user: User):
             categories = category_service.get_by_name(args.get('name'))
         elif args.get('season') is not None:
             categories = category_service.get_by_season(args.get('season'))
+        elif args.get('archived') is not None:
+            if args.get('archived').upper() == 'TRUE':
+                categories = category_service.get_by_archived(True)
+            elif args.get('archived').upper() == 'FALSE':
+                categories = category_service.get_by_archived(False)
         else:
             categories = category_service.get_categories()
 

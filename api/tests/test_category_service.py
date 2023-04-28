@@ -95,6 +95,23 @@ def test_get_by_season(app):
     assert len([i.serialize for i in categories_no_season]) == 0
 
 
+def test_get_by_archived(app, category):
+    '''Test get categories given their archived attribute'''
+    categories = category_service.get_by_archived(False)
+    assert len([i.serialize for i in categories]) == 1
+
+    categories = category_service.get_by_archived(True)
+    assert len([i.serialize for i in categories]) == 0
+
+    category_service.set_archived(category_id=category.id, archived=True)
+
+    categories = category_service.get_by_archived(False)
+    assert len([i.serialize for i in categories]) == 0
+
+    categories = category_service.get_by_archived(True)
+    assert len([i.serialize for i in categories]) == 1
+
+
 def test_delete(app, category):
     '''Test deleting a category'''
     category_id = category.id

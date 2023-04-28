@@ -10,8 +10,8 @@ import { useCategories, useCategoriesReady, useCategoryDeleted, useDeleteCategor
 import { CategoryDTO } from '../DTOs'
 import { ModalProp } from '../interfaces/modalProp'
 import { Link as RouterLink } from 'react-router-dom';
-import { Alert, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
-import { MdClose } from 'react-icons/md'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
+import { MdClose, MdExpandMore } from 'react-icons/md'
 import { useTranslation } from 'react-i18next'
 
 
@@ -68,54 +68,65 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
         </Box> : <></>
       }
 
-      <Grid container
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-        columns={{ xs: 4, sm: 8, md: 12 }}>
-        {
-          categories.length > 0 ?
-            categories.map((c) => (
-              <Card raised key={c.id + "-item"} sx={{ margin: 1 }}>
-                <CardHeader
-                  avatar={
-                    <Button
-                      component={RouterLink}
-                      to={`/categories/${c.id}`}>
-                      <IoFootballOutline size={50} />
-                    </Button>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<MdExpandMore />}
+        >
+          <Typography>Archived Categories</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Grid container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+            columns={{ xs: 4, sm: 8, md: 12 }}>
+            {
+              categories.length > 0 ?
+                categories.map((c) => (
+                  <Card raised key={c.id + "-item"} sx={{ margin: 1 }}>
+                    <CardHeader
+                      avatar={
+                        <Button
+                          component={RouterLink}
+                          to={`/categories/${c.id}`}>
+                          <IoFootballOutline size={50} />
+                        </Button>
 
-                  }
-                  action={
-                    auth?.user.admin ?
-                      <IconButton
-                        aria-label="delete"
-                        sx={{ marginTop: "25%", marginLeft: 1 }}
-                        onClick={() => handleClickOpen(c.id)}>
-                        <MdClose />
-                      </IconButton> : <></>
-                  }
-                  title={c.name}
-                  subheader={c.season}
-                />
-                <Grid item xs={2} sm={2} md={3}>
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{
-                      minWidth: { xs: 180, sm: 180, md: 180 },
-                    }}
-                    mt={1}>
-                  </Box>
-                </Grid>
-              </Card>
-            ))
-            :
-            <Typography variant="body1">{t("no_categories")}</Typography>}
-      </Grid>
+                      }
+                      action={
+                        auth?.user.admin ?
+                          <IconButton
+                            aria-label="delete"
+                            sx={{ marginTop: "25%", marginLeft: 1 }}
+                            onClick={() => handleClickOpen(c.id)}>
+                            <MdClose />
+                          </IconButton> : <></>
+                      }
+                      title={c.name}
+                      subheader={c.season}
+                    />
+                    <Grid item xs={2} sm={2} md={3}>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        sx={{
+                          minWidth: { xs: 180, sm: 180, md: 180 },
+                        }}
+                        mt={1}>
+                      </Box>
+                    </Grid>
+                  </Card>
+                ))
+                :
+                <Typography variant="body1">{t("no_categories")}</Typography>}
+          </Grid>
+        </AccordionDetails>
+      </Accordion>
+
+
 
       <Dialog
         open={open}

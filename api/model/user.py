@@ -1,6 +1,6 @@
 """imports"""
 from uuid import uuid4
-from sqlalchemy import Column, String, BOOLEAN
+from sqlalchemy import Boolean, Column, String, BOOLEAN
 from config import db
 from model.association_tables import trainer_categories
 
@@ -14,6 +14,7 @@ class User(db.Model):
     password = Column(String(128), nullable=False)
     admin = Column(BOOLEAN, nullable=False, default=False)
     profile_pic = Column(String(128), unique=False, nullable=True)
+    first_login = Column(Boolean, unique=False, default=True)
     categories = db.relationship('Category',
                                  secondary=trainer_categories,
                                  lazy='subquery',
@@ -31,5 +32,6 @@ class User(db.Model):
             'id': self.id,
             'username': self.username,
             'admin': self.admin,
-            'profile_pic': self.profile_pic
+            'profile_pic': self.profile_pic,
+            'first_login': self.first_login
         }

@@ -104,3 +104,14 @@ def test_add_category(app, user):
     _user = user_service.get_by_username(user['username'])
     response = user_service.add_category(_user, category)
     assert response['category_id'] == category.id
+
+
+def test_set_password(app, user):
+    '''Test set a new password for the user'''
+    _user = user_service.get_by_username(user['username'])
+
+    new_password = random_string.generate(12)
+    user_service.set_password(_user.id, new_password)
+
+    _user = user_service.get_by_username(user['username'])
+    assert _user.password == new_password

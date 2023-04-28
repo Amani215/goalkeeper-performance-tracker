@@ -80,6 +80,17 @@ def set_admin(username: str, admin: bool):
     return user
 
 
+def set_password(user_id, password: str):
+    '''Set a new password for the given user'''
+    user = get_by_id(user_id)
+
+    user.password = password
+    user.first_login = False
+
+    db.session.commit()
+    return user
+
+
 def get_categories(user_id):
     '''Get categories of the given user'''
     try:

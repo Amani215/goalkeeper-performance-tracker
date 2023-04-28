@@ -166,3 +166,18 @@ def add_profile_pic(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@user_api.route('/user', methods=['PUT'])
+@token_required(admin=False)
+def set_password(current_user: User):
+    '''Change the password of the given user'''
+    try:
+        args = request.args
+        user = user_service.set_password(args.get('id'),
+                                         request.json['password'])
+        return user.serialize, 201
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

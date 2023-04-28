@@ -136,7 +136,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item xs={4} sm={4} md={6}>
                     <Card sx={{ padding: 2 }}>
-                        {auth?.user.admin ?
+                        {auth?.user.admin && !category?.archived ?
                             <Box display="flex" justifyContent="flex-end">
                                 <Button onClick={() => { modal1.setModalIsOpen() }}>
                                     {t("add_coach")}
@@ -150,7 +150,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                     <ListItem
                                         key={trainer.id}
                                         secondaryAction={
-                                            auth?.user.admin ?
+                                            auth?.user.admin && !category?.archived ?
                                                 <IconButton
                                                     edge="end"
                                                     aria-label="delete"
@@ -183,7 +183,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
 
                 <Grid item xs={4} sm={4} md={6}>
                     <Card sx={{ padding: 2 }}>
-                        {auth?.user.admin ?
+                        {auth?.user.admin && !category?.archived ?
                             <Box display="flex" justifyContent="flex-end">
                                 <Button onClick={() => { modal2.setModalIsOpen() }}>
                                     {t("add_goalkeeper")}
@@ -197,7 +197,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                     <ListItem
                                         key={goalkeeper.id}
                                         secondaryAction={
-                                            auth?.user.admin ?
+                                            auth?.user.admin && !category?.archived ?
                                                 <IconButton
                                                     edge="end"
                                                     aria-label="delete"

@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
-import { useCategories } from '../../contexts/categoriesContext';
+import { useNonArchivedCategories } from '../../contexts/categoriesContext';
 import { useParams } from '../../contexts/paramsContext';
 import { CategoryDTO } from '../../DTOs';
 import { ModalProp } from '../../interfaces/modalProp'
@@ -43,7 +43,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
 
     // Categories list
     const [categories, setCategories] = useState<CategoryDTO[]>([])
-    const categoriesContext = useCategories()
+    const categoriesContext = useNonArchivedCategories()
     useEffect(() => {
         if (categoriesContext) {
             setCategories(categoriesContext)

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
 import { IoFootballOutline } from 'react-icons/io5'
 import { useAuth } from '../contexts/authContext'
-import { useCategories, useCategoriesReady, useCategoryDeleted, useDeleteCategory, useDeleteCategoryError } from '../contexts/categoriesContext'
+import { useArchivedCategories, useCategoriesReady, useCategoryDeleted, useDeleteCategory, useDeleteCategoryError, useNonArchivedCategories } from '../contexts/categoriesContext'
 import { CategoryDTO } from '../DTOs'
 import { ModalProp } from '../interfaces/modalProp'
 import { Link as RouterLink } from 'react-router-dom';
@@ -17,13 +17,15 @@ import { useTranslation } from 'react-i18next'
 
 function CategoriesView({ setModalIsOpen }: ModalProp) {
   const { t } = useTranslation()
-  const [categories, setCategories] = useState<CategoryDTO[]>([])
+  const [nonArchivedCategories, setNonArchivedCategories] = useState<CategoryDTO[]>([])
+  const [archivedCategories, setArchivedCategories] = useState<CategoryDTO[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [categoryToDelete, setCategoryToDelete] = useState<string>("")
   // const [deleteCategoryErrorMessage, setDeleteCategoryError] = useState<string>("")
 
   const auth = useAuth()
-  const categoriesContext = useCategories()
+  const nonArchivedCategoriesContext = useNonArchivedCategories()
+  const archivedCategoriesContext = useArchivedCategories()
   const categoriesReady = useCategoriesReady()
 
   const deleteCategory = useDeleteCategory()
@@ -31,12 +33,17 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
   const deleteCategoryError = useDeleteCategoryError()
 
   useEffect(() => {
-    if (categoriesReady && categoriesContext) {
-      setCategories(categoriesContext)
+    if (categoriesReady && nonArchivedCategoriesContext) {
+      setNonArchivedCategories(nonArchivedCategoriesContext)
       setOpen(false)
       setCategoryToDelete("")
     }
-  }, [categoriesReady, categoriesContext, categoryDeleted])
+    if (categoriesReady && archivedCategoriesContext) {
+      setArchivedCategories(archivedCategoriesContext)
+      setOpen(false)
+      setCategoryToDelete("")
+    }
+  }, [categoriesReady, archivedCategoriesContext, nonArchivedCategoriesContext, categoryDeleted])
 
   const handleClickOpen = (categoryID: string) => {
     setCategoryToDelete(categoryID)
@@ -68,11 +75,60 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
         </Box> : <></>
       }
 
-      <Accordion>
+      <Grid container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+        columns={{ xs: 4, sm: 8, md: 12 }}>
+        {
+          nonArchivedCategories.length > 0 ?
+            nonArchivedCategories.map((c) => (
+              <Card raised key={c.id + "-item"} sx={{ margin: 1 }}>
+                <CardHeader
+                  avatar={
+                    <Button
+                      component={RouterLink}
+                      to={`/categories/${c.id}`}>
+                      <IoFootballOutline size={50} />
+                    </Button>
+
+                  }
+                  action={
+                    auth?.user.admin ?
+                      <IconButton
+                        aria-label="delete"
+                        sx={{ marginTop: "25%", marginLeft: 1 }}
+                        onClick={() => handleClickOpen(c.id)}>
+                        <MdClose />
+                      </IconButton> : <></>
+                  }
+                  title={c.name}
+                  subheader={c.season}
+                />
+                <Grid item xs={2} sm={2} md={3}>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{
+                      minWidth: { xs: 180, sm: 180, md: 180 },
+                    }}
+                    mt={1}>
+                  </Box>
+                </Grid>
+              </Card>
+            ))
+            :
+            <Typography variant="body1">{t("no_categories")}</Typography>}
+      </Grid>
+
+      <Accordion sx={{ marginTop: 5 }}>
         <AccordionSummary
           expandIcon={<MdExpandMore />}
         >
-          <Typography>Archived Categories</Typography>
+          <Typography fontWeight="bold" style={{ color: '#757575' }}>{t("archived_categories")}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Grid container
@@ -82,8 +138,8 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
             spacing={2}
             columns={{ xs: 4, sm: 8, md: 12 }}>
             {
-              categories.length > 0 ?
-                categories.map((c) => (
+              archivedCategories.length > 0 ?
+                archivedCategories.map((c) => (
                   <Card raised key={c.id + "-item"} sx={{ margin: 1 }}>
                     <CardHeader
                       avatar={

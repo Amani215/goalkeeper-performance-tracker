@@ -5,9 +5,14 @@ import { errorResponse } from "../interfaces/errorResponse";
 import { useAuth } from "./authContext";
 
 // GET CATEGORIES CONTEXT
-const categoriesContext = createContext<CategoryDTO[] | null>(null)
-export function useCategories() {
-    return useContext(categoriesContext)
+const archivedCategoriesContext = createContext<CategoryDTO[] | null>(null)
+export function useArchivedCategories() {
+    return useContext(archivedCategoriesContext)
+}
+
+const nonArchivedCategoriesContext = createContext<CategoryDTO[] | null>(null)
+export function useNonArchivedCategories() {
+    return useContext(nonArchivedCategoriesContext)
 }
 
 const categoriesReadyContext = createContext<boolean>(false)
@@ -45,7 +50,8 @@ export function useDeleteCategoryError() {
 }
 
 export default function CategoriesProvider(props: PropsWithChildren<{}>) {
-    const [categories, setCategories] = useState<CategoryDTO[] | null>(null)
+    const [archivedCategories, setArchivedCategories] = useState<CategoryDTO[] | null>(null)
+    const [nonArchivedCategories, setNonArchivedCategories] = useState<CategoryDTO[] | null>(null)
     const [loaded, setLoaded] = useState<boolean>(false)
 
     const [newCategoryError, setNewCategoryError] = useState(false)
@@ -55,10 +61,10 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
     const auth = useAuth()
     const token = auth?.token
 
-    const getCategories = async () => {
+    const getCategories = async (archived: boolean) => {
         setCategoryDeleted(false)
         setDeleteCategoryError("")
-        const categoriesArray: CategoryDTO[] = await fetch("/api/category", {
+        const categoriesArray: CategoryDTO[] = await fetch("/api/category?archived=" + archived, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -74,7 +80,10 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
                 const categoriesDTO: CategoryDTO[] = JSON.parse(dataString)
                 return categoriesDTO
             })
-        setCategories(categoriesArray)
+        if (archived)
+            setArchivedCategories(categoriesArray)
+        else
+            setNonArchivedCategories(categoriesArray)
         setLoaded(true)
     }
 
@@ -97,7 +106,7 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
                     return data as errorResponse
                 } else {
                     setNewCategoryError(false)
-                    setCategories([...categories as CategoryDTO[], data as CategoryDTO])
+                    setNonArchivedCategories([...nonArchivedCategories as CategoryDTO[], data as CategoryDTO])
                     return data as CategoryDTO
                 }
             })
@@ -127,24 +136,27 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
     }
 
     useEffect(() => {
-        getCategories()
+        getCategories(true)
+        getCategories(false)
     }, [loaded, categoryDeleted])
 
     return (
-        <categoriesContext.Provider value={categories}>
-            <categoriesReadyContext.Provider value={loaded}>
-                <newCategoryContext.Provider value={newCategory}>
-                    <newCategoryErrorContext.Provider value={newCategoryError}>
-                        <deleteCategoryContext.Provider value={deleteCategory}>
-                            <categoryDeletedContext.Provider value={categoryDeleted}>
-                                <deleteCategoryErrorContext.Provider value={deleteCategoryError}>
-                                    {props.children}
-                                </deleteCategoryErrorContext.Provider>
-                            </categoryDeletedContext.Provider>
-                        </deleteCategoryContext.Provider>
-                    </newCategoryErrorContext.Provider>
-                </newCategoryContext.Provider>
-            </categoriesReadyContext.Provider>
-        </categoriesContext.Provider>
+        <archivedCategoriesContext.Provider value={archivedCategories}>
+            <nonArchivedCategoriesContext.Provider value={nonArchivedCategories}>
+                <categoriesReadyContext.Provider value={loaded}>
+                    <newCategoryContext.Provider value={newCategory}>
+                        <newCategoryErrorContext.Provider value={newCategoryError}>
+                            <deleteCategoryContext.Provider value={deleteCategory}>
+                                <categoryDeletedContext.Provider value={categoryDeleted}>
+                                    <deleteCategoryErrorContext.Provider value={deleteCategoryError}>
+                                        {props.children}
+                                    </deleteCategoryErrorContext.Provider>
+                                </categoryDeletedContext.Provider>
+                            </deleteCategoryContext.Provider>
+                        </newCategoryErrorContext.Provider>
+                    </newCategoryContext.Provider>
+                </categoriesReadyContext.Provider>
+            </nonArchivedCategoriesContext.Provider>
+        </archivedCategoriesContext.Provider>
     )
 }

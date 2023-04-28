@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
-import { useCategories, useCategoriesReady } from '../../contexts/categoriesContext';
+import { useNonArchivedCategories, useCategoriesReady } from '../../contexts/categoriesContext';
 import { useNewMatch, useNewMatchError } from '../../contexts/matchesContext';
 import { useParams } from '../../contexts/paramsContext';
 import { CategoryDTO } from '../../DTOs';
@@ -25,7 +25,7 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const newMatchError = useNewMatchError()
 
     const paramsContext = useParams()
-    const categoriesContext = useCategories()
+    const categoriesContext = useNonArchivedCategories()
     const categoriesReady = useCategoriesReady()
 
     const [matchDate,] = useState<Dayjs>(

@@ -3,7 +3,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import { FormikValues, useFormik } from 'formik';
 import React, { useEffect, useState } from 'react'
-import { useCategories, useCategoriesReady } from '../../contexts/categoriesContext';
+import { useNonArchivedCategories, useCategoriesReady } from '../../contexts/categoriesContext';
 import { useNewTraining, useNewTrainingError } from '../../contexts/trainingsContext';
 import { CategoryDTO } from '../../DTOs/CategoryDTO';
 import { ModalProp } from '../../interfaces/modalProp'
@@ -19,7 +19,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const newTraining = useNewTraining()
     const newTrainingError = useNewTrainingError()
 
-    const categoriesContext = useCategories()
+    const categoriesContext = useNonArchivedCategories()
     const categoriesReady = useCategoriesReady()
 
     const [trainingDate,] = useState<Dayjs>(

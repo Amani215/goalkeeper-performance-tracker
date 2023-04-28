@@ -6,12 +6,12 @@ import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
 import { IoFootballOutline } from 'react-icons/io5'
 import { useAuth } from '../contexts/authContext'
-import { useArchivedCategories, useCategoriesReady, useCategoryDeleted, useDeleteCategory, useDeleteCategoryError, useNonArchivedCategories } from '../contexts/categoriesContext'
+import { useArchiveCategory, useArchivedCategories, useCategoriesReady, useCategoryArchived, useCategoryDeleted, useDeleteCategory, useDeleteCategoryError, useNonArchivedCategories } from '../contexts/categoriesContext'
 import { CategoryDTO } from '../DTOs'
 import { ModalProp } from '../interfaces/modalProp'
 import { Link as RouterLink } from 'react-router-dom';
-import { Accordion, AccordionDetails, AccordionSummary, Alert, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
-import { MdClose, MdExpandMore } from 'react-icons/md'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, CardActions, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
+import { MdArchive, MdClose, MdExpandMore, MdUnarchive } from 'react-icons/md'
 import { useTranslation } from 'react-i18next'
 
 
@@ -32,6 +32,9 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
   const categoryDeleted = useCategoryDeleted()
   const deleteCategoryError = useDeleteCategoryError()
 
+  const archiveCategory = useArchiveCategory()
+  const categoryArchived = useCategoryArchived()
+
   useEffect(() => {
     if (categoriesReady && nonArchivedCategoriesContext) {
       setNonArchivedCategories(nonArchivedCategoriesContext)
@@ -43,7 +46,7 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
       setOpen(false)
       setCategoryToDelete("")
     }
-  }, [categoriesReady, archivedCategoriesContext, nonArchivedCategoriesContext, categoryDeleted])
+  }, [categoriesReady, archivedCategoriesContext, nonArchivedCategoriesContext, categoryDeleted, categoryArchived])
 
   const handleClickOpen = (categoryID: string) => {
     setCategoryToDelete(categoryID)
@@ -58,6 +61,12 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
   const handleDelete = async () => {
     if (deleteCategory) {
       await deleteCategory(categoryToDelete)
+    }
+  }
+
+  const handleArchive = async (categoryToArchive: CategoryDTO) => {
+    if (archiveCategory) {
+      await archiveCategory(categoryToArchive ? categoryToArchive.id : "", categoryToArchive ? !categoryToArchive.archived : false)
     }
   }
   return (
@@ -96,12 +105,23 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
                   }
                   action={
                     auth?.user.admin ?
-                      <IconButton
-                        aria-label="delete"
-                        sx={{ marginTop: "25%", marginLeft: 1 }}
-                        onClick={() => handleClickOpen(c.id)}>
-                        <MdClose />
-                      </IconButton> : <></>
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        sx={{ marginLeft: 2 }}
+                      >
+                        <IconButton
+                          aria-label="delete"
+
+                          onClick={() => handleClickOpen(c.id)}>
+                          <MdClose />
+                        </IconButton>
+                        <IconButton
+                          aria-label="archive"
+                          onClick={() => handleArchive(c)}>
+                          <MdArchive />
+                        </IconButton>
+                      </Box> : <></>
                   }
                   title={c.name}
                   subheader={c.season}
@@ -152,12 +172,23 @@ function CategoriesView({ setModalIsOpen }: ModalProp) {
                       }
                       action={
                         auth?.user.admin ?
-                          <IconButton
-                            aria-label="delete"
-                            sx={{ marginTop: "25%", marginLeft: 1 }}
-                            onClick={() => handleClickOpen(c.id)}>
-                            <MdClose />
-                          </IconButton> : <></>
+                          <Box
+                            display="flex"
+                            flexDirection="column"
+                            sx={{ marginLeft: 2 }}
+                          >
+                            <IconButton
+                              aria-label="delete"
+
+                              onClick={() => handleClickOpen(c.id)}>
+                              <MdClose />
+                            </IconButton>
+                            <IconButton
+                              aria-label="archive"
+                              onClick={() => handleArchive(c)}>
+                              <MdUnarchive />
+                            </IconButton>
+                          </Box> : <></>
                       }
                       title={c.name}
                       subheader={c.season}

@@ -113,7 +113,7 @@ def set_archived(current_user: User):
 
         category = category_service.set_archived(args.get('id'),
                                                  request.json['archived'])
-        return category.serialize
+        return category.serialize, 201
     except PermissionError as err:
         return {'error': str(err)}, 401
     except Exception as err:

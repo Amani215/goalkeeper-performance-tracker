@@ -49,6 +49,18 @@ export function useDeleteCategoryError() {
     return useContext(deleteCategoryErrorContext);
 }
 
+// ARCHIVE CATEGORY CONTEXT
+type ArchiveCategoryDelegate = (categoryID: string, archived: boolean) => Promise<null>;
+const archiveCategoryContext = createContext<ArchiveCategoryDelegate | null>(null);
+export function useArchiveCategory() {
+    return useContext(archiveCategoryContext);
+}
+
+const categoryArchivedContext = createContext<boolean>(false);
+export function useCategoryArchived() {
+    return useContext(categoryArchivedContext);
+}
+
 export default function CategoriesProvider(props: PropsWithChildren<{}>) {
     const [archivedCategories, setArchivedCategories] = useState<CategoryDTO[] | null>(null)
     const [nonArchivedCategories, setNonArchivedCategories] = useState<CategoryDTO[] | null>(null)
@@ -56,6 +68,7 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
 
     const [newCategoryError, setNewCategoryError] = useState(false)
     const [categoryDeleted, setCategoryDeleted] = useState(false)
+    const [categoryArchived, setCategoryArchived] = useState(false)
     const [deleteCategoryError, setDeleteCategoryError] = useState("")
 
     const auth = useAuth()
@@ -63,6 +76,7 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
 
     const getCategories = async (archived: boolean) => {
         setCategoryDeleted(false)
+        setCategoryArchived(false)
         setDeleteCategoryError("")
         const categoriesArray: CategoryDTO[] = await fetch("/api/category?archived=" + archived, {
             method: "GET",
@@ -135,10 +149,32 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
             })
     }
 
+    const archiveCategory: ArchiveCategoryDelegate = async (categoryId: string, archived: boolean) => {
+        setDeleteCategoryError("")
+        return fetch("/api/category?id=" + categoryId, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                "archived": archived
+            })
+        })
+            .then(data => {
+                if (data.status == 201) {
+                    setCategoryArchived(true)
+                } else {
+                    setCategoryArchived(false)
+                }
+                return null
+            })
+    }
+
     useEffect(() => {
         getCategories(true)
         getCategories(false)
-    }, [loaded, categoryDeleted])
+    }, [loaded, categoryDeleted, categoryArchived])
 
     return (
         <archivedCategoriesContext.Provider value={archivedCategories}>
@@ -149,7 +185,11 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
                             <deleteCategoryContext.Provider value={deleteCategory}>
                                 <categoryDeletedContext.Provider value={categoryDeleted}>
                                     <deleteCategoryErrorContext.Provider value={deleteCategoryError}>
-                                        {props.children}
+                                        <archiveCategoryContext.Provider value={archiveCategory}>
+                                            <categoryArchivedContext.Provider value={categoryArchived}>
+                                                {props.children}
+                                            </categoryArchivedContext.Provider>
+                                        </archiveCategoryContext.Provider>
                                     </deleteCategoryErrorContext.Provider>
                                 </categoryDeletedContext.Provider>
                             </deleteCategoryContext.Provider>

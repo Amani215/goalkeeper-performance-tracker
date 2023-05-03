@@ -5,6 +5,7 @@ import pytest
 from model.user import User
 import service.user as user_service
 import service.category as category_service
+import service.auth as auth_service
 from helper import random_string
 
 
@@ -114,4 +115,6 @@ def test_set_password(app, user):
     user_service.set_password(_user.id, new_password)
 
     _user = user_service.get_by_username(user['username'])
-    assert _user.password == new_password
+
+    response = auth_service.authenticate_user(_user.username, new_password)
+    assert 'token' in response

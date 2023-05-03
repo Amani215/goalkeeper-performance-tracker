@@ -7,6 +7,7 @@ import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
 import { Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import ChangePassword from './modals/changePassword'
 
 function PageName() {
     const { t } = useTranslation();
@@ -48,6 +49,10 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
     if (redirect) {
         return <Navigate to="/login" state={{ from: location }} replace />
     }
+
+    const [passwordModalOpen, setPasswordModalOpen] = useState(true)
+    const closeChangePassword = () => setPasswordModalOpen(false)
+
     return (
         <>
             <Header auth={auth} />
@@ -59,6 +64,10 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                     <PageName />
                     {children}
+
+                    {auth?.user.first_login ?
+                        <ChangePassword modalIsOpen={passwordModalOpen} setModalIsOpen={closeChangePassword} />
+                        : <></>}
                 </Box>
             </Box>
         </>

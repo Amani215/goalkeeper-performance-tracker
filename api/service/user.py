@@ -84,6 +84,14 @@ def set_password(user_id, password: str):
     '''Set a new password for the given user'''
     user = get_by_id(user_id)
 
+    if len(password) < 6:
+        raise ValueError('password too short')
+    elif len(password) > 50:
+        raise ValueError('password too long')
+
+    password = hashpw(password.encode('utf-8'), gensalt())
+    password = password.decode('utf8')
+
     user.password = password
     user.first_login = False
 

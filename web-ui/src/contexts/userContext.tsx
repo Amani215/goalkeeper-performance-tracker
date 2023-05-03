@@ -56,6 +56,13 @@ export function useUserUpdated() {
     return useContext(userUpdatedContext);
 }
 
+// UPDATE PASSWORD CONTEXT
+type UpdateUserPasswordDelegate = (id: string, password: string) => Promise<UserDTO | errorResponse>;
+const updateUserPasswordContext = createContext<UpdateUserPasswordDelegate | null>(null);
+export function useUpdateUserPassword() {
+    return useContext(updateUserPasswordContext);
+}
+
 // PROVIDER
 export default function UserProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
@@ -150,6 +157,34 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             return json_data as errorResponse;
         }
     }
+
+    const updateUserPassword: UpdateUserPasswordDelegate = async (user_id: string, password: string) => {
+        const data = await fetch("/api/user?id=" + user_id, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                password: password,
+            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setUserReady(true);
+            setError(false);
+            setUser(json_data as UserDTO)
+            setUserUpdated(true)
+            return json_data as UserDTO;
+        }
+        else {
+            setError(true);
+            setUserReady(true);
+            setUser(null)
+            return json_data as errorResponse;
+        }
+    }
+
     return (
         <getUserContext.Provider value={getUser}>
             <userContext.Provider value={user}>
@@ -160,7 +195,9 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
                                 <userUpdatedContext.Provider value={userUpdated}>
                                     <userCategoriesContext.Provider value={categories}>
                                         <userCategoriesReadyContext.Provider value={userCategoriesReady}>
-                                            {props.children}
+                                            <updateUserPasswordContext.Provider value={updateUserPassword}>
+                                                {props.children}
+                                            </updateUserPasswordContext.Provider>
                                         </userCategoriesReadyContext.Provider>
                                     </userCategoriesContext.Provider>
                                 </userUpdatedContext.Provider>

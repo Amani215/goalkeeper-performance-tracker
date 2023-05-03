@@ -1,17 +1,14 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
+import { Box, Button, Modal, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { ModalProp } from '../../interfaces/modalProp'
-import categoryValidationSchema from '../../schemas/categoryValidation';
 import { style } from './style';
-import { useParams } from '../../contexts/paramsContext';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
 import { useUpdateUserPassword } from '../../contexts/userContext';
 import { useAuth } from '../../contexts/authContext';
+import passwordValidation from '../../schemas/passwordValidation';
 
 function ChangePassword({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const { t } = useTranslation()
-    const [_, setError] = useState(false)
 
     const auth = useAuth()
     const changePassword = useUpdateUserPassword()
@@ -25,9 +22,11 @@ function ChangePassword({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
     const formik = useFormik({
         initialValues: {
-            password: ''
+            password: "",
+            confirmPassword: ""
         },
-        onSubmit: handleSubmit
+        onSubmit: handleSubmit,
+        validationSchema: passwordValidation
     })
 
     return (
@@ -38,7 +37,7 @@ function ChangePassword({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Change Password
+                    {t("update_password")}
                 </Typography>
                 <Box
                     component="form"
@@ -60,6 +59,22 @@ function ChangePassword({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         autoFocus
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
+                    />
+
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="confirmPassword"
+                        label={t("confirm_password")}
+                        name="confirmPassword"
+                        type="password"
+                        autoComplete="confirmPassword"
+                        value={formik.values.confirmPassword}
+                        onChange={formik.handleChange}
+                        autoFocus
+                        error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                        helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                     />
 
                     <Button

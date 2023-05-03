@@ -3,6 +3,7 @@
 
   "username": "Username",
   "password": "Password",
+  "confirm_password": "Confirm Your Password",
   "status": "Status",
   "associated_categories": "Associated Categories",
   "profile_pic": "Profile Pic",
@@ -95,6 +96,7 @@
   "update_match": "Update Match",
   "update_scores": "Update Scores",
   "update_user_status": "Update User Status",
+  "update_password": "Update Your Password",
   "download_form": "Download Form",
 
   "change_pic": "Change Picture",

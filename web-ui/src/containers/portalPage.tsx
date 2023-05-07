@@ -30,12 +30,14 @@ function PageName() {
 
 //Menu, headers, footer...
 const PortalPage = ({ children }: PropsWithChildren<{}>) => {
+    const location = useLocation()
+    const authReady = useAuthReady()
+    const auth = useAuth()
+
     const [loaded, setLoaded] = useState(false)
     const [redirect, setRedirect] = useState(false)
-
-    const auth = useAuth()
-    const authReady = useAuthReady()
-    const location = useLocation()
+    const [passwordModalOpen, setPasswordModalOpen] = useState(true)
+    const [changePassword, setChangePassword] = useState(false)
 
     useEffect(
         () => setLoaded(true), []
@@ -44,14 +46,19 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
         if (loaded && authReady && !auth?.user) {
             setRedirect(true)
         }
+        if (loaded && authReady && auth?.user.first_login) {
+            setChangePassword(true)
+        }
     }, [loaded, authReady, auth?.user])
+
+    const closeChangePassword = () => {
+        setPasswordModalOpen(false)
+        setChangePassword(false)
+    }
 
     if (redirect) {
         return <Navigate to="/login" state={{ from: location }} replace />
     }
-
-    const [passwordModalOpen, setPasswordModalOpen] = useState(true)
-    const closeChangePassword = () => setPasswordModalOpen(false)
 
     return (
         <>
@@ -65,7 +72,7 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
                     <PageName />
                     {children}
 
-                    {auth?.user.first_login ?
+                    {changePassword ?
                         <ChangePassword modalIsOpen={passwordModalOpen} setModalIsOpen={closeChangePassword} />
                         : <></>}
                 </Box>

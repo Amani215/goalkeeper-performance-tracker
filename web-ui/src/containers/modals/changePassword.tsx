@@ -4,19 +4,28 @@ import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
 import { useUpdateUserPassword } from '../../contexts/userContext';
-import { useAuth } from '../../contexts/authContext';
+import { useAuth, useLogout } from '../../contexts/authContext';
 import passwordValidation from '../../schemas/passwordValidation';
 
 function ChangePassword({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const { t } = useTranslation()
 
     const auth = useAuth()
+    const logout = useLogout()
     const changePassword = useUpdateUserPassword()
+
     const handleSubmit = async ({ password }: FormikValues) => {
         if (changePassword) {
-            await changePassword(auth ? auth.user.id : "", password).then(
-                () => setModalIsOpen()
-            )
+            await changePassword(auth ? auth.user.id : "", password)
+                .then(
+                    data => {
+                        if (!("error" in data)) {
+                            setModalIsOpen()
+                            if (logout)
+                                logout()
+                        }
+                    }
+                )
         }
     };
 
@@ -38,6 +47,9 @@ function ChangePassword({ modalIsOpen, setModalIsOpen }: ModalProp) {
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     {t("update_password")}
+                </Typography>
+                <Typography component="p">
+                    {t("update_password_warning")}
                 </Typography>
                 <Box
                     component="form"

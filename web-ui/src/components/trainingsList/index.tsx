@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { MdDelete } from 'react-icons/md';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ type PropType = {
 
 function TrainingsList({ trainings }: PropType) {
     const { t } = useTranslation();
+    const location = useLocation()
 
     // Columns
     const columns: GridColDef[] = [
@@ -23,13 +24,7 @@ function TrainingsList({ trainings }: PropType) {
             minWidth: 80,
             renderCell: (params) => {
                 return (
-                    <Link
-                        component={RouterLink}
-                        to={`/trainings/${params.id}`}
-                        underline="none"
-                        color="inherit">
-                        <Typography>{params.row.date}</Typography>
-                    </Link>
+                    <Typography>{params.row.date}</Typography>
                 );
             }
         },
@@ -40,13 +35,7 @@ function TrainingsList({ trainings }: PropType) {
             minWidth: 100,
             renderCell: (params) => {
                 return (
-                    <Link
-                        component={RouterLink}
-                        to={`/trainings/${params.id}`}
-                        underline="none"
-                        color="inherit">
-                        <Typography>{params.row.category.id}</Typography>
-                    </Link>
+                    <Typography>{params.row.category.id}</Typography>
                 );
             }
         },
@@ -92,6 +81,18 @@ function TrainingsList({ trainings }: PropType) {
         }
     }
 
+    // Click event
+    const [redirect, setRedirect] = useState<boolean>(false)
+    const [redirectID, setRedirectID] = useState<string>("")
+    const redirectTo = (id: string) => {
+        setRedirect(true)
+        setRedirectID(id)
+    }
+
+    if (redirect) {
+        return <Navigate to={`/trainings/${redirectID}`} state={{ from: location }} />
+    }
+
     return (
         <>
             {trainings.length > 0 ?
@@ -102,6 +103,9 @@ function TrainingsList({ trainings }: PropType) {
                             columns={columns}
                             pageSize={10}
                             rowsPerPageOptions={[10]}
+                            onRowClick={(params) => {
+                                redirectTo(params.row.id)
+                            }}
                         />
                     </div>
                 </div> :

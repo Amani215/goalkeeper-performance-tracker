@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/authContext';
 import { useGoalkeepers, useGoalkeepersReady } from '../contexts/goalkeepersContext';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
@@ -16,6 +16,7 @@ function GoalkeepersList({
     setModalIsOpen
 }: ModalProp) {
     const { t } = useTranslation()
+    const location = useLocation()
     const columns: GridColDef[] = [
         {
             field: 'picture',
@@ -25,9 +26,7 @@ function GoalkeepersList({
             align: "center",
             renderCell: (params) => {
                 return (
-                    <RouterLink to={`/goalkeepers/${params.id}`}>
-                        <Avatar src={params.row.picture} sx={{ width: 32, height: 32 }} />
-                    </RouterLink>
+                    <Avatar src={params.row.picture} sx={{ width: 32, height: 32 }} />
                 );
             }
         },
@@ -58,6 +57,18 @@ function GoalkeepersList({
         }
     }, [goalkeepersReady, goalkeepers])
 
+    // Click event
+    const [redirect, setRedirect] = useState<boolean>(false)
+    const [redirectID, setRedirectID] = useState<string>("")
+    const redirectTo = (id: string) => {
+        setRedirect(true)
+        setRedirectID(id)
+    }
+
+    if (redirect) {
+        return <Navigate to={`/goalkeepers/${redirectID}`} state={{ from: location }} />
+    }
+
     return (
         <>
             {auth?.user.admin ?
@@ -74,7 +85,9 @@ function GoalkeepersList({
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
-                    checkboxSelection
+                    onRowClick={(params) => {
+                        redirectTo(params.row.id)
+                    }}
                 />
             </div>
         </>

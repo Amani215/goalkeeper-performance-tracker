@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useUsers, useUsersReady } from '../contexts/usersContext';
 import { UserDTO } from '../DTOs';
 import Avatar from '@mui/material/Avatar';
-import { Link as RouterLink } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import { ModalProp } from '../interfaces/modalProp';
 import { useAuth } from '../contexts/authContext';
@@ -13,6 +13,8 @@ export default function UsersList({
     setModalIsOpen
 }: ModalProp) {
     const { t } = useTranslation();
+    const location = useLocation()
+
     const columns: GridColDef[] = [
         {
             field: 'profile_pic',
@@ -22,9 +24,7 @@ export default function UsersList({
             align: "center",
             renderCell: (params) => {
                 return (
-                    <RouterLink to={`/users/${params.id}`}>
-                        <Avatar src={params.row.profile_pic} sx={{ width: 32, height: 32 }} />
-                    </RouterLink>
+                    <Avatar src={params.row.profile_pic} sx={{ width: 32, height: 32 }} />
                 );
             }
         },
@@ -54,6 +54,18 @@ export default function UsersList({
         }
     }, [usersReady, users])
 
+    // Click event
+    const [redirect, setRedirect] = useState<boolean>(false)
+    const [redirectID, setRedirectID] = useState<string>("")
+    const redirectTo = (id: string) => {
+        setRedirect(true)
+        setRedirectID(id)
+    }
+
+    if (redirect) {
+        return <Navigate to={`/users/${redirectID}`} state={{ from: location }} />
+    }
+
     return (
         <>
             {auth?.user.admin ?
@@ -70,7 +82,9 @@ export default function UsersList({
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5]}
-                    checkboxSelection
+                    onRowClick={(params) => {
+                        redirectTo(params.row.id)
+                    }}
                 />
             </div>
         </>

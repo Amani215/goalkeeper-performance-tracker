@@ -1,7 +1,7 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { MatchDTO } from "../../DTOs/MatchDTO";
 import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import { Navigate, Link as RouterLink, useLocation } from 'react-router-dom';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useState } from 'react';
 import { useDeleteMatch, useDeleteMatchError } from '../../contexts/matchesContext';
@@ -14,6 +14,7 @@ type PropType = {
 
 function MatchesList({ matches }: PropType) {
     const { t } = useTranslation();
+    const location = useLocation()
 
     // Columns
     const columns: GridColDef[] = [
@@ -21,18 +22,7 @@ function MatchesList({ matches }: PropType) {
             field: 'date',
             headerName: 'Date',
             flex: 2,
-            minWidth: 80,
-            renderCell: (params) => {
-                return (
-                    <Link
-                        component={RouterLink}
-                        to={`/matches/${params.id}`}
-                        underline="none"
-                        color="inherit">
-                        <Typography>{params.row.date}</Typography>
-                    </Link>
-                );
-            }
+            minWidth: 80
         },
         {
             field: 'category',
@@ -41,13 +31,7 @@ function MatchesList({ matches }: PropType) {
             minWidth: 100,
             renderCell: (params) => {
                 return (
-                    <Link
-                        component={RouterLink}
-                        to={`/matches/${params.id}`}
-                        underline="none"
-                        color="inherit">
-                        <Typography>{params.row.category.id}</Typography>
-                    </Link>
+                    <Typography>{params.row.category.id}</Typography>
                 );
             }
         },
@@ -55,52 +39,19 @@ function MatchesList({ matches }: PropType) {
             field: 'local',
             headerName: `${t("local")}`,
             flex: 2,
-            minWidth: 80,
-            renderCell: (params) => {
-                return (
-                    <Link
-                        component={RouterLink}
-                        to={`/matches/${params.id}`}
-                        underline="none"
-                        color="inherit">
-                        <Typography>{params.row.local}</Typography>
-                    </Link>
-                );
-            }
+            minWidth: 80
         },
         {
             field: 'visitor',
             headerName: `${t("visitor")}`,
             flex: 2,
-            minWidth: 80,
-            renderCell: (params) => {
-                return (
-                    <Link
-                        component={RouterLink}
-                        to={`/matches/${params.id}`}
-                        underline="none"
-                        color="inherit">
-                        <Typography>{params.row.visitor}</Typography>
-                    </Link>
-                );
-            }
+            minWidth: 80
         },
         {
             field: 'match_type',
             headerName: `${t("match_type")}`,
             flex: 2,
-            minWidth: 80,
-            renderCell: (params) => {
-                return (
-                    <Link
-                        component={RouterLink}
-                        to={`/matches/${params.id}`}
-                        underline="none"
-                        color="inherit">
-                        <Typography>{params.row.match_type}</Typography>
-                    </Link>
-                );
-            }
+            minWidth: 80
         },
         {
             field: 'actions',
@@ -160,6 +111,18 @@ function MatchesList({ matches }: PropType) {
         setUpdateModalIsOpen(false)
     }
 
+    // Click event
+    const [redirect, setRedirect] = useState<boolean>(false)
+    const [redirectID, setRedirectID] = useState<string>("")
+    const redirectTo = (id: string) => {
+        setRedirect(true)
+        setRedirectID(id)
+    }
+
+    if (redirect) {
+        return <Navigate to={`/matches/${redirectID}`} state={{ from: location }} />
+    }
+
     return (
         <>
             {matches.length > 0 ?
@@ -170,6 +133,9 @@ function MatchesList({ matches }: PropType) {
                             columns={columns}
                             pageSize={10}
                             rowsPerPageOptions={[10]}
+                            onRowClick={(params) => {
+                                redirectTo(params.row.id)
+                            }}
                         />
                     </div>
                 </div> :

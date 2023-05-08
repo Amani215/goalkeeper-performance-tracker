@@ -187,3 +187,34 @@ def get_training_performances(current_user: User):
         return {'error': str(err)}, 401
     except Exception as err:
         return {'error': str(err)}, 400
+
+
+@goalkeeper_api.route('/goalkeeper', methods=['PUT'])
+@token_required(admin=False)
+def update_params(current_user: User):
+    '''Update some parameters of the goalkeeper
+    
+    The possible paramters are: phone and birthday.
+    The ID of the goalkeeper has to be passed in the URL as an argument'''
+    try:
+        args = request.args
+
+        if (args.get('id') is None):
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+        goalkeeper: Goalkeeper = goalkeeper_service.get_by_id(args.get('id'))
+        if (goalkeeper_service.editable(goalkeeper, current_user) == False):
+            raise PermissionError('User cannot edit this goalkeeper.')
+
+        possible_params = ['phone', 'birthday']
+        for param in possible_params:
+            if param in request.json:
+                goalkeeper = goalkeeper_service.update_param(
+                    args.get('id'), param, request.json[param])
+
+        return goalkeeper.serialize, 201
+
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400

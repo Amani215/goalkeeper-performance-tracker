@@ -83,3 +83,19 @@ def test_add_category(app, goalkeeper):
     response = goalkeeper_service.add_category(_goalkeeper, category)
 
     assert response['category_id'] == category.id
+
+
+def test_update_params(app, goalkeeper):
+    '''Test update of goalkeeper attributes'''
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+
+    rand = random.randint(0, 100)
+    response = goalkeeper_service.update_param(_goalkeeper.id, 'phone',
+                                               str(rand))
+    assert response.phone == str(rand)
+
+    rand = random_date.generate()
+    response = goalkeeper_service.update_param(_goalkeeper.id, 'birthday',
+                                               str(rand.strftime('%d/%m/%Y')))
+    assert response.birthday.strftime('%d/%m/%Y') == str(
+        rand.strftime('%d/%m/%Y'))

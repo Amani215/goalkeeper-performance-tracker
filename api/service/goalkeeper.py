@@ -151,3 +151,17 @@ def remove_training_performance(goalkeeper_id: str,
     goalkeeper = get_by_id(goalkeeper_id)
     goalkeeper.training_performances.remove(training_performance)
     db.session.commit()
+
+
+def update_param(goalkeeper_id: str, param_name: str, param_value):
+    '''Set the param to the given value'''
+    goalkeeper = get_by_id(goalkeeper_id)
+
+    if (param_name == 'birthday'):
+        birthday = datetime.datetime.strptime(param_value, '%d/%m/%Y')
+        goalkeeper.__setattr__(param_name, birthday)
+    else:
+        goalkeeper.__setattr__(param_name, param_value)
+
+    db.session.commit()
+    return goalkeeper

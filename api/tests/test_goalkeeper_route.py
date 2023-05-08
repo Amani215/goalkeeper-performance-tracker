@@ -9,8 +9,10 @@ from helper import random_string, random_date
 import service.category as category_service
 import service.goalkeeper as goalkeeper_service
 import service.user as user_service
+from tests.conftest import content_type
 
 URL = '/goalkeeper'
+ID_URL = '/goalkeeper?id='
 PICTURE_URL = '/goalkeeper/picture'
 CATEGORY_URL = '/goalkeeper/category'
 MATCH_URL = '/goalkeeper/match_performances'
@@ -264,3 +266,26 @@ def test_get_training_performances(client, goalkeeper, training_session,
     trainings = client.get(TRAINING_URL, headers=json_headers)
     assert trainings.status_code == 400
     assert 'error' in trainings.json
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_set_param_match_category(client, authenticated_user, goalkeeper):
+    '''Test setting a parameter'''
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+
+    rand_int = random.randint(0, 90000)
+    rand_date = random_date.generate()
+    test_data = {
+        'phone': str(rand_int),
+        'birthday': str(rand_date.strftime('%d/%m/%Y'))
+    }
+    response = client.put(ID_URL + str(_goalkeeper.id),
+                          data=json.dumps(test_data),
+                          headers=headers)
+    assert response.status_code == 201

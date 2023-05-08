@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid'
 import dayjs from 'dayjs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
-import { useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperGrowthContext, useGoalkeeperGrowthReady, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useGoalkeeperTrainings, useGoalkeeperTrainingsReady, useUpdatePicture } from '../contexts/goalkeeperContext'
+import { useGetGoalkeeper, useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperGrowthContext, useGoalkeeperGrowthReady, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useGoalkeeperTrainings, useGoalkeeperTrainingsReady, useUpdatePicture } from '../contexts/goalkeeperContext'
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO'
 import { IoFootball } from "react-icons/io5"
 import { CategoryDTO } from '../DTOs'
@@ -18,9 +18,9 @@ import { GrowthDTO } from '../DTOs/GrowthDTO'
 import GrowthList from '../components/growthList'
 import { useGrowthAdded, useGrowthDeleted, useGrowthUpdated } from '../contexts/growthContext'
 import { useTranslation } from 'react-i18next'
+import { ModalProp } from '../interfaces/modalProp'
 
-
-function GoalkeeperDetails() {
+function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
     const { t } = useTranslation()
 
@@ -135,7 +135,7 @@ function GoalkeeperDetails() {
     const [error, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
-    const goalkeeperContext = useGoalkeeper()
+    const goalkeeperContext = useGetGoalkeeper()
     const goalkeeperError = useGoalkeeperError()
     const goalkeeperReady = useGoalkeeperReady()
     const updatePicture = useUpdatePicture()
@@ -243,7 +243,8 @@ function GoalkeeperDetails() {
                         <Grid item xs={4} sm={5} md={8} order={{ xs: 2, sm: 1, md: 1 }}>
                             <Card sx={{ padding: 2, height: "100%" }}>
                                 <Box display="flex" justifyContent="flex-end">
-                                    <Button>
+                                    <Button
+                                        onClick={() => setModalIsOpen()}>
                                         {t("edit")}
                                     </Button>
                                 </Box>

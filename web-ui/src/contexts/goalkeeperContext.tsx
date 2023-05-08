@@ -9,7 +9,12 @@ import { GrowthDTO } from '../DTOs/GrowthDTO';
 
 // GET GOALKEEPER CONTEXTS
 type GoalkeeperDelegate = (id: string) => Promise<GoalkeeperDTO | errorResponse>;
-const goalkeeperContext = createContext<GoalkeeperDelegate | null>(null);
+const getGoalkeeperContext = createContext<GoalkeeperDelegate | null>(null);
+export function useGetGoalkeeper() {
+    return useContext(getGoalkeeperContext);
+}
+
+const goalkeeperContext = createContext<GoalkeeperDTO | null>(null);
 export function useGoalkeeper() {
     return useContext(goalkeeperContext);
 }
@@ -82,6 +87,7 @@ export function useUpdatePicture() {
 // PROVIDER
 export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
+    const [goalkeeper, setGoalkeeper] = useState<GoalkeeperDTO | null>(null)
     const [goalkeeperReady, setGoalkeeperReady] = useState<boolean>(false)
 
     const [goalkeeperCategoriesReady, setGoalkeeperCategoriesReady] = useState<boolean>(false)
@@ -93,7 +99,7 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
     const auth = useAuth()
     const token = auth?.token
 
-    const goalkeeper: GoalkeeperDelegate = async (id: string) => {
+    const getGoalkeeper: GoalkeeperDelegate = async (id: string) => {
         const data = await fetch("/api/goalkeeper?id=" + id, {
             method: "GET",
             headers: {
@@ -103,11 +109,13 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
         });
         const json_data = await data.json();
         if ('id' in json_data) {
+            setGoalkeeper(json_data as GoalkeeperDTO)
             setGoalkeeperReady(true);
             setError(false);
             return json_data as GoalkeeperDTO;
         }
         else {
+            setGoalkeeper(null)
             setError(true);
             setGoalkeeperReady(true);
             return json_data as errorResponse;
@@ -209,30 +217,32 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
     }
 
     return (
-        <goalkeeperContext.Provider value={goalkeeper}>
-            <goalkeeperErrorContext.Provider value={error}>
-                <goalkeeperReadyContext.Provider value={goalkeeperReady}>
-                    <goalkeeperCategoriesContext.Provider value={categories}>
-                        <goalkeeperCategoriesReadyContext.Provider value={goalkeeperCategoriesReady}>
-                            <goalkeeperMatchesContext.Provider value={matches}>
-                                <goalkeeperMatchesReadyContext.Provider value={goalkeeperMatchesReady}>
-                                    <goalkeeperTrainingsContext.Provider value={trainings}>
-                                        <goalkeeperTrainingsReadyContext.Provider value={goalkeeperTrainingsReady}>
-                                            <goalkeeperGrowthContext.Provider value={growth}>
-                                                <goalkeeperGrowthReadyContext.Provider value={goalkeeperGrowthReady}>
-                                                    <updatePictureContext.Provider value={picture}>
-                                                        {props.children}
-                                                    </updatePictureContext.Provider>
-                                                </goalkeeperGrowthReadyContext.Provider>
-                                            </goalkeeperGrowthContext.Provider>
-                                        </goalkeeperTrainingsReadyContext.Provider>
-                                    </goalkeeperTrainingsContext.Provider>
-                                </goalkeeperMatchesReadyContext.Provider>
-                            </goalkeeperMatchesContext.Provider>
-                        </goalkeeperCategoriesReadyContext.Provider>
-                    </goalkeeperCategoriesContext.Provider>
-                </goalkeeperReadyContext.Provider>
-            </goalkeeperErrorContext.Provider>
-        </goalkeeperContext.Provider>
+        <getGoalkeeperContext.Provider value={getGoalkeeper}>
+            <goalkeeperContext.Provider value={goalkeeper}>
+                <goalkeeperErrorContext.Provider value={error}>
+                    <goalkeeperReadyContext.Provider value={goalkeeperReady}>
+                        <goalkeeperCategoriesContext.Provider value={categories}>
+                            <goalkeeperCategoriesReadyContext.Provider value={goalkeeperCategoriesReady}>
+                                <goalkeeperMatchesContext.Provider value={matches}>
+                                    <goalkeeperMatchesReadyContext.Provider value={goalkeeperMatchesReady}>
+                                        <goalkeeperTrainingsContext.Provider value={trainings}>
+                                            <goalkeeperTrainingsReadyContext.Provider value={goalkeeperTrainingsReady}>
+                                                <goalkeeperGrowthContext.Provider value={growth}>
+                                                    <goalkeeperGrowthReadyContext.Provider value={goalkeeperGrowthReady}>
+                                                        <updatePictureContext.Provider value={picture}>
+                                                            {props.children}
+                                                        </updatePictureContext.Provider>
+                                                    </goalkeeperGrowthReadyContext.Provider>
+                                                </goalkeeperGrowthContext.Provider>
+                                            </goalkeeperTrainingsReadyContext.Provider>
+                                        </goalkeeperTrainingsContext.Provider>
+                                    </goalkeeperMatchesReadyContext.Provider>
+                                </goalkeeperMatchesContext.Provider>
+                            </goalkeeperCategoriesReadyContext.Provider>
+                        </goalkeeperCategoriesContext.Provider>
+                    </goalkeeperReadyContext.Provider>
+                </goalkeeperErrorContext.Provider>
+            </goalkeeperContext.Provider>
+        </getGoalkeeperContext.Provider>
     )
 }

@@ -98,6 +98,7 @@
   "update_user_status": "Update User Status",
   "update_password": "Update Your Password",
   "update_password_warning": "If updating your password is successful, you will be logged out automatically. You should use your new password to login.",
+  "update_goalkeeper": "Update Goalkeeper",
   "download_form": "Download Form",
 
   "change_pic": "Change Picture",

@@ -96,6 +96,7 @@
   "update_user_status": "Mettre à Jour le Statut de l'utilisateur",
   "update_password": "Mettez à Jour votre Mot de Passe",
   "update_password_warning": "Si la mise à jour de votre mot de passe est finie, vous serez déconnecté automatiquement. Vous devrez utiliser votre nouveau mot de passe pour vous connecter.",
+  "update_goalkeeper": "Mettre à Jour le Gardien de But",
   "download_form": "Télécharger le formulaire",
 
   "change_pic": "Changer de Photo",

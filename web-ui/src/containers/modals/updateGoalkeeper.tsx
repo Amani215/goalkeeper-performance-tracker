@@ -58,7 +58,7 @@ function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    {t("update_user_status")}
+                    {t("update_goalkeeper")}
                 </Typography>
                 <Box
                     component="form"
@@ -71,7 +71,7 @@ function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
-                                label="Birthday"
+                                label={t("birthdate")}
                                 inputFormat="DD/MM/YYYY"
                                 value={formik.values.birthday}
                                 onChange={v => formik.setFieldValue("birthday", v)}

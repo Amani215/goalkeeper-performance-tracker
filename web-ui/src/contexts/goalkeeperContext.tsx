@@ -84,11 +84,24 @@ export function useUpdatePicture() {
     return useContext(updatePictureContext);
 }
 
+// UPDATE GOALKEEPER CONTEXTS
+type UpdateGoalkeeperDelegate = (id: string, birthday: string, phone: string) => Promise<GoalkeeperDTO | errorResponse>;
+const updateGoalkeeperContext = createContext<UpdateGoalkeeperDelegate | null>(null);
+export function useUpdateGoalkeeper() {
+    return useContext(updateGoalkeeperContext);
+}
+
+const goalkeeperUpdatedContext = createContext<boolean>(false);
+export function useGoalkeeperUpdated() {
+    return useContext(goalkeeperUpdatedContext);
+}
+
 // PROVIDER
 export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
     const [error, setError] = useState(false)
     const [goalkeeper, setGoalkeeper] = useState<GoalkeeperDTO | null>(null)
     const [goalkeeperReady, setGoalkeeperReady] = useState<boolean>(false)
+    const [goalkeeperUpdated, setGoalkeeperUpdated] = useState<boolean>(false);
 
     const [goalkeeperCategoriesReady, setGoalkeeperCategoriesReady] = useState<boolean>(false)
     const [goalkeeperMatchesReady, setGoalkeeperMatchesReady] = useState<boolean>(false)
@@ -100,6 +113,7 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
     const token = auth?.token
 
     const getGoalkeeper: GoalkeeperDelegate = async (id: string) => {
+        setGoalkeeperUpdated(false)
         const data = await fetch("/api/goalkeeper?id=" + id, {
             method: "GET",
             headers: {
@@ -204,16 +218,44 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
         }
     }
 
-    const picture: PictureDelegate = (id: string, formdata: FormData) => {
-        return fetch("/api/goalkeeper/picture?id=" + id, {
+    const picture: PictureDelegate = async (id: string, formdata: FormData) => {
+        const data = await fetch("/api/goalkeeper/picture?id=" + id, {
             method: "PUT",
             headers: {
                 'Accept': '*/*',
                 'Authorization': `bearer ${token}`
             },
             body: formdata
-        })
-            .then(data => data.json())
+        });
+        return await data.json();
+    }
+
+    const updateGoalkeeper: UpdateGoalkeeperDelegate = async (id: string, birthday: string, phone: string) => {
+        const data = await fetch("/api/goalkeeper?id="+id, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                birthday: birthday,
+                phone: phone
+            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setGoalkeeperReady(true);
+            setError(false);
+            setGoalkeeper(json_data as GoalkeeperDTO)
+            setGoalkeeperUpdated(true)
+            return json_data as GoalkeeperDTO;
+        }
+        else {
+            setError(true);
+            setGoalkeeperReady(true);
+            setGoalkeeper(null)
+            return json_data as errorResponse;
+        }
     }
 
     return (
@@ -230,7 +272,11 @@ export default function GoalkeeperProvider(props: PropsWithChildren<{}>) {
                                                 <goalkeeperGrowthContext.Provider value={growth}>
                                                     <goalkeeperGrowthReadyContext.Provider value={goalkeeperGrowthReady}>
                                                         <updatePictureContext.Provider value={picture}>
+                                                            <updateGoalkeeperContext.Provider value={updateGoalkeeper}>
+                                                                <goalkeeperUpdatedContext.Provider value={goalkeeperUpdated}>
                                                             {props.children}
+                                                            </goalkeeperUpdatedContext.Provider>
+                                                            </updateGoalkeeperContext.Provider>
                                                         </updatePictureContext.Provider>
                                                     </goalkeeperGrowthReadyContext.Provider>
                                                 </goalkeeperGrowthContext.Provider>

@@ -5,9 +5,10 @@ import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
 import { GoalkeeperDTO } from '../../DTOs/GoalkeeperDTO';
-import { useGoalkeeper } from '../../contexts/goalkeeperContext';
+import { useGoalkeeper, useUpdateGoalkeeper } from '../../contexts/goalkeeperContext';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const { t } = useTranslation();
@@ -15,7 +16,7 @@ function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
     const [goalkeeper, setGoalkeeper] = useState<GoalkeeperDTO | null>(null)
     const goalkeeperContext = useGoalkeeper()
-    // const updateUserStatus = useUpdateUserStatus()
+    const updateGoalkeeper = useUpdateGoalkeeper()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -25,18 +26,17 @@ function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
         }
     }, [loaded, goalkeeperContext])
 
-    const handleSubmit = async ({ phone, birthday }: FormikValues): Promise<void> => {
-        // if (updateUserStatus && goalkeeper) {
-        //     await updateUserStatus(goalkeeper.id, phone, birthday)
-        console.log(phone, birthday)
-        setModalIsOpen()
-        // }
+    const handleSubmit = async ({ birthday, phone }: FormikValues): Promise<void> => {
+        if (updateGoalkeeper && goalkeeper) {
+            await updateGoalkeeper(goalkeeper.id, dayjs(birthday).format('DD/MM/YYYY').toString(), phone)
+            setModalIsOpen()
+        }
     }
 
     const formik = useFormik({
         initialValues: {
-            phone: '',
-            birthday: ''
+            birthday: '',
+            phone: ''
         },
         onSubmit: handleSubmit
     })
@@ -44,8 +44,8 @@ function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
     useEffect(() => {
         if (goalkeeper) {
             formik.setValues({
-                phone: goalkeeper.phone,
-                birthday: goalkeeper.birthday
+                birthday: dayjs(goalkeeper.birthday).format("DD/MM/YYYY").toString(),
+                phone: goalkeeper.phone
             }
             );
         }

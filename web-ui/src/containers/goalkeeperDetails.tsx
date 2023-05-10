@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid'
 import dayjs from 'dayjs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
-import { useGetGoalkeeper, useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperGrowthContext, useGoalkeeperGrowthReady, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useGoalkeeperTrainings, useGoalkeeperTrainingsReady, useUpdatePicture } from '../contexts/goalkeeperContext'
+import { useGetGoalkeeper, useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperGrowthContext, useGoalkeeperGrowthReady, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useGoalkeeperTrainings, useGoalkeeperTrainingsReady, useGoalkeeperUpdated, useUpdatePicture } from '../contexts/goalkeeperContext'
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO'
 import { IoFootball } from "react-icons/io5"
 import { CategoryDTO } from '../DTOs'
@@ -138,6 +138,7 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
     const goalkeeperContext = useGetGoalkeeper()
     const goalkeeperError = useGoalkeeperError()
     const goalkeeperReady = useGoalkeeperReady()
+    const goalkeeperUpdated = useGoalkeeperUpdated()
     const updatePicture = useUpdatePicture()
 
     const [categories, setCategories] = useState<CategoryDTO[]>([])
@@ -180,7 +181,7 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
         if (loaded && goalkeeperReady && !goalkeeperError) {
             setError("")
         }
-    }, [loaded, goalkeeperReady, goalkeeperError])
+    }, [loaded, goalkeeperReady, goalkeeperError, goalkeeperUpdated])
 
     useEffect(() => {
         if (categoriesContext) {

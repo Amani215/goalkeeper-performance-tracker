@@ -1,5 +1,5 @@
 '''Categories routes (get, post, etc.)'''
-from flask import render_template
+from flask import render_template, request
 from flask.blueprints import Blueprint
 from service.document_generator import test_doc
 
@@ -10,4 +10,12 @@ NO_DATA_PROVIDED_MESSAGE = 'No data was provided'
 
 @document_generator_api.route('/doc/goalkeepers')
 def goalkeepers():
-    return test_doc()
+    try:
+        args = request.args
+        if args.get('category_id') is not None:
+            return test_doc(args.get('category_id'))
+        else:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+    except Exception as err:
+        return {'error': str(err)}, 400

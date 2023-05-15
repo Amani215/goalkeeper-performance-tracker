@@ -28,6 +28,7 @@ env:
   PROFILE_PICS_BUCKET: build-profile-pics
   GOALKEEPER_PICS_BUCKET: build-goalkeeper-pics
   TRAINING_FORMS_BUCKET: build-training-forms
+  DOCUMENTS_BUCKET: build-documents
   REDIS_HOST: localhost
   REDIS_PORT: 6379
   REDIS_CACHE_TTL: 86400

@@ -26,6 +26,7 @@ services:
     restart: always
     depends_on:
       - db
+    user: ${UID}:${GID}
     working_dir: /var/www/app
     volumes:
       - ./api:/var/www/app

@@ -27,5 +27,6 @@ def create_buckets():
         create_bucket(os.environ['TRAINING_FORMS_BUCKET'])
         create_bucket(os.environ['GOALKEEPER_PICS_BUCKET'])
         create_bucket(os.environ['PROFILE_PICS_BUCKET'])
+        create_bucket(os.environ['DOCUMENTS_BUCKET'])
     except ClientError as err:
         print('error:', err)

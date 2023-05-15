@@ -5,6 +5,10 @@ default:
 up:
 	docker compose --env-file .env up -d
 
+.PHONY: upb
+upb:
+	docker compose --env-file .env up -d --build
+
 .PHONY: down
 down:
 	docker compose down --volumes
@@ -27,3 +31,13 @@ clear:
 
 .PHONY: restart
 restart: down up
+
+.PHONY: clear-db
+clear-db:
+	rm api/db/*.db
+
+api/db/%.db:
+	sqlite3 $@ ".databases"
+
+.PHONY: create-db
+create-db: api/db/dev.db api/db/test.db

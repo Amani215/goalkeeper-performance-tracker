@@ -21,6 +21,7 @@ export AWS_SECRET_ACCESS_KEY='minio-secret-key-change-me'
 export PROFILE_PICS_BUCKET='test-profile-pics'
 export GOALKEEPER_PICS_BUCKET='test-goalkeeper-pics'
 export TRAINING_FORMS_BUCKET='test-training-forms'
+export DOCUMENTS_BUCKET='test-documents'
 
 # REDIS TEST ENVIRONMENT VARIABLES
 export REDIS_HOST='localhost'

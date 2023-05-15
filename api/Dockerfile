@@ -1,11 +1,27 @@
+FROM surnet/alpine-wkhtmltopdf:3.15.0-0.12.6-full AS wkhtmltopdf
 FROM python:3.9-alpine3.15
 
-RUN apk add --no-cache build-base=0.5-r3
+RUN apk add --no-cache \
+    libstdc++=10.3.1_git20211027-r0 \
+    libx11=1.7.3.1-r0 \
+    libxrender=0.9.10-r3 \
+    libxext=1.3.4-r0 \
+    libssl1.1=1.1.1q-r0 \
+    ca-certificates=20220614-r0 \
+    fontconfig=2.13.1-r4 \
+    freetype=2.11.1-r2 \
+    ttf-droid=20200215-r1 \
+    ttf-freefont=20120503-r2 \
+    ttf-liberation=2.00.5-r0 \
+    build-base=0.5-r3 \
+    ;
+# wkhtmltopdf copy bins from ext image
+COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/
 
-RUN addgroup -S nonroot \
-    && adduser -S nonroot -G nonroot
+# RUN addgroup -S nonroot \
+#     && adduser -S nonroot -G nonroot
 
-USER nonroot
+# USER nonroot
 
 WORKDIR /var/www/app
 

@@ -17,4 +17,4 @@ def test_doc(category_id: str):
     pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf")
     url = upload_local_file(f"{category_id}.pdf", f"/tmp/{category_id}.pdf",
                             getenv('DOCUMENTS_BUCKET'))
-    return output_text
+    return url

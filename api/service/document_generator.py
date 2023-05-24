@@ -1,4 +1,5 @@
 '''Service that generates documents from given templates'''
+import os
 import jinja2
 from os import getenv
 import pdfkit
@@ -8,11 +9,13 @@ from service.s3 import upload_local_file
 
 
 def test_doc(category_id: str):
+    PRIVATE_S3 = os.environ['PRIVATE_S3']
     category = category_service.get_by_id(category_id)
     goalkeepers = category_service.get_category_goalkeepers(category_id)
     output_text = render_template("goalkeepers.html",
                                   category=category,
-                                  goalkeepers=goalkeepers)
+                                  goalkeepers=goalkeepers,
+                                  s3_url=PRIVATE_S3)
 
     pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf")
     url = upload_local_file(f"{category_id}.pdf", f"/tmp/{category_id}.pdf",

@@ -16,7 +16,8 @@ def upload_file(file: FileStorage, bucket):
 
 
 def upload_local_file(filename: str, filepath: str, bucket):
-    """Add given object to the given bucket"""
+    """Add a file from the local files in the project.
+    If the file exists in the given bucket, it will be replaced."""
     s3_client.upload_file(filepath, bucket, filename)
 
     return f'/{bucket}/{filename}'

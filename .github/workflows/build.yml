@@ -21,6 +21,7 @@ env:
   FLASK_APP: __init__.py
   TOKEN_EXPIRY_IN_SEC: 60
   PUBLIC_S3: http://localhost:9000
+  PRIVATE_S3: http://minio:9000
   AWS_DEFAULT_REGION: eu-central-1
   AWS_DOMAIN: http://localhost:9000
   AWS_ACCESS_KEY_ID: myminioadmin

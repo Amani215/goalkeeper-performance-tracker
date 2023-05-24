@@ -1,4 +1,5 @@
 '''imports'''
+import os
 from uuid import uuid4
 from sqlalchemy import Column, String, Date
 from config import db
@@ -31,6 +32,7 @@ class Goalkeeper(db.Model):
     @property
     def serialize(self):
         """Return object data in easily serializable format"""
+        PUBLIC_S3 = os.environ['PUBLIC_S3']
         return {
             'id':
             self.id,
@@ -42,5 +44,5 @@ class Goalkeeper(db.Model):
             'phone':
             self.phone,
             'picture':
-            self.picture
+            f'{PUBLIC_S3}{self.picture}'
         }

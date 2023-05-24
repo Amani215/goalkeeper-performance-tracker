@@ -1,4 +1,5 @@
 """imports"""
+import os
 from uuid import uuid4
 from sqlalchemy import Column, Date, String, Integer
 from config import db
@@ -31,10 +32,11 @@ class training_session(db.Model):
     @property
     def serialize(self):
         """Return object data in easily serializable format"""
+        PUBLIC_S3 = os.environ['PUBLIC_S3']
         return {
             'id': self.id,
             'date': self.date.strftime('%d/%m/%Y'),
             'duration': self.duration,
             'category': self.training_session_category.serialize,
-            'training_form': self.training_form
+            'training_form': f'{PUBLIC_S3}{self.training_form}'
         }

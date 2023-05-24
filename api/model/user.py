@@ -1,4 +1,5 @@
 """imports"""
+import os
 from uuid import uuid4
 from sqlalchemy import Boolean, Column, String, BOOLEAN
 from config import db
@@ -28,10 +29,11 @@ class User(db.Model):
     @property
     def serialize(self):
         """Return object data in easily serializable format"""
+        PUBLIC_S3 = os.environ['PUBLIC_S3']
         return {
             'id': self.id,
             'username': self.username,
             'admin': self.admin,
-            'profile_pic': self.profile_pic,
+            'profile_pic': f'{PUBLIC_S3}{self.profile_pic}',
             'first_login': self.first_login
         }

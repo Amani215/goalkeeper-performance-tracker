@@ -6,6 +6,7 @@ import NewCategoryCoach from '../../containers/modals/newCategoryCoach';
 import NewCategoryGoalkeeper from '../../containers/modals/newCategoryGoalkeeper';
 import UsersProvider from '../../contexts/usersContext';
 import GoalkeepersProvider from '../../contexts/goalkeepersContext';
+import DocumentGenerationProvider from '../../contexts/documentGenerationContext';
 
 function Category() {
     const [trainersModalIsOpen, setTrainersModalIsOpen] = useState<boolean>(false)
@@ -24,16 +25,17 @@ function Category() {
                     <NewCategoryGoalkeeper {...{ modalIsOpen: goalkeepersModalIsOpen, setModalIsOpen: handleGoalkeepersClose }} />
 
                     <PortalPage>
-
-                        <CategoryDetails
-                            modal1={{
-                                modalIsOpen: trainersModalIsOpen,
-                                setModalIsOpen: handleTrainersOpen
-                            }}
-                            modal2={{
-                                modalIsOpen: goalkeepersModalIsOpen,
-                                setModalIsOpen: handleGoalkeepersOpen
-                            }} />
+                        <DocumentGenerationProvider>
+                            <CategoryDetails
+                                modal1={{
+                                    modalIsOpen: trainersModalIsOpen,
+                                    setModalIsOpen: handleTrainersOpen
+                                }}
+                                modal2={{
+                                    modalIsOpen: goalkeepersModalIsOpen,
+                                    setModalIsOpen: handleGoalkeepersOpen
+                                }} />
+                        </DocumentGenerationProvider>
                     </PortalPage>
                 </GoalkeepersProvider>
             </UsersProvider>

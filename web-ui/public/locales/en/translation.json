@@ -125,5 +125,7 @@
   "user_not_allowed": "User not allowed.",
 
   "match_connected_error": "This match is connected to other entities",
-  "training_connected_error": "This training is connected to other entities"
+  "training_connected_error": "This training is connected to other entities",
+
+  "list_goalkeepers_per_category": "List of Goalkeepers in this Category"
 }

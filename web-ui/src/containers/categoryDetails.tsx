@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, Link, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
 import { MultiModalProp } from '../interfaces/modalProp';
 import { useTranslation } from 'react-i18next';
+import { useGetDocument } from '../contexts/documentGenerationContext';
 
 function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
@@ -77,6 +78,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
         }
     }, [goalkeepersReady, goalkeeperAdded, goalkeeperDeleted])
 
+
     // DELETE GOALKEEPER
     const [goalkeeperToDelete, setGoalkeeperToDelete] = useState<GoalkeeperDTO | null>(null)
     const [deleteGoalkeeperDialogIsOpen, setDeleteGoalkeeperDialogIsOpen] = useState<boolean>(false)
@@ -120,6 +122,19 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
         }
     }
 
+    // GET DOCUMENT
+    const documentContext = useGetDocument()
+
+    const generateDoc = async () => {
+        if (documentContext) {
+            await documentContext("goalkeepers", category ? category.id : "").then(res => {
+                if (res != null) {
+                    window.open(res, "_blank")
+                }
+            })
+        }
+    }
+
     return (
         <Box
             display="flex"
@@ -132,6 +147,9 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                 mb={2}>
                 {`${category?.name} ${category?.season}`}
             </Typography>
+            <Button variant="contained" onClick={() => { generateDoc() }}>
+                {t("list_goalkeepers_per_category")}
+            </Button>
 
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item xs={4} sm={4} md={6}>

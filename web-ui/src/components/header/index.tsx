@@ -23,7 +23,6 @@ export default function Header({ auth }: IProps) {
     } else {
       i18next.changeLanguage('fr')
     }
-    console.log(t('test'))
   };
 
   return (

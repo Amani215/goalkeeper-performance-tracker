@@ -25,7 +25,6 @@ function NewGrowth({ goalkeeperID, modalProp }: PropType) {
     );
 
     const handleSubmit = async ({ date }: FormikValues) => {
-        console.log(goalkeeperID)
         if (newGrowth != null) {
             const growthDate = dayjs(date).format('DD/MM/YYYY').toString()
             await newGrowth({ goalkeeper_id: goalkeeperID, date: growthDate })

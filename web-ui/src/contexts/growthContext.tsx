@@ -94,7 +94,6 @@ export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Elemen
             })
         });
         const json_data = await data.json();
-        console.log(json_data)
         if ('id' in json_data) {
             setGrowthUpdated(true)
             return json_data as GrowthDTO;
@@ -108,7 +107,6 @@ export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Elemen
     const deleteGrowth: DeleteGrowthDelegate = async (growthID: string) => {
         setError("")
         setGrowthDeleted(false)
-        console.log(growthID)
         return fetch("/api/growth_monitoring?id=" + growthID, {
             method: "DELETE",
             headers: {

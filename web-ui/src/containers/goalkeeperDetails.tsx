@@ -226,7 +226,6 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
             if (updatePicture) {
                 updatePicture(id ? id : "", formdata).then((data) => { console.log(data) })
             }
-            console.log(e.target.files[0])
         }
     }
 

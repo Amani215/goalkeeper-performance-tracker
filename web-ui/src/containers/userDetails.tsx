@@ -74,7 +74,6 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
             if (updateProfilePic) {
                 updateProfilePic(formdata).then((data) => { console.log(data) })
             }
-            console.log(e.target.files[0])
         }
     }
 

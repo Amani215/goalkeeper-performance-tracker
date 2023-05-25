@@ -226,7 +226,6 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
             })
         });
         const json_data = await data.json();
-        console.log(json_data)
         if ('id' in json_data) {
             setMatchUpdated(true)
             setMatchReady(true);

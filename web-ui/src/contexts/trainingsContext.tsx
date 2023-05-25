@@ -74,7 +74,6 @@ export default function TrainingsProvider(props: PropsWithChildren<{}>) {
             }
         });
         const json_data = await data.json();
-        console.log("trainings: ", json_data)
         if ('error' in json_data) {
             setError(true)
             setTrainingsReady(true)

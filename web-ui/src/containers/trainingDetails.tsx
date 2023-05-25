@@ -92,20 +92,17 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
             if (updateTrainingForm) {
                 updateTrainingForm(id ? id : "", formdata).then((data) => { console.log(data) })
             }
-            console.log(e.target.files[0])
         }
     }
 
     // LOAD GOALKEEPERS
     useEffect(() => {
-        console.log("attendance: ", attendanceUpdated)
         if (performancesContext) {
             performancesContext(id ? id : "").then((data) => {
                 if (performancesReady)
                     setGoalkeeperPerformances(data != null ? data : goalkeeperPerformances)
             })
         }
-        console.log("attendance: ", attendanceUpdated)
     }, [performancesReady, performancesUpdated, attendanceUpdated])
 
     return (

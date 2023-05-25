@@ -46,9 +46,7 @@ const PortalPage = ({ children }: PropsWithChildren<{}>) => {
         if (loaded && authReady && !auth?.user) {
             setRedirect(true)
         }
-        console.log(auth?.user)
         if (loaded && authReady && auth?.user.first_login) {
-            console.log(auth?.user)
             setChangePassword(true)
         }
     }, [loaded, authReady, auth?.user])

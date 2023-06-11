@@ -7,6 +7,7 @@ from service.s3 import upload_local_file
 
 
 def goalkeepers_per_category(category_id: str) -> str:
+    '''Generate a document of all goalkeepers in the given category'''
     category = category_service.get_by_id(category_id)
     goalkeepers = category_service.get_category_goalkeepers(category_id)
     output_text = render_template("goalkeepers.html",
@@ -21,6 +22,7 @@ def goalkeepers_per_category(category_id: str) -> str:
 
 
 def generate_attendance(category_id: str, lang: str):
+    '''Generate a document with the attendance of every goalkeeper in a category'''
     category = category_service.get_by_id(category_id)
 
     total_sessions = 0
@@ -60,6 +62,11 @@ def generate_attendance(category_id: str, lang: str):
     return str(getenv('PUBLIC_S3')) + url
 
 
-def attendance(category_id: str, lang: str):
+def attendance(category_id: str, lang: str, force: bool = False):
+    '''Either force the generation of a new attendance sheet or get the latest one'''
+    if force:
+        url = generate_attendance(category_id, lang)
+        return url
+
     return str(getenv('PUBLIC_S3')) + '/' + str(
         getenv('DOCUMENTS_BUCKET')) + f'/{category_id}_attendance_{lang}.pdf'

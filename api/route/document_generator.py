@@ -1,7 +1,7 @@
 '''Categories routes (get, post, etc.)'''
 from flask import request
 from flask.blueprints import Blueprint
-from service.document_generator import goalkeepers_per_category
+import service.document_generator as dg
 
 document_generator_api = Blueprint('document_generator_api', __name__)
 
@@ -13,7 +13,22 @@ def goalkeepers():
     try:
         args = request.args
         if args.get('category_id') is not None:
-            return {'link': goalkeepers_per_category(args.get('category_id'))}
+            return {
+                'link': dg.goalkeepers_per_category(args.get('category_id'))
+            }
+        else:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
+@document_generator_api.route('/doc/attendance')
+def attendance():
+    try:
+        args = request.args
+        if args.get('category_id') is not None:
+            return dg.attendance(args.get('category_id'), 'fr')
         else:
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)
 

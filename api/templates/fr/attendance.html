@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assiduité</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        align-content: center;
+        align-items: center;
+      }
+      
+      h1 {
+        color: black;
+        text-align: center;
+      }
+
+      h2 {
+        color: black;
+        text-align: center;
+      }
+      
+      .table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        color: #333333;
+        text-align: center;
+      }
+
+      .table td {
+        padding: 2px;
+      }
+
+      .table th {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #CCCCCC;
+      }
+
+      .table tbody tr td {
+        border-bottom: 1px solid #CCCCCC;
+      }
+    </style>
+
+</head>
+<body>
+    <div class="container d-flex flex-column bd-highlight mt-4 align-items-center justify-content-center">
+        <h1>Assiduité</h1>
+        <h2>{{category.name}} {{category.season}}</h2>
+        
+        <table class="table mt-5 " style="width: 90%;">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Equipe Nationale</th>
+            <th scope="col">Autre Categorie</th>
+            <th scope="col">Avec le Groupe</th>
+            <th scope="col">Absent</th>
+            <th scope="col">Autorisé</th>
+            <th scope="col">Equipe Seniors</th>
+            <th scope="col">Blessé / Malade / Repos</th>
+            <th scope="col">Présent</th>
+            <th scope="col">% de Présence</th>
+            <th scope="col">Temps Total</th>
+            <th scope="col">Total Séance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for goalkeeper, stat in stats.items() %}
+          <tr>
+            <th scope="row">{{ goalkeeper }}</th>
+            <td>{{ stat.with_national_team }}</td>
+            <td>{{ stat.other_category }}</td>
+            <td>{{ stat.with_the_team }}</td>
+            <td>{{ stat.absent }}</td>
+            <td>{{ stat.authorized }}</td>
+            <td>{{ stat.with_seniors }}</td>
+            <td>{{ stat.hurt }}</td>
+            <td>{{ stat.present }}</td>
+            <td>{{ ((stat.present / total_sessions)*100)|round(2)}}%</td>
+            <td>{{ total_time }} min</td>
+            <td>{{ total_sessions }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</body>
+</html>

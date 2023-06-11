@@ -31,3 +31,6 @@ pytest-cov==3.0.0
 
 # For generating pdfs
 pdfkit==1.0.0
+
+# For scheduling cron jobs
+Flask-APScheduler==1.12.4

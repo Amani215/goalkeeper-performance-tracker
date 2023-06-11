@@ -8,5 +8,6 @@ Config = {
     'DEBUG': os.getenv('DEBUG'),
     'SQLALCHEMY_DATABASE_URI': f'sqlite://{os.getenv("SQLITE_HOST")}',
     'SQLALCHEMY_TRACK_MODIFICATIONS':
-    os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
+    os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS'),
+    'SCHEDULER_API_ENABLED': True
 }

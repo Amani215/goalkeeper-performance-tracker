@@ -20,16 +20,9 @@ def goalkeepers_per_category(category_id: str) -> str:
     return str(getenv('PUBLIC_S3')) + url
 
 
-def attendance(category_id: str, lang: str):
+def generate_attendance(category_id: str, lang: str):
     category = category_service.get_by_id(category_id)
 
-    # Loop through the category's training sessions
-    # In each training session loop through the performances
-    # If the peformance corresponds to a goalkeeper in the category
-    # And the goalkeeper is not stored in redis yet
-    # Add its hash table and update the values
-    # Otherwise, just update the values
-    # As you loop through the sessions, increment the number of total sessions
     total_sessions = 0
     total_time = 0
     stats = {}
@@ -60,8 +53,13 @@ def attendance(category_id: str, lang: str):
                                   total_time=total_time,
                                   total_sessions=total_sessions)
 
-    return output_text
-    # pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf")
-    # url = upload_local_file(f"{category_id}.pdf", f"/tmp/{category_id}.pdf",
-    #                         getenv('DOCUMENTS_BUCKET'))
-    # return str(getenv('PUBLIC_S3')) + url
+    pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf")
+    url = upload_local_file(f'{category_id}_attendance_{lang}.pdf',
+                            f'/tmp/{category_id}.pdf',
+                            getenv('DOCUMENTS_BUCKET'))
+    return str(getenv('PUBLIC_S3')) + url
+
+
+def attendance(category_id: str, lang: str):
+    return str(getenv('PUBLIC_S3')) + '/' + str(
+        getenv('DOCUMENTS_BUCKET')) + f'/{category_id}_attendance_{lang}.pdf'

@@ -2,6 +2,7 @@
 from flask import Flask
 from config import db, migrate
 from config.sqlite import Config
+from init.scheduler_init import scheduler
 from init.postgres_init import set_default_user
 from init.redis_init import load_redis
 from init.s3_init import create_buckets
@@ -21,6 +22,10 @@ def create_app():
     migrate.init_app(app, db)
     load_redis()
     create_buckets()
+
+    # Scheduler
+    scheduler.init_app(app)
+    scheduler.start()
 
     # Import routes
     from route.user import user_api
@@ -79,3 +84,6 @@ def setup_database(_db, _app):
 app = create_app()
 
 app.app_context().push()
+
+if __name__ == '__main__':
+    app.run()

@@ -128,6 +128,7 @@
   "training_connected_error": "This training is connected to other entities",
 
   "download_documents": "Download Documents",
+  "download": "Download",
   "list_goalkeepers_per_category": "List of Goalkeepers in this Category",
   "attendance_sheet": "Attendance Sheet"
 }

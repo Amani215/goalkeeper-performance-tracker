@@ -13,6 +13,7 @@ import Match from "./match";
 import MatchPerformancePage from "./matchPerformance";
 import Settings from "./settings";
 import Logout from "./logout";
+import Documents from "./documents";
 
 export {
   Login,
@@ -23,6 +24,7 @@ export {
   Goalkeeper,
   Categories,
   Category,
+  Documents,
   Trainings,
   Training,
   Matches,

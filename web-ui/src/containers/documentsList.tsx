@@ -3,7 +3,7 @@ import { useGetDocument } from "../contexts/documentGenerationContext"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 import { CategoryDTO } from "../DTOs/CategoryDTO";
-import { useCategory } from "../contexts/categoryContext";
+import { useCategory, useCategoryReady } from "../contexts/categoryContext";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Button, Card, Divider, List, ListItem, ListItemText, Box, Typography } from "@mui/material";
 
@@ -13,6 +13,7 @@ function DocumentsList() {
 
     const [category, setCategory] = useState<CategoryDTO | null>(null)
     const categoryContext = useCategory()
+    const categoryReady = useCategoryReady()
 
     const [loaded, setLoaded] = useState(false)
     useEffect(() => {
@@ -25,7 +26,7 @@ function DocumentsList() {
                 data => setCategory(data as CategoryDTO)
             )
         }
-    }, [loaded])
+    }, [categoryReady, loaded])
 
     // GET DOCUMENT
     const documentContext = useGetDocument()
@@ -61,7 +62,7 @@ function DocumentsList() {
                 <List>
                     <ListItem
                         secondaryAction={
-                            <LoadingButton loading={loading} variant="outlined" onClick={() => { generateDoc() }}>
+                            <LoadingButton loading={loading} variant="outlined" sx={{ margin: 1 }} onClick={() => { generateDoc() }}>
                                 {t("download")}
                             </LoadingButton>
 
@@ -74,15 +75,41 @@ function DocumentsList() {
                     <Divider />
                     <ListItem
                         secondaryAction={
-                            <Button variant="outlined" sx={{ marginTop: 1 }} onClick={() => { }}>
+                            <LoadingButton variant="outlined" sx={{ margin: 1 }} onClick={() => { }}>
                                 {t("download")}
-                            </Button>
+                            </LoadingButton>
                         }
                     >
                         <ListItemText
                             primary={t("attendance_sheet")}
                         />
-                    </ListItem>,
+                    </ListItem>
+                    <Divider />
+                    <ListItem
+                        secondaryAction={
+                            <LoadingButton loading={loading} sx={{ margin: 1 }} variant="outlined" onClick={() => { }}>
+                                {t("download")}
+                            </LoadingButton>
+
+                        }
+                    >
+                        <ListItemText
+                            primary={t("played_matches_details")}
+                        />
+                    </ListItem>
+                    <Divider />
+                    <ListItem
+                        secondaryAction={
+                            <LoadingButton loading={loading} sx={{ margin: 1 }} variant="outlined" onClick={() => { }}>
+                                {t("download")}
+                            </LoadingButton>
+
+                        }
+                    >
+                        <ListItemText
+                            primary={t("play_time_training_time")}
+                        />
+                    </ListItem>
                 </List>
             </Card>
         </>

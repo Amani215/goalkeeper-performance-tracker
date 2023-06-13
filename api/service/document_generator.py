@@ -61,8 +61,7 @@ def generate_attendance(category_id: str, lang: str):
                             f'/tmp/{category_id}.pdf',
                             getenv('DOCUMENTS_BUCKET'))
     return {
-        'link': str(getenv('PUBLIC_S3')) + url,
-        'uploaded_at': strftime('%H:%M:%S')
+        'link': str(getenv('PUBLIC_S3')) + url + '?_=' + strftime('%H%M%S')
     }
 
 
@@ -74,6 +73,5 @@ def attendance(category_id: str, lang: str, force: bool = False):
     return {
         'link':
         str(getenv('PUBLIC_S3')) + '/' + str(getenv('DOCUMENTS_BUCKET')) +
-        f'/{category_id}_attendance_{lang}.pdf',
-        'uploaded_at': ''
+        f'/{category_id}_attendance_{lang}.pdf' + '?_=' + strftime('%H%M%S')
     }

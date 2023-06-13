@@ -7,11 +7,13 @@ import service.category as category_service
 from service.s3 import upload_local_file
 
 
-def goalkeepers_per_category(category_id: str) -> str:
+def goalkeepers_per_category(category_id: str, lang: str) -> str:
     '''Generate a document of all goalkeepers in the given category'''
     category = category_service.get_by_id(category_id)
     goalkeepers = category_service.get_category_goalkeepers(category_id)
-    output_text = render_template("goalkeepers.html",
+
+    template = f'/{lang}/goalkeepers.html'
+    output_text = render_template(template,
                                   category=category,
                                   goalkeepers=goalkeepers,
                                   s3_url=getenv('PRIVATE_S3'))

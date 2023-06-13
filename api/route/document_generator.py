@@ -14,9 +14,12 @@ NO_DATA_PROVIDED_MESSAGE = 'No data was provided'
 def goalkeepers():
     try:
         args = request.args
-        if args.get('category_id') is not None:
+        if args.get('category_id') is not None and args.get(
+                'lang') is not None:
             return {
-                'link': dg.goalkeepers_per_category(args.get('category_id'))
+                'link':
+                dg.goalkeepers_per_category(args.get('category_id'),
+                                            args.get('lang'))
             }
         else:
             raise ValueError(NO_DATA_PROVIDED_MESSAGE)

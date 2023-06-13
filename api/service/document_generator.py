@@ -60,6 +60,8 @@ def generate_attendance(category_id: str, lang: str):
     url = upload_local_file(f'{category_id}_attendance_{lang}.pdf',
                             f'/tmp/{category_id}.pdf',
                             getenv('DOCUMENTS_BUCKET'))
+
+    # Adding strftime at the end is important to avoid cached documents on the browser.
     return {
         'link': str(getenv('PUBLIC_S3')) + url + '?_=' + strftime('%H%M%S')
     }

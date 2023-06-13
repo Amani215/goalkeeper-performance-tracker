@@ -1,5 +1,6 @@
 '''Service that generates documents from given templates'''
 from os import getenv
+from time import strftime
 import pdfkit
 from flask import render_template
 import service.category as category_service
@@ -59,14 +60,20 @@ def generate_attendance(category_id: str, lang: str):
     url = upload_local_file(f'{category_id}_attendance_{lang}.pdf',
                             f'/tmp/{category_id}.pdf',
                             getenv('DOCUMENTS_BUCKET'))
-    return str(getenv('PUBLIC_S3')) + url
+    return {
+        'link': str(getenv('PUBLIC_S3')) + url,
+        'uploaded_at': strftime('%H:%M:%S')
+    }
 
 
 def attendance(category_id: str, lang: str, force: bool = False):
     '''Either force the generation of a new attendance sheet or get the latest one'''
     if force:
-        url = generate_attendance(category_id, lang)
-        return url
+        return generate_attendance(category_id, lang)
 
-    return str(getenv('PUBLIC_S3')) + '/' + str(
-        getenv('DOCUMENTS_BUCKET')) + f'/{category_id}_attendance_{lang}.pdf'
+    return {
+        'link':
+        str(getenv('PUBLIC_S3')) + '/' + str(getenv('DOCUMENTS_BUCKET')) +
+        f'/{category_id}_attendance_{lang}.pdf',
+        'uploaded_at': ''
+    }

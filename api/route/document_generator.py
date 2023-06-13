@@ -35,9 +35,10 @@ def attendance():
         args = request.args
         if args.get('category_id') is not None and args.get(
                 'lang') is not None:
-            if args.get('force') is not None:
+            if args.get('force') is not None and args.get('force') == 'true':
                 return dg.attendance(args.get('category_id'), args.get('lang'),
                                      True)
+
             else:
                 return dg.attendance(args.get('category_id'), args.get('lang'))
         else:

@@ -130,5 +130,7 @@
   "list_goalkeepers_per_category": "Liste des Gardiens Avec Photo",
   "attendance_sheet": "Fiche de Présence",
   "played_matches_details": "Details des Matchs Joués",
-  "play_time_training_time": "Recap Temps de Jeu et Temps d'Entrainement"
+  "play_time_training_time": "Recap Temps de Jeu et Temps d'Entrainement",
+  "force_regenerate": "Forcer la Régénération",
+  "file_might_be_out_of_date": "Ce document est regénéré chaque 12 heures. Si vous pensez que le document est dépassé, choisissez 'Forcer la Régénération'."
 }

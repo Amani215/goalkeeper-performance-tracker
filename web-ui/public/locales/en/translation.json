@@ -132,5 +132,7 @@
   "list_goalkeepers_per_category": "List of Goalkeepers in this Category",
   "attendance_sheet": "Attendance Sheet",
   "played_matches_details": "Details of Played Matches",
-  "play_time_training_time": "Summary of Training and Match Play Times"
+  "play_time_training_time": "Summary of Training and Match Play Times",
+  "force_regenerate": "Force Regenerate",
+  "file_might_be_out_of_date": "This document gets generated every 12 hours. If you think it might be out of date, choose to 'Force Regenerate'."
 }

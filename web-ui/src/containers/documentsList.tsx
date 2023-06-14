@@ -45,15 +45,18 @@ function DocumentsList() {
     }
 
     // FORCE DOCUMENT
+    const [current, setCurrent] = useState("")
     const [force, setForce] = useState(false)
     const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
-    const handleOpenDialog = () => {
+    const handleOpenDialog = (clicked: string) => {
         setDialogIsOpen(true)
+        setCurrent(clicked)
     }
     const handleCloseDialog = () => {
         setDialogIsOpen(false)
         setForce(false)
+        setCurrent("")
     }
 
     return (
@@ -88,7 +91,7 @@ function DocumentsList() {
                     <Divider />
                     <ListItem
                         secondaryAction={
-                            <LoadingButton variant="outlined" sx={{ margin: 1 }} onClick={() => { handleOpenDialog() }}>
+                            <LoadingButton variant="outlined" sx={{ margin: 1 }} onClick={() => { handleOpenDialog("attendance") }}>
                                 {t("download")}
                             </LoadingButton>
                         }
@@ -100,10 +103,9 @@ function DocumentsList() {
                     <Divider />
                     <ListItem
                         secondaryAction={
-                            <LoadingButton loading={loading} sx={{ margin: 1 }} variant="outlined" onClick={() => { }}>
+                            <LoadingButton loading={loading} sx={{ margin: 1 }} variant="outlined" onClick={() => { handleOpenDialog("matches") }}>
                                 {t("download")}
                             </LoadingButton>
-
                         }
                     >
                         <ListItemText
@@ -131,7 +133,7 @@ function DocumentsList() {
                 open={dialogIsOpen}
                 onClose={handleCloseDialog}
             >
-                <DialogTitle id="dialog-title"> {t("attendance_sheet")} </DialogTitle>
+                <DialogTitle id="dialog-title"> {t("how_to_download")} </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="dialog-description">
                         {t("file_might_be_out_of_date")}
@@ -145,7 +147,7 @@ function DocumentsList() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog}>{t("cancel")}</Button>
-                    <Button onClick={() => { generateDoc("attendance") }} autoFocus>{t("submit")}</Button>
+                    <Button onClick={() => { generateDoc(current) }} autoFocus>{t("submit")}</Button>
                 </DialogActions>
             </Dialog>
         </>

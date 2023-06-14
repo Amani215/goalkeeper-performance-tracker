@@ -24,8 +24,9 @@ def create_app():
     create_buckets()
 
     # Scheduler
-    scheduler.init_app(app)
-    scheduler.start()
+    if not scheduler.running:
+        scheduler.init_app(app)
+        scheduler.start()
 
     # Import routes
     from route.user import user_api

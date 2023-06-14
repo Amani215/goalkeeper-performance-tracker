@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails des Matchs Joués</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        align-content: center;
+        align-items: center;
+      }
+      
+      h1 {
+        color: black;
+        text-align: center;
+      }
+
+      h2 {
+        color: black;
+        text-align: center;
+      }
+
+      h3 {
+        margin-left: 5%;
+      }
+    
+      .stats-table{
+        margin: 0 auto;
+        margin-top: 2%;
+        text-align: center;
+      }
+
+      .main-table {
+        width: 80%;
+        margin: 0 auto;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        color: #333333;
+        text-align: center;
+      }
+
+      .main-table td {
+        padding: 2px;
+      }
+
+      .main-table th {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #CCCCCC;
+      }
+
+      .main-table tbody tr td {
+        border-bottom: 1px solid #CCCCCC;
+      }
+    </style>
+
+</head>
+<body>
+    <div class="container d-flex flex-column bd-highlight mt-4 align-items-center justify-content-center">
+        <h1>Détails des Matchs Joués</h1>
+        <h2>{{category.name}} {{category.season}}</h2>
+        
+        <table class="stats-table mt-5 " style="width: 30%;">
+          <caption></caption>
+          <thead>
+            <tr>
+              <th scope="col">Défaites</th>
+              <th scope="col">Victoires</th>
+              <th scope="col">Nul(s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ lose_count }}</td>
+              <td>{{ win_count }}</td>
+              <td>{{ nul_count }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        {% for match_type, matches_data in matches.items() %}
+        <h3>{{match_type}}</h3>
+        <table class="main-table mt-5 " style="width: 90%;">
+        <caption></caption>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Gardien</th>
+            <th scope="col">Date</th>
+            <th scope="col">Local</th>
+            <th scope="col">Visiteur</th>
+            <th scope="col">Temps Joué</th>
+            <th scope="col">Remplacé Par</th>
+            <th scope="col">Buts Marqués</th>
+            <th scope="col">Buts Encaissés</th>
+            <th scope="col">Pénatlies Sauvées</th>
+            <th scope="col">Pénalties Non Sauvées</th>
+            <th scope="col">Résultat</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for key, match in matches_data.items() %}
+          <tr>
+            <th scope="row">{{ match.goalkeeper_order }}</th>
+            <td>{{ match.goalkeeper_name }}</td>
+            <td>{{ match.date }}</td>
+            <td>{{ match.local }}</td>
+            <td>{{ match.visitor }}</td>
+            <td>{{ match.time_played }}</td>
+            <td>{{ match.replaced_by }}</td>
+            <td>{{ match.goals_scored }}</td>
+            <td>{{ match.goals_conceded }}</td>
+            <td>{{ match.penalties_saved }}</td>
+            <td>{{ match.penalties_conceded }}</td>
+            <td>{{ match.result }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+        {% endfor %}
+
+        <table class="stats-table mt-5 " style="width: 50%;">
+          <caption></caption>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" style="text-align: left;">Total Buts Encaissés Pénalties Inclus</th>
+              <td>{{ goals_conceded_with_penalty }}</td>
+              <th scope="row" style="text-align: left;">Total Pénalties Sauvées</th>
+              <td>{{ penalties_saved }}</td>
+            </tr>
+            <tr>
+              <th scope="row" style="text-align: left;">Total Buts Marqués</th>
+              <td>{{ goals_scored }}</td>
+              <th scope="row" style="text-align: left;">Total Pénalties Non Sauvées</th>
+              <td>{{ penalties_conceded }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

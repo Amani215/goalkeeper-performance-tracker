@@ -51,6 +51,28 @@ def attendance():
         return {'error': str(err)}, 400
 
 
+@document_generator_api.route('/doc/matches')
+def matches():
+    '''
+    '''
+    try:
+        args = request.args
+        if args.get('category_id') is not None and args.get(
+                'lang') is not None:
+            if args.get('force') is not None and args.get('force') == 'true':
+                return dg.matches_details(args.get('category_id'),
+                                          args.get('lang'), True)
+
+            else:
+                return dg.matches_details(args.get('category_id'),
+                                          args.get('lang'))
+        else:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
 @scheduler.task('interval', id='generate_attendance', hours=12)
 def generate_attendance():
     '''Generate an attendance document every 12 hours.'''

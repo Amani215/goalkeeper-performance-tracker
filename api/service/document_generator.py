@@ -79,3 +79,73 @@ def attendance(category_id: str, lang: str, force: bool = False):
         str(getenv('PUBLIC_S3')) + '/' + str(getenv('DOCUMENTS_BUCKET')) +
         f'/{category_id}_attendance_{lang}.pdf' + '?_=' + strftime('%H%M%S')
     }
+
+
+def generate_matches_details(category_id: str, lang: str):
+    ''''''
+    category = category_service.get_by_id(category_id)
+
+    lose_count = 0
+    win_count = 0
+    nul_count = 0
+    goals_conceded_with_penalty = 0
+    penalties_saved = 0
+    goals_scored = 0
+    penalties_conceded = 0
+    matches = {}
+    for m in category.matches:
+        for g in m.goalkeepers_performances:
+            matches[m.match_type] = {}
+            matches[m.match_type][m.id] = {
+                'goalkeeper_order': g.goalkeeper_order,
+                'goalkeeper_name': g.main_goalkeeper.name,
+                'date': m.date.strftime("%d/%m/%Y"),
+                'local': m.local,
+                'visitor': m.visitor,
+                'time_played': g.time_played,
+                'replaced_by': '',
+                'goals_scored': g.goals_scored,
+                'goals_conceded': g.goals_conceded,
+                'penalties_saved': g.penalties_saved,
+                'penalties_conceded': g.penalties_non_saved,
+                'result': str(m.score_local) + '-' + str(m.score_visitor)
+            }
+            goals_conceded_with_penalty += g.goals_conceded + g.penalties_non_saved
+            penalties_saved += g.penalties_saved
+            penalties_conceded += g.penalties_non_saved
+            goals_scored += g.goals_scored
+
+    template = f'/{lang}/played_matches_details.html'
+    output_text = render_template(
+        template,
+        category=category,
+        matches=matches,
+        lose_count=lose_count,
+        win_count=win_count,
+        nul_count=nul_count,
+        goals_conceded_with_penalty=goals_conceded_with_penalty,
+        penalties_saved=penalties_saved,
+        goals_scored=goals_scored,
+        penalties_conceded=penalties_conceded)
+
+    pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf")
+    url = upload_local_file(f'{category_id}_matches_{lang}.pdf',
+                            f'/tmp/{category_id}.pdf',
+                            getenv('DOCUMENTS_BUCKET'))
+
+    # Adding strftime at the end is important to avoid cached documents on the browser.
+    return {
+        'link': str(getenv('PUBLIC_S3')) + url + '?_=' + strftime('%H%M%S')
+    }
+
+
+def matches_details(category_id: str, lang: str, force: bool = False):
+    '''Either force the generation of a new matches details sheet or get the latest one'''
+    if force:
+        return generate_matches_details(category_id, lang)
+
+    return {
+        'link':
+        str(getenv('PUBLIC_S3')) + '/' + str(getenv('DOCUMENTS_BUCKET')) +
+        f'/{category_id}_matches_{lang}.pdf' + '?_=' + strftime('%H%M%S')
+    }

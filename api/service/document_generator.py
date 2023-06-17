@@ -95,15 +95,23 @@ def generate_matches_details(category_id: str, lang: str):
     matches = {}
     for m in category.matches:
         res = ''
+        scored = 0
+        conceded = 0
         if m.result == 'victory':
             win_count += 1
             res = 'Victoire' if lang == 'fr' else 'Victory'
+            scored = max(m.score_local, m.score_visitor)
+            conceded = min(m.score_local, m.score_visitor)
         elif m.result == 'defeat':
             lose_count += 1
             res = 'Defaite' if lang == 'fr' else 'Defeat'
+            scored = min(m.score_local, m.score_visitor)
+            conceded = max(m.score_local, m.score_visitor)
         elif m.result == 'draw':
             draw_count += 1
             res = 'Nul' if lang == 'fr' else 'Draw'
+            scored = m.score_local
+            conceded = m.score_visitor
 
         for g in m.goalkeepers_performances:
             matches[m.match_type] = {}
@@ -123,9 +131,9 @@ def generate_matches_details(category_id: str, lang: str):
                 'replaced_by':
                 '',
                 'goals_scored':
-                g.goals_scored,
+                scored,
                 'goals_conceded':
-                g.goals_conceded,
+                conceded,
                 'penalties_saved':
                 g.penalties_saved,
                 'penalties_conceded':
@@ -134,10 +142,10 @@ def generate_matches_details(category_id: str, lang: str):
                 str(m.score_local) + '-' + str(m.score_visitor) + ' (' + res +
                 ')'
             }
-            goals_conceded_with_penalty += g.goals_conceded + g.penalties_non_saved
+            goals_conceded_with_penalty += conceded + g.penalties_non_saved
             penalties_saved += g.penalties_saved
             penalties_conceded += g.penalties_non_saved
-            goals_scored += g.goals_scored
+            goals_scored += scored
 
     template = f'/{lang}/played_matches_details.html'
     output_text = render_template(

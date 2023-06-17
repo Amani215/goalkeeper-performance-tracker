@@ -1,65 +1,19 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Liste des Gardiens</title>
-</head>
-<body>
-    <div class="container d-flex flex-column bd-highlight mt-4 align-items-center justify-content-center">
-        <h1>Liste des Gardiens</h1>
-        <h2>{{category.name}} {{category.season}}</h2>
-        
-        <table class="table mt-5 " style="width: 90%;">
-        <caption></caption>
-        <thead>
-          <tr>
-            <th scope="col">Nom</th>
-            <th scope="col">Date de Naissance</th>
-            <th scope="col">Poids</th>
-            <th scope="col">Taille</th>
-            <th scope="col">Telephone</th>
-            <th scope="col">Photo</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for goalkeeper in goalkeepers %}
-          <tr>
-            <th scope="row">{{goalkeeper.name}}</th>
-            <td>{{goalkeeper.birthday.strftime('%d/%m/%Y') }}</td>
-            {% if goalkeeper.growth is defined and goalkeeper.growth|length > 0 %}   
-              <td>{{goalkeeper.growth | max(attribute='date') | attr('weight')}}</td>
-              <td>{{goalkeeper.growth | max(attribute='date') | attr('height')}}</td>
-            {% else %}
-              <td> -- </td>
-              <td> -- </td>
-            {% endif %}
-            <td>
-                {% if goalkeeper.phone is not none %}   
-                    {{ goalkeeper.phone }}
-                {% else %}
-                    --
-                {% endif %}
-            </td>
-            <td>
-                {% if goalkeeper.picture is not none %}   
-                    <img 
-                    src={{s3_url}}{{goalkeeper.picture}} 
-                    width="100"
-                    height="100"
-                    alt="Photo de Profil"/>
-                {% else %}
-                    --
-                {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
-</body>
-</html>
+{% extends "base/goalkeepers.html" %}
+{% block lang %}fr{% endblock %}
+{% block title %}Liste des Gardiens{% endblock %}
+{% block title_content %}
+  <h1>Liste des Gardiens</h1>
+  <h2>{{category.name}} {{category.season}}</h2>
+{% endblock %}
+{%block content %}
+  <thead>
+    <tr>
+      <th scope="col">Nom</th>
+      <th scope="col">Date de Naissance</th>
+      <th scope="col">Poids</th>
+      <th scope="col">Taille</th>
+      <th scope="col">Telephone</th>
+      <th scope="col">Photo</th>
+    </tr>
+  </thead>
+{% endblock %}

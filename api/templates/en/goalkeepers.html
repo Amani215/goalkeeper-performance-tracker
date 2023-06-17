@@ -1,60 +1,20 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>List of Goalkeepers</title>
-</head>
-<body>
-    <div class="container d-flex flex-column bd-highlight mt-4 align-items-center justify-content-center">
-        <h1>List of Goalkeepers</h1>
-        <h2>{{category.name}} {{category.season}}</h2>
-        
-        <table class="table mt-5 " style="width: 90%;">
-        <caption></caption>
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Birthdate</th>
-            <th scope="col">Weight</th>
-            <th scope="col">Height</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Pic</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for goalkeeper in goalkeepers %}
-          <tr>
-            <th scope="row">{{goalkeeper.name}}</th>
-            <td>{{goalkeeper.birthday.strftime('%d/%m/%Y') }}</td>
-            {% if goalkeeper.growth is defined and goalkeeper.growth|length > 0 %}   
-              <td>{{goalkeeper.growth | max(attribute='date') | attr('weight')}}</td>
-              <td>{{goalkeeper.growth | max(attribute='date') | attr('height')}}</td>
-            {% else %}
-              <td> -- </td>
-              <td> -- </td>
-            {% endif %}
-            <td>
-                {% if goalkeeper.phone is not none %}   
-                    {{ goalkeeper.phone }}
-                {% else %}
-                    --
-                {% endif %}
-            </td>
-            <td>
-                {% if goalkeeper.picture is not none %}   
-                    <img 
-                    src={{s3_url}}{{goalkeeper.picture}} 
-                    width="100"
-                    height="100"
-                    alt="Profile Pic"/>
-                {% else %}
-                    --
-                {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-</body>
-</html>
+{% extends "base/goalkeepers.html" %}
+
+{% block lang %}en{% endblock %}
+{% block title %}List of Goalkeepers{% endblock %}
+{% block title_content %}
+  <h1>List of Goalkeepers</h1>
+  <h2>{{category.name}} {{category.season}}</h2>
+{% endblock %}
+{%block content %}
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Birthdate</th>
+      <th scope="col">Weight</th>
+      <th scope="col">Height</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Pic</th>
+    </tr>
+  </thead>
+{% endblock %}

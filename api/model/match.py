@@ -28,6 +28,7 @@ class Match(db.Model):
         self.match_type = match_type
         self.match_category = category
         self.category_id = category.id
+        self.result = 'draw'
 
     @property
     def serialize(self):

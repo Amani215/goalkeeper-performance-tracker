@@ -24,7 +24,7 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [matchID, setMatchID] = useState("")
     const [localScore, setLocalScore] = useState<number>(0)
     const [visitorScore, setVisitorScore] = useState<number>(0)
-    const [result, setResult] = useState("")
+    const [result, setResult] = useState("draw")
 
     useEffect(() => {
         if (match) {

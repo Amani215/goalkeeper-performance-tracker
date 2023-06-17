@@ -87,28 +87,52 @@ def generate_matches_details(category_id: str, lang: str):
 
     lose_count = 0
     win_count = 0
-    nul_count = 0
+    draw_count = 0
     goals_conceded_with_penalty = 0
     penalties_saved = 0
     goals_scored = 0
     penalties_conceded = 0
     matches = {}
     for m in category.matches:
+        res = ''
+        if m.result == 'victory':
+            win_count += 1
+            res = 'Victoire' if lang == 'fr' else 'Victory'
+        elif m.result == 'defeat':
+            lose_count += 1
+            res = 'Defaite' if lang == 'fr' else 'Defeat'
+        elif m.result == 'draw':
+            draw_count += 1
+            res = 'Nul' if lang == 'fr' else 'Draw'
+
         for g in m.goalkeepers_performances:
             matches[m.match_type] = {}
             matches[m.match_type][m.id] = {
-                'goalkeeper_order': g.goalkeeper_order,
-                'goalkeeper_name': g.main_goalkeeper.name,
-                'date': m.date.strftime("%d/%m/%Y"),
-                'local': m.local,
-                'visitor': m.visitor,
-                'time_played': g.time_played,
-                'replaced_by': '',
-                'goals_scored': g.goals_scored,
-                'goals_conceded': g.goals_conceded,
-                'penalties_saved': g.penalties_saved,
-                'penalties_conceded': g.penalties_non_saved,
-                'result': str(m.score_local) + '-' + str(m.score_visitor)
+                'goalkeeper_order':
+                g.goalkeeper_order,
+                'goalkeeper_name':
+                g.main_goalkeeper.name,
+                'date':
+                m.date.strftime("%d/%m/%Y"),
+                'local':
+                m.local,
+                'visitor':
+                m.visitor,
+                'time_played':
+                g.time_played,
+                'replaced_by':
+                '',
+                'goals_scored':
+                g.goals_scored,
+                'goals_conceded':
+                g.goals_conceded,
+                'penalties_saved':
+                g.penalties_saved,
+                'penalties_conceded':
+                g.penalties_non_saved,
+                'result':
+                str(m.score_local) + '-' + str(m.score_visitor) + ' (' + res +
+                ')'
             }
             goals_conceded_with_penalty += g.goals_conceded + g.penalties_non_saved
             penalties_saved += g.penalties_saved
@@ -122,7 +146,7 @@ def generate_matches_details(category_id: str, lang: str):
         matches=matches,
         lose_count=lose_count,
         win_count=win_count,
-        nul_count=nul_count,
+        draw_count=draw_count,
         goals_conceded_with_penalty=goals_conceded_with_penalty,
         penalties_saved=penalties_saved,
         goals_scored=goals_scored,

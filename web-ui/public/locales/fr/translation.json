@@ -1,5 +1,7 @@
 {
   "test": "Ceci est un test",
+  "unavailable": "Indisponible",
+
   "username": "Nom d'utilisateur",
   "password": "Mot de passe",
   "confirm_password": "Confirmez Votre Nouveau Mot de Passe",
@@ -133,7 +135,8 @@
   "download": "Télécharger",
   "list_goalkeepers_per_category": "Liste des Gardiens Avec Photo",
   "how_to_download": "Comment Télécharger",
-  "played_matches_details": "Details des Matchs Joués",
+  "attendance_sheet": "Fiche d'assiduité",
+  "played_matches_details": "Détails des Matchs Joués",
   "play_time_training_time": "Recap Temps de Jeu et Temps d'Entrainement",
   "force_regenerate": "Forcer la Régénération",
   "file_might_be_out_of_date": "Ce document est regénéré chaque 12 heures. Si vous pensez que le document est dépassé, choisissez 'Forcer la Régénération'."

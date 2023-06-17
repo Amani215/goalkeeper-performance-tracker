@@ -115,8 +115,8 @@ function DocumentsList() {
                     <Divider />
                     <ListItem
                         secondaryAction={
-                            <LoadingButton loading={loading} sx={{ margin: 1 }} variant="outlined" onClick={() => { }}>
-                                {t("download")}
+                            <LoadingButton sx={{ margin: 1 }} variant="outlined" disabled onClick={() => { }}>
+                                {t("unavailable")}
                             </LoadingButton>
 
                         }

@@ -1,5 +1,6 @@
 {
   "test": "This is a test",
+  "unavailable": "Unavailable",
 
   "username": "Username",
   "password": "Password",
@@ -134,6 +135,7 @@
   "download": "Download",
   "list_goalkeepers_per_category": "List of Goalkeepers in this Category",
   "how_to_download": "How to Download",
+  "attendance_sheet": "Attendance Sheet",
   "played_matches_details": "Details of Played Matches",
   "play_time_training_time": "Summary of Training and Match Play Times",
   "force_regenerate": "Force Regenerate",

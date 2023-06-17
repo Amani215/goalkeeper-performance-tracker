@@ -1,10 +1,14 @@
 '''Service that generates documents from given templates'''
 from os import getenv
+import os
 from time import strftime
 import pdfkit
 from flask import render_template
 import service.category as category_service
 from service.s3 import upload_local_file
+
+current_dir = os.getcwd()
+css_url = os.path.join(current_dir, 'templates', 'styles', 'main.css')
 
 
 def goalkeepers_per_category(category_id: str, lang: str) -> str:
@@ -18,7 +22,7 @@ def goalkeepers_per_category(category_id: str, lang: str) -> str:
                                   goalkeepers=goalkeepers,
                                   s3_url=getenv('PRIVATE_S3'))
 
-    pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf")
+    pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf", css=css_url)
     url = upload_local_file(f"{category_id}.pdf", f"/tmp/{category_id}.pdf",
                             getenv('DOCUMENTS_BUCKET'))
     return str(getenv('PUBLIC_S3')) + url
@@ -58,7 +62,7 @@ def generate_attendance(category_id: str, lang: str):
                                   total_time=total_time,
                                   total_sessions=total_sessions)
 
-    pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf")
+    pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf", css=css_url)
     url = upload_local_file(f'{category_id}_attendance_{lang}.pdf',
                             f'/tmp/{category_id}.pdf',
                             getenv('DOCUMENTS_BUCKET'))
@@ -148,6 +152,7 @@ def generate_matches_details(category_id: str, lang: str):
             goals_scored += scored
 
     template = f'/{lang}/played_matches_details.html'
+
     output_text = render_template(
         template,
         category=category,
@@ -160,7 +165,7 @@ def generate_matches_details(category_id: str, lang: str):
         goals_scored=goals_scored,
         penalties_conceded=penalties_conceded)
 
-    pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf")
+    pdfkit.from_string(output_text, f"/tmp/{category_id}.pdf", css=css_url)
     url = upload_local_file(f'{category_id}_matches_{lang}.pdf',
                             f'/tmp/{category_id}.pdf',
                             getenv('DOCUMENTS_BUCKET'))

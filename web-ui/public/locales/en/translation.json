@@ -29,10 +29,14 @@
 
   "local": "Local",
   "visitor": "Visitor",
+  "result": "Result",
   "match_type": "Match Type",
   "performance_sheet": "Performance Sheet",
   "match_performances": "Match performances",
   "time_played": "Time Played",
+  "victory": "Victory",
+  "defeat": "Defeat",
+  "draw": "Draw",
 
   "growth": "Growth",
   "monitor_growth": "Monitor Growth",
@@ -59,7 +63,6 @@
   "grade": "Grade",
   "comment": "Comment",
 
-  "result": "Result",
   "sequence_number": "Sequence Number",
 
   "users": "Users",

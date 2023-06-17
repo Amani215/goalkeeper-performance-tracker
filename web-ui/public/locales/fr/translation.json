@@ -30,8 +30,12 @@
   "visitor": "Visiteur",
   "match_type": "Type de Match",
   "performance_sheet": "Feuille de Performance",
-  "match_performances": "Performances de Matchs",
+  "match_performances": "Pérformances de Matchs",
   "time_played": "Temps de jeu",
+  "victory": "Victoire",
+  "defeat": "Défaite",
+  "draw": "Nul",
+
   "goalkeeper_order": "Ordre du Gardien",
   "balls_touched": "Ballons Touchés",
   "penalties_saved": "Penalties Sauvées",

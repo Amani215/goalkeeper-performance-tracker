@@ -1,4 +1,4 @@
-import { Box, Button, Modal, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useMatch, useMatchError, useMatchReady, useUpdateScores } from '../../contexts/matchContext';
@@ -24,6 +24,7 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [matchID, setMatchID] = useState("")
     const [localScore, setLocalScore] = useState<number>(0)
     const [visitorScore, setVisitorScore] = useState<number>(0)
+    const [result, setResult] = useState("")
 
     useEffect(() => {
         if (match) {
@@ -31,6 +32,7 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
             setMatchID(match.id)
             setLocalScore(match.score_local)
             setVisitorScore(match.score_visitor)
+            setResult(match.result)
         }
 
         if (loaded && matchReady && matchError) {
@@ -38,9 +40,9 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
         }
     }, [loaded, match])
 
-    const handleSubmit = async ({ localScore, visitorScore }: FormikValues): Promise<void> => {
+    const handleSubmit = async ({ localScore, visitorScore, result }: FormikValues): Promise<void> => {
         if (updateScores) {
-            await updateScores(matchID, localScore, visitorScore)
+            await updateScores(matchID, localScore, visitorScore, result)
             setModalIsOpen()
         }
     };
@@ -48,24 +50,25 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const formik = useFormik({
         initialValues: {
             localScore: localScore,
-            visitorScore: visitorScore
+            visitorScore: visitorScore,
+            result: result,
         },
         onSubmit: handleSubmit
     })
 
     useEffect(() => {
-        if (visitorScore >= 0 && localScore >= 0) {
+        if (visitorScore >= 0 && localScore >= 0 && result != "") {
             formik.setValues({
-                ...{ localScore, visitorScore }
+                ...{ localScore, visitorScore, result }
             });
         }
-    }, [localScore, visitorScore]);
+    }, [localScore, visitorScore, result]);
 
     return (
         <Modal
             open={modalIsOpen}
             onClose={setModalIsOpen}
-            aria-labelledby="modal-modal-title"
+            aria-labelledby="set-scores-modal-title"
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
@@ -109,6 +112,22 @@ function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
                             helperText={formik.touched.visitorScore && formik.errors.visitorScore}
                         />
                     </Box>
+
+                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
+                        <InputLabel id="update-match-result-label">{t("result")}</InputLabel>
+                        <Select
+                            labelId="select-match-result-label"
+                            id="match-result-select"
+                            value={formik.values.result}
+                            label={t("local")}
+                            onChange={(e) => formik.setFieldValue("result", e.target.value)}
+                        >
+                            <MenuItem key="victory" value="victory">{t("victory")}</MenuItem>
+                            <MenuItem key="defeat" value="defeat">{t("defeat")}</MenuItem>
+                            <MenuItem key="v" value="draw">{t("draw")}</MenuItem>
+                        </Select>
+                    </FormControl>
+
                     <Button
                         type="submit"
                         fullWidth

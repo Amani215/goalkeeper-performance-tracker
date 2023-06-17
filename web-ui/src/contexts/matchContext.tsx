@@ -40,7 +40,7 @@ export function useMatchPerformancesReady() {
 }
 
 // UPDATE SCORES CONTEXT
-type UpdateScoresDelegate = (id: string, localScore: number, visitorScore: number) => Promise<MatchDTO | errorResponse>;
+type UpdateScoresDelegate = (id: string, localScore: number, visitorScore: number, result: string) => Promise<MatchDTO | errorResponse>;
 const updateScoresContext = createContext<UpdateScoresDelegate | null>(null);
 export function useUpdateScores() {
     return useContext(updateScoresContext);
@@ -181,7 +181,7 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
         return data_json as errorResponse;
     }
 
-    const updateScores: UpdateScoresDelegate = async (id: string, localScore: number, visitorScore: number) => {
+    const updateScores: UpdateScoresDelegate = async (id: string, localScore: number, visitorScore: number, result: string) => {
         const data = await fetch("/api/match/score?id=" + id, {
             method: "PUT",
             headers: {
@@ -190,7 +190,8 @@ export default function MatchProvider(props: PropsWithChildren<{}>): JSX.Element
             },
             body: JSON.stringify({
                 score_local: Number(localScore),
-                score_visitor: Number(visitorScore)
+                score_visitor: Number(visitorScore),
+                result: result
             })
         });
         const json_data = await data.json();

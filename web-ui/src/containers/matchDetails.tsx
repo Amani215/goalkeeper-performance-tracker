@@ -90,7 +90,7 @@ function MatchDetails({ modal1, modal2 }: MultiModalProp) {
                 <Typography
                     variant='h4'
                     mb={2}>
-                    {match?.match_type}
+                    {match?.match_type} ({t(`${match?.result}`)})
                 </Typography>
                 <Typography
                     variant='h5'

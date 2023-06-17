@@ -9,6 +9,7 @@ export interface MatchDTO {
   match_type: string;
   score_local: number;
   score_visitor: number;
+  result: string;
 }
 
 export interface NewMatchDTO {

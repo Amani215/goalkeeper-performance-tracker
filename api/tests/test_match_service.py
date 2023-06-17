@@ -1,4 +1,5 @@
 '''Testing the match services'''
+from random import randint
 import pytest
 from model.match import Match
 import service.match as match_service
@@ -162,6 +163,21 @@ def test_set_match_type(app, match):
                                             match_type=new_match_type)
     assert response.match_type == new_match_type
     assert match.id == match_id
+
+
+def test_set_scores(app, match):
+    ''''''
+    match_id = match.id
+
+    score_local = randint(0, 10)
+    score_visitor = randint(0, 10)
+    result = random_string.generate(5)
+
+    response = match_service.set_scores(match_id, score_local, score_visitor,
+                                        result)
+    assert response.score_local == score_local
+    assert response.score_visitor == score_visitor
+    assert response.result == result
 
 
 def test_remove_performance(app, match_monitoring):

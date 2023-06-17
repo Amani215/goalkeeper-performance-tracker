@@ -399,7 +399,7 @@ def test_set_scores(client, json_headers, match):
     mid = match.id
 
     # NO ID
-    test_json = {'score_local': 2, 'score_visitor': 1}
+    test_json = {'score_local': 2, 'score_visitor': 1, 'result': 'victory'}
     response = client.put(SCORE_URL,
                           data=json.dumps(test_json),
                           headers=json_headers)
@@ -407,10 +407,11 @@ def test_set_scores(client, json_headers, match):
     assert 'error' in response.json
 
     # VALID
-    test_json = {'score_local': 2, 'score_visitor': 1}
+    test_json = {'score_local': 2, 'score_visitor': 1, 'result': 'victory'}
     response = client.put(SCORE_URL + mid,
                           data=json.dumps(test_json),
                           headers=json_headers)
     assert response.status_code == 201
     assert response.json['score_local'] == 2
     assert response.json['score_visitor'] == 1
+    assert response.json['result'] == 'victory'

@@ -87,7 +87,10 @@ def set_match_type(match: Match, match_type: str = None) -> Match:
     return match
 
 
-def set_scores(match_id: str, score_local: int = -1, score_visitor: int = -1):
+def set_scores(match_id: str,
+               score_local: int = -1,
+               score_visitor: int = -1,
+               result: str = ''):
     '''Set the scores. If score is not provided (i.e. it equals -1 then it is not changed.'''
     match = get_by_id(match_id)
 
@@ -100,6 +103,9 @@ def set_scores(match_id: str, score_local: int = -1, score_visitor: int = -1):
         match.score_visitor = score_visitor
     elif (score_visitor < -1):
         raise ValueError('Score cannot be negative.')
+
+    if result != '':
+        match.result = result
 
     db.session.commit()
     return match

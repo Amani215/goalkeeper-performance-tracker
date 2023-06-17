@@ -81,3 +81,13 @@ def generate_attendance():
         for c in categories:
             dg.generate_attendance(c.id, 'fr')
             dg.generate_attendance(c.id, 'en')
+
+
+@scheduler.task('interval', id='generate_matches_details', hours=12)
+def generate_matches_details():
+    '''Generate the matches details document for each category every 12 hours.'''
+    with scheduler.app.app_context():
+        categories = get_categories()
+        for c in categories:
+            dg.generate_matches_details(c.id, 'fr')
+            dg.generate_matches_details(c.id, 'en')

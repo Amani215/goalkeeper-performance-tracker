@@ -49,5 +49,7 @@ class Match(db.Model):
             'score_local':
             self.score_local,
             'score_visitor':
-            self.score_visitor
+            self.score_visitor,
+            'result':
+            self.result,
         }

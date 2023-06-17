@@ -145,13 +145,16 @@ def set_scores(current_user: User):
 
         score_local = -1
         score_visitor = -1
+        result = ''
         if 'score_local' in request.json:
             score_local = request.json['score_local']
         if 'score_visitor' in request.json:
             score_visitor = request.json['score_visitor']
+        if 'result' in request.json:
+            result = request.json['result']
 
         response = match_service.set_scores(args.get('id'), score_local,
-                                            score_visitor)
+                                            score_visitor, result)
 
         return response.serialize, 201
     except PermissionError as err:

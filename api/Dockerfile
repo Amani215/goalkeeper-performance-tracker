@@ -18,15 +18,15 @@ RUN apk add --no-cache \
 # wkhtmltopdf copy bins from ext image
 COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/
 
-# RUN addgroup -S nonroot \
-#     && adduser -S nonroot -G nonroot
-
-# USER nonroot
-
 WORKDIR /var/www/app
 
 COPY ./requirements.txt .
 RUN pip install  --no-cache-dir -r requirements.txt
+
+
+# Create a non-root user to run the application
+RUN adduser -D nonroot
+USER nonroot
 
 COPY . .
 

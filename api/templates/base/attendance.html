@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="{% block lang %}{% endblock %}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div class="container d-flex flex-column bd-highlight mt-4 align-items-center justify-content-center"></div>
+    {% block title_content %}{% endblock %}
+
+    <table class="table mt-5 " style="width: 90%;">
+        <caption></caption>
+        {% block content %}{% endblock %}
+        <tbody>
+            {% for goalkeeper, stat in stats.items() %}
+            <tr>
+              <th scope="row">{{ goalkeeper }}</th>
+              <td>{{ stat.with_national_team }}</td>
+              <td>{{ stat.other_category }}</td>
+              <td>{{ stat.with_the_team }}</td>
+              <td>{{ stat.absent }}</td>
+              <td>{{ stat.authorized }}</td>
+              <td>{{ stat.with_seniors }}</td>
+              <td>{{ stat.hurt }}</td>
+              <td>{{ stat.present }}</td>
+              <td>{{ ((stat.present / total_sessions)*100)|round(2)}}%</td>
+              <td>{{ total_time }} min</td>
+              <td>{{ total_sessions }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

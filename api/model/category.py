@@ -9,15 +9,16 @@ class Category(db.Model):
     id = Column(String(35), primary_key=True, unique=True)
     name = Column(String(30), unique=False, nullable=False)
     season = Column(String(10), unique=False, nullable=False)
-    trainers = db.relationship("User",
+    trainers = db.relationship('User',
                                secondary=trainer_categories,
-                               back_populates="categories")
-    goalkeepers = db.relationship("Goalkeeper",
+                               back_populates='categories')
+    goalkeepers = db.relationship('Goalkeeper',
                                   secondary=goalkeeper_categories,
-                                  back_populates="categories")
-    matches = db.relationship("Match", back_populates="match_category")
+                                  back_populates='categories')
+    matches = db.relationship('Match', back_populates='match_category')
     training_sessions = db.relationship(
-        "training_session", back_populates="training_session_category")
+        'training_session', back_populates='training_session_category')
+    plannings = db.relationship('Planning', back_populates='category')
     archived = Column(Boolean, unique=False, default=False)
 
     def __init__(self, name: str, season: str):

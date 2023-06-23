@@ -76,6 +76,7 @@ def setup_database(_db, _app):
         from model.training_session import training_session
         from model.training_monitoring import training_monitoring
         from model.growth_monitoring import growth_monitoring
+        from model.planning import Planning
 
         _db.create_all()
         set_default_user()

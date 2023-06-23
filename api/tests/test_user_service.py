@@ -11,7 +11,6 @@ from helper import random_string
 
 def test_add_user(app):
     ''' Test adding user '''
-
     users = user_service.get_users()
     user_count = len([i.serialize for i in users])
     user = {
@@ -35,7 +34,6 @@ def test_add_user(app):
                               user['admin'])
 
     ### MIN - MAX FIELDS
-
     with pytest.raises(ValueError, match='password too short'):
         user_service.add_user(random_string.generate(4),
                               random_string.generate(5), False)
@@ -111,8 +109,23 @@ def test_add_category(app, user):
 
 def test_set_password(app, user):
     '''Test set a new password for the user'''
+    # SHORT PASSWORD
+    with pytest.raises(ValueError, match='password too short'):
+        user_service.set_password(user.id, random_string.generate(1))
+
+    # LONG PASSWORD
+    with pytest.raises(ValueError, match='password too long'):
+        user_service.set_password(user.id, random_string.generate(100))
+
+    # VALID PASSWORD
     new_password = random_string.generate(12)
     user_service.set_password(user.id, new_password)
 
     response = auth_service.authenticate_user(user.username, new_password)
     assert 'token' in response
+
+
+def test_delete_profile_pic(app, user):
+    '''Test delete profile pic'''
+    user_service.delete_profile_pic(user)
+    assert user.profile_pic == ''

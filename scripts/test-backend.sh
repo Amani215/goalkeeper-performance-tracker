@@ -22,6 +22,7 @@ export PROFILE_PICS_BUCKET='test-profile-pics'
 export GOALKEEPER_PICS_BUCKET='test-goalkeeper-pics'
 export TRAINING_FORMS_BUCKET='test-training-forms'
 export DOCUMENTS_BUCKET='test-documents'
+export PUBLIC_S3='http://localhost:9000'
 
 # REDIS TEST ENVIRONMENT VARIABLES
 export REDIS_HOST='localhost'

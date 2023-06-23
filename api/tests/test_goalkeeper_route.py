@@ -156,6 +156,11 @@ def test_add_goalkeeper(client, json_headers):
 @pytest.mark.parametrize(['admin'], [[True]])
 def test_add_remove_category(client, json_headers, goalkeeper):
     '''Test adding and removing a category to a goalkeeper'''
+    # NO JSON
+    response = client.put(CATEGORY_URL, headers=json_headers)
+    assert response.status_code == 400
+
+    # VALID JSON
     test_category = {
         'name': random_string.generate(12),
         'season': random.randint(1500, 2500)
@@ -285,7 +290,39 @@ def test_set_param_match_category(client, authenticated_user, goalkeeper):
         'phone': str(rand_int),
         'birthday': str(rand_date.strftime('%d/%m/%Y'))
     }
+
+    # NO ID
+    response = client.put(URL, data=json.dumps(test_data), headers=headers)
+    assert response.status_code == 400
+
+    # VALID REQUEST
     response = client.put(ID_URL + str(_goalkeeper.id),
                           data=json.dumps(test_data),
                           headers=headers)
     assert response.status_code == 201
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_set_param_different_category(client, authenticated_user, goalkeeper):
+    '''Test setting a parameter'''
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': authenticated_user['token']
+    }
+
+    _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
+
+    rand_int = random.randint(0, 90000)
+    rand_date = random_date.generate()
+    test_data = {
+        'phone': str(rand_int),
+        'birthday': str(rand_date.strftime('%d/%m/%Y'))
+    }
+
+    # VALID REQUEST
+    response = client.put(ID_URL + str(_goalkeeper.id),
+                          data=json.dumps(test_data),
+                          headers=headers)
+    assert response.status_code == 401
+    assert 'User cannot edit this goalkeeper.' in response.json['error']

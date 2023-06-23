@@ -252,3 +252,7 @@ def test_set_archived(client, json_headers):
 
     category = client.get(ID_URL + category.json['id'], headers=json_headers)
     assert category.json['archived'] == True
+
+    # NO JSON
+    response = client.put(ID_URL + category.json['id'], headers=json_headers)
+    assert response.status_code == 400

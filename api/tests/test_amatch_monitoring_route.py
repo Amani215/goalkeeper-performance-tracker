@@ -109,6 +109,8 @@ def test_set_param_diff_category(client, json_headers, match_monitoring):
 def test_set_param_match_category(client, authenticated_user,
                                   match_monitoring):
     '''Test setting a param to a match monitoring object when user has the category of the match'''
+    mmid = match_monitoring.id
+
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
@@ -122,11 +124,19 @@ def test_set_param_match_category(client, authenticated_user,
     rand_int = random.randint(0, 5)
     rand_string = random_string.generate(100)
     test_data = {'yellow_cards': rand_int, 'assets': rand_string}
-    response = client.put(ID_URL + str(match_monitoring.id),
+    response = client.put(ID_URL + str(mmid),
                           data=json.dumps(test_data),
                           headers=headers)
 
     assert response.status_code == 201
+
+    # NO ID
+    response = client.put(URL, data=json.dumps(test_data), headers=headers)
+    assert response.status_code == 400
+
+    # NO JSON
+    response = client.put(ID_URL + str(mmid), headers=headers)
+    assert response.status_code == 400
 
 
 @pytest.mark.parametrize(['admin'], [[False]])

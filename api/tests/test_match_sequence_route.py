@@ -43,6 +43,7 @@ def test_add_match_sequence(client, json_headers, match_monitoring):
 @pytest.mark.parametrize(['admin'], [[False]])
 def test_get_by_id(client, json_headers, match_sequence):
     '''Test getting a sequence by ID'''
+    # WITH ID
     msid = match_sequence.id
     response = client.get(ID_URL + msid, headers=json_headers)
     assert response.status_code == 200
@@ -52,6 +53,10 @@ def test_get_by_id(client, json_headers, match_sequence):
     response = client.get(ID_URL + str(uuid.uuid4), headers=json_headers)
     assert response.status_code == 400
     assert 'error' in response.json
+
+    # NO ID OR MMID
+    response = client.get(URL, headers=json_headers)
+    assert response.status_code == 400
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
@@ -79,6 +84,8 @@ def test_set_param_diff_category(client, json_headers, match_sequence):
 @pytest.mark.parametrize(['admin'], [[False]])
 def test_set_param_match_category(client, authenticated_user, match_sequence):
     '''Test setting a parameter as a user from same category'''
+    msid = match_sequence.id
+
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
@@ -92,7 +99,17 @@ def test_set_param_match_category(client, authenticated_user, match_sequence):
     rand_int = randint(0, 5)
     rand_string = random_string.generate(100)
     test_data = {'sequence_number': rand_int, 'reaction_type': rand_string}
-    response = client.put(ID_URL + str(match_sequence.id),
+
+    # NO ID
+    response = client.put(URL, data=json.dumps(test_data), headers=headers)
+    assert response.status_code == 400
+
+    # NO JSON
+    response = client.put(ID_URL + str(msid), headers=headers)
+    assert response.status_code == 400
+
+    # VALID REQUEST
+    response = client.put(ID_URL + str(msid),
                           data=json.dumps(test_data),
                           headers=headers)
     assert response.status_code == 201

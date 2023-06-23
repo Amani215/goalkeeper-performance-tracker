@@ -151,17 +151,31 @@ def test_set_param(client, authenticated_user, goalkeeper, category):
     ### USER FROM SAME CATEGORY
     rand_int1 = random.randint(60, 90)
     rand_int2 = random.randint(0, 30)
-    test_data = {'weight': rand_int1, 'annual_growth': rand_int2}
+    rand_date = random_date.generate().strftime('%d/%m/%Y')
+    test_data = {
+        'weight': rand_int1,
+        'annual_growth': rand_int2,
+        'date': rand_date
+    }
     response = client.put(ID_URL + growth_monitoring_obj.json['id'],
                           data=json.dumps(test_data),
                           headers=headers)
-
     assert response.status_code == 201
 
     response = client.get(ID_URL + growth_monitoring_obj.json['id'],
                           headers=headers)
     assert response.json['weight'] == rand_int1
     assert response.json['annual_growth'] == rand_int2
+    assert response.json['date'] == rand_date
+
+    # NO ID
+    response = client.put(URL, data=json.dumps(test_data), headers=headers)
+    assert response.status_code == 400
+
+    # NO JSON
+    response = client.put(ID_URL + growth_monitoring_obj.json['id'],
+                          headers=headers)
+    assert response.status_code == 400
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
@@ -192,3 +206,7 @@ def test_delete(client, json_headers, growth_monitoring):
 
     response = client.get(ID_URL + gm_id, headers=json_headers)
     assert "error" in response.json
+
+    # NO ID
+    response = client.delete(URL, headers=json_headers)
+    assert response.status_code == 400

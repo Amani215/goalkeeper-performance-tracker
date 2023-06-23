@@ -237,6 +237,11 @@ def test_get_goalkeepers(client, json_headers):
                            data=json.dumps(test_json),
                            headers=json_headers)
 
+    # NO ID
+    goalkeepers = client.get('/training_session/performances',
+                             headers=json_headers)
+    assert goalkeepers.status_code == 400
+
     # GET GOALKEEPERS
     goalkeepers = client.get(PERFORMANCE_URL + response.json['id'],
                              headers=json_headers)
@@ -280,6 +285,18 @@ def test_remove_goalkeepers(client, json_headers, goalkeeper):
     assert len(goalkeepers.json) == 1
 
     test_json = {'goalkeeper_performance_id': tp.json['id']}
+    # NO ID
+    delete_response = client.delete('/training_session/performances',
+                                    data=json.dumps(test_json),
+                                    headers=json_headers)
+    assert delete_response.status_code == 400
+
+    # NO JSON
+    delete_response = client.delete(PERFORMANCE_URL + response.json['id'],
+                                    headers=json_headers)
+    assert delete_response.status_code == 400
+
+    # DELETE GOALKEEPER
     delete_response = client.delete(PERFORMANCE_URL + response.json['id'],
                                     data=json.dumps(test_json),
                                     headers=json_headers)

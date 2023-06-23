@@ -90,3 +90,10 @@ def test_delete(app, growth):
 
     assert growth_monitoring_service.get_by_id(
         growth_id)["error"] == "No row was found when one was required"
+
+
+def test_set_date(app, growth):
+    '''Test setting the date for a growth monitoring object'''
+    new_date = random_date.generate()
+    growth_monitoring_service.set_date(growth, new_date.strftime('%d/%m/%Y'))
+    assert growth.date == new_date.date()

@@ -80,10 +80,10 @@ def user():
         'password': random_string.generate(12),
         'admin': False
     }
-    user_service.add_user(user_credentials['username'],
-                          user_credentials['password'],
-                          user_credentials['admin'])
-    return user_credentials
+    _user = user_service.add_user(user_credentials['username'],
+                                  user_credentials['password'],
+                                  user_credentials['admin'])
+    return _user
 
 
 @pytest.fixture()

@@ -179,27 +179,26 @@ def test_add_user(client, json_headers):
 @pytest.mark.parametrize(['admin'], [[True]])
 def test_set_admin(client, json_headers, user):
     '''Test setting a user to admin'''
-    test_data = {'username': user['username'], 'admin': True}
+    test_data = {'username': user.username, 'admin': True}
     response = client.put(ADMIN_URL,
                           data=json.dumps(test_data),
                           headers=json_headers)
     assert response.status_code == 200
 
-    response = client.get(USERNAME_URL + user['username'],
-                          headers=json_headers)
+    response = client.get(USERNAME_URL + user.username, headers=json_headers)
     assert response.json['admin'] == True
 
     ### BAD JSON
     response = client.put(ADMIN_URL, data=json.dumps({}), headers=json_headers)
     assert response.status_code == 400
 
-    test_data = {'name': user['username'], 'admin': True}
+    test_data = {'name': user.username, 'admin': True}
     response = client.put(ADMIN_URL,
                           data=json.dumps(test_data),
                           headers=json_headers)
     assert response.status_code == 400
 
-    test_data = {'username': user['username'], 'ad': True}
+    test_data = {'username': user.username, 'ad': True}
     response = client.put(ADMIN_URL,
                           data=json.dumps(test_data),
                           headers=json_headers)
@@ -229,23 +228,31 @@ def test_add_remove_category(client, json_headers, user):
     }
     category_service.add_category(test_category['name'],
                                   test_category['season'])
-    response = client.get(USERNAME_URL + user['username'],
+
+    response = client.get(CATEGORY_URL + '?id=' + str(user.id),
                           headers=json_headers)
+    assert sum(1 for _ in range(len(response.json))) == 0
 
     test_data = {
-        'trainer_id': response.json['id'],
+        'trainer_id': user.id,
         'category_id': test_category['name'] + str(test_category['season'])
     }
     response = client.put(CATEGORY_URL,
                           data=json.dumps(test_data),
                           headers=json_headers)
     assert response.status_code == 201
+    response = client.get(CATEGORY_URL + '?id=' + user.id,
+                          headers=json_headers)
+    assert sum(1 for _ in range(len(response.json))) == 1
 
     ### DELETE
     response = client.delete(CATEGORY_URL,
                              data=json.dumps(test_data),
                              headers=json_headers)
     assert response.status_code == 204
+    response = client.get(CATEGORY_URL + '?id=' + user.id,
+                          headers=json_headers)
+    assert sum(1 for _ in range(len(response.json))) == 0
 
 
 @pytest.mark.parametrize(['admin'], [[False]])

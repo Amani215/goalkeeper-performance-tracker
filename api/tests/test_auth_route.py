@@ -2,13 +2,21 @@
 import json
 import pytest
 from helper import random_string
+from service.user import add_user
 
 URL = '/auth'
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
-def test_authenticate_user(client, json_headers, user):
+def test_authenticate_user(client, json_headers):
     '''Testing the authentication of a user'''
+    user = {
+        'username': random_string.generate(12),
+        'password': random_string.generate(12),
+        'admin': False
+    }
+    add_user(user['username'], user['password'], user['admin'])
+
     # VALID JSON
     test_json = {'username': user['username'], 'password': user['password']}
 

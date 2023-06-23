@@ -64,8 +64,8 @@ def test_get_users(app, user):
 def test_get_by_username(app, user):
     ''' Test getting a user by its username '''
 
-    _user = user_service.get_by_username(user['username'])
-    assert _user.username == user['username']
+    _user = user_service.get_by_username(user.username)
+    assert _user.username == user.username
 
     with pytest.raises(Exception):
         user_service.get_by_username(random_string.generate(4))
@@ -73,18 +73,21 @@ def test_get_by_username(app, user):
 
 def test_get_by_id(app, user):
     ''' Test getting a user by its id '''
+    response = user_service.get_by_id(user.id)
+    assert response.username == user.username
 
-    user_id = user_service.get_by_username(user['username']).id
-    _user = user_service.get_by_id(user_id)
-
-    assert _user.username == user['username']
-
-    _user = user_service.get_by_id(str(uuid.uuid4()))
-    assert 'error' in _user
+    response = user_service.get_by_id(str(uuid.uuid4()))
+    assert 'error' in response
 
 
-def test_verify_user(app, user):
+def test_verify_user(app):
     ''' Test user verification (login) '''
+    user = {
+        'username': random_string.generate(12),
+        'password': random_string.generate(12),
+        'admin': False
+    }
+    user_service.add_user(user['username'], user['password'], user['admin'])
 
     response = user_service.verify_user(user['username'], user['password'])
     assert response.username == user['username']
@@ -102,19 +105,14 @@ def test_add_category(app, user):
     category_response = category_service.add_category(category['name'],
                                                       category['season'])
     category = category_service.get_by_id(category_response.id)
-    _user = user_service.get_by_username(user['username'])
-    response = user_service.add_category(_user, category)
+    response = user_service.add_category(user, category)
     assert response['category_id'] == category.id
 
 
 def test_set_password(app, user):
     '''Test set a new password for the user'''
-    _user = user_service.get_by_username(user['username'])
-
     new_password = random_string.generate(12)
-    user_service.set_password(_user.id, new_password)
+    user_service.set_password(user.id, new_password)
 
-    _user = user_service.get_by_username(user['username'])
-
-    response = auth_service.authenticate_user(_user.username, new_password)
+    response = auth_service.authenticate_user(user.username, new_password)
     assert 'token' in response

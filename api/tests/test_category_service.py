@@ -138,8 +138,7 @@ def test_get_trainers(app, user, category):
     trainers = category_service.get_category_trainers(category_id=category.id)
     assert len(trainers) == 0
 
-    _user = user_service.get_by_username(user['username'])
-    user_service.add_category(user=_user, category=category)
+    user_service.add_category(user=user, category=category)
     trainers = category_service.get_category_trainers(category_id=category.id)
     assert len(trainers) == 1
 

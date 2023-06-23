@@ -165,8 +165,10 @@ def test_delete_with_relationship(client, authenticated_user, category):
 
 
 @pytest.mark.parametrize(['admin'], [[True]])
-def test_get_trainers(client, user, json_headers):
+def test_get_trainers(client, json_headers, user):
     '''Test getting the category trainers'''
+    user_id = user.id
+
     # NO ID
     trainers = client.get(TRAINERS_URL, headers=json_headers)
     assert trainers.status_code == 400
@@ -186,12 +188,7 @@ def test_get_trainers(client, user, json_headers):
     assert trainers.status_code == 200
     assert len(trainers.json) == 0
 
-    _user = client.get('/user?username=' + user['username'],
-                       headers=json_headers)
-    test_json = {
-        'trainer_id': _user.json['id'],
-        'category_id': category.json['id']
-    }
+    test_json = {'trainer_id': user_id, 'category_id': category.json['id']}
     client.put('/user/category',
                data=json.dumps(test_json),
                headers=json_headers)

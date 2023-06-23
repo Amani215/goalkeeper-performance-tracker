@@ -233,6 +233,7 @@ def test_add_remove_category(client, json_headers, user):
                           headers=json_headers)
     assert sum(1 for _ in range(len(response.json))) == 0
 
+    # ADD
     test_data = {
         'trainer_id': user.id,
         'category_id': test_category['name'] + str(test_category['season'])
@@ -245,6 +246,10 @@ def test_add_remove_category(client, json_headers, user):
                           headers=json_headers)
     assert sum(1 for _ in range(len(response.json))) == 1
 
+    # ADD WITH NO JSON
+    response = client.put(CATEGORY_URL, headers=json_headers)
+    assert response.status_code == 400
+
     ### DELETE
     response = client.delete(CATEGORY_URL,
                              data=json.dumps(test_data),
@@ -253,6 +258,10 @@ def test_add_remove_category(client, json_headers, user):
     response = client.get(CATEGORY_URL + '?id=' + user.id,
                           headers=json_headers)
     assert sum(1 for _ in range(len(response.json))) == 0
+
+    # DELETE WITH NO JSON
+    response = client.delete(CATEGORY_URL, headers=json_headers)
+    assert response.status_code == 400
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
@@ -270,3 +279,32 @@ def test_add_profile_pic(client, authenticated_user):
     response = client.put(PROFILE_PIC_URL, data={}, headers=headers)
     assert response.status_code == 400
     assert 'No data was provided' in response.json['error']
+
+
+@pytest.mark.parametrize(['admin'], [[False]])
+def test_set_password(client, json_headers, authenticated_user):
+    '''Test setting a new password'''
+    # SHORT PASSWORD
+    test_data = {'password': random_string.generate(1)}
+    response = client.put(URL + '?id=' + authenticated_user['id'],
+                          data=json.dumps(test_data),
+                          headers=json_headers)
+    assert response.status_code == 400
+
+    # VALID PASSWORD
+    password = random_string.generate(10)
+    test_data = {'password': password}
+    response = client.put(URL + '?id=' + authenticated_user['id'],
+                          data=json.dumps(test_data),
+                          headers=json_headers)
+    assert response.status_code == 201
+
+    test_data = {
+        'username': authenticated_user['username'],
+        'password': password,
+    }
+    response = client.post('/auth',
+                           data=json.dumps(test_data),
+                           headers=json_headers)
+    assert response.status_code == 200
+    assert 'token' in response.json

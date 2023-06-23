@@ -21,11 +21,9 @@ COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/
 WORKDIR /var/www/app
 
 COPY ./requirements.txt .
-RUN pip install  --no-cache-dir -r requirements.txt
-
-
-# Create a non-root user to run the application
-RUN adduser -D nonroot
+RUN pip install  --no-cache-dir -r requirements.txt \
+    # Create a non-root user to run the application
+    && adduser -D nonroot
 USER nonroot
 
 COPY . .

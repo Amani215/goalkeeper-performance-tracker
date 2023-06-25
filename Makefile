@@ -17,6 +17,10 @@ down:
 test-backend:
 	./scripts/test-backend.sh
 
+.PHONY: test-backend-file
+test-backend-file:
+	sh ./scripts/test-backend-file.sh
+
 .PHONY: test-backend-ci
 test-backend-ci:
 	python3 -m pytest

@@ -17,6 +17,7 @@ import service.training_session as training_session_service
 import service.growth_monitoring as growth_monitoring_service
 import service.match_monitoring as match_monitoring_service
 import service.training_monitoring as training_monitoring_service
+from service.planning import add_planning
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
@@ -102,6 +103,14 @@ def goalkeeper():
                                       goalkeeper_credentials['month'],
                                       goalkeeper_credentials['year'])
     return goalkeeper_credentials
+
+
+@pytest.fixture()
+def planning(category):
+    '''Create a mock planning record'''
+    return add_planning(category.id,
+                        random_date.generate().strftime('%d/%m/%Y'),
+                        random_string.generate(4))
 
 
 @pytest.fixture()

@@ -1,3 +1,4 @@
+FROM surnet/alpine-wkhtmltopdf:3.15.0-0.12.6-full AS wkhtmltopdf
 FROM python:3.9-alpine3.15
 
 RUN apk add --no-cache \

@@ -102,6 +102,23 @@ def get_category_goalkeepers(current_user: User):
         return {'error': str(err)}, 400
 
 
+@category_api.route('/category/plannings', methods=['GET'])
+@token_required(admin=False)
+def get_category_plannings(current_user: User):
+    '''Get the plannings of a specific category
+    
+    This takes the category ID as an argument'''
+    try:
+        args = request.args
+
+        plannings = category_service.get_plannings(args.get('id'))
+        return jsonify([i.serialize for i in plannings])
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
 @category_api.route('/category', methods=['PUT'])
 @token_required(admin=True)
 def set_archived(current_user: User):

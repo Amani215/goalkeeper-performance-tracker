@@ -2,12 +2,14 @@
 import json
 import random
 import pytest
-from helper import random_string
+from helper import random_date, random_string
 from tests.conftest import content_type
+import service.user as user_service
 
 URL = '/category'
 TRAINERS_URL = '/category/trainers?id='
 GOALKEEPERS_URL = '/category/goalkeepers?id='
+PLANNINGS_URL = '/category/plannings?id='
 ID_URL = '/category?id='
 
 
@@ -233,6 +235,34 @@ def test_get_goalkeepers(client, goalkeeper, json_headers):
                              headers=json_headers)
     assert goalkeepers.status_code == 200
     assert len(goalkeepers.json) == 1
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_get_plannings(client, json_headers, authenticated_user, category):
+    '''Test getting the plannings of a category'''
+    cid = category.id
+    user = user_service.get_by_id(authenticated_user['id'])
+    user_service.add_category(user, category)
+
+    # NO ID
+    plannings = client.get(PLANNINGS_URL, headers=json_headers)
+    assert plannings.status_code == 400
+    assert 'error' in plannings.json
+
+    # VALID
+    plannings = client.get(PLANNINGS_URL + cid, headers=json_headers)
+    assert plannings.status_code == 200
+    assert len(plannings.json) == 0
+
+    test_json = {
+        'category_id': str(category.id),
+        'date': random_date.generate().strftime('%d/%m/%Y'),
+        'type': random_string.generate(5)
+    }
+    client.post('/planning', data=json.dumps(test_json), headers=json_headers)
+    plannings = client.get(PLANNINGS_URL + cid, headers=json_headers)
+    assert plannings.status_code == 200
+    assert len(plannings.json) == 1
 
 
 @pytest.mark.parametrize(['admin'], [[True]])

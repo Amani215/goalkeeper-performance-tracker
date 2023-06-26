@@ -70,6 +70,15 @@ def get_category_goalkeepers(category_id):
         return {'error': str(err)}
 
 
+def get_plannings(category_id):
+    '''Returns the list of plannings that correspond to the given category'''
+    try:
+        category: Category = get_by_id(category_id)
+        return category.plannings
+    except SQLAlchemyError as err:
+        return {'error': str(err)}
+
+
 def set_archived(category_id: str, archived: bool):
     '''Set archived to the given value'''
     try:

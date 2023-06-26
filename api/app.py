@@ -41,6 +41,7 @@ def create_app():
     from route.growth_monitoring import growth_monitoring_api
     from route.settings import settings_api
     from route.document_generator import document_generator_api
+    from route.planning import planning_api
 
     # Register routes as blueprints
     app.register_blueprint(user_api)
@@ -55,6 +56,7 @@ def create_app():
     app.register_blueprint(growth_monitoring_api)
     app.register_blueprint(settings_api)
     app.register_blueprint(document_generator_api)
+    app.register_blueprint(planning_api)
 
     @app.route('/')
     def index():

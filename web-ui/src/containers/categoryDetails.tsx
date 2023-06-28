@@ -8,6 +8,8 @@ import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
 import { MultiModalProp } from '../interfaces/modalProp';
 import { useTranslation } from 'react-i18next';
+import PlanningList from '../components/planningList';
+import { PlanningDTO } from '../DTOs/PlanningDTO';
 
 function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
@@ -20,6 +22,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
 
     const [trainers, setTrainers] = useState<UserDTO[]>([])
     const [goalkeepers, setGoalkeepers] = useState<GoalkeeperDTO[]>([])
+    const [planningRows, setPlanningRows] = useState<PlanningDTO[]>([] as PlanningDTO[])
 
     const categoryContext = useCategory()
     const categoryError = useCategoryError()
@@ -77,6 +80,14 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
         }
     }, [goalkeepersReady, goalkeeperAdded, goalkeeperDeleted])
 
+    // useEffect(() => {
+    //     if (planning) {
+    //         planning(id ? id : "").then((data) => {
+    //             if (planningReady)
+    //                 setPlanningRows(data as PlanningDTO[])
+    //         })
+    //     }
+    // }, [planningReady, planningUpdated, planningDeleted, planningAdded])
 
     // DELETE GOALKEEPER
     const [goalkeeperToDelete, setGoalkeeperToDelete] = useState<GoalkeeperDTO | null>(null)
@@ -249,6 +260,10 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                 </Box>
                             }
                         </Card>
+                    </Grid>
+
+                    <Grid item xs={4} sm={8} md={12}>
+                        <PlanningList categoryID={id ? id : ""} planningList={planningRows} />
                     </Grid>
                 </Grid>
 

@@ -21,6 +21,14 @@
   "link": "Lien",
   "archived_categories": "Catégories Archivées",
 
+  "planning": "Plannification",
+  "planning_type": "Type Journée",
+  "techniques": "Techniques",
+  "physiques": "Physiques",
+  "psychomotricity": "Psychomotricité",
+  "tactics": "Tactiques",
+  "observation": "Observation",
+
   "training": "Entrainement",
   "year_and_month": "Mois et Année",
   "attendance": "Assiduité",

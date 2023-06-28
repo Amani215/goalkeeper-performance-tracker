@@ -21,6 +21,14 @@
   "link": "Link",
   "archived_categories": "Archived Categories",
 
+  "planning": "Planning",
+  "planning_type": "Type",
+  "techniques": "Technical",
+  "physiques": "Physical",
+  "psychomotricity": "Psychomotricity",
+  "tactics": "Tactical",
+  "observation": "Observation",
+
   "training": "Training",
   "year_and_month": "Year and Month",
   "attendance": "Attendance",

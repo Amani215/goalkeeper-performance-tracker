@@ -5,7 +5,7 @@ import { NewPlanningDTO, PlanningDTO, UpdatePlanningDTO } from '../DTOs/Planning
 
 // ADD PLANNING CONTEXTS
 type NewPlanningDelegate = (newPlanningObj: NewPlanningDTO) => Promise<PlanningDTO | errorResponse>;
-const newPlanningContext = createContext<NewPlanningDTO | null>(null);
+const newPlanningContext = createContext<NewPlanningDelegate | null>(null);
 export function useNewPlanning() {
     return useContext(newPlanningContext);
 }

@@ -4,6 +4,8 @@ import { MdDelete, MdEdit } from 'react-icons/md';
 import { useState } from 'react';
 import { PlanningDTO } from '../../DTOs/PlanningDTO';
 import { useTranslation } from 'react-i18next';
+import { useDeletePlanning, useDeletePlanningError } from '../../contexts/planningContext';
+import NewPlanning from '../../containers/modals/newPlanning';
 
 type PropType = {
     categoryID: string,
@@ -132,8 +134,8 @@ function PlanningList({ categoryID, planningList }: PropType) {
     const [deleteDialogIsOpen, setDeleteDialogIsOpen] = useState<boolean>(false)
     const [planningToDelete, setPlanningToDelete] = useState<string>("")
 
-    // const deletePlanning = useDeletePlanning()
-    // const deletePlanningError = useDeletePlanningError()
+    const deletePlanning = useDeletePlanning()
+    const deletePlanningError = useDeletePlanningError()
 
     const handleOpenDeleteDialog = (planningID: string) => {
         setPlanningToDelete(planningID)
@@ -146,9 +148,9 @@ function PlanningList({ categoryID, planningList }: PropType) {
     };
 
     const handleDelete = async () => {
-        // if (deletePlanning) {
-        //     await deletePlanning(planningToDelete).then(() => setDeleteDialogIsOpen(false))
-        // }
+        if (deletePlanning) {
+            await deletePlanning(planningToDelete).then(() => setDeleteDialogIsOpen(false))
+        }
     }
 
     // Update Modal
@@ -235,9 +237,9 @@ function PlanningList({ categoryID, planningList }: PropType) {
                     {t("are_you_sure")}
                 </DialogTitle>
                 <DialogContent>
-                    {/* {deleteGrowthError != "" ?
-                        <Alert severity='error' sx={{ marginBottom: 1 }}>{deleteGrowthError}</Alert>
-                        : <></>} */}
+                    {deletePlanningError != "" ?
+                        <Alert severity='error' sx={{ marginBottom: 1 }}>{deletePlanningError}</Alert>
+                        : <></>}
                     <DialogContentText id="alert-dialog-description">
                         By clicking yes you are going to delete this growth object permanently.
                     </DialogContentText>
@@ -254,14 +256,14 @@ function PlanningList({ categoryID, planningList }: PropType) {
             {/* <UpdateGrowth growth={growthToUpdate} modalProp={{
                 modalIsOpen: updateModalIsOpen,
                 setModalIsOpen: handleCloseUpdateModal
-            }} />*/}
+            }} /> */}
 
             {/* UPDATE */}
-            {/* <NewGrowth
-                goalkeeperID={goalkeeperID} modalProp={{
+            <NewPlanning
+                categoryID={categoryID} modalProp={{
                     modalIsOpen: addModalIsOpen,
                     setModalIsOpen: handleCloseAddModal
-                }} />  */}
+                }} />
         </>
 
 

@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, Dialog, DialogActions, DialogContent, Dialog
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink, Navigate } from 'react-router-dom';
-import { useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryGoalkeeperDeleted, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainerDeleted, useCategoryTrainers, useCategoryTrainersReady, useDeleteCategoryGoalkeeper, useDeleteCategoryTrainer } from '../contexts/categoryContext';
+import { useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryGoalkeeperDeleted, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainerDeleted, useCategoryTrainers, useCategoryTrainersReady, useDeleteCategoryGoalkeeper, useDeleteCategoryTrainer, usePlanning, usePlanningReady } from '../contexts/categoryContext';
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
@@ -10,6 +10,7 @@ import { MultiModalProp } from '../interfaces/modalProp';
 import { useTranslation } from 'react-i18next';
 import PlanningList from '../components/planningList';
 import { PlanningDTO } from '../DTOs/PlanningDTO';
+import { usePlanningAdded, usePlanningDeleted, usePlanningUpdated } from '../contexts/planningContext';
 
 function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
@@ -39,6 +40,12 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const goalkeeperAdded = useCategoryGoalkeeperAdded()
     const deleteGoalkeeperContext = useDeleteCategoryGoalkeeper()
     const goalkeeperDeleted = useCategoryGoalkeeperDeleted()
+
+    const planning = usePlanning()
+    const planningReady = usePlanningReady()
+    const planningAdded = usePlanningAdded()
+    const planningUpdated = usePlanningUpdated()
+    const planningDeleted = usePlanningDeleted()
 
     // INIT PAGE
     useEffect(
@@ -80,14 +87,14 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
         }
     }, [goalkeepersReady, goalkeeperAdded, goalkeeperDeleted])
 
-    // useEffect(() => {
-    //     if (planning) {
-    //         planning(id ? id : "").then((data) => {
-    //             if (planningReady)
-    //                 setPlanningRows(data as PlanningDTO[])
-    //         })
-    //     }
-    // }, [planningReady, planningUpdated, planningDeleted, planningAdded])
+    useEffect(() => {
+        if (planning) {
+            planning(id ? id : "").then((data) => {
+                if (planningReady)
+                    setPlanningRows(data as PlanningDTO[])
+            })
+        }
+    }, [planningReady, planningUpdated, planningDeleted, planningAdded])
 
     // DELETE GOALKEEPER
     const [goalkeeperToDelete, setGoalkeeperToDelete] = useState<GoalkeeperDTO | null>(null)

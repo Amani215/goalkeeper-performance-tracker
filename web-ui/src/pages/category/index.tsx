@@ -7,6 +7,7 @@ import NewCategoryGoalkeeper from '../../containers/modals/newCategoryGoalkeeper
 import UsersProvider from '../../contexts/usersContext';
 import GoalkeepersProvider from '../../contexts/goalkeepersContext';
 import DocumentGenerationProvider from '../../contexts/documentGenerationContext';
+import PlanningProvider from '../../contexts/planningContext';
 
 function Category() {
     const [trainersModalIsOpen, setTrainersModalIsOpen] = useState<boolean>(false)
@@ -25,17 +26,19 @@ function Category() {
                     <NewCategoryGoalkeeper {...{ modalIsOpen: goalkeepersModalIsOpen, setModalIsOpen: handleGoalkeepersClose }} />
 
                     <PortalPage>
-                        <DocumentGenerationProvider>
-                            <CategoryDetails
-                                modal1={{
-                                    modalIsOpen: trainersModalIsOpen,
-                                    setModalIsOpen: handleTrainersOpen
-                                }}
-                                modal2={{
-                                    modalIsOpen: goalkeepersModalIsOpen,
-                                    setModalIsOpen: handleGoalkeepersOpen
-                                }} />
-                        </DocumentGenerationProvider>
+                        <PlanningProvider>
+                            <DocumentGenerationProvider>
+                                <CategoryDetails
+                                    modal1={{
+                                        modalIsOpen: trainersModalIsOpen,
+                                        setModalIsOpen: handleTrainersOpen
+                                    }}
+                                    modal2={{
+                                        modalIsOpen: goalkeepersModalIsOpen,
+                                        setModalIsOpen: handleGoalkeepersOpen
+                                    }} />
+                            </DocumentGenerationProvider>
+                        </PlanningProvider>
                     </PortalPage>
                 </GoalkeepersProvider>
             </UsersProvider>

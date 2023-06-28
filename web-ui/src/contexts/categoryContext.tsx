@@ -4,6 +4,7 @@ import { CategoryDTO, UserDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
+import { PlanningDTO } from '../DTOs/PlanningDTO';
 
 
 // GET CATEGORY CONTEXTS
@@ -45,6 +46,18 @@ export function useCategoryGoalkeepers() {
 const categoryGoalkeepersReadyContext = createContext<boolean>(false);
 export function useCategoryGoalkeepersReady() {
     return useContext(categoryGoalkeepersReadyContext);
+}
+
+// GET PLANNING CONTEXTS
+type PlanningDelegate = (id: string) => Promise<PlanningDTO[] | []>;
+const planningContext = createContext<PlanningDelegate | null>(null);
+export function usePlanning() {
+    return useContext(planningContext);
+}
+
+const planningReadyContext = createContext<boolean>(false);
+export function usePlanningReady() {
+    return useContext(planningReadyContext);
 }
 
 // ADD TRAINER CONTEXT
@@ -108,6 +121,8 @@ export default function CategoryProvider(props: PropsWithChildren<{}>): JSX.Elem
     const [categoryGoalkeepersReady, setCategoryGoalkeepersReady] = useState<boolean>(false)
     const [categoryGoalkeeperAdded, setCategoryGoalkeeperAdded] = useState<boolean>(false)
     const [categoryGoalkeeperDeleted, setCategoryGoalkeeperDeleted] = useState<boolean>(false)
+
+    const [planningReady, setPlanningReady] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -175,6 +190,27 @@ export default function CategoryProvider(props: PropsWithChildren<{}>): JSX.Elem
             setCategoryGoalkeepersReady(true)
             setError(true);
             return json_data as errorResponse;
+        }
+    }
+
+    const planning: PlanningDelegate = async (id: string) => {
+        const data = await fetch("/api/category/plannings?id=" + id, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        });
+        const json_data = await data.json();
+        if (data.status == 200) {
+            setPlanningReady(true);
+            setError(false);
+            return json_data as PlanningDTO[];
+        }
+        else {
+            setError(true);
+            setPlanningReady(true);
+            return [];
         }
     }
 
@@ -339,6 +375,14 @@ export default function CategoryProvider(props: PropsWithChildren<{}>): JSX.Elem
         {
             ctx: categoryGoalkeeperDeletedContext,
             value: categoryGoalkeeperDeleted
+        },
+        {
+            ctx: planningContext,
+            value: planning
+        },
+        {
+            ctx: planningReadyContext,
+            value: planningReady
         }
     ]
     return (

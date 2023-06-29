@@ -55,6 +55,7 @@ export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Elemen
     const token = auth?.token
 
     const newGrowth: NewGrowthDelegate = (newGrowthObj: NewGrowthDTO) => {
+        setGrowthAdded(false)
         return fetch("/api/growth_monitoring", {
             method: "POST",
             headers: {
@@ -78,6 +79,7 @@ export default function GrowthProvider(props: PropsWithChildren<{}>): JSX.Elemen
     }
 
     const updateGrowth: UpdateGrowthDelegate = async (id: string, growthObj: UpdateGrowthDTO) => {
+        setGrowthUpdated(false)
         const data = await fetch("/api/growth_monitoring?id=" + id, {
             method: "PUT",
             headers: {

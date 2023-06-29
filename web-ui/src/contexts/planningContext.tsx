@@ -17,7 +17,7 @@ export function usePlanningAdded() {
 
 // UPDATE PLANNING CONTEXT
 type UpdatePlanningDelegate = (id: string, planningObj: UpdatePlanningDTO) => Promise<PlanningDTO | errorResponse>;
-const updatePlanningContext = createContext<UpdatePlanningDTO | null>(null);
+const updatePlanningContext = createContext<UpdatePlanningDelegate | null>(null);
 export function useUpdatePlanning() {
     return useContext(updatePlanningContext);
 }
@@ -55,6 +55,7 @@ export default function PlanningProvider(props: PropsWithChildren<{}>): JSX.Elem
     const token = auth?.token
 
     const newPlanning: NewPlanningDelegate = (newPlanningObj: NewPlanningDTO) => {
+        setPlanningAdded(false)
         return fetch("/api/planning", {
             method: "POST",
             headers: {
@@ -79,6 +80,7 @@ export default function PlanningProvider(props: PropsWithChildren<{}>): JSX.Elem
     }
 
     const updatePlanning: UpdatePlanningDelegate = async (id: string, planningObj: UpdatePlanningDTO) => {
+        setPlanningUpdated(false)
         const data = await fetch("/api/planning?id=" + id, {
             method: "PUT",
             headers: {

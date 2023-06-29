@@ -131,6 +131,7 @@
   "deleting_sequence_warning": "By clicking yes you are going to delete this sequence permanently.",
   "deleting_goalkeeper_training_warning": "By clicking yes, you are going to delete this goalkeeper from this training permanently.",
   "deleting_training_warning": "By clicking yes you are going to delete this training permanently.",
+  "deleting_planning_warning": "By clicking yes you are going to delete this planning permanently.",
   "yes": "Yes",
   "cancel": "Cancel",
 

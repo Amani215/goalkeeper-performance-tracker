@@ -6,6 +6,7 @@ import { PlanningDTO } from '../../DTOs/PlanningDTO';
 import { useTranslation } from 'react-i18next';
 import { useDeletePlanning, useDeletePlanningError } from '../../contexts/planningContext';
 import NewPlanning from '../../containers/modals/newPlanning';
+import UpdatePlanning from '../../containers/modals/updatePlanning';
 
 type PropType = {
     categoryID: string,
@@ -241,7 +242,7 @@ function PlanningList({ categoryID, planningList }: PropType) {
                         <Alert severity='error' sx={{ marginBottom: 1 }}>{deletePlanningError}</Alert>
                         : <></>}
                     <DialogContentText id="alert-dialog-description">
-                        By clicking yes you are going to delete this growth object permanently.
+                        {t("deleting_planning_warning")}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -253,10 +254,10 @@ function PlanningList({ categoryID, planningList }: PropType) {
             </Dialog>
 
             {/* UPDATE */}
-            {/* <UpdateGrowth growth={growthToUpdate} modalProp={{
+            <UpdatePlanning planning={planningToUpdate} modalProp={{
                 modalIsOpen: updateModalIsOpen,
                 setModalIsOpen: handleCloseUpdateModal
-            }} /> */}
+            }} />
 
             {/* UPDATE */}
             <NewPlanning

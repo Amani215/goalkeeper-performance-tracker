@@ -21,10 +21,10 @@ function PlanningList({ categoryID, planningList }: PropType) {
         {
             field: 'date',
             headerName: `${t("training")}`,
-            headerAlign: 'center',
-            flex: 1,
+            headerAlign: 'left',
+            flex: 2,
             minWidth: 60,
-            align: "center",
+            align: "left",
             renderCell: (params) => {
                 return (
                     <Typography>{params.row.date}</Typography>
@@ -34,10 +34,10 @@ function PlanningList({ categoryID, planningList }: PropType) {
         {
             field: 'type',
             headerName: `${t("planning_type")}`,
-            headerAlign: 'center',
-            flex: 1,
+            headerAlign: 'left',
+            flex: 2,
             minWidth: 60,
-            align: "center",
+            align: "left",
             renderCell: (params) => {
                 return (
                     <Typography>{params.row.type}</Typography>
@@ -47,10 +47,10 @@ function PlanningList({ categoryID, planningList }: PropType) {
         {
             field: 'techniques',
             headerName: `${t("techniques")}`,
-            headerAlign: 'center',
-            flex: 1,
+            headerAlign: 'left',
+            flex: 3,
             minWidth: 60,
-            align: "center",
+            align: "left",
             renderCell: (params) => {
                 return (
                     <Typography>{params.row.techniques}</Typography>
@@ -60,10 +60,10 @@ function PlanningList({ categoryID, planningList }: PropType) {
         {
             field: 'physiques',
             headerName: `${t("physiques")}`,
-            headerAlign: 'center',
-            flex: 1,
+            headerAlign: 'left',
+            flex: 3,
             minWidth: 60,
-            align: "center",
+            align: "left",
             renderCell: (params) => {
                 return (
                     <Typography>{params.row.physiques}</Typography>
@@ -73,10 +73,10 @@ function PlanningList({ categoryID, planningList }: PropType) {
         {
             field: 'psychomotricity',
             headerName: `${t("psychomotricity")}`,
-            headerAlign: 'center',
-            flex: 1,
+            headerAlign: 'left',
+            flex: 2,
             minWidth: 60,
-            align: "center",
+            align: "left",
             renderCell: (params) => {
                 return (
                     <Typography>{params.row.psychomotricity}</Typography>
@@ -86,10 +86,10 @@ function PlanningList({ categoryID, planningList }: PropType) {
         {
             field: 'tactics',
             headerName: `${t("tactics")}`,
-            headerAlign: 'center',
-            flex: 1,
+            headerAlign: 'left',
+            flex: 3,
             minWidth: 60,
-            align: "center",
+            align: "left",
             renderCell: (params) => {
                 return (
                     <Typography>{params.row.tactics}</Typography>
@@ -99,10 +99,10 @@ function PlanningList({ categoryID, planningList }: PropType) {
         {
             field: 'observation',
             headerName: `${t("observation")}`,
-            headerAlign: 'center',
-            flex: 1,
+            headerAlign: 'left',
+            flex: 3,
             minWidth: 60,
-            align: "center",
+            align: "left",
             renderCell: (params) => {
                 return (
                     <Typography>{params.row.observation}</Typography>

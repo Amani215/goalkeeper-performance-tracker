@@ -130,6 +130,68 @@ function SettingsView() {
                             <SettingsList itemsName="attendance" />
                         </AccordionDetails>
                     </Accordion>
+
+                    {/* PLANNING SETTINGS */}
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>{t("planning_types")}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="planning_types" />
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>{t("techniques")}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="techniques" />
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>{t("physiques")}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="physiques" />
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>{t("psychomotricity")}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="psychomotricity" />
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            <Typography>{t("tactics")}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="tactics" />
+                        </AccordionDetails>
+                    </Accordion>
                 </Box> :
                 <Typography>{t("user_not_allowed")}</Typography>
             }

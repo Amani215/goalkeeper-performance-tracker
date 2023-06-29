@@ -39,5 +39,65 @@
     "Hurt",
     "With Seniors",
     "With National Team"
+  ],
+  "planning_types": [
+    "Application",
+    "Decrassage",
+    "Deplacement",
+    "Entrainement",
+    "Match Amical",
+    "Match Officiel",
+    "Opposition",
+    "Repos",
+    "Salle de Musculation",
+    "Seance Annulee"
+  ],
+  "techniques": [
+    "Chute Avant Avec Boxing",
+    "Claquettes",
+    "Detente et Prise de Balle",
+    "Duel Angle (Drible)",
+    "Duel Angle (Tir)",
+    "Jeu au Pieds",
+    "Relance Main",
+    "Relance Main/Pied",
+    "Relance Pied",
+    "Technique la Croix",
+    "Trav. Combine (Plongeon/Detente)",
+    "Trav. Combine (Jeu au Pieds + Chute)",
+    "Trav. Combine (Jeu au Pieds + Prise de Balle Aerienne)",
+    "Trav. Combine (Jeu au Pieds/ Prise de Balle Aerienne/ Chute)"
+  ],
+  "physiques": [
+    "Decrassage",
+    "Fartlek",
+    "Force",
+    "Force Vitesse",
+    "Intermittent (CREI) 5/25",
+    "Pliometrie",
+    "Renforcement Menb. Inf.",
+    "Renforcement Menb. Inf. et Sup.",
+    "Renforcement Menb. Sup.",
+    "Salle de Musculation",
+    "Stato-dynamique",
+    "Vitesse de Demarrage",
+    "Vitesse de Reaction",
+    "Vivacite et Reactivite"
+  ],
+  "psychomotricity": [
+    "Differenciation",
+    "Dissociation",
+    "Equilibre",
+    "Orientation",
+    "Reaction",
+    "Rythme",
+    "W Cognitif"
+  ],
+  "tactics": [
+    "Conservation",
+    "fermeture d'angle",
+    "Les Balles Strategiques",
+    "Placement / Replacement",
+    "Transition"
   ]
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from '@mui/material'
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -11,6 +11,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { useTranslation } from 'react-i18next';
 import { PlanningDTO } from '../../DTOs/PlanningDTO';
 import { useUpdatePlanning } from '../../contexts/planningContext';
+import { useParams } from '../../contexts/paramsContext';
 
 type PropType = {
     planning: PlanningDTO | null,
@@ -18,8 +19,26 @@ type PropType = {
 }
 function UpdatePlanning({ planning, modalProp }: PropType) {
     const { t } = useTranslation();
-    const updatePlanning = useUpdatePlanning()
 
+    // Init Dropdown lists
+    const [types, setTypes] = useState<string[]>([])
+    const [techniquesList, setTechniquesList] = useState<string[]>([])
+    const [physiquesList, setPhysiquesList] = useState<string[]>([])
+    const [psychomotricityList, setPsychomotricityList] = useState<string[]>([])
+    const [tacticsList, setTacticsList] = useState<string[]>([])
+
+    const paramsContext = useParams()
+    useEffect(() => {
+        if (paramsContext) {
+            paramsContext("planning_types").then(res => setTypes(res as string[]))
+            paramsContext("techniques").then(res => setTechniquesList(res as string[]))
+            paramsContext("physiques").then(res => setPhysiquesList(res as string[]))
+            paramsContext("psychomotricity").then(res => setPsychomotricityList(res as string[]))
+            paramsContext("tactics").then(res => setTacticsList(res as string[]))
+        }
+    }, [paramsContext])
+
+    const updatePlanning = useUpdatePlanning()
     dayjs.extend(customParseFormat)
     useEffect(() => {
         if (planning) {
@@ -105,76 +124,71 @@ function UpdatePlanning({ planning, modalProp }: PropType) {
                         </Stack>
                     </LocalizationProvider>
 
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="type"
-                        label={t("type")}
-                        name="type"
-                        autoComplete="type"
-                        value={formik.values.type}
-                        onChange={formik.handleChange}
-                        autoFocus
-                        error={formik.touched.type && Boolean(formik.errors.type)}
-                        helperText={formik.touched.type && formik.errors.type}
-                    />
+                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
+                        <InputLabel>{t("planning_type")}</InputLabel>
+                        <Select
+                            value={formik.values.type}
+                            label={t("planning_type")}
+                            onChange={(e) => formik.setFieldValue("type", e.target.value)}
+                        >
+                            {types.map((type) => (
+                                <MenuItem key={type} value={type}>{type}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                    <TextField
-                        margin="normal"
-                        fullWidth
-                        id="techniques"
-                        label={t("techniques")}
-                        name="techniques"
-                        autoComplete="techniques"
-                        value={formik.values.techniques}
-                        onChange={formik.handleChange}
-                        autoFocus
-                        error={formik.touched.techniques && Boolean(formik.errors.techniques)}
-                        helperText={formik.touched.techniques && formik.errors.techniques}
-                    />
+                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
+                        <InputLabel>{t("techniques")}</InputLabel>
+                        <Select
+                            value={formik.values.techniques}
+                            label={t("techniques")}
+                            onChange={(e) => formik.setFieldValue("techniques", e.target.value)}
+                        >
+                            <MenuItem key="none" value={""}></MenuItem>
+                            {techniquesList.map((techniques) => (
+                                <MenuItem key={techniques} value={techniques}>{techniques}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                    <TextField
-                        margin="normal"
-                        fullWidth
-                        id="physiques"
-                        label={t("physiques")}
-                        name="physiques"
-                        autoComplete="physiques"
-                        value={formik.values.physiques}
-                        onChange={formik.handleChange}
-                        autoFocus
-                        error={formik.touched.physiques && Boolean(formik.errors.physiques)}
-                        helperText={formik.touched.physiques && formik.errors.physiques}
-                    />
+                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
+                        <InputLabel>{t("physiques")}</InputLabel>
+                        <Select
+                            value={formik.values.physiques}
+                            label={t("physiques")}
+                            onChange={(e) => formik.setFieldValue("physiques", e.target.value)}
+                        >
+                            {physiquesList.map((physiques) => (
+                                <MenuItem key={physiques} value={physiques}>{physiques}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                    <TextField
-                        margin="normal"
-                        fullWidth
-                        id="psychomotricity"
-                        label={t("psychomotricity")}
-                        name="psychomotricity"
-                        autoComplete="psychomotricity"
-                        value={formik.values.psychomotricity}
-                        onChange={formik.handleChange}
-                        autoFocus
-                        error={formik.touched.psychomotricity && Boolean(formik.errors.psychomotricity)}
-                        helperText={formik.touched.psychomotricity && formik.errors.psychomotricity}
-                    />
+                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
+                        <InputLabel>{t("psychomotricity")}</InputLabel>
+                        <Select
+                            value={formik.values.psychomotricity}
+                            label={t("psychomotricity")}
+                            onChange={(e) => formik.setFieldValue("psychomotricity", e.target.value)}
+                        >
+                            {psychomotricityList.map((psychomotricity) => (
+                                <MenuItem key={psychomotricity} value={psychomotricity}>{psychomotricity}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                    <TextField
-                        margin="normal"
-                        fullWidth
-                        id="tactics"
-                        label={t("tactics")}
-                        name="tactics"
-                        autoComplete="tactics"
-                        value={formik.values.tactics}
-                        onChange={formik.handleChange}
-                        autoFocus
-                        error={formik.touched.tactics && Boolean(formik.errors.tactics)}
-                        helperText={formik.touched.tactics && formik.errors.tactics}
-                    />
+                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
+                        <InputLabel>{t("tactics")}</InputLabel>
+                        <Select
+                            value={formik.values.tactics}
+                            label={t("tactics")}
+                            onChange={(e) => formik.setFieldValue("tactics", e.target.value)}
+                        >
+                            {tacticsList.map((tactics) => (
+                                <MenuItem key={tactics} value={tactics}>{tactics}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
                     <TextField
                         margin="normal"

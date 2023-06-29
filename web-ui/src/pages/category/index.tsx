@@ -8,6 +8,7 @@ import UsersProvider from '../../contexts/usersContext';
 import GoalkeepersProvider from '../../contexts/goalkeepersContext';
 import DocumentGenerationProvider from '../../contexts/documentGenerationContext';
 import PlanningProvider from '../../contexts/planningContext';
+import ParamsProvider from '../../contexts/paramsContext';
 
 function Category() {
     const [trainersModalIsOpen, setTrainersModalIsOpen] = useState<boolean>(false)
@@ -28,15 +29,17 @@ function Category() {
                     <PortalPage>
                         <PlanningProvider>
                             <DocumentGenerationProvider>
-                                <CategoryDetails
-                                    modal1={{
-                                        modalIsOpen: trainersModalIsOpen,
-                                        setModalIsOpen: handleTrainersOpen
-                                    }}
-                                    modal2={{
-                                        modalIsOpen: goalkeepersModalIsOpen,
-                                        setModalIsOpen: handleGoalkeepersOpen
-                                    }} />
+                                <ParamsProvider>
+                                    <CategoryDetails
+                                        modal1={{
+                                            modalIsOpen: trainersModalIsOpen,
+                                            setModalIsOpen: handleTrainersOpen
+                                        }}
+                                        modal2={{
+                                            modalIsOpen: goalkeepersModalIsOpen,
+                                            setModalIsOpen: handleGoalkeepersOpen
+                                        }} />
+                                </ParamsProvider>
                             </DocumentGenerationProvider>
                         </PlanningProvider>
                     </PortalPage>

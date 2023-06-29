@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from '@mui/material'
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -9,6 +9,7 @@ import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
 import { useNewPlanning } from '../../contexts/planningContext';
+import { useParams } from '../../contexts/paramsContext';
 
 type PropType = {
     categoryID: string,
@@ -17,11 +18,19 @@ type PropType = {
 function NewPlanning({ categoryID, modalProp }: PropType) {
     const { t } = useTranslation();
 
-    const newPlanning = useNewPlanning()
-
+    const [types, setTypes] = useState<string[]>([])
     const [planningDate,] = useState<Dayjs>(
         dayjs(),
     );
+
+    const newPlanning = useNewPlanning()
+    const paramsContext = useParams()
+
+    useEffect(() => {
+        if (paramsContext) {
+            paramsContext("planning_types").then(res => setTypes(res as string[]))
+        }
+    }, [paramsContext])
 
     const handleSubmit = async ({ date, type }: FormikValues) => {
         if (newPlanning != null) {
@@ -68,20 +77,18 @@ function NewPlanning({ categoryID, modalProp }: PropType) {
                         </Stack>
                     </LocalizationProvider>
 
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="type"
-                        label={t("type")}
-                        name="type"
-                        autoComplete="type"
-                        value={formik.values.type}
-                        onChange={formik.handleChange}
-                        autoFocus
-                        error={formik.touched.type && Boolean(formik.errors.type)}
-                        helperText={formik.touched.type && formik.errors.type}
-                    />
+                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
+                        <InputLabel>{t("planning_type")}</InputLabel>
+                        <Select
+                            value={formik.values.type}
+                            label={t("planning_type")}
+                            onChange={(e) => formik.setFieldValue("type", e.target.value)}
+                        >
+                            {types.map((type) => (
+                                <MenuItem key={type} value={type}>{type}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
                     <Button
                         type="submit"

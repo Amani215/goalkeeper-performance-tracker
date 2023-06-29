@@ -183,7 +183,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                     <Button onClick={() => { modal1.setModalIsOpen() }}>
                                         {t("add_coach")}
                                     </Button>
-                                </Box> : <></>
+                                </Box> : <Typography variant='h6'>{t("coaches")}</Typography>
                             }
 
                             {trainers.length > 0 ?
@@ -230,7 +230,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                                     <Button onClick={() => { modal2.setModalIsOpen() }}>
                                         {t("add_goalkeeper")}
                                     </Button>
-                                </Box> : <></>
+                                </Box> : <Typography variant='h6'>{t("goalkeepers")}</Typography>
                             }
 
                             {goalkeepers.length > 0 ?

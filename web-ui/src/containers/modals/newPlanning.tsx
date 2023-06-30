@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from '@mui/material'
 import { DesktopDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,6 +19,7 @@ function NewPlanning({ categoryID, modalProp }: PropType) {
     const { t } = useTranslation();
 
     const [types, setTypes] = useState<string[]>([])
+    const [error, setError] = useState<string>("")
     const [planningDate,] = useState<Dayjs>(
         dayjs(),
     );
@@ -32,11 +33,18 @@ function NewPlanning({ categoryID, modalProp }: PropType) {
         }
     }, [paramsContext])
 
+
     const handleSubmit = async ({ date, type }: FormikValues) => {
         if (newPlanning != null) {
             const planningDate = dayjs(date).format('DD/MM/YYYY').toString()
             await newPlanning({ category_id: categoryID, date: planningDate, type: type })
-                .then(() => modalProp.setModalIsOpen())
+                .then(() => {
+                    modalProp.setModalIsOpen()
+                })
+                .catch(data => {
+                    setError(data)
+                    console.log(data)
+                })
         }
     };
 
@@ -64,7 +72,9 @@ function NewPlanning({ categoryID, modalProp }: PropType) {
                     onSubmit={formik.handleSubmit}
                     sx={{ mt: 1 }}
                 >
-
+                    {error != "" ?
+                        <Alert severity='error' sx={{ marginBottom: 2 }}>{t("user_not_allowed")}</Alert>
+                        : <></>}
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
@@ -82,6 +92,7 @@ function NewPlanning({ categoryID, modalProp }: PropType) {
                         <Select
                             value={formik.values.type}
                             label={t("planning_type")}
+                            required
                             onChange={(e) => formik.setFieldValue("type", e.target.value)}
                         >
                             {types.map((type) => (

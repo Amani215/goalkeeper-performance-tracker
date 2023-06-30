@@ -15,6 +15,11 @@ export function usePlanningAdded() {
     return useContext(planningAddedContext);
 }
 
+const addPlanningErrorContext = createContext<string>("");
+export function useAddPlanningError() {
+    return useContext(addPlanningErrorContext);
+}
+
 // UPDATE PLANNING CONTEXT
 type UpdatePlanningDelegate = (id: string, planningObj: UpdatePlanningDTO) => Promise<PlanningDTO | errorResponse>;
 const updatePlanningContext = createContext<UpdatePlanningDelegate | null>(null);
@@ -71,7 +76,8 @@ export default function PlanningProvider(props: PropsWithChildren<{}>): JSX.Elem
             .then(data => data.json())
             .then(data => {
                 if ("error" in data) {
-                    return data as errorResponse
+                    throw (data["error"])
+                    // return data as errorResponse
                 } else {
                     setPlanningAdded(true)
                     return data as PlanningDTO

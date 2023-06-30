@@ -6,9 +6,11 @@ import MatchesList from '../components/matchesList'
 import { ModalProp } from '../interfaces/modalProp'
 import { useMatchUpdated } from '../contexts/matchContext'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../contexts/authContext'
 
 function MatchesView({ setModalIsOpen }: ModalProp) {
     const { t } = useTranslation();
+    const auth = useAuth()
 
     const [matches, setMatches] = useState<MatchDTO[]>([])
     const [error, setError] = useState("")
@@ -50,16 +52,18 @@ function MatchesView({ setModalIsOpen }: ModalProp) {
                     {error}
                 </Typography> :
                 <>
-                    <Box
-                        display="flex"
-                        justifyContent="flex-end"
-                        mb={3}>
-                        <Button
-                            variant="contained"
-                            onClick={() => { setModalIsOpen() }}
-                        >{t("add_match")}
-                        </Button>
-                    </Box>
+                    {auth?.user.admin ?
+                        <Box
+                            display="flex"
+                            justifyContent="flex-end"
+                            mb={3}>
+                            <Button
+                                variant="contained"
+                                onClick={() => { setModalIsOpen() }}
+                            >{t("add_match")}
+                            </Button>
+                        </Box> : <></>
+                    }
                     <MatchesList matches={matches} />
                 </>
             }

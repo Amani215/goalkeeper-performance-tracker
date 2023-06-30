@@ -10,10 +10,11 @@ import UpdatePlanning from '../../containers/modals/updatePlanning';
 
 type PropType = {
     categoryID: string,
+    archived: boolean,
     planningList: PlanningDTO[]
 }
 
-function PlanningList({ categoryID, planningList }: PropType) {
+function PlanningList({ categoryID, archived, planningList }: PropType) {
     const { t } = useTranslation();
 
     // Columns
@@ -184,6 +185,7 @@ function PlanningList({ categoryID, planningList }: PropType) {
                 <Typography fontWeight="bold" mt={2} mb={1}>{t("planning")}</Typography>
 
                 <Button
+                    disabled={archived}
                     variant="contained"
                     onClick={() => { handleOpenAddModal() }}
                 >{t("add")}

@@ -270,7 +270,10 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                     </Grid>
 
                     <Grid item xs={4} sm={8} md={12}>
-                        <PlanningList categoryID={id ? id : ""} planningList={planningRows} />
+                        <PlanningList
+                            categoryID={id ? id : ""}
+                            archived={category ? category.archived : true}
+                            planningList={planningRows} />
                     </Grid>
                 </Grid>
 

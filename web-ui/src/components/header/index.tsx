@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import AccountPopover from './AccountPopover';
 import { LoginDTO } from '../../DTOs/LoginDTO';
-import { Switch, styled } from '@mui/material';
+import { Switch } from '@mui/material';
 import { useState } from 'react';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +30,7 @@ export default function Header({ auth }: IProps) {
       <AppBar position="static">
         <Toolbar>
           <Box sx={{ flexGrow: 1 }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>GPT</Typography>
+          {/* <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>GPT</Typography> */}
 
           <div>
             FR

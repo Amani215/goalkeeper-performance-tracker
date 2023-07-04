@@ -24,8 +24,8 @@ function Copyright(props: any): JSX.Element {
       {...props}
     >
       {'Copyright © '}
-      <Link color="inherit" href="https://github.com/Amani215/goalkeeper-performance-tracker">
-        GPT
+      <Link color="inherit" href="https://github.com/Amani215/goalkeeper-performance-tracker" sx={{ marginRight: 1 }}>
+        FB Keeper Coach
       </Link>
       {new Date().getFullYear()}
     </Typography>

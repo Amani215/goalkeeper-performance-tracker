@@ -2,6 +2,8 @@
   "test": "This is a test",
   "unavailable": "Unavailable",
 
+  "sign_in": "Sign in",
+
   "username": "Username",
   "password": "Password",
   "confirm_password": "Confirm Your Password",
@@ -139,6 +141,7 @@
   "cancel": "Cancel",
 
   "user_not_allowed": "User not allowed.",
+  "incorrect_name_or_password": "Incorrect username or password.",
 
   "match_connected_error": "This match is connected to other entities",
   "training_connected_error": "This training is connected to other entities",

@@ -30,10 +30,14 @@ class User(db.Model):
     def serialize(self):
         """Return object data in easily serializable format"""
         PUBLIC_S3 = os.environ['PUBLIC_S3']
+        if self.profile_pic == "" or self.profile_pic is None:
+            pp = ''
+        else:
+            pp = f'{PUBLIC_S3}{self.profile_pic}'
         return {
             'id': self.id,
             'username': self.username,
             'admin': self.admin,
-            'profile_pic': f'{PUBLIC_S3}{self.profile_pic}',
+            'profile_pic': pp,
             'first_login': self.first_login
         }

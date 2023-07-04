@@ -2,6 +2,8 @@
   "test": "Ceci est un test",
   "unavailable": "Indisponible",
 
+  "sign_in": "Se connecter",
+
   "username": "Nom d'utilisateur",
   "password": "Mot de passe",
   "confirm_password": "Confirmez Votre Nouveau Mot de Passe",
@@ -139,6 +141,7 @@
   "cancel": "Annuler",
 
   "user_not_allowed": "Utilisateur non autorisé.",
+  "incorrect_name_or_password": "Nom d'utilisateur ou mot de passe incorrect.",
 
   "match_connected_error": "Ce match est lié à d'autres entités",
   "training_connected_error": "Cet entrainement est lié à d'autres entités",

@@ -52,7 +52,10 @@ export default function AccountPopover(props: IProps) {
           }),
         }}
       >
-        <Avatar src={props.profile_pic} alt="photoURL" />
+        {props.profile_pic != "" ?
+          <Avatar src={props.profile_pic} alt="photoURL" /> :
+          <Avatar sx={{ bgcolor: 'secondary.main' }}></Avatar>
+        }
       </IconButton>
 
       <Popover

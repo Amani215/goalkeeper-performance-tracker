@@ -14,6 +14,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { FormikValues, useFormik } from 'formik';
 import loginValidationSchema from "../schemas/loginValidation"
 import Alert from '@mui/material/Alert';
+import { useTranslation } from 'react-i18next';
 
 function Copyright(props: any): JSX.Element {
   return (
@@ -33,6 +34,8 @@ function Copyright(props: any): JSX.Element {
 }
 
 export default function SignInSide(): JSX.Element {
+  const { t } = useTranslation();
+
   const [loaded, setLoaded] = useState(false)
   let [loginError, setLoginError] = useState(false)
 
@@ -95,7 +98,7 @@ export default function SignInSide(): JSX.Element {
         >
           {loginError ?
             <Alert severity="error" onClose={() => { setLoginError(false) }}>
-              Incorrect username or password.
+              {t("incorrect_name_or_password")}
             </Alert> :
             <></>
           }
@@ -103,7 +106,7 @@ export default function SignInSide(): JSX.Element {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {t("sign_in")}
           </Typography>
 
           <Box
@@ -117,7 +120,7 @@ export default function SignInSide(): JSX.Element {
               required
               fullWidth
               id="username"
-              label="Username"
+              label={t("username")}
               name="username"
               autoComplete="username"
               value={formik.values.username}
@@ -131,7 +134,7 @@ export default function SignInSide(): JSX.Element {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={t("password")}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -146,7 +149,7 @@ export default function SignInSide(): JSX.Element {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {t("sign_in")}
             </Button>
             <Copyright sx={{ mt: 5 }} />
           </Box>

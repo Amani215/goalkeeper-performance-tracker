@@ -133,8 +133,11 @@ function MatchesList({ matches }: PropType) {
                             columns={columns}
                             pageSize={10}
                             rowsPerPageOptions={[10]}
-                            onRowClick={(params) => {
-                                redirectTo(params.row.id)
+                            onCellClick={(params) => {
+                                const columnId = params.field;
+                                if (columnId !== "actions") {
+                                    redirectTo(params.row.id);
+                                }
                             }}
                         />
                     </div>

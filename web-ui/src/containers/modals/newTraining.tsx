@@ -10,9 +10,12 @@ import { ModalProp } from '../../interfaces/modalProp'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
+import 'dayjs/locale/fr'
 
 function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation()
+    dayjs.locale(i18n.language);
+
     const [, setError] = useState(false)
     const [categories, setCategories] = useState<CategoryDTO[]>([])
 
@@ -66,7 +69,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     sx={{ mt: 1 }}
                 >
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={i18n.language}>
                         <Stack spacing={3}>
                             <DatePicker
                                 label="Date"

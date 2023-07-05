@@ -14,13 +14,16 @@ import { useUpdateMatch } from '../../contexts/matchContext';
 import { MatchDTO } from '../../DTOs/MatchDTO';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { useTranslation } from 'react-i18next';
+import 'dayjs/locale/fr';
 
 type PropType = {
     match: MatchDTO | null,
     modalProp: ModalProp
 }
 function UpdateMatch({ match, modalProp }: PropType) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation()
+    dayjs.locale(i18n.language);
+
     const updateMatch = useUpdateMatch()
 
     dayjs.extend(customParseFormat)
@@ -108,7 +111,7 @@ function UpdateMatch({ match, modalProp }: PropType) {
                     sx={{ mt: 1 }}
                 >
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={i18n.language}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label="Date"

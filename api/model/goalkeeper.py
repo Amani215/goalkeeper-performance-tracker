@@ -33,6 +33,10 @@ class Goalkeeper(db.Model):
     def serialize(self):
         """Return object data in easily serializable format"""
         PUBLIC_S3 = os.environ['PUBLIC_S3']
+        if self.picture == "" or self.picture is None:
+            pp = ''
+        else:
+            pp = f'{PUBLIC_S3}{self.picture}'
         return {
             'id':
             self.id,
@@ -44,5 +48,5 @@ class Goalkeeper(db.Model):
             'phone':
             self.phone,
             'picture':
-            f'{PUBLIC_S3}{self.picture}'
+            pp
         }

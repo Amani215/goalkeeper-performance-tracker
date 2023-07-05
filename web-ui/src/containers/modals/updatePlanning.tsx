@@ -12,13 +12,15 @@ import { useTranslation } from 'react-i18next';
 import { PlanningDTO } from '../../DTOs/PlanningDTO';
 import { useUpdatePlanning } from '../../contexts/planningContext';
 import { useParams } from '../../contexts/paramsContext';
+import 'dayjs/locale/fr';
 
 type PropType = {
     planning: PlanningDTO | null,
     modalProp: ModalProp
 }
 function UpdatePlanning({ planning, modalProp }: PropType) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation()
+    dayjs.locale(i18n.language);
 
     // Init Dropdown lists
     const [types, setTypes] = useState<string[]>([])
@@ -112,7 +114,7 @@ function UpdatePlanning({ planning, modalProp }: PropType) {
                     sx={{ mt: 1 }}
                 >
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={i18n.language}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label="Date"

@@ -11,9 +11,12 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
+import 'dayjs/locale/fr'
 
 function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
+    dayjs.locale(i18n.language);
+
     const [error, setError] = useState(false)
 
     const newGoalkeeper = useNewGoalkeeper()
@@ -73,7 +76,7 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         error={formik.touched.name && Boolean(formik.errors.name)}
                         helperText={formik.touched.name && formik.errors.name}
                     />
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={i18n.language}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label={t("birthdate")}

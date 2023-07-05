@@ -10,13 +10,15 @@ import { style } from './style';
 import { useTranslation } from 'react-i18next';
 import { useNewPlanning } from '../../contexts/planningContext';
 import { useParams } from '../../contexts/paramsContext';
+import 'dayjs/locale/fr'
 
 type PropType = {
     categoryID: string,
     modalProp: ModalProp
 }
 function NewPlanning({ categoryID, modalProp }: PropType) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation()
+    dayjs.locale(i18n.language);
 
     const [types, setTypes] = useState<string[]>([])
     const [error, setError] = useState<string>("")
@@ -75,7 +77,7 @@ function NewPlanning({ categoryID, modalProp }: PropType) {
                     {error != "" ?
                         <Alert severity='error' sx={{ marginBottom: 2 }}>{t("user_not_allowed")}</Alert>
                         : <></>}
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={i18n.language}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label="Date"

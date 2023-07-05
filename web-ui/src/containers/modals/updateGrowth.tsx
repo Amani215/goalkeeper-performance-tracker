@@ -12,13 +12,17 @@ import { GrowthDTO } from '../../DTOs/GrowthDTO';
 import { useUpdateGrowth } from '../../contexts/growthContext';
 import growthValidationSchema from '../../schemas/growthValidation';
 import { useTranslation } from 'react-i18next';
+import 'dayjs/locale/fr';
+
 
 type PropType = {
     growth: GrowthDTO | null,
     modalProp: ModalProp
 }
 function UpdateGrowth({ growth, modalProp }: PropType) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation()
+    dayjs.locale(i18n.language);
+
     const updateGrowth = useUpdateGrowth()
 
     dayjs.extend(customParseFormat)
@@ -91,7 +95,7 @@ function UpdateGrowth({ growth, modalProp }: PropType) {
                     sx={{ mt: 1 }}
                 >
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={i18n.language}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label="Date"

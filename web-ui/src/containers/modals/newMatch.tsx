@@ -12,9 +12,12 @@ import { CategoryDTO } from '../../DTOs';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
+import 'dayjs/locale/fr'
+
 
 function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation()
+    dayjs.locale(i18n.language);
 
     const [_, setError] = useState(false)
     const [teams, setTeams] = useState<string[]>([])
@@ -82,7 +85,7 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     sx={{ mt: 1 }}
                 >
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={i18n.language}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label="Date"

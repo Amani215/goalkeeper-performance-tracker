@@ -359,7 +359,7 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
                                             height: "16rem",
                                             width: "16rem",
                                         }}
-                                        src={goalkeeper ? goalkeeper?.picture : `${process.env.PUBLIC_URL}/assets/placeholder.png`}
+                                        src={goalkeeper && goalkeeper.picture != "" ? goalkeeper.picture : `${process.env.PUBLIC_URL}/assets/placeholder.png`}
                                     />
                                 </Box>
                                 <Box

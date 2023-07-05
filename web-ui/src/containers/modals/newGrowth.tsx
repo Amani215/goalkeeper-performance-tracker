@@ -4,19 +4,21 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import { FormikValues, useFormik } from 'formik';
-import { useEffect, useState } from 'react';
-import { useNewMatch, useNewMatchError } from '../../contexts/matchesContext';
+import { useState } from 'react';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useNewGrowth } from '../../contexts/growthContext';
 import { useTranslation } from 'react-i18next';
+import 'dayjs/locale/fr'
+
 
 type PropType = {
     goalkeeperID: string,
     modalProp: ModalProp
 }
 function NewGrowth({ goalkeeperID, modalProp }: PropType) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation()
+    dayjs.locale(i18n.language);
 
     const newGrowth = useNewGrowth()
 
@@ -56,7 +58,7 @@ function NewGrowth({ goalkeeperID, modalProp }: PropType) {
                     sx={{ mt: 1 }}
                 >
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={i18n.language}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label="Date"

@@ -9,9 +9,12 @@ import { useGoalkeeper, useUpdateGoalkeeper } from '../../contexts/goalkeeperCon
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
+import 'dayjs/locale/fr';
 
 function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation()
+    dayjs.locale(i18n.language);
+
     const [loaded, setLoaded] = useState(false)
 
     const [goalkeeper, setGoalkeeper] = useState<GoalkeeperDTO | null>(null)
@@ -68,7 +71,7 @@ function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     flexDirection="column"
                 >
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={i18n.language}>
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label={t("birthdate")}

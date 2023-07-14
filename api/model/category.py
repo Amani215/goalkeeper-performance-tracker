@@ -19,6 +19,7 @@ class Category(db.Model):
     training_sessions = db.relationship(
         'training_session', back_populates='training_session_category')
     plannings = db.relationship('Planning', back_populates='category')
+    calendars = db.relationship('Calendar', back_populates='calendar_category')
     archived = Column(Boolean, unique=False, default=False)
 
     def __init__(self, name: str, season: str):

@@ -14,7 +14,7 @@ function PageName() {
     const location = useLocation()
     if (location.pathname.split('/')[2]) return <></>
 
-    const pageName: string = location.pathname.split('/')[1] || "Dashboard"
+    const pageName: string = location.pathname.split('/')[1] || "Overview"
     return <Typography
         variant='h5'
         sx={{

@@ -12,9 +12,15 @@ import {
 export default [
   [
     {
-      name: "Dashboard",
+      name: "Overview",
       link: "/",
       MenuIcon: MdDashboard,
+      onlyAdmin: false,
+    },
+    {
+      name: "categories",
+      link: "/categories",
+      MenuIcon: MdCategory,
       onlyAdmin: false,
     },
     {
@@ -27,12 +33,6 @@ export default [
       name: "goalkeepers",
       link: "/goalkeepers",
       MenuIcon: MdSportsHandball,
-      onlyAdmin: false,
-    },
-    {
-      name: "categories",
-      link: "/categories",
-      MenuIcon: MdCategory,
       onlyAdmin: false,
     },
     {

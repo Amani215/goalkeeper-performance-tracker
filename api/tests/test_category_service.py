@@ -9,6 +9,7 @@ import service.category as category_service
 import service.goalkeeper as goalkeeper_service
 import service.user as user_service
 from service.planning import add_planning
+from service.calendar import add_calendar
 
 
 def test_add_category(app):
@@ -179,6 +180,16 @@ def test_get_plannings(app, category):
                  random_string.generate(5))
 
     assert len(category_service.get_plannings(category.id)) == 2
+
+
+def test_get_calendars(app, category):
+    '''Test get the calendars of a specific category'''
+    assert len(category_service.get_calendars(category.id)) == 0
+
+    add_calendar(random_string.generate(5), 3, random_string.generate(5),
+                 random_string.generate(5), category.id)
+
+    assert len(category_service.get_calendars(category.id)) == 1
 
 
 def test_set_archived(app, category):

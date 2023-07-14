@@ -10,6 +10,7 @@ URL = '/category'
 TRAINERS_URL = '/category/trainers?id='
 GOALKEEPERS_URL = '/category/goalkeepers?id='
 PLANNINGS_URL = '/category/plannings?id='
+CALENDARS_URL = '/category/calendars?id='
 ID_URL = '/category?id='
 
 
@@ -263,6 +264,36 @@ def test_get_plannings(client, json_headers, authenticated_user, category):
     plannings = client.get(PLANNINGS_URL + cid, headers=json_headers)
     assert plannings.status_code == 200
     assert len(plannings.json) == 1
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_get_calendars(client, json_headers, authenticated_user, category):
+    '''Test getting the calendars of a category'''
+    cid = category.id
+    user = user_service.get_by_id(authenticated_user['id'])
+    user_service.add_category(user, category)
+
+    # NO ID
+    calendars = client.get(CALENDARS_URL, headers=json_headers)
+    assert calendars.status_code == 400
+    assert 'error' in calendars.json
+
+    # VALID
+    calendars = client.get(CALENDARS_URL + cid, headers=json_headers)
+    assert calendars.status_code == 200
+    assert len(calendars.json) == 0
+
+    test_json = {
+        'category_id': str(category.id),
+        'type': random_string.generate(5),
+        'journey': 1,
+        'local': random_string.generate(5),
+        'visitor': random_string.generate(5)
+    }
+    client.post('/calendar', data=json.dumps(test_json), headers=json_headers)
+    calendars = client.get(CALENDARS_URL + cid, headers=json_headers)
+    assert calendars.status_code == 200
+    assert len(calendars.json) == 1
 
 
 @pytest.mark.parametrize(['admin'], [[True]])

@@ -119,6 +119,23 @@ def get_category_plannings(current_user: User):
         return {'error': str(err)}, 400
 
 
+@category_api.route('/category/calendars', methods=['GET'])
+@token_required(admin=False)
+def get_category_calendars(current_user: User):
+    '''Get the calendars of a specific category
+    
+    This takes the category ID as an argument'''
+    try:
+        args = request.args
+
+        calendars = category_service.get_calendars(args.get('id'))
+        return jsonify([i.serialize for i in calendars])
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
 @category_api.route('/category', methods=['PUT'])
 @token_required(admin=True)
 def set_archived(current_user: User):

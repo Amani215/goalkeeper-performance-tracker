@@ -18,6 +18,7 @@ import service.growth_monitoring as growth_monitoring_service
 import service.match_monitoring as match_monitoring_service
 import service.training_monitoring as training_monitoring_service
 from service.planning import add_planning
+from service.calendar import add_calendar
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
@@ -111,6 +112,14 @@ def planning(category):
     return add_planning(category.id,
                         random_date.generate().strftime('%d/%m/%Y'),
                         random_string.generate(4))
+
+
+@pytest.fixture()
+def calendar(category):
+    '''Create a mock calendar record'''
+    return add_calendar(random_string.generate(4), 2,
+                        random_string.generate(4), random_string.generate(4),
+                        category.id)
 
 
 @pytest.fixture()

@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Card, Dialog, DialogActions, DialogContent, Dialog
 import { useEffect, useState } from 'react'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useParams, Link as RouterLink, Navigate } from 'react-router-dom';
-import { useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryGoalkeeperDeleted, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainerDeleted, useCategoryTrainers, useCategoryTrainersReady, useDeleteCategoryGoalkeeper, useDeleteCategoryTrainer, usePlanning, usePlanningReady } from '../contexts/categoryContext';
+import { useCalendars, useCalendarsReady, useCategory, useCategoryError, useCategoryGoalkeeperAdded, useCategoryGoalkeeperDeleted, useCategoryGoalkeepers, useCategoryGoalkeepersReady, useCategoryReady, useCategoryTrainerAdded, useCategoryTrainerDeleted, useCategoryTrainers, useCategoryTrainersReady, useDeleteCategoryGoalkeeper, useDeleteCategoryTrainer, usePlanning, usePlanningReady } from '../contexts/categoryContext';
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { useAuth } from '../contexts/authContext';
@@ -11,6 +11,9 @@ import { useTranslation } from 'react-i18next';
 import PlanningList from '../components/planningList';
 import { PlanningDTO } from '../DTOs/PlanningDTO';
 import { usePlanningAdded, usePlanningDeleted, usePlanningUpdated } from '../contexts/planningContext';
+import CalendarList from '../components/calendarList';
+import { CalendarDTO } from '../DTOs/CalendarDTO';
+import { useCalendarAdded, useCalendarDeleted } from '../contexts/calendarContext';
 
 function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
@@ -24,6 +27,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const [trainers, setTrainers] = useState<UserDTO[]>([])
     const [goalkeepers, setGoalkeepers] = useState<GoalkeeperDTO[]>([])
     const [planningRows, setPlanningRows] = useState<PlanningDTO[]>([] as PlanningDTO[])
+    const [calendarRows, setCalendarRows] = useState<CalendarDTO[]>([] as CalendarDTO[])
 
     const categoryContext = useCategory()
     const categoryError = useCategoryError()
@@ -46,6 +50,11 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const planningAdded = usePlanningAdded()
     const planningUpdated = usePlanningUpdated()
     const planningDeleted = usePlanningDeleted()
+
+    const calendars = useCalendars()
+    const calendarsReady = useCalendarsReady()
+    const calendarAdded = useCalendarAdded()
+    const calendarDeleted = useCalendarDeleted()
 
     // INIT PAGE
     useEffect(
@@ -95,6 +104,15 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
             })
         }
     }, [planningReady, planningUpdated, planningDeleted, planningAdded])
+
+    useEffect(() => {
+        if (calendars) {
+            calendars(id ? id : "").then((data) => {
+                if (calendarsReady)
+                    setCalendarRows(data as CalendarDTO[])
+            })
+        }
+    }, [calendarsReady, calendarDeleted, calendarAdded])
 
     // DELETE GOALKEEPER
     const [goalkeeperToDelete, setGoalkeeperToDelete] = useState<GoalkeeperDTO | null>(null)
@@ -270,6 +288,10 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                     </Grid>
 
                     <Grid item xs={4} sm={8} md={12}>
+                        <CalendarList
+                            categoryID={id ? id : ""}
+                            archived={category ? category.archived : true}
+                            calendarList={calendarRows} />
                         <PlanningList
                             categoryID={id ? id : ""}
                             archived={category ? category.archived : true}

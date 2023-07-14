@@ -5,6 +5,7 @@ import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
 import { PlanningDTO } from '../DTOs/PlanningDTO';
+import { CalendarDTO } from '../DTOs/CalendarDTO';
 
 
 // GET CATEGORY CONTEXTS
@@ -58,6 +59,18 @@ export function usePlanning() {
 const planningReadyContext = createContext<boolean>(false);
 export function usePlanningReady() {
     return useContext(planningReadyContext);
+}
+
+// GET CALENDARS CONTEXTS
+type CalendarDelegate = (id: string) => Promise<CalendarDTO[] | []>;
+const calendarContext = createContext<CalendarDelegate | null>(null);
+export function useCalendars() {
+    return useContext(calendarContext);
+}
+
+const calendarsReadyContext = createContext<boolean>(false);
+export function useCalendarsReady() {
+    return useContext(calendarsReadyContext);
 }
 
 // ADD TRAINER CONTEXT
@@ -123,6 +136,7 @@ export default function CategoryProvider(props: PropsWithChildren<{}>): JSX.Elem
     const [categoryGoalkeeperDeleted, setCategoryGoalkeeperDeleted] = useState<boolean>(false)
 
     const [planningReady, setPlanningReady] = useState<boolean>(false)
+    const [calendarsReady, setCalendarsReady] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -210,6 +224,27 @@ export default function CategoryProvider(props: PropsWithChildren<{}>): JSX.Elem
         else {
             setError(true);
             setPlanningReady(true);
+            return [];
+        }
+    }
+
+    const calendars: CalendarDelegate = async (id: string) => {
+        const data = await fetch("/api/category/calendars?id=" + id, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        });
+        const json_data = await data.json();
+        if (data.status == 200) {
+            setCalendarsReady(true);
+            setError(false);
+            return json_data as CalendarDTO[];
+        }
+        else {
+            setError(true);
+            setCalendarsReady(true);
             return [];
         }
     }
@@ -383,6 +418,14 @@ export default function CategoryProvider(props: PropsWithChildren<{}>): JSX.Elem
         {
             ctx: planningReadyContext,
             value: planningReady
+        },
+        {
+            ctx: calendarContext,
+            value: calendars
+        },
+        {
+            ctx: calendarsReadyContext,
+            value: calendarsReady
         }
     ]
     return (

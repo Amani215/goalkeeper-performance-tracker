@@ -9,6 +9,7 @@ import GoalkeepersProvider from '../../contexts/goalkeepersContext';
 import DocumentGenerationProvider from '../../contexts/documentGenerationContext';
 import PlanningProvider from '../../contexts/planningContext';
 import ParamsProvider from '../../contexts/paramsContext';
+import CalendarProvider from '../../contexts/calendarContext';
 
 function Category() {
     const [trainersModalIsOpen, setTrainersModalIsOpen] = useState<boolean>(false)
@@ -28,19 +29,21 @@ function Category() {
 
                     <PortalPage>
                         <PlanningProvider>
-                            <DocumentGenerationProvider>
-                                <ParamsProvider>
-                                    <CategoryDetails
-                                        modal1={{
-                                            modalIsOpen: trainersModalIsOpen,
-                                            setModalIsOpen: handleTrainersOpen
-                                        }}
-                                        modal2={{
-                                            modalIsOpen: goalkeepersModalIsOpen,
-                                            setModalIsOpen: handleGoalkeepersOpen
-                                        }} />
-                                </ParamsProvider>
-                            </DocumentGenerationProvider>
+                            <CalendarProvider>
+                                <DocumentGenerationProvider>
+                                    <ParamsProvider>
+                                        <CategoryDetails
+                                            modal1={{
+                                                modalIsOpen: trainersModalIsOpen,
+                                                setModalIsOpen: handleTrainersOpen
+                                            }}
+                                            modal2={{
+                                                modalIsOpen: goalkeepersModalIsOpen,
+                                                setModalIsOpen: handleGoalkeepersOpen
+                                            }} />
+                                    </ParamsProvider>
+                                </DocumentGenerationProvider>
+                            </CalendarProvider>
                         </PlanningProvider>
                     </PortalPage>
                 </GoalkeepersProvider>

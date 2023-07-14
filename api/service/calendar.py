@@ -19,7 +19,7 @@ def add_calendar(calendar_type: str, journey: int, local: str, visitor: str,
 
 
 def get_by_id(id):
-    '''Get planning by ID'''
+    '''Get calendar by ID'''
     try:
         calendar: Calendar = Calendar.query.filter_by(id=id).one()
         return calendar

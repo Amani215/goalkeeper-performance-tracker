@@ -287,7 +287,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                         </Card>
                     </Grid>
 
-                    <Grid item xs={4} sm={8} md={12}>
+                    <Grid item xs={4} sm={8} md={12} height="100%">
                         <CalendarList
                             categoryID={id ? id : ""}
                             archived={category ? category.archived : true}

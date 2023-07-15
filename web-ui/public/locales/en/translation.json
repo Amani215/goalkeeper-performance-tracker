@@ -32,6 +32,8 @@
   "tactics": "Tactical",
   "observation": "Observation",
 
+  "calendars": "Calendars",
+
   "training": "Training",
   "year_and_month": "Year and Month",
   "attendance": "Attendance",

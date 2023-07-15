@@ -1,14 +1,9 @@
-import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from '@mui/material'
-import { DesktopDatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import dayjs, { Dayjs } from 'dayjs';
+import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
-import { useNewPlanning } from '../../contexts/planningContext';
 import { useParams } from '../../contexts/paramsContext';
 import 'dayjs/locale/fr'
 import { useNewCalendar } from '../../contexts/calendarContext';
@@ -19,10 +14,8 @@ type PropType = {
 }
 function NewCalendar({ categoryID, modalProp }: PropType) {
     const { t, i18n } = useTranslation()
-    dayjs.locale(i18n.language);
 
     const [types, setTypes] = useState<string[]>([])
-    const [teams, setTeams] = useState<string[]>([])
     const [error, setError] = useState<string>("")
 
     const newCalendar = useNewCalendar()
@@ -30,7 +23,6 @@ function NewCalendar({ categoryID, modalProp }: PropType) {
 
     useEffect(() => {
         if (paramsContext) {
-            paramsContext("teams").then(res => setTeams(res as string[]))
             paramsContext("planning_types").then(res => setTypes(res as string[]))
         }
     }, [paramsContext])
@@ -39,10 +31,7 @@ function NewCalendar({ categoryID, modalProp }: PropType) {
     const handleSubmit = async ({ type, journey, local, visitor }: FormikValues) => {
         if (newCalendar != null) {
             await newCalendar({
-                category_id: categoryID, calendar_type: type,
-                journey: journey,
-                local: local,
-                visitor: visitor
+                category_id: categoryID, calendar_type: type
             })
                 .then(() => {
                     modalProp.setModalIsOpen()
@@ -57,10 +46,7 @@ function NewCalendar({ categoryID, modalProp }: PropType) {
     const formik = useFormik({
         initialValues: {
             date: "",
-            type: "",
-            journey: 0,
-            local: "",
-            visitor: ""
+            type: ""
         },
         onSubmit: handleSubmit
     })
@@ -94,34 +80,6 @@ function NewCalendar({ categoryID, modalProp }: PropType) {
                         >
                             {types.map((type) => (
                                 <MenuItem key={type} value={type}>{type}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-
-                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
-                        <InputLabel>{t("local")}</InputLabel>
-                        <Select
-                            value={formik.values.local}
-                            label={t("local")}
-                            required
-                            onChange={(e) => formik.setFieldValue("local", e.target.value)}
-                        >
-                            {teams.map((team) => (
-                                <MenuItem key={team} value={team}>{team}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-
-                    <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
-                        <InputLabel>{t("visitor")}</InputLabel>
-                        <Select
-                            value={formik.values.visitor}
-                            label={t("visitor")}
-                            required
-                            onChange={(e) => formik.setFieldValue("visitor", e.target.value)}
-                        >
-                            {teams.map((team) => (
-                                <MenuItem key={team} value={team}>{team}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>

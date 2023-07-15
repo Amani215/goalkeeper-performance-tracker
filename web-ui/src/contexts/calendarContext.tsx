@@ -56,10 +56,7 @@ export default function CalendarProvider(props: PropsWithChildren<{}>): JSX.Elem
             },
             body: JSON.stringify({
                 category_id: newCalendarObj.category_id,
-                type: newCalendarObj.calendar_type,
-                journey: newCalendarObj.journey,
-                local: newCalendarObj.local,
-                visitor: newCalendarObj.visitor
+                type: newCalendarObj.calendar_type
             })
         })
             .then(data => data.json())

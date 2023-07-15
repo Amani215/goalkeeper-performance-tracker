@@ -19,19 +19,6 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
     // Columns
     const columns: GridColDef[] = [
         {
-            field: 'calendar_type',
-            headerName: `${t("type")}`,
-            headerAlign: 'left',
-            flex: 2,
-            minWidth: 60,
-            align: "left",
-            renderCell: (params) => {
-                return (
-                    <Typography>{params.row.calendar_type}</Typography>
-                );
-            }
-        },
-        {
             field: 'journey',
             headerName: `${t("journey")}`,
             headerAlign: 'left',
@@ -138,13 +125,21 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
 
             {calendarList.length > 0 ?
                 <div style={{ display: 'flex' }}>
-                    <div style={{ height: 400, width: '100%', flexGrow: 1 }}>
-                        <DataGrid
-                            rows={calendarList || []}
-                            columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                        />
+                    <div style={{ width: '100%', flexGrow: 1 }}>
+                        {calendarList.map((calendar) => (
+                            <Box
+                                key={calendar.calendar_type}
+                            // sx={{ marginBottom: 2 }}
+                            >
+                                <Typography>{calendar.calendar_type}</Typography>
+                                <DataGrid
+                                    rows={calendar.items || []}
+                                    columns={columns}
+                                    pageSize={5}
+                                    rowsPerPageOptions={[5]}
+                                />
+                            </Box>
+                        ))}
                     </div>
                 </div> :
                 <Box

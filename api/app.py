@@ -82,6 +82,7 @@ def setup_database(_db, _app):
         from model.growth_monitoring import growth_monitoring
         from model.planning import Planning
         from model.calendar import Calendar
+        from model.calendar_item import CalendarItem
 
         _db.create_all()
         set_default_user()

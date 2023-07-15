@@ -18,7 +18,7 @@ import service.growth_monitoring as growth_monitoring_service
 import service.match_monitoring as match_monitoring_service
 import service.training_monitoring as training_monitoring_service
 from service.planning import add_planning
-from service.calendar import add_calendar
+from service.calendar import add_calendar, add_calendar_item
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
@@ -116,10 +116,15 @@ def planning(category):
 
 @pytest.fixture()
 def calendar(category):
-    '''Create a mock calendar record'''
-    return add_calendar(random_string.generate(4), 2,
-                        random_string.generate(4), random_string.generate(4),
-                        category.id)
+    '''Create a mock calendar'''
+    return add_calendar(random_string.generate(4), category.id)
+
+
+@pytest.fixture()
+def calendar_item(calendar):
+    '''Create a mock calendar item'''
+    return add_calendar_item(calendar.id, 3, random_string.generate(4),
+                             random_string.generate(4))
 
 
 @pytest.fixture()

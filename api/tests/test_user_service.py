@@ -78,6 +78,23 @@ def test_get_by_id(app, user):
     assert 'error' in response
 
 
+def test_get_by_archived(app, user):
+    '''Test get users given their archived attribute'''
+    users = user_service.get_by_archived(False)
+    assert len([i.serialize for i in users]) == 2  # includes default admin
+
+    users = user_service.get_by_archived(True)
+    assert len([i.serialize for i in users]) == 0
+
+    user_service.set_archived(user.username, True, "")
+
+    users = user_service.get_by_archived(False)
+    assert len([i.serialize for i in users]) == 1
+
+    users = user_service.get_by_archived(True)
+    assert len([i.serialize for i in users]) == 1
+
+
 def test_verify_user(app):
     ''' Test user verification (login) '''
     user = {

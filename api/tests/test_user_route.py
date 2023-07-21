@@ -68,6 +68,16 @@ def test_get_users(client, authenticated_user):
     assert response.status_code == 400
     assert 'error' in response.json
 
+    ### GET BY ARCHIVED
+    archived_url = URL + '?archived='
+    response = client.get(archived_url + 'True', headers=headers)
+    assert sum(1 for _ in range(len(response.json))) == 0
+    assert response.status_code == 200
+
+    response = client.get(archived_url + 'False', headers=headers)
+    assert sum(1 for _ in range(len(response.json))) == 2
+    assert response.status_code == 200
+
 
 @pytest.mark.parametrize(['admin'], [[True]])
 def test_add_user(client, json_headers):

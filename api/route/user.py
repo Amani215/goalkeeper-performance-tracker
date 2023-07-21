@@ -52,6 +52,12 @@ def get_users(current_user: User):
             user = user_service.get_by_id(args.get("id"))
         elif args.get('username') is not None:
             user = user_service.get_by_username(args.get('username'))
+        elif args.get('archived') is not None:
+            if args.get('archived').upper() == 'TRUE':
+                users = user_service.get_by_archived(True)
+            elif args.get('archived').upper() == 'FALSE':
+                users = user_service.get_by_archived(False)
+            return jsonify([i.serialize for i in users])
         else:
             users = user_service.get_users()
             return jsonify([i.serialize for i in users])

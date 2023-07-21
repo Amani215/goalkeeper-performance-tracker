@@ -55,6 +55,14 @@ def get_by_id(user_id):
         return {'error': str(err)}
 
 
+def get_by_archived(archived: bool):
+    '''Get users given their archived attribute'''
+    try:
+        return User.query.filter_by(archived=archived)
+    except SQLAlchemyError as err:
+        return {'error': str(err)}
+
+
 def verify_user(username: str, password: str):
     '''Verify if the user exists and has the correct password
     

@@ -99,6 +99,19 @@ def set_password(user_id, password: str):
     return user
 
 
+def set_archived(username: str, archived: bool, reason: str):
+    '''Update the archived status of the user and its reason'''
+    if username == os.environ['ADMIN_USERNAME']:
+        raise PermissionError('Default admin cannot be changed')
+
+    user = get_by_username(username)
+    user.archived = archived
+    user.archive_reason = reason
+    db.session.commit()
+
+    return user
+
+
 def get_categories(user_id):
     '''Get categories of the given user'''
     try:

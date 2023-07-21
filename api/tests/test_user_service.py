@@ -125,6 +125,13 @@ def test_set_password(app, user):
     assert 'token' in response
 
 
+def test_set_password(app, user):
+    '''Test set the archived status of the user'''
+    assert user.archived == False
+    user_service.set_archived(user.username, True, random_string.generate(20))
+    assert user.archived == True
+
+
 def test_delete_profile_pic(app, user):
     '''Test delete profile pic'''
     user_service.delete_profile_pic(user)

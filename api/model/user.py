@@ -20,6 +20,8 @@ class User(db.Model):
                                  secondary=trainer_categories,
                                  lazy='subquery',
                                  back_populates="trainers")
+    archived = Column(BOOLEAN, nullable=False, default=False)
+    archive_reason = Column(String(128), unique=False, nullable=True)
 
     def __init__(self, username, password, admin):
         self.username = username
@@ -39,5 +41,7 @@ class User(db.Model):
             'username': self.username,
             'admin': self.admin,
             'profile_pic': pp,
-            'first_login': self.first_login
+            'first_login': self.first_login,
+            'archived': self.archived,
+            'archive_reason': self.archive_reason
         }

@@ -20,7 +20,7 @@ class User(db.Model):
                                  secondary=trainer_categories,
                                  lazy='subquery',
                                  back_populates="trainers")
-    archived = Column(BOOLEAN, nullable=False, default=False)
+    archived = Column(BOOLEAN, default=False)
     archive_reason = Column(String(128), unique=False, nullable=True)
 
     def __init__(self, username, password, admin):

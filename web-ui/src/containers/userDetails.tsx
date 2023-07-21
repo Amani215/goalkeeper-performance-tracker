@@ -194,12 +194,6 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
                                 justifyContent="center"
                                 alignItems="center"
                                 mb={1}>
-                                <Typography
-                                    variant='subtitle2'
-                                    sx={{ fontStyle: 'italic' }}
-                                    ml={1} mt={1}>
-                                    UID: {id}
-                                </Typography>
                                 {isCurrentUser ?
                                     <Button component="label">
                                         {t("change_pic")}

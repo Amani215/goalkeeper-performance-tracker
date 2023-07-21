@@ -4,7 +4,7 @@ import { MdAdd, MdDelete } from 'react-icons/md';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CalendarDTO } from '../../DTOs/CalendarDTO';
-import { useDeleteCalendar, useDeleteCalendarError } from '../../contexts/calendarContext';
+import { useDeleteCalendar, useDeleteCalendarError, useDeleteCalendarItem, useDeleteCalendarItemError } from '../../contexts/calendarContext';
 import NewCalendar from '../../containers/modals/newCalendar';
 import NewCalendarItem from '../../containers/modals/newCalendarItem';
 
@@ -68,7 +68,7 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
             renderCell: (params) => {
                 return (
                     <Box>
-                        <IconButton title='Delete' onClick={() => handleOpenDeleteDialog(params.row.id)}>
+                        <IconButton title='Delete' onClick={() => handleOpenDeleteJourneyDialog(params.row.id)}>
                             <MdDelete />
                         </IconButton>
                     </Box>
@@ -118,6 +118,30 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
         setCalendarID("")
         setAddJourneyModalIsOpen(false)
     }
+
+    // Delete Journey Dialog
+    const [deleteJourneyDialogIsOpen, setDeleteJourneyDialogIsOpen] = useState<boolean>(false)
+    const [journeyToDelete, setJourneyToDelete] = useState<string>("")
+
+    const deleteJourney = useDeleteCalendarItem()
+    const deleteJourneyError = useDeleteCalendarItemError()
+
+    const handleOpenDeleteJourneyDialog = (calendarID: string) => {
+        setJourneyToDelete(calendarID)
+        setDeleteJourneyDialogIsOpen(true);
+    };
+
+    const handleCloseDeleteJourneyDialog = () => {
+        setJourneyToDelete("")
+        setDeleteJourneyDialogIsOpen(false);
+    };
+
+    const handleDeleteJourney = async () => {
+        if (deleteJourney) {
+            await deleteJourney(journeyToDelete).then(() => setDeleteJourneyDialogIsOpen(false))
+        }
+    }
+
     return (
         <>
             <Box
@@ -198,8 +222,6 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
             <Dialog
                 open={deleteDialogIsOpen}
                 onClose={handleCloseDeleteDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
                     {t("are_you_sure")}
@@ -219,6 +241,32 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+
+            {/* DELETE JOURNEY*/}
+            <Dialog
+                open={deleteJourneyDialogIsOpen}
+                onClose={handleCloseDeleteJourneyDialog}
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {t("are_you_sure")}
+                </DialogTitle>
+                <DialogContent>
+                    {deleteJourneyError != "" ?
+                        <Alert severity='error' sx={{ marginBottom: 1 }}>{deleteJourneyError}</Alert>
+                        : <></>}
+                    <DialogContentText id="alert-dialog-description">
+                        {t("deleting_journey_warning")}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDeleteJourneyDialog}>{t("cancel")}</Button>
+                    <Button onClick={handleDeleteJourney} autoFocus>
+                        {t("yes")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
 
             <NewCalendar
                 categoryID={categoryID} modalProp={{

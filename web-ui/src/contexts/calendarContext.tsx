@@ -54,12 +54,30 @@ export function useAddCalendarItemError() {
     return useContext(addCalendarItemErrorContext);
 }
 
+// DELETE CALENDAR ITEM CONTEXTS
+type DeleteCalendarItemDelegate = (calendarItemID: string) => Promise<null>;
+const deleteCalendarItemContext = createContext<DeleteCalendarItemDelegate | null>(null);
+export function useDeleteCalendarItem() {
+    return useContext(deleteCalendarItemContext);
+}
+
+const calendarItemDeletedContext = createContext<boolean>(false);
+export function useCalendarItemDeleted() {
+    return useContext(calendarItemDeletedContext);
+}
+
+const deleteCalendarItemErrorContext = createContext<string>("");
+export function useDeleteCalendarItemError() {
+    return useContext(deleteCalendarItemErrorContext);
+}
+
 // PROVIDER
 export default function CalendarProvider(props: PropsWithChildren<{}>): JSX.Element {
     const [error, setError] = useState<string>("")
     const [calendarDeleted, setCalendarDeleted] = useState<boolean>(false)
     const [calendarAdded, setCalendarAdded] = useState<boolean>(false)
     const [calendarItemAdded, setCalendarItemAdded] = useState<boolean>(false)
+    const [calendarItemDeleted, setCalendarItemDeleted] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -137,6 +155,27 @@ export default function CalendarProvider(props: PropsWithChildren<{}>): JSX.Elem
             })
     }
 
+    const deleteCalendarItem: DeleteCalendarItemDelegate = async (calendarItemID: string) => {
+        setError("")
+        setCalendarItemDeleted(false)
+        return fetch("/api/calendar/item?id=" + calendarItemID, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            }
+        })
+            .then(data => {
+                if (data.status == 204) {
+                    setCalendarItemDeleted(true)
+                } else {
+                    setCalendarItemDeleted(false)
+                    setError("Could not delete this object")
+                }
+                return null
+            })
+    }
+
     type contextProvider = {
         ctx: React.Context<any>,
         value: any
@@ -173,7 +212,19 @@ export default function CalendarProvider(props: PropsWithChildren<{}>): JSX.Elem
         {
             ctx: addCalendarItemErrorContext,
             value: error
-        }
+        },
+        {
+            ctx: deleteCalendarItemContext,
+            value: deleteCalendarItem
+        },
+        {
+            ctx: calendarItemDeletedContext,
+            value: calendarItemDeleted
+        },
+        {
+            ctx: deleteCalendarItemErrorContext,
+            value: error
+        },
     ]
 
     return (

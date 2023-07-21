@@ -148,7 +148,7 @@ def delete_calendar_item(current_user: User):
         if item.calendar.calendar_category not in current_user.categories:
             raise PermissionError(NOT_EDITABLE_MESSAGE)
 
-        calendar_service.delete_calendar_item(args.get('id'))
+        calendar_service.delete_item(args.get('id'))
         return {}, 204
     except PermissionError as err:
         return {'error': str(err)}, 401

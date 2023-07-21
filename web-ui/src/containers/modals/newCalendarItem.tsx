@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useParams } from '../../contexts/paramsContext';
@@ -43,7 +43,7 @@ function NewCalendarItem({ calendarID, modalProp }: PropType) {
         initialValues: {
             local: '',
             visitor: '',
-            journey: ''
+            journey: 1
         },
         onSubmit: handleSubmit
     })
@@ -52,8 +52,6 @@ function NewCalendarItem({ calendarID, modalProp }: PropType) {
         <Modal
             open={modalProp.modalIsOpen}
             onClose={modalProp.setModalIsOpen}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -64,6 +62,20 @@ function NewCalendarItem({ calendarID, modalProp }: PropType) {
                     onSubmit={formik.handleSubmit}
                     sx={{ mt: 1 }}
                 >
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                        label={t("journey")}
+                        name="journey"
+                        autoComplete="journey"
+                        value={formik.values.journey}
+                        onChange={formik.handleChange}
+                        autoFocus
+                        error={formik.touched.journey && Boolean(formik.errors.journey)}
+                        helperText={formik.touched.journey && formik.errors.journey}
+                    />
 
                     <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
                         <InputLabel id="demo-simple-select-label">{t("local")}</InputLabel>

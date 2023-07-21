@@ -165,7 +165,7 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
                         {calendarList.map((calendar) => (
                             <Box
                                 key={calendar.calendar_type}
-                                sx={{ height: 400, marginBottom: 6 }}
+                                sx={{ height: 375, marginBottom: 6 }}
                             >
                                 <Box
                                     display="flex"

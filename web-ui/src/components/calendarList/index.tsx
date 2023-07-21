@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
-import { MdDelete } from 'react-icons/md';
+import { MdAdd, MdDelete } from 'react-icons/md';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CalendarDTO } from '../../DTOs/CalendarDTO';
@@ -111,9 +111,8 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
                 display="flex"
                 flexDirection="row"
                 justifyContent="space-between"
-                mt={3}
-                mb={1}>
-                <Typography fontWeight="bold" mt={2} mb={1}>{t("calendars")}</Typography>
+                mt={1} mb={3}>
+                <Typography variant='h6' fontWeight="bold">{t("calendars")}</Typography>
 
                 <Button
                     disabled={archived}
@@ -129,9 +128,23 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
                         {calendarList.map((calendar) => (
                             <Box
                                 key={calendar.calendar_type}
-                            // sx={{ marginBottom: 2 }}
+                                sx={{ height: 400, marginBottom: 6 }}
                             >
-                                <Typography>{calendar.calendar_type}</Typography>
+                                <Box
+                                    display="flex"
+                                    flexDirection="row"
+                                    justifyContent="space-between">
+                                    <Typography fontWeight="bold">{calendar.calendar_type}</Typography>
+
+                                    <Button
+                                        startIcon={<MdAdd />}
+                                        disabled={archived}
+                                        variant="text"
+                                        onClick={() => { }}
+                                    >{t("add")} {t("journey")}
+                                    </Button>
+                                </Box>
+
                                 <DataGrid
                                     rows={calendar.items || []}
                                     columns={columns}

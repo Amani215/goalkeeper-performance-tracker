@@ -23,7 +23,7 @@ function NewCalendar({ categoryID, modalProp }: PropType) {
 
     useEffect(() => {
         if (paramsContext) {
-            paramsContext("planning_types").then(res => setTypes(res as string[]))
+            paramsContext("calendar_types").then(res => setTypes(res as string[]))
         }
     }, [paramsContext])
 
@@ -71,10 +71,10 @@ function NewCalendar({ categoryID, modalProp }: PropType) {
                         <Alert severity='error' sx={{ marginBottom: 2 }}>{t("user_not_allowed")}</Alert>
                         : <></>}
                     <FormControl fullWidth sx={{ marginBottom: 1, marginTop: 1 }}>
-                        <InputLabel>{t("planning_type")}</InputLabel>
+                        <InputLabel>{t("calendar_type")}</InputLabel>
                         <Select
                             value={formik.values.type}
-                            label={t("planning_type")}
+                            label={t("calendar_type")}
                             required
                             onChange={(e) => formik.setFieldValue("type", e.target.value)}
                         >

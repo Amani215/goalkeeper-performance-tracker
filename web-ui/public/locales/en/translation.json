@@ -33,6 +33,9 @@
   "observation": "Observation",
 
   "calendars": "Calendars",
+  "journey": "Journey",
+  "calendar_types": "Calendar Types",
+  "calendar_type": "Calendar Type",
 
   "training": "Training",
   "year_and_month": "Year and Month",
@@ -110,6 +113,7 @@
   "add_match": "Add Match",
   "add_sequence": "Add Sequence",
   "add_planning": "Add Planning",
+  "add_calendar": "Add a Calendar",
   "update_feedback": "Update Feedback",
   "update_sequence": "Update Sequence",
   "update_attendance": "Update Attendance",
@@ -157,5 +161,8 @@
   "played_matches_details": "Details of Played Matches",
   "play_time_training_time": "Summary of Training and Match Play Times",
   "force_regenerate": "Force Regenerate",
-  "file_might_be_out_of_date": "This document gets generated every 12 hours. If you think it might be out of date, choose to 'Force Regenerate'."
+  "file_might_be_out_of_date": "This document gets generated every 12 hours. If you think it might be out of date, choose to 'Force Regenerate'.",
+
+  "match_settings": "Match Settings",
+  "general": "General"
 }

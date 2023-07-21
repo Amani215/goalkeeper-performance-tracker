@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Paper, Typography } from '@mui/material'
 import { MdExpandMore } from 'react-icons/md'
 import { useAuth } from '../contexts/authContext'
 import SettingsList from './settingsList'
@@ -22,11 +22,13 @@ function SettingsView() {
                         width: { xs: "100%", md: "70%" }
                     }}
                 >
+                    {/* GENERAL SETTINGS */}
+                    <Box sx={{ marginTop: 2, marginBottom: 1 }}>
+                        <Typography variant='h6'>{t("general")}</Typography>
+                    </Box>
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("teams")}</Typography>
                         </AccordionSummary>
@@ -37,8 +39,6 @@ function SettingsView() {
                     <Accordion >
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("category_names")}</Typography>
                         </AccordionSummary>
@@ -49,8 +49,6 @@ function SettingsView() {
                     <Accordion >
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("seasons")}</Typography>
                         </AccordionSummary>
@@ -61,8 +59,31 @@ function SettingsView() {
                     <Accordion >
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
+                        >
+                            <Typography>{t("calendar_types")}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="calendar_types" />
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
+                        >
+                            <Typography>{t("attendance")}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <SettingsList itemsName="attendance" />
+                        </AccordionDetails>
+                    </Accordion>
+
+                    {/* MATCH SETTINGS */}
+                    <Box sx={{ marginTop: 2, marginBottom: 1 }}>
+                        <Typography variant='h6'>{t("matches")}</Typography>
+                    </Box>
+                    <Accordion >
+                        <AccordionSummary
+                            expandIcon={<MdExpandMore />}
                         >
                             <Typography>{t("match_types")}</Typography>
                         </AccordionSummary>
@@ -73,8 +94,6 @@ function SettingsView() {
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("locations")}</Typography>
                         </AccordionSummary>
@@ -85,8 +104,6 @@ function SettingsView() {
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("action_types")}</Typography>
                         </AccordionSummary>
@@ -97,8 +114,6 @@ function SettingsView() {
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("reaction_types")}</Typography>
                         </AccordionSummary>
@@ -109,8 +124,6 @@ function SettingsView() {
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("action_result")}</Typography>
                         </AccordionSummary>
@@ -118,25 +131,15 @@ function SettingsView() {
                             <SettingsList itemsName="action_result" />
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            <Typography>{t("attendance")}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <SettingsList itemsName="attendance" />
-                        </AccordionDetails>
-                    </Accordion>
+
 
                     {/* PLANNING SETTINGS */}
+                    <Box sx={{ marginTop: 2, marginBottom: 1 }}>
+                        <Typography variant='h6'>{t("planning")}</Typography>
+                    </Box>
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("planning_types")}</Typography>
                         </AccordionSummary>
@@ -147,8 +150,6 @@ function SettingsView() {
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("techniques")}</Typography>
                         </AccordionSummary>
@@ -159,8 +160,6 @@ function SettingsView() {
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("physiques")}</Typography>
                         </AccordionSummary>
@@ -171,8 +170,6 @@ function SettingsView() {
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("psychomotricity")}</Typography>
                         </AccordionSummary>
@@ -183,8 +180,6 @@ function SettingsView() {
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<MdExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
                         >
                             <Typography>{t("tactics")}</Typography>
                         </AccordionSummary>

@@ -4,6 +4,12 @@
   "locations": ["Tunis", "Sousse", "Jerba"],
   "results": ["Won", "Defeat", "Null"],
   "match_types": ["Friendly", "Tournament", "Training"],
+  "calendar_types": [
+    "Championnat",
+    "Playoff",
+    "Super Playoff",
+    "Coupe de la ligue"
+  ],
   "category_names": ["Seniors", "Juniors", "Academy", "Cadets A", "Cadets B"],
   "seasons": ["2021-2022", "2022-2023", "2023-2024"],
   "action_types": [

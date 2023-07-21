@@ -13,7 +13,7 @@ import { PlanningDTO } from '../DTOs/PlanningDTO';
 import { usePlanningAdded, usePlanningDeleted, usePlanningUpdated } from '../contexts/planningContext';
 import CalendarList from '../components/calendarList';
 import { CalendarDTO } from '../DTOs/CalendarDTO';
-import { useCalendarAdded, useCalendarDeleted } from '../contexts/calendarContext';
+import { useCalendarAdded, useCalendarDeleted, useCalendarItemAdded } from '../contexts/calendarContext';
 
 function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const { id } = useParams();
@@ -55,6 +55,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
     const calendarsReady = useCalendarsReady()
     const calendarAdded = useCalendarAdded()
     const calendarDeleted = useCalendarDeleted()
+    const calendarItemAdded = useCalendarItemAdded()
 
     // INIT PAGE
     useEffect(
@@ -112,7 +113,7 @@ function CategoryDetails({ modal1, modal2 }: MultiModalProp) {
                     setCalendarRows(data as CalendarDTO[])
             })
         }
-    }, [calendarsReady, calendarDeleted, calendarAdded])
+    }, [calendarsReady, calendarDeleted, calendarAdded, calendarItemAdded])
 
     // DELETE GOALKEEPER
     const [goalkeeperToDelete, setGoalkeeperToDelete] = useState<GoalkeeperDTO | null>(null)

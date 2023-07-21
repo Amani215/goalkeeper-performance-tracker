@@ -1,7 +1,7 @@
 import React, { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
-import { CalendarDTO, NewCalendarDTO } from '../DTOs/CalendarDTO';
+import { CalendarDTO, CalendarItemDTO, NewCalendarDTO, NewCalendarItemDTO } from '../DTOs/CalendarDTO';
 
 // ADD CALENDAR CONTEXTS
 type NewCalendarDelegate = (newCalendarObj: NewCalendarDTO) => Promise<CalendarDTO | errorResponse>;
@@ -37,11 +37,29 @@ export function useDeleteCalendarError() {
     return useContext(deleteCalendarErrorContext);
 }
 
+// ADD CALENDAR ITEM CONTEXTS
+type NewCalendarItemDelegate = (newCalendarItemObj: NewCalendarItemDTO) => Promise<CalendarItemDTO | errorResponse>;
+const newCalendarItemContext = createContext<NewCalendarItemDelegate | null>(null);
+export function useNewCalendarItem() {
+    return useContext(newCalendarItemContext);
+}
+
+const calendarItemAddedContext = createContext<boolean>(false);
+export function useCalendarItemAdded() {
+    return useContext(calendarItemAddedContext);
+}
+
+const addCalendarItemErrorContext = createContext<string>("");
+export function useAddCalendarItemError() {
+    return useContext(addCalendarItemErrorContext);
+}
+
 // PROVIDER
 export default function CalendarProvider(props: PropsWithChildren<{}>): JSX.Element {
     const [error, setError] = useState<string>("")
     const [calendarDeleted, setCalendarDeleted] = useState<boolean>(false)
     const [calendarAdded, setCalendarAdded] = useState<boolean>(false)
+    const [calendarItemAdded, setCalendarItemAdded] = useState<boolean>(false)
 
     const auth = useAuth()
     const token = auth?.token
@@ -92,6 +110,33 @@ export default function CalendarProvider(props: PropsWithChildren<{}>): JSX.Elem
             })
     }
 
+    const newCalendarItem: NewCalendarItemDelegate = (newCalendarItemObj: NewCalendarItemDTO) => {
+        setCalendarItemAdded(false)
+        return fetch("/api/calendar/item", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                calendar_id: newCalendarItemObj.calendar_id,
+                journey: newCalendarItemObj.journey,
+                local: newCalendarItemObj.local,
+                visitor: newCalendarItemObj.visitor
+            })
+        })
+            .then(data => data.json())
+            .then(data => {
+                if ("error" in data) {
+                    throw (data["error"])
+                    // return data as errorResponse
+                } else {
+                    setCalendarItemAdded(true)
+                    return data as CalendarItemDTO
+                }
+            })
+    }
+
     type contextProvider = {
         ctx: React.Context<any>,
         value: any
@@ -115,6 +160,18 @@ export default function CalendarProvider(props: PropsWithChildren<{}>): JSX.Elem
         },
         {
             ctx: deleteCalendarErrorContext,
+            value: error
+        },
+        {
+            ctx: newCalendarItemContext,
+            value: newCalendarItem
+        },
+        {
+            ctx: calendarItemAddedContext,
+            value: calendarItemAdded
+        },
+        {
+            ctx: addCalendarItemErrorContext,
             value: error
         }
     ]

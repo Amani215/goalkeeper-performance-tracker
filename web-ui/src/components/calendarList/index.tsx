@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { CalendarDTO } from '../../DTOs/CalendarDTO';
 import { useDeleteCalendar, useDeleteCalendarError } from '../../contexts/calendarContext';
 import NewCalendar from '../../containers/modals/newCalendar';
+import NewCalendarItem from '../../containers/modals/newCalendarItem';
 
 type PropType = {
     categoryID: string,
@@ -105,6 +106,18 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
     const handleOpenAddModal = () => setAddModalIsOpen(true)
     const handleCloseAddModal = () => setAddModalIsOpen(false)
 
+    // Add Journey Modal
+    const [addJourneyModalIsOpen, setAddJourneyModalIsOpen] = useState<boolean>(false)
+    const [calendarID, setCalendarID] = useState<string>("")
+
+    const handleOpenAddJourneyModal = (_calendarID: string) => {
+        setCalendarID(_calendarID)
+        setAddJourneyModalIsOpen(true)
+    }
+    const handleCloseAddJourneyModal = () => {
+        setCalendarID("")
+        setAddJourneyModalIsOpen(false)
+    }
     return (
         <>
             <Box
@@ -140,7 +153,7 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
                                         startIcon={<MdAdd />}
                                         disabled={archived}
                                         variant="text"
-                                        onClick={() => { }}
+                                        onClick={() => { handleOpenAddJourneyModal(calendar.id) }}
                                     >{t("add")} {t("journey")}
                                     </Button>
                                 </Box>
@@ -211,6 +224,12 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
                 categoryID={categoryID} modalProp={{
                     modalIsOpen: addModalIsOpen,
                     setModalIsOpen: handleCloseAddModal
+                }} />
+
+            <NewCalendarItem
+                calendarID={calendarID} modalProp={{
+                    modalIsOpen: addJourneyModalIsOpen,
+                    setModalIsOpen: handleCloseAddJourneyModal
                 }} />
         </>
     )

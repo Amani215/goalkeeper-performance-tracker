@@ -182,7 +182,7 @@ function PlanningList({ categoryID, archived, planningList }: PropType) {
                 justifyContent="space-between"
                 mt={3}
                 mb={1}>
-                <Typography fontWeight="bold" mt={2} mb={1}>{t("planning")}</Typography>
+                <Typography variant='h6' fontWeight="bold">{t("planning")}</Typography>
 
                 <Button
                     disabled={archived}

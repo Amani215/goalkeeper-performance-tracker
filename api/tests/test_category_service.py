@@ -182,14 +182,14 @@ def test_get_plannings(app, category):
     assert len(category_service.get_plannings(category.id)) == 2
 
 
-def test_get_calendars(app, category):
+def test_get_calendars(app, calendar):
     '''Test get the calendars of a specific category'''
-    assert len(category_service.get_calendars(category.id)) == 0
+    cid = calendar.calendar_category.id
+    assert len(category_service.get_calendars(cid)) == 1
 
-    add_calendar(random_string.generate(5), 3, random_string.generate(5),
-                 random_string.generate(5), category.id)
+    add_calendar(random_string.generate(5), cid)
 
-    assert len(category_service.get_calendars(category.id)) == 1
+    assert len(category_service.get_calendars(cid)) == 2
 
 
 def test_set_archived(app, category):

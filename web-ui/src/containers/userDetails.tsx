@@ -187,6 +187,19 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
                                     alt="Image by Stephanie Edwards from Pixabay"
                                     src={user?.profile_pic ? user.profile_pic : `${process.env.PUBLIC_URL}/assets/placeholder.png`}
                                 /></Box>
+                            {user?.archived ?
+                                <Box
+                                    display="flex"
+                                    flexDirection="column"
+                                    justifyContent="center"
+                                    alignItems="center">
+                                    <Typography
+                                        fontWeight="bold"
+                                        color="red"
+                                        mt={1}>{t("archived").toUpperCase()}</Typography>
+                                    <Typography>{user?.archive_reason}</Typography>
+                                </Box> : <></>
+                            }
 
                             <Box
                                 display="flex"

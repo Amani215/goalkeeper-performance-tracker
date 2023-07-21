@@ -4,6 +4,8 @@ export interface UserDTO {
   admin: boolean;
   profile_pic: string;
   first_login: boolean;
+  archived: boolean;
+  archive_reason: string;
 }
 
 export interface NewUserDTO {

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, FormControlLabel, Modal, Switch, Typography } from '@mui/material'
+import { Box, Button, FormControlLabel, Modal, Switch, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { UserDTO } from '../../DTOs/UserDTO';
-import { useUpdateUserStatus, useUser } from '../../contexts/userContext';
+import { useUpdateUserArchive, useUpdateUserStatus, useUser } from '../../contexts/userContext';
 import { useTranslation } from 'react-i18next';
 
 function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
@@ -14,6 +14,7 @@ function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const [user, setUser] = useState<UserDTO | null>(null)
     const userContext = useUser()
     const updateUserStatus = useUpdateUserStatus()
+    const updateUserArchived = useUpdateUserArchive()
 
     useEffect(() => { setLoaded(true) }, [])
 
@@ -23,9 +24,10 @@ function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
         }
     }, [loaded, userContext])
 
-    const handleSubmit = async ({ admin }: FormikValues): Promise<void> => {
-        if (updateUserStatus && user) {
+    const handleSubmit = async ({ admin, archived, archiveReason }: FormikValues): Promise<void> => {
+        if (updateUserStatus && updateUserArchived && user) {
             await updateUserStatus(user.username, admin)
+            await updateUserArchived(user.username, archived, archiveReason)
             setModalIsOpen()
         }
     }
@@ -33,6 +35,8 @@ function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const formik = useFormik({
         initialValues: {
             admin: false,
+            archived: false,
+            archiveReason: ""
         },
         onSubmit: handleSubmit
     })
@@ -41,8 +45,9 @@ function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
         if (user) {
             formik.setValues({
                 admin: user.admin,
-            }
-            );
+                archived: user.archived ? user.archived : false,
+                archiveReason: user.archive_reason ? user.archive_reason : ""
+            });
         }
     }, [user]);
 
@@ -62,7 +67,6 @@ function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
                     display="flex"
                     flexDirection="column"
                 >
-
                     <FormControlLabel
                         control={
                             <Switch
@@ -73,6 +77,35 @@ function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
                         }
                         label="Admin"
                     />
+
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                name="archived"
+                                onChange={formik.handleChange}
+                                checked={formik.values.archived}
+                            />
+                        }
+                        label={t("archived")}
+                    />
+
+                    {formik.values.archived ?
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            id="archiveReason"
+                            label={t("archive_reason")}
+                            name="archiveReason"
+                            autoComplete="archiveReason"
+                            value={formik.values.archiveReason}
+                            onChange={formik.handleChange}
+                            autoFocus
+                            error={formik.touched.archiveReason && Boolean(formik.errors.archiveReason)}
+                            helperText={formik.touched.archiveReason && formik.errors.archiveReason}
+                        />
+                        : <></>
+                    }
+
                     <Button
                         type="submit"
                         fullWidth

@@ -10,6 +10,8 @@
   "status": "Status",
   "associated_categories": "Associated Categories",
   "profile_pic": "Profile Pic",
+  "archived": "Archived",
+  "archive_reason": "Reason for Archiving",
 
   "goalkeeper": "Goalkeeper",
   "name": "Name",

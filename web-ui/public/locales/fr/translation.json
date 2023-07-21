@@ -10,6 +10,8 @@
   "status": "Statut",
   "associated_categories": "Catégories Associées",
   "profile_pic": "Photo de Profil",
+  "archived": "Archivé",
+  "archive_reason": "Raison d'archive",
 
   "goalkeeper": "Gardien de But",
   "name": "Nom",

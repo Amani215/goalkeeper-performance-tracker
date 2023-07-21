@@ -56,6 +56,13 @@ export function useUserUpdated() {
     return useContext(userUpdatedContext);
 }
 
+// UPDATE ARCHIVED STATUS CONTEXT
+type UpdateUserArchiveDelegate = (id: string, archived: boolean, archive_reason: string) => Promise<UserDTO | errorResponse>;
+const updateUserArchiveContext = createContext<UpdateUserArchiveDelegate | null>(null);
+export function useUpdateUserArchive() {
+    return useContext(updateUserArchiveContext);
+}
+
 // UPDATE PASSWORD CONTEXT
 type UpdateUserPasswordDelegate = (id: string, password: string) => Promise<UserDTO | errorResponse>;
 const updateUserPasswordContext = createContext<UpdateUserPasswordDelegate | null>(null);
@@ -158,6 +165,35 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
         }
     }
 
+    const updateUserArchive: UpdateUserArchiveDelegate = async (username: string, archived: boolean, archive_reason: string) => {
+        const data = await fetch("/api/user/archived", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            body: JSON.stringify({
+                username: username,
+                archived: archived,
+                reason: archive_reason
+            })
+        });
+        const json_data = await data.json();
+        if ('id' in json_data) {
+            setUserReady(true);
+            setError(false);
+            setUser(json_data as UserDTO)
+            setUserUpdated(true)
+            return json_data as UserDTO;
+        }
+        else {
+            setError(true);
+            setUserReady(true);
+            setUser(null)
+            return json_data as errorResponse;
+        }
+    }
+
     const updateUserPassword: UpdateUserPasswordDelegate = async (user_id: string, password: string) => {
         const data = await fetch("/api/user?id=" + user_id, {
             method: "PUT",
@@ -192,15 +228,17 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
                     <userReadyContext.Provider value={userReady}>
                         <updateProfilePicContext.Provider value={profile_pic}>
                             <updateUserStatusContext.Provider value={updateUserStatus}>
-                                <userUpdatedContext.Provider value={userUpdated}>
-                                    <userCategoriesContext.Provider value={categories}>
-                                        <userCategoriesReadyContext.Provider value={userCategoriesReady}>
-                                            <updateUserPasswordContext.Provider value={updateUserPassword}>
-                                                {props.children}
-                                            </updateUserPasswordContext.Provider>
-                                        </userCategoriesReadyContext.Provider>
-                                    </userCategoriesContext.Provider>
-                                </userUpdatedContext.Provider>
+                                <updateUserArchiveContext.Provider value={updateUserArchive}>
+                                    <userUpdatedContext.Provider value={userUpdated}>
+                                        <userCategoriesContext.Provider value={categories}>
+                                            <userCategoriesReadyContext.Provider value={userCategoriesReady}>
+                                                <updateUserPasswordContext.Provider value={updateUserPassword}>
+                                                    {props.children}
+                                                </updateUserPasswordContext.Provider>
+                                            </userCategoriesReadyContext.Provider>
+                                        </userCategoriesContext.Provider>
+                                    </userUpdatedContext.Provider>
+                                </updateUserArchiveContext.Provider>
                             </updateUserStatusContext.Provider>
                         </updateProfilePicContext.Provider>
                     </userReadyContext.Provider>

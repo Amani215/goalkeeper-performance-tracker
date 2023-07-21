@@ -128,8 +128,11 @@ def test_set_password(app, user):
 def test_set_password(app, user):
     '''Test set the archived status of the user'''
     assert user.archived == False
-    user_service.set_archived(user.username, True, random_string.generate(20))
+
+    reason = random_string.generate(20)
+    user_service.set_archived(user.username, True, reason)
     assert user.archived == True
+    assert user.archive_reason == reason
 
 
 def test_delete_profile_pic(app, user):

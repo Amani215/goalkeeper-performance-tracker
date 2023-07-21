@@ -15,6 +15,7 @@ PROFILE_PIC_URL = '/user/profile_pic'
 ADMIN_URL = '/user/admin'
 CATEGORY_URL = '/user/category'
 USERNAME_URL = '/user?username='
+ARCHIVED_URL = '/user/archived'
 
 
 def test_no_token(client):
@@ -217,6 +218,24 @@ def test_set_admin(client, json_headers, user):
                           headers=json_headers)
     assert response.status_code == 401
     assert 'Default admin cannot be changed' in response.json['error']
+
+
+@pytest.mark.parametrize(['admin'], [[True]])
+def test_set_archived(client, json_headers, user):
+    '''Test setting a user to archived'''
+    test_data = {
+        'username': user.username,
+        'archived': True,
+        'reason': random_string.generate(20)
+    }
+    response = client.put(ARCHIVED_URL,
+                          data=json.dumps(test_data),
+                          headers=json_headers)
+    assert response.status_code == 200
+
+    response = client.get(USERNAME_URL + user.username, headers=json_headers)
+    assert response.json['archived'] == True
+    assert response.json['archive_reason'] == test_data['reason']
 
 
 @pytest.mark.parametrize(['admin'], [[True]])

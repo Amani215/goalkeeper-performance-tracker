@@ -85,6 +85,29 @@ def set_admin(current_user: User):
         return {'error': str(err)}, 400
 
 
+@user_api.route('/user/archived', methods=['PUT'])
+@token_required(admin=True)
+def set_archived(current_user: User):
+    '''Update the archived status of a given user
+    
+    Only the admin has this right and the admin's default status cannot be changed'''
+
+    try:
+        if not request.json:
+            raise ValueError(NO_DATA_PROVIDED_MESSAGE)
+        username = request.json['username']
+        archived = request.json['archived']
+        reason = request.json['reason']
+
+        user_response = user_service.set_archived(username, archived, reason)
+        return user_response.serialize, 200
+
+    except PermissionError as err:
+        return {'error': str(err)}, 401
+    except Exception as err:
+        return {'error': str(err)}, 400
+
+
 @user_api.route('/user/category', methods=['GET'])
 @token_required(admin=False)
 def get_categories(current_user: User):

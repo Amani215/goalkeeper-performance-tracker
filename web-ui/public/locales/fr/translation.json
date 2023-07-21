@@ -145,6 +145,7 @@
   "deleting_goalkeeper_training_warning": "En cliquant oui, vous allez supprimer ce gardien de cet entrainement pour toujours.",
   "deleting_training_warning": "En cliquant oui, vous allez supprimer cet entrainement pour toujours.",
   "deleting_planning_warning": "En cliquant oui, vous allez supprimer cette journée pour toujours.",
+  "deleting_journey_warning": "En cliquant oui, vous allez supprimer cette journée pour toujours.",
   "yes": "Oui",
   "cancel": "Annuler",
 

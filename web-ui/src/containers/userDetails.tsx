@@ -1,14 +1,10 @@
-import { Chip, Link, List, ListItem, ListItemText, Typography } from '@mui/material'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
+import { Chip, Link, Typography, Box, Button, Card, Grid } from '@mui/material'
+import { IoFootball } from "react-icons/io5"
 import { useAuth } from '../contexts/authContext'
 import { useUpdateProfilePic, useGetUser, useUserCategories, useUserCategoriesReady, useUserError, useUserReady, useUserUpdated } from '../contexts/userContext'
 import { CategoryDTO, UserDTO } from '../DTOs'
-import { IoFootball } from "react-icons/io5"
 import { ModalProp } from '../interfaces/modalProp'
 import { useTranslation } from 'react-i18next'
 
@@ -39,18 +35,26 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
     )
 
     useEffect(() => {
-        if (userContext) {
-            userContext(id ? id : "").then(
-                data => setUser(data as UserDTO)
-            )
+        const fetchUser = async () => {
+            try {
+                if (userContext) {
+                    const data = await userContext(id ?? "")
+                    setUser(data as UserDTO)
+                }
+            } catch (error) {
+                console.error("Error fetching user data: ", error)
+            }
         }
+
+        fetchUser()
+
         if (loaded && userReady && userError) {
             setError("No user Found.")
         }
         if (loaded && userReady && !userError) {
             setError("")
         }
-    }, [loaded, userReady, userError, userUpdated, id])
+    }, [userReady, userError, userUpdated, id])
 
     useEffect(() => {
         if (auth && auth.user.id == id) {
@@ -59,12 +63,19 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
     }, [auth, user])
 
     useEffect(() => {
-        if (categoriesContext) {
-            categoriesContext(id ? id : "").then((data) => {
-                if (categoriesReady)
-                    setCategories(data as CategoryDTO[])
-            })
+        const fetchCategories = async () => {
+            try {
+                if (categoriesContext) {
+                    const data = await categoriesContext(id ?? "")
+                    if (categoriesReady)
+                        setCategories(data as CategoryDTO[])
+                }
+            } catch (error) {
+                console.error("Error fetching user data: ", error)
+            }
         }
+
+        fetchCategories()
     }, [categoriesReady])
 
     const uploadPicture = (e: ChangeEvent<HTMLInputElement>) => {

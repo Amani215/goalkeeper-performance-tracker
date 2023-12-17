@@ -1,24 +1,15 @@
-import { Chip, Link, Typography } from '@mui/material'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
-import dayjs from 'dayjs'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
-import { useGetGoalkeeper, useGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperGrowthContext, useGoalkeeperGrowthReady, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useGoalkeeperTrainings, useGoalkeeperTrainingsReady, useGoalkeeperUpdated, useUpdatePicture } from '../contexts/goalkeeperContext'
-import { GoalkeeperDTO } from '../DTOs/GoalkeeperDTO'
+import { Chip, Link, Typography, Box, Button, Card, Grid } from '@mui/material'
+import { GridColDef, DataGrid } from '@mui/x-data-grid'
 import { IoFootball } from "react-icons/io5"
-import { CategoryDTO } from '../DTOs'
-import { DataGrid } from '@mui/x-data-grid/DataGrid'
-import { GridColDef } from '@mui/x-data-grid'
-import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO'
-import { TrainingMonitoringDTO } from '../DTOs/TrainingMonitoringDTO'
-import { GrowthDTO } from '../DTOs/GrowthDTO'
-import GrowthList from '../components/growthList'
-import { useGrowthAdded, useGrowthDeleted, useGrowthUpdated } from '../contexts/growthContext'
-import { useTranslation } from 'react-i18next'
+import dayjs from 'dayjs'
 import { ModalProp } from '../interfaces/modalProp'
+import GrowthList from '../components/growthList'
+import { useGetGoalkeeper, useGoalkeeperCategories, useGoalkeeperCategoriesReady, useGoalkeeperError, useGoalkeeperGrowthContext, useGoalkeeperGrowthReady, useGoalkeeperMatches, useGoalkeeperMatchesReady, useGoalkeeperReady, useGoalkeeperTrainings, useGoalkeeperTrainingsReady, useGoalkeeperUpdated, useUpdatePicture } from '../contexts/goalkeeperContext'
+import { useGrowthAdded, useGrowthDeleted, useGrowthUpdated } from '../contexts/growthContext'
+import { CategoryDTO, GoalkeeperDTO, MatchMonitoringDTO, TrainingMonitoringDTO, GrowthDTO } from '../DTOs'
+import { useTranslation } from 'react-i18next'
 
 function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
     const { id } = useParams();
@@ -165,58 +156,91 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
     useEffect(() => { setLoaded(true) }, [])
 
     useEffect(() => {
-        if (goalkeeperContext) {
-            goalkeeperContext(id ? id : "").then(
-                data => {
+        const fetchGoalkeeper = async () => {
+            try {
+                if (goalkeeperContext) {
+                    const data = await goalkeeperContext(id ?? "")
                     const dto = data as GoalkeeperDTO
                     setGoalkeeper(dto)
-
                     setBirthday(dto.birthday.split('/')[2] + "-" + dto.birthday.split('/')[1] + "-" + dto.birthday.split('/')[0])
                 }
-            )
+            } catch (error) {
+                console.error("Error fetching goalkeeper data: ", error)
+            }
         }
+
+        fetchGoalkeeper()
+
         if (loaded && goalkeeperReady && goalkeeperError) {
             setError("No goalkeeper Found.")
         }
         if (loaded && goalkeeperReady && !goalkeeperError) {
             setError("")
         }
-    }, [loaded, goalkeeperReady, goalkeeperError, goalkeeperUpdated])
+    }, [goalkeeperReady, goalkeeperError, goalkeeperUpdated])
 
     useEffect(() => {
-        if (categoriesContext) {
-            categoriesContext(id ? id : "").then((data) => {
-                if (categoriesReady)
-                    setCategories(data as CategoryDTO[])
-            })
+        const fetchCategories = async () => {
+            try {
+                if (categoriesContext) {
+                    const data = await categoriesContext(id ?? "")
+                    if (categoriesReady)
+                        setCategories(data as CategoryDTO[])
+                }
+            } catch (error) {
+                console.error("Error fetching goalkeeper categories data: ", error)
+            }
         }
+
+        fetchCategories()
     }, [categoriesReady])
 
     useEffect(() => {
-        if (matches) {
-            matches(id ? id : "").then((data) => {
-                if (matchesReady)
-                    setMatchRows(data as MatchMonitoringDTO[])
-            })
+        const fetchMatches = async () => {
+            try {
+                if (matches) {
+                    const data = await matches(id ?? "")
+                    if (matchesReady)
+                        setMatchRows(data as MatchMonitoringDTO[])
+                }
+            } catch (error) {
+                console.error("Error fetching goalkeeper matches data: ", error)
+            }
         }
+
+        fetchMatches()
     }, [matchesReady])
 
     useEffect(() => {
-        if (trainings) {
-            trainings(id ? id : "").then((data) => {
-                if (trainingsReady)
-                    setTrainingRows(data as TrainingMonitoringDTO[])
-            })
+        const fetchTrainings = async () => {
+            try {
+                if (trainings) {
+                    const data = await trainings(id ?? "")
+                    if (trainingsReady)
+                        setTrainingRows(data as TrainingMonitoringDTO[])
+                }
+            } catch (error) {
+                console.error("Error fetching goalkeeper trainings data: ", error)
+            }
         }
+
+        fetchTrainings()
     }, [trainingsReady])
 
     useEffect(() => {
-        if (growth) {
-            growth(id ? id : "").then((data) => {
-                if (growthReady)
-                    setGrowthRows(data as GrowthDTO[])
-            })
+        const fetchGrowth = async () => {
+            try {
+                if (growth) {
+                    const data = await growth(id ?? "")
+                    if (growthReady)
+                        setGrowthRows(data as GrowthDTO[])
+                }
+            } catch (error) {
+                console.error("Error fetching goalkeeper growth data: ", error)
+            }
         }
+
+        fetchGrowth()
     }, [growthReady, growthUpdated, growthDeleted, growthAdded])
 
     const uploadPicture = (e: ChangeEvent<HTMLInputElement>) => {
@@ -224,7 +248,7 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
             const formdata = new FormData()
             formdata.append("picture", e.target.files[0])
             if (updatePicture) {
-                updatePicture(id ? id : "", formdata).then((data) => { console.log(data) })
+                updatePicture(id ?? "", formdata).then((data) => { console.log(data) })
             }
         }
     }
@@ -367,13 +391,8 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
                                     flexDirection="column"
                                     justifyContent="center"
                                     alignItems="center"
-                                    mb={1}>
-                                    <Typography
-                                        variant='subtitle2'
-                                        sx={{ fontStyle: 'italic' }}
-                                        ml={1} mt={1}>
-                                        UID: {id}
-                                    </Typography>
+                                    mb={1}
+                                    mt={2}>
                                     <Button component="label">
                                         {t("change_pic")}
                                         <input

@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { createContext, PropsWithChildren, useCallback, useContext, useState } from "react";
 import { errorResponse } from "../interfaces/errorResponse";
 import { useAuth } from "./authContext";
 import { TrainingDTO } from "../DTOs/TrainingDTO";
@@ -61,7 +61,7 @@ export default function TrainingsProvider(props: PropsWithChildren<{}>) {
     const auth = useAuth()
     const token = auth?.token
 
-    const trainings: TrainingsDelegate = async () => {
+    const trainings: TrainingsDelegate = useCallback(async () => {
         setTrainingAdded(false)
         setTrainingDeleted(false)
 
@@ -83,9 +83,9 @@ export default function TrainingsProvider(props: PropsWithChildren<{}>) {
             setTrainingsReady(true);
             return json_data as TrainingDTO[];
         }
-    }
+    }, [token])
 
-    const newTraining: NewTraininghDelegate = (date: string, duration: number, category_id: string) => {
+    const newTraining: NewTraininghDelegate = useCallback((date: string, duration: number, category_id: string) => {
         return fetch("/api/training_session", {
             method: "POST",
             headers: {
@@ -110,9 +110,9 @@ export default function TrainingsProvider(props: PropsWithChildren<{}>) {
                     return data as TrainingDTO
                 }
             })
-    }
+    }, [token])
 
-    const deleteTraining: DeleteTrainingDelegate = async (trainingID: string) => {
+    const deleteTraining: DeleteTrainingDelegate = useCallback(async (trainingID: string) => {
         setDeleteTrainingError("")
         return fetch("/api/training_session?id=" + trainingID, {
             method: "DELETE",
@@ -133,7 +133,7 @@ export default function TrainingsProvider(props: PropsWithChildren<{}>) {
                 }
                 return null
             })
-    }
+    }, [token])
 
     return (
         <trainingsContext.Provider value={trainings}>

@@ -17,12 +17,12 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const { t, i18n } = useTranslation()
     dayjs.locale(i18n.language);
 
-    const [error, setError] = useState(false)
+    const [, setError] = useState(false)
 
     const newGoalkeeper = useNewGoalkeeper()
     const newGoalkeeperError = useNewGoalkeeperError()
 
-    const [birthdayDate, setBirthdayDate] = useState<Dayjs>(
+    const [birthdayDate,] = useState<Dayjs>(
         dayjs('2014-08-18T21:11:54'),
     );
 

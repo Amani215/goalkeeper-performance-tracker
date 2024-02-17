@@ -28,7 +28,7 @@ export function useParamUpdated() {
 
 
 export default function ParamsProvider(props: PropsWithChildren<{}>) {
-    const [error, setError] = useState(false)
+    const [, setError] = useState(false)
     const [paramUpdated, setParamUpdated] = useState(false)
 
     const auth = useAuth()

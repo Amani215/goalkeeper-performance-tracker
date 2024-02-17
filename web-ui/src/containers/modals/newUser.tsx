@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const { t } = useTranslation();
-    const [error, setError] = useState(false)
+    const [, setError] = useState(false)
 
     const newUser = useNewUser()
     const newUserError = useNewUserError()

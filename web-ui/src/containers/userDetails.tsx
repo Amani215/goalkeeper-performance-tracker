@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
 import { Chip, Link, Typography, Box, Button, Card, Grid } from '@mui/material'
 import { IoFootball } from "react-icons/io5"
@@ -34,27 +34,25 @@ function UserDetails({ setModalIsOpen }: ModalProp) {
         }, []
     )
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                if (userContext) {
-                    const data = await userContext(id ?? "")
-                    setUser(data as UserDTO)
-                }
-            } catch (error) {
-                console.error("Error fetching user data: ", error)
+    useMemo(async () => {
+        try {
+            if (userContext) {
+                const data = await userContext(id ?? "")
+                setUser(data as UserDTO)
             }
+        } catch (error) {
+            console.error("Error fetching user data: ", error)
         }
+    }, [userError, userUpdated, id])
 
-        fetchUser()
-
+    useEffect(() => {
         if (loaded && userReady && userError) {
             setError("No user Found.")
         }
         if (loaded && userReady && !userError) {
             setError("")
         }
-    }, [userReady, userError, userUpdated, id])
+    }, [userError])
 
     useEffect(() => {
         if (auth && auth.user.id == id) {

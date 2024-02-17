@@ -13,7 +13,7 @@ type PropType = {
     modalProp: ModalProp
 }
 function NewCalendar({ categoryID, modalProp }: PropType) {
-    const { t, i18n } = useTranslation()
+    const { t } = useTranslation()
 
     const [types, setTypes] = useState<string[]>([])
     const [error, setError] = useState<string>("")

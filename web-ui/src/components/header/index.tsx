@@ -11,7 +11,7 @@ interface IProps {
   auth: LoginDTO | null
 }
 export default function Header({ auth }: IProps) {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   const changeLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (i18n.language == "fr") {

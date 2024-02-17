@@ -84,11 +84,6 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
     const deleteCalendar = useDeleteCalendar()
     const deleteCalendarError = useDeleteCalendarError()
 
-    const handleOpenDeleteDialog = (calendarID: string) => {
-        setCalendarToDelete(calendarID)
-        setDeleteDialogIsOpen(true);
-    };
-
     const handleCloseDeleteDialog = () => {
         setCalendarToDelete("")
         setDeleteDialogIsOpen(false);

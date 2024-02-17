@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react'
+import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react'
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';
@@ -82,7 +82,7 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
     const auth = useAuth()
     const token = auth?.token
 
-    const getUser: UserDelegate = async (id: string) => {
+    const getUser: UserDelegate = useCallback(async (id: string) => {
         const data = await fetch("/api/user?id=" + id, {
             method: "GET",
             headers: {
@@ -103,9 +103,9 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             setUser(null);
             return json_data as errorResponse;
         }
-    }
+    }, [token])
 
-    const categories: UserCategoriesDelegate = async (id: string) => {
+    const categories: UserCategoriesDelegate = useCallback(async (id: string) => {
         const data = await fetch("/api/user/category?id=" + id, {
             method: "GET",
             headers: {
@@ -123,9 +123,9 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             setError(true);
             return json_data as errorResponse;
         }
-    }
+    }, [token])
 
-    const profile_pic: PictureDelegate = (formdata: FormData) => {
+    const profile_pic: PictureDelegate = useCallback((formdata: FormData) => {
         return fetch("/api/user/profile_pic", {
             method: "PUT",
             headers: {
@@ -135,9 +135,9 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             body: formdata
         })
             .then(data => data.json())
-    }
+    }, [token])
 
-    const updateUserStatus: UpdateUserStatusDelegate = async (username: string, status: boolean) => {
+    const updateUserStatus: UpdateUserStatusDelegate = useCallback(async (username: string, status: boolean) => {
         const data = await fetch("/api/user/admin", {
             method: "PUT",
             headers: {
@@ -163,9 +163,9 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             setUser(null)
             return json_data as errorResponse;
         }
-    }
+    }, [token])
 
-    const updateUserArchive: UpdateUserArchiveDelegate = async (username: string, archived: boolean, archive_reason: string) => {
+    const updateUserArchive: UpdateUserArchiveDelegate = useCallback(async (username: string, archived: boolean, archive_reason: string) => {
         const data = await fetch("/api/user/archived", {
             method: "PUT",
             headers: {
@@ -192,9 +192,9 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             setUser(null)
             return json_data as errorResponse;
         }
-    }
+    }, [token])
 
-    const updateUserPassword: UpdateUserPasswordDelegate = async (user_id: string, password: string) => {
+    const updateUserPassword: UpdateUserPasswordDelegate = useCallback(async (user_id: string, password: string) => {
         const data = await fetch("/api/user?id=" + user_id, {
             method: "PUT",
             headers: {
@@ -219,7 +219,7 @@ export default function UserProvider(props: PropsWithChildren<{}>) {
             setUser(null)
             return json_data as errorResponse;
         }
-    }
+    }, [token])
 
     return (
         <getUserContext.Provider value={getUser}>

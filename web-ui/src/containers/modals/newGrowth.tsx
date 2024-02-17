@@ -16,15 +16,13 @@ type PropType = {
     goalkeeperID: string,
     modalProp: ModalProp
 }
-function NewGrowth({ goalkeeperID, modalProp }: PropType) {
+function NewGrowth({ goalkeeperID, modalProp }: Readonly<PropType>) {
     const { t, i18n } = useTranslation()
     dayjs.locale(i18n.language);
 
     const newGrowth = useNewGrowth()
 
-    const [growthDate,] = useState<Dayjs>(
-        dayjs(),
-    );
+    const growthDate = dayjs()
 
     const handleSubmit = async ({ date }: FormikValues) => {
         if (newGrowth != null) {

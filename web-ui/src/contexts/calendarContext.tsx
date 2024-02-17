@@ -72,7 +72,7 @@ export function useDeleteCalendarItemError() {
 }
 
 // PROVIDER
-export default function CalendarProvider(props: PropsWithChildren<{}>): JSX.Element {
+export default function CalendarProvider(props: Readonly<PropsWithChildren<{}>>): JSX.Element {
     const [error, setError] = useState<string>("")
     const [calendarDeleted, setCalendarDeleted] = useState<boolean>(false)
     const [calendarAdded, setCalendarAdded] = useState<boolean>(false)

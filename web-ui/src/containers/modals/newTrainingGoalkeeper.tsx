@@ -9,7 +9,7 @@ import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
 
-function NewTrainingGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function NewTrainingGoalkeeper({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { id } = useParams();
     const { t } = useTranslation();
 

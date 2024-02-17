@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 interface IProps {
   auth: LoginDTO | null
 }
-export default function Header({ auth }: IProps) {
+export default function Header({ auth }: Readonly<IProps>) {
   const { i18n } = useTranslation();
 
   const changeLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {

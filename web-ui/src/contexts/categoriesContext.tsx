@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
 import { CategoryDTO } from "../DTOs";
 import { NewCategoryDTO } from "../DTOs/CategoryDTO";
 import { errorResponse } from "../interfaces/errorResponse";
@@ -61,7 +61,7 @@ export function useCategoryArchived() {
     return useContext(categoryArchivedContext);
 }
 
-export default function CategoriesProvider(props: PropsWithChildren<{}>) {
+export default function CategoriesProvider(props: Readonly<PropsWithChildren<{}>>) {
     const [archivedCategories, setArchivedCategories] = useState<CategoryDTO[] | null>(null)
     const [nonArchivedCategories, setNonArchivedCategories] = useState<CategoryDTO[] | null>(null)
     const [loaded, setLoaded] = useState<boolean>(false)
@@ -101,7 +101,7 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
         setLoaded(true)
     }
 
-    const newCategory: NewCategoryDelegate = (newCategoryObj: NewCategoryDTO) => {
+    const newCategory: NewCategoryDelegate = useCallback((newCategoryObj: NewCategoryDTO) => {
         return fetch("/api/category", {
             method: "POST",
             headers: {
@@ -124,9 +124,9 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
                     return data as CategoryDTO
                 }
             })
-    }
+    }, [token])
 
-    const deleteCategory: DeleteCategoryDelegate = async (categoryId: string) => {
+    const deleteCategory: DeleteCategoryDelegate = useCallback(async (categoryId: string) => {
         setDeleteCategoryError("")
         return fetch("/api/category?id=" + categoryId, {
             method: "DELETE",
@@ -147,9 +147,9 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
                 }
                 return null
             })
-    }
+    }, [token])
 
-    const archiveCategory: ArchiveCategoryDelegate = async (categoryId: string, archived: boolean) => {
+    const archiveCategory: ArchiveCategoryDelegate = useCallback(async (categoryId: string, archived: boolean) => {
         setDeleteCategoryError("")
         return fetch("/api/category?id=" + categoryId, {
             method: "PUT",
@@ -169,7 +169,7 @@ export default function CategoriesProvider(props: PropsWithChildren<{}>) {
                 }
                 return null
             })
-    }
+    }, [token])
 
     useEffect(() => {
         getCategories(true)

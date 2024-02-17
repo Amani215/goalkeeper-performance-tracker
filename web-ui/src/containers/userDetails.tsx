@@ -8,7 +8,7 @@ import { CategoryDTO, UserDTO } from '../DTOs'
 import { ModalProp } from '../interfaces/modalProp'
 import { useTranslation } from 'react-i18next'
 
-function UserDetails({ setModalIsOpen }: ModalProp) {
+function UserDetails({ setModalIsOpen }: Readonly<ModalProp>) {
     const { id } = useParams();
     const { t } = useTranslation();
 

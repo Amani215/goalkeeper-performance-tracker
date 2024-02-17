@@ -10,7 +10,7 @@ import { style } from './style';
 import { useTranslation } from 'react-i18next';
 
 
-function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function NewCategoryCoach({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { id } = useParams();
     const { t } = useTranslation();
 

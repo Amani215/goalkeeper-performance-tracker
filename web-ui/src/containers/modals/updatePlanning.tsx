@@ -18,7 +18,7 @@ type PropType = {
     planning: PlanningDTO | null,
     modalProp: ModalProp
 }
-function UpdatePlanning({ planning, modalProp }: PropType) {
+function UpdatePlanning({ planning, modalProp }: Readonly<PropType>) {
     const { t, i18n } = useTranslation()
     dayjs.locale(i18n.language);
 

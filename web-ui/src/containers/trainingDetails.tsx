@@ -10,7 +10,7 @@ import UpdateAttendance from './modals/updateAttendance';
 import { useTranslation } from 'react-i18next';
 
 
-function TrainingDetails({ setModalIsOpen }: ModalProp) {
+function TrainingDetails({ setModalIsOpen }: Readonly<ModalProp>) {
     const { id } = useParams();
     const { t } = useTranslation();
 
@@ -32,7 +32,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
 
     useEffect(() => {
         if (trainingContext) {
-            trainingContext(id ? id : "").then(
+            trainingContext(id ?? "").then(
                 data => setTraining(data as TrainingDTO)
             )
         }
@@ -62,7 +62,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
 
     const deleteGoalkeeperPerformance = () => {
         if (deleteTrainingGoalkeeper) {
-            deleteTrainingGoalkeeper(goalkeeperToDelete ? goalkeeperToDelete.id : "", id ? id : "")
+            deleteTrainingGoalkeeper(goalkeeperToDelete ? goalkeeperToDelete.id : "", id ?? "")
                 .then(() => handleCloseDeleteGoalkeeperDialog())
         }
     }
@@ -90,7 +90,7 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
             const formdata = new FormData()
             formdata.append("training_form", e.target.files[0])
             if (updateTrainingForm) {
-                updateTrainingForm(id ? id : "", formdata).then((data) => { console.log(data) })
+                updateTrainingForm(id ?? "", formdata).then((data) => { console.log(data) })
             }
         }
     }
@@ -98,9 +98,9 @@ function TrainingDetails({ setModalIsOpen }: ModalProp) {
     // LOAD GOALKEEPERS
     useEffect(() => {
         if (performancesContext) {
-            performancesContext(id ? id : "").then((data) => {
+            performancesContext(id ?? "").then((data) => {
                 if (performancesReady)
-                    setGoalkeeperPerformances(data != null ? data : goalkeeperPerformances)
+                    setGoalkeeperPerformances(data ?? goalkeeperPerformances)
             })
         }
     }, [performancesReady, performancesUpdated, attendanceUpdated])

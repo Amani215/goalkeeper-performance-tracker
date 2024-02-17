@@ -10,7 +10,7 @@ import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
 
-function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function NewCategoryGoalkeeper({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { id } = useParams();
     const { t } = useTranslation();
 

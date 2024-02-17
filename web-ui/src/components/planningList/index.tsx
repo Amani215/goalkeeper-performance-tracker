@@ -14,7 +14,7 @@ type PropType = {
     planningList: PlanningDTO[]
 }
 
-function PlanningList({ categoryID, archived, planningList }: PropType) {
+function PlanningList({ categoryID, archived, planningList }: Readonly<PropType>) {
     const { t } = useTranslation();
 
     // Columns

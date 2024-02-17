@@ -15,7 +15,7 @@ import { MdArchive, MdClose, MdExpandMore, MdUnarchive } from 'react-icons/md'
 import { useTranslation } from 'react-i18next'
 
 
-function CategoriesView({ setModalIsOpen }: ModalProp) {
+function CategoriesView({ setModalIsOpen }: Readonly<ModalProp>) {
   const { t } = useTranslation()
   const [nonArchivedCategories, setNonArchivedCategories] = useState<CategoryDTO[]>([])
   const [archivedCategories, setArchivedCategories] = useState<CategoryDTO[]>([])

@@ -7,7 +7,7 @@ import { useUpdateUserPassword } from '../../contexts/userContext';
 import { useAuth, useLogout } from '../../contexts/authContext';
 import passwordValidation from '../../schemas/passwordValidation';
 
-function ChangePassword({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function ChangePassword({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { t } = useTranslation()
 
     const auth = useAuth()

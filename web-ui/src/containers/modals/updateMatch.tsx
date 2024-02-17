@@ -20,7 +20,7 @@ type PropType = {
     match: MatchDTO | null,
     modalProp: ModalProp
 }
-function UpdateMatch({ match, modalProp }: PropType) {
+function UpdateMatch({ match, modalProp }: Readonly<PropType>) {
     const { t, i18n } = useTranslation()
     dayjs.locale(i18n.language);
 

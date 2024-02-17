@@ -6,7 +6,7 @@ import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
 
-function UpdateScore({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function UpdateScore({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { t } = useTranslation();
     const [, setError] = useState(false)
     const [loaded, setLoaded] = useState(false)

@@ -11,7 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 
-function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { t, i18n } = useTranslation()
     dayjs.locale(i18n.language);
 

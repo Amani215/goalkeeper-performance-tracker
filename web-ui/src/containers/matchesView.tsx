@@ -8,7 +8,7 @@ import { useMatchUpdated } from '../contexts/matchContext'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../contexts/authContext'
 
-function MatchesView({ setModalIsOpen }: ModalProp) {
+function MatchesView({ setModalIsOpen }: Readonly<ModalProp>) {
     const { t } = useTranslation();
     const auth = useAuth()
 

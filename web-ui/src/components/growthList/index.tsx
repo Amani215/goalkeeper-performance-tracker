@@ -13,7 +13,7 @@ type PropType = {
     growthList: GrowthDTO[]
 }
 
-function GrowthList({ goalkeeperID, growthList }: PropType) {
+function GrowthList({ goalkeeperID, growthList }: Readonly<PropType>) {
     const { t } = useTranslation();
 
     // Columns

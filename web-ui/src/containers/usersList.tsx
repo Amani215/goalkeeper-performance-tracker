@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function UsersList({
     setModalIsOpen
-}: ModalProp) {
+}: Readonly<ModalProp>) {
     const { t } = useTranslation();
     const location = useLocation()
 

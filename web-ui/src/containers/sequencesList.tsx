@@ -12,7 +12,7 @@ type PropType = {
     sequences: MatchSequenceDTO[]
 }
 
-function SequencesList({ sequences }: PropType) {
+function SequencesList({ sequences }: Readonly<PropType>) {
     const { t } = useTranslation();
 
     // Columns
@@ -100,7 +100,7 @@ function SequencesList({ sequences }: PropType) {
 
     const add = () => {
         if (addSequence) {
-            addSequence(id ? id : "")
+            addSequence(id ?? "")
         }
     }
     // Delete Dialog
@@ -155,8 +155,10 @@ function SequencesList({ sequences }: PropType) {
                         <DataGrid
                             rows={sequences || []}
                             columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
+                            pageSizeOptions={[10, 50, 100]}
+                            initialState={{
+                                pagination: { paginationModel: { pageSize: 10 } },
+                            }}
                         />
                     </div>
                 </Box> :

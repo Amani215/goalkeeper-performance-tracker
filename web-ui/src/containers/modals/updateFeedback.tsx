@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 
 const style = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute' as const,
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -21,12 +21,12 @@ const style = {
     overflowY: 'scroll'
 };
 
-function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function UpdateFeedback({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { t } = useTranslation();
 
     const [loaded, setLoaded] = useState(false)
 
-    const [matchPerformance, setmatchPerformance] = useState<MatchMonitoringDTO | null>(null)
+    const [matchPerformance, setMatchPerformance] = useState<MatchMonitoringDTO | null>(null)
     const matchPerformanceContext = useMatchPerformance()
     const updateMatchPerformance = useUpdateMatchPerformance()
 
@@ -34,7 +34,7 @@ function UpdateFeedback({ modalIsOpen, setModalIsOpen }: ModalProp) {
 
     useEffect(() => {
         if (matchPerformanceContext) {
-            setmatchPerformance(matchPerformanceContext)
+            setMatchPerformance(matchPerformanceContext)
         }
     }, [loaded, matchPerformanceContext])
 

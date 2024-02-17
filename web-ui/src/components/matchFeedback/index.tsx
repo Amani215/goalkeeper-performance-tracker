@@ -9,7 +9,7 @@ type PropType = {
     matchPerformance: MatchMonitoringDTO | null,
     setModalIsOpen: VoidDelegate
 }
-function MatchFeedback({ matchPerformance, setModalIsOpen }: PropType) {
+function MatchFeedback({ matchPerformance, setModalIsOpen }: Readonly<PropType>) {
     const { t } = useTranslation();
     return (
         <>

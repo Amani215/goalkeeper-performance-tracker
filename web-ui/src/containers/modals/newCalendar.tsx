@@ -12,7 +12,7 @@ type PropType = {
     categoryID: string,
     modalProp: ModalProp
 }
-function NewCalendar({ categoryID, modalProp }: PropType) {
+function NewCalendar({ categoryID, modalProp }: Readonly<PropType>) {
     const { t } = useTranslation()
 
     const [types, setTypes] = useState<string[]>([])

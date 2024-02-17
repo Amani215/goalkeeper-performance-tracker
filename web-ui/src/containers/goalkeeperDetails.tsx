@@ -11,7 +11,7 @@ import { useGrowthAdded, useGrowthDeleted, useGrowthUpdated } from '../contexts/
 import { CategoryDTO, GoalkeeperDTO, MatchMonitoringDTO, TrainingMonitoringDTO, GrowthDTO } from '../DTOs'
 import { useTranslation } from 'react-i18next'
 
-function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
+function GoalkeeperDetails({ setModalIsOpen }: Readonly<ModalProp>) {
     const { id } = useParams();
     const { t } = useTranslation()
 

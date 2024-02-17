@@ -96,9 +96,9 @@ export default function MiniDrawer() {
                                 color="inherit">
                                 <ListItem
                                     disablePadding
-                                    selected={item.link === pathname}
                                     sx={{ display: 'block' }}>
                                     <ListItemButton
+                                        selected={item.link === pathname}
                                         sx={{
                                             minHeight: 48,
                                             justifyContent: sideNavIsOpen ? 'initial' : 'center',

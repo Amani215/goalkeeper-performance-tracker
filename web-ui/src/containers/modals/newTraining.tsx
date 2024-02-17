@@ -12,11 +12,10 @@ import { style } from './style';
 import { useTranslation } from 'react-i18next';
 import 'dayjs/locale/fr'
 
-function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function NewTraining({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { t, i18n } = useTranslation()
     dayjs.locale(i18n.language);
 
-    const [, setError] = useState(false)
     const [categories, setCategories] = useState<CategoryDTO[]>([])
 
     const newTraining = useNewTraining()
@@ -25,9 +24,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const categoriesContext = useNonArchivedCategories()
     const categoriesReady = useCategoriesReady()
 
-    const [trainingDate,] = useState<Dayjs>(
-        dayjs(),
-    );
+    const trainingDate = dayjs()
 
     useEffect(() => {
         if (categoriesReady && categoriesContext) {
@@ -39,8 +36,7 @@ function NewTraining({ modalIsOpen, setModalIsOpen }: ModalProp) {
         if (newTraining != null) {
             const trainingDate = dayjs(date).format('DD/MM/YYYY').toString()
             await newTraining(trainingDate, duration, category)
-            if (newTrainingError) setError(true)
-            else setModalIsOpen()
+            if (!newTrainingError) setModalIsOpen()
         }
     };
 

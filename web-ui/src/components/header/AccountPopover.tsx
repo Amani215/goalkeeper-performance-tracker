@@ -22,7 +22,7 @@ interface IProps {
   status: string
 }
 
-export default function AccountPopover(props: IProps) {
+export default function AccountPopover(props: Readonly<IProps>) {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleOpen = () => {
@@ -64,17 +64,19 @@ export default function AccountPopover(props: IProps) {
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
-        PaperProps={{
-          sx: {
-            p: 0,
-            mt: 5,
-            ml: 0.75,
-            width: 180,
-            "& .MuiMenuItem-root": {
-              typography: "body2",
-              borderRadius: 0.75,
-            },
-          },
+        slotProps={{
+          paper: {
+            sx: {
+              p: 0,
+              mt: 5,
+              ml: 0.75,
+              width: 180,
+              "& .MuiMenuItem-root": {
+                typography: "body2",
+                borderRadius: 0.75,
+              },
+            }
+          }
         }}
       >
 

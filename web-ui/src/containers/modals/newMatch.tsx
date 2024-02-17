@@ -15,11 +15,10 @@ import { useTranslation } from 'react-i18next';
 import 'dayjs/locale/fr'
 
 
-function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function NewMatch({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { t, i18n } = useTranslation()
     dayjs.locale(i18n.language);
 
-    const [_, setError] = useState(false)
     const [teams, setTeams] = useState<string[]>([])
     const [matchTypes, setMatchTypes] = useState<string[]>([])
     const [categories, setCategories] = useState<CategoryDTO[]>([])
@@ -31,9 +30,7 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const categoriesContext = useNonArchivedCategories()
     const categoriesReady = useCategoriesReady()
 
-    const [matchDate,] = useState<Dayjs>(
-        dayjs(),
-    );
+    const matchDate = dayjs()
 
     useEffect(() => {
         if (categoriesReady && categoriesContext) {
@@ -52,8 +49,7 @@ function NewMatch({ modalIsOpen, setModalIsOpen }: ModalProp) {
         if (newMatch != null) {
             const matchDate = dayjs(date).format('DD/MM/YYYY').toString()
             await newMatch({ date: matchDate, local: local, visitor: visitor, match_type: matchType, category_id: category })
-            if (newMatchError) setError(true)
-            else setModalIsOpen()
+            if (!newMatchError) setModalIsOpen()
         }
     };
 

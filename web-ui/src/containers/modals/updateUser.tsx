@@ -7,7 +7,7 @@ import { UserDTO } from '../../DTOs/UserDTO';
 import { useUpdateUserArchive, useUpdateUserStatus, useUser } from '../../contexts/userContext';
 import { useTranslation } from 'react-i18next';
 
-function UpdateUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function UpdateUser({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { t } = useTranslation();
     const [loaded, setLoaded] = useState(false)
 

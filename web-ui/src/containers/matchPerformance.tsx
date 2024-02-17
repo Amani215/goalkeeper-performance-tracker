@@ -12,12 +12,12 @@ import { MatchSequenceDTO } from '../DTOs/MatchSequenceDTO';
 import SequencesList from '../containers/sequencesList';
 import { useTranslation } from 'react-i18next'
 
-function MatchPerformance({ setModalIsOpen }: ModalProp) {
+function MatchPerformance({ setModalIsOpen }: Readonly<ModalProp>) {
     const { id } = useParams();
     const { t } = useTranslation();
 
     const [matchPerformance, setMatchPerformance] = useState<MatchMonitoringDTO | null>(null)
-    const [, setError] = useState("")
+    const [error, setError] = useState("")
     const [loaded, setLoaded] = useState(false)
 
     const matchPerformanceContext = useGetMatchPerformance()
@@ -37,7 +37,7 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
 
     useEffect(() => {
         if (matchPerformanceContext) {
-            matchPerformanceContext(id ? id : "").then(
+            matchPerformanceContext(id ?? "").then(
                 data => {
                     setMatchPerformance(data as MatchMonitoringDTO)
                 }
@@ -61,7 +61,7 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
 
     useEffect(() => {
         if (matchSequencesContext) {
-            matchSequencesContext(id ? id : "").then(
+            matchSequencesContext(id ?? "").then(
                 data => {
                     setSequences(data as MatchSequenceDTO[])
                 }
@@ -71,97 +71,107 @@ function MatchPerformance({ setModalIsOpen }: ModalProp) {
 
     return (
         <>
-            <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                mb={2}>
+            {error != "" ?
                 <Typography
-                    component={RouterLink}
-                    to={`/matches/${matchPerformance?.match?.id}`}
-                    variant='h5'
-                    sx={{ fontWeight: "bold", textDecoration: 'none', color: "black" }}
-                    align='center'>
-                    {matchPerformance?.match?.match_type} {matchPerformance?.match?.date}
-
+                    variant='subtitle2'
+                    ml={1} mt={1}>
+                    {error}
                 </Typography>
-                <Typography
-                    variant='h6'
-                    align='center'>
-                    {matchPerformance?.match?.category.name} {matchPerformance?.match?.category.season}
-                </Typography>
-                <Typography
-                    variant='h6'
-                    align='center'
-                    sx={{ fontWeight: "bold", textDecoration: 'none', color: "black" }}>
-                    {matchPerformance?.match?.local} {matchPerformance?.match?.score_local} -  {matchPerformance?.match?.score_visitor} {matchPerformance?.match?.visitor}
-                </Typography>
-            </Box>
-
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 12, md: 12 }}>
-                <Grid item xs={4} sm={6} md={6} order={{ xs: 2, sm: 2, md: 2 }}>
-                    <MatchFeedback matchPerformance={matchPerformance} setModalIsOpen={setModalIsOpen} />
-                </Grid>
-                <Grid item xs={4} sm={6} md={6} order={{ xs: 1, sm: 1, md: 1 }}>
-                    {/* GOALKEEPER SECTION */}
+                :
+                <>
                     <Box
-                        component={RouterLink}
-                        to={`/goalkeepers/${matchPerformance ? matchPerformance.goalkeeper?.id : ""}`}
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"
                         alignItems="center"
-                        sx={{ textDecoration: "none", color: "black" }}
-                        mb={1}>
-                        <Box
-                            component="img"
-                            sx={{
-                                borderRadius: "50%",
-                                height: "12rem",
-                                width: "12rem",
-                            }}
-                            src={matchPerformance ? matchPerformance.goalkeeper?.picture : `${process.env.PUBLIC_URL}/assets/placeholder.png`}
-                        />
+                        mb={2}>
+                        <Typography
+                            component={RouterLink}
+                            to={`/matches/${matchPerformance?.match?.id}`}
+                            variant='h5'
+                            sx={{ fontWeight: "bold", textDecoration: 'none', color: "black" }}
+                            align='center'>
+                            {matchPerformance?.match?.match_type} {matchPerformance?.match?.date}
+
+                        </Typography>
                         <Typography
                             variant='h6'
-                            sx={{ fontWeight: 'bold' }}
-                            mt={1}>
-                            {matchPerformance ? `${matchPerformance.goalkeeper?.name} (${matchPerformance.goalkeeper_order})` : "--"}
+                            align='center'>
+                            {matchPerformance?.match?.category.name} {matchPerformance?.match?.category.season}
+                        </Typography>
+                        <Typography
+                            variant='h6'
+                            align='center'
+                            sx={{ fontWeight: "bold", textDecoration: 'none', color: "black" }}>
+                            {matchPerformance?.match?.local} {matchPerformance?.match?.score_local} -  {matchPerformance?.match?.score_visitor} {matchPerformance?.match?.visitor}
                         </Typography>
                     </Box>
-                    <Box
-                        display="flex"
-                        flexDirection="row"
-                        justifyContent="center"
-                        alignItems="center">
-                        {categories.length > 0 ?
-                            categories.map((category) => (
-                                <Grid item xs={4} md={3}
-                                    key={category.id}
-                                    mb={1}
-                                >
-                                    <Link
-                                        component={RouterLink}
-                                        to={`/categories/${category.id}`}
-                                        underline="none"
-                                        color="inherit">
-                                        <Chip
-                                            icon={<IoFootball />}
-                                            label={`${category?.name} ${category?.season}`}
-                                            onClick={() => { }} />
-                                    </Link>
-                                </Grid>
-                            ))
-                            : <Box pl={1}>
-                                {t("no_categories")}
-                            </Box>}
-                    </Box>
 
-                    {/* MATCH SEQUENCES SECTION */}
-                    <SequencesList sequences={sequences} />
-                </Grid>
-            </Grid>
+                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 12, md: 12 }}>
+                        <Grid item xs={4} sm={6} md={6} order={{ xs: 2, sm: 2, md: 2 }}>
+                            <MatchFeedback matchPerformance={matchPerformance} setModalIsOpen={setModalIsOpen} />
+                        </Grid>
+                        <Grid item xs={4} sm={6} md={6} order={{ xs: 1, sm: 1, md: 1 }}>
+                            {/* GOALKEEPER SECTION */}
+                            <Box
+                                component={RouterLink}
+                                to={`/goalkeepers/${matchPerformance ? matchPerformance.goalkeeper?.id : ""}`}
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                                alignItems="center"
+                                sx={{ textDecoration: "none", color: "black" }}
+                                mb={1}>
+                                <Box
+                                    component="img"
+                                    sx={{
+                                        borderRadius: "50%",
+                                        height: "12rem",
+                                        width: "12rem",
+                                    }}
+                                    src={matchPerformance ? matchPerformance.goalkeeper?.picture : `${process.env.PUBLIC_URL}/assets/placeholder.png`}
+                                />
+                                <Typography
+                                    variant='h6'
+                                    sx={{ fontWeight: 'bold' }}
+                                    mt={1}>
+                                    {matchPerformance ? `${matchPerformance.goalkeeper?.name} (${matchPerformance.goalkeeper_order})` : "--"}
+                                </Typography>
+                            </Box>
+                            <Box
+                                display="flex"
+                                flexDirection="row"
+                                justifyContent="center"
+                                alignItems="center">
+                                {categories.length > 0 ?
+                                    categories.map((category) => (
+                                        <Grid item xs={4} md={3}
+                                            key={category.id}
+                                            mb={1}
+                                        >
+                                            <Link
+                                                component={RouterLink}
+                                                to={`/categories/${category.id}`}
+                                                underline="none"
+                                                color="inherit">
+                                                <Chip
+                                                    icon={<IoFootball />}
+                                                    label={`${category?.name} ${category?.season}`}
+                                                    onClick={() => { }} />
+                                            </Link>
+                                        </Grid>
+                                    ))
+                                    : <Box pl={1}>
+                                        {t("no_categories")}
+                                    </Box>}
+                            </Box>
+
+                            {/* MATCH SEQUENCES SECTION */}
+                            <SequencesList sequences={sequences} />
+                        </Grid>
+                    </Grid>
+                </>
+            }
         </>
     )
 }

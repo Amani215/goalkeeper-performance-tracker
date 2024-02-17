@@ -13,10 +13,9 @@ type PropType = {
     calendarID: string,
     modalProp: ModalProp
 }
-function NewCalendarItem({ calendarID, modalProp }: PropType) {
+function NewCalendarItem({ calendarID, modalProp }: Readonly<PropType>) {
     const { t } = useTranslation()
 
-    const [_, setError] = useState(false)
     const [teams, setTeams] = useState<string[]>([])
 
     const newItem = useNewCalendarItem()
@@ -33,8 +32,7 @@ function NewCalendarItem({ calendarID, modalProp }: PropType) {
     const handleSubmit = async ({ local, visitor, journey }: FormikValues) => {
         if (newItem != null) {
             await newItem({ calendar_id: calendarID, local: local, visitor: visitor, journey: journey })
-            if (newItemError) setError(true)
-            else modalProp.setModalIsOpen()
+            if (!newItemError) modalProp.setModalIsOpen()
         }
     };
 

@@ -19,7 +19,7 @@ type PropType = {
     growth: GrowthDTO | null,
     modalProp: ModalProp
 }
-function UpdateGrowth({ growth, modalProp }: PropType) {
+function UpdateGrowth({ growth, modalProp }: Readonly<PropType>) {
     const { t, i18n } = useTranslation()
     dayjs.locale(i18n.language);
 

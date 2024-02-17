@@ -12,13 +12,13 @@ type PropType = {
     sequence: MatchSequenceDTO | null,
     modalProp: ModalProp
 }
-function UpdateSequence({ sequence, modalProp }: PropType) {
+function UpdateSequence({ sequence, modalProp }: Readonly<PropType>) {
     const { t } = useTranslation();
     const updateSequence = useUpdateMatchSequence()
 
     useEffect(() => {
         if (sequence) {
-            setNumber(sequence.sequence_number);
+            setSequenceNumber(sequence.sequence_number);
             setAction(sequence.action_type);
             setReaction(sequence.reaction_type);
             setResult(sequence.action_result);
@@ -27,7 +27,7 @@ function UpdateSequence({ sequence, modalProp }: PropType) {
     }, [sequence])
 
     // Sequence object attributes
-    const [sequenceNumber, setNumber] = useState<number>(0);
+    const [sequenceNumber, setSequenceNumber] = useState<number>(0);
     const [action, setAction] = useState<string>('');
     const [reaction, setReaction] = useState<string>('');
     const [result, setResult] = useState<string>('');

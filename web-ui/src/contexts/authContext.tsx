@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
 import { LoginDTO } from "../DTOs/LoginDTO";
 import { VoidDelegate } from "../interfaces/voidDelegate";
 
@@ -17,18 +17,19 @@ export function useAuthReady() {
     return useContext(authReadyContext)
 }
 
-export default function AuthProvider(props: PropsWithChildren<{}>) {
+export default function AuthProvider(props: Readonly<PropsWithChildren<{}>>) {
     const [auth, setAuth] = useState<LoginDTO | null>(null)
 
     const [authReady, setAuthReady] = useState<boolean>(false)
-    const logout: VoidDelegate = () => {
+    const logout: VoidDelegate = useCallback(() => {
         localStorage.removeItem("loginDTO")
         setAuth(null)
 
         setAuthReady(true)
-    }
+    }, [])
+
     useEffect(() => {
-        const localAuth: LoginDTO = JSON.parse(localStorage.getItem("loginDTO") || "{}")
+        const localAuth: LoginDTO = JSON.parse(localStorage.getItem("loginDTO") ?? "{}")
 
         fetch("/api/auth", {
             method: "GET",

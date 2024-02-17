@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 function GoalkeepersList({
     setModalIsOpen
-}: ModalProp) {
+}: Readonly<ModalProp>) {
     const { t } = useTranslation()
     const location = useLocation()
     const columns: GridColDef[] = [
@@ -83,8 +83,10 @@ function GoalkeepersList({
                 <DataGrid
                     rows={rows || []}
                     columns={columns}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
+                    pageSizeOptions={[10, 50, 100]}
+                    initialState={{
+                        pagination: { paginationModel: { pageSize: 10 } },
+                    }}
                     onRowClick={(params) => {
                         redirectTo(params.row.id)
                     }}

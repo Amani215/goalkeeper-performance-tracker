@@ -12,7 +12,7 @@ type PropType = {
     tm: TrainingMonitoringDTO | null,
     modalProp: ModalProp
 }
-function UpdateAttendance({ tm, modalProp }: PropType) {
+function UpdateAttendance({ tm, modalProp }: Readonly<PropType>) {
     const { t } = useTranslation();
     const updateAttendance = useUpdateTrainingPerformance()
 

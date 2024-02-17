@@ -7,9 +7,8 @@ import userValidationSchema from '../../schemas/userValidation';
 import { style } from './style';
 import { useTranslation } from 'react-i18next';
 
-function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function NewUser({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { t } = useTranslation();
-    const [, setError] = useState(false)
 
     const newUser = useNewUser()
     const newUserError = useNewUserError()
@@ -17,8 +16,7 @@ function NewUser({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const handleSubmit = async ({ username, password, admin }: FormikValues): Promise<void> => {
         if (newUser != null) {
             await newUser({ username: username, password: password, admin: admin, profile_pic: "" })
-            if (newUserError) setError(true)
-            else setModalIsOpen()
+            if (!newUserError) setModalIsOpen()
         }
     };
     const formik = useFormik({

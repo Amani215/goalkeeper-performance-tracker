@@ -8,9 +8,8 @@ import { style } from './style';
 import { useParams } from '../../contexts/paramsContext';
 import { useTranslation } from 'react-i18next';
 
-function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
+function NewCategory({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
     const { t } = useTranslation()
-    const [_, setError] = useState(false)
 
     const newCategory = useNewCategory()
     const newCategoryError = useNewCategoryError()
@@ -29,8 +28,7 @@ function NewCategory({ modalIsOpen, setModalIsOpen }: ModalProp) {
     const handleSubmit = async ({ name, season }: FormikValues) => {
         if (newCategory != null) {
             await newCategory({ name: name, season: season })
-            if (newCategoryError) setError(true)
-            else setModalIsOpen()
+            if (!newCategoryError) setModalIsOpen()
         }
     };
 

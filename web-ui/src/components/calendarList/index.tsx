@@ -14,7 +14,7 @@ type PropType = {
     calendarList: CalendarDTO[]
 }
 
-function CalendarList({ categoryID, archived, calendarList }: PropType) {
+function CalendarList({ categoryID, archived, calendarList }: Readonly<PropType>) {
     const { t } = useTranslation();
 
     // Columns

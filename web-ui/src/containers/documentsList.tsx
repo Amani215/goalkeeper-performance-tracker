@@ -22,7 +22,7 @@ function DocumentsList() {
 
     useEffect(() => {
         if (categoryContext) {
-            categoryContext(id ? id : "").then(
+            categoryContext(id ?? "").then(
                 data => setCategory(data as CategoryDTO)
             )
         }

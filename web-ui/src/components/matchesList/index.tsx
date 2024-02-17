@@ -12,7 +12,7 @@ type PropType = {
     matches: MatchDTO[]
 }
 
-function MatchesList({ matches }: PropType) {
+function MatchesList({ matches }: Readonly<PropType>) {
     const { t } = useTranslation();
     const location = useLocation()
 

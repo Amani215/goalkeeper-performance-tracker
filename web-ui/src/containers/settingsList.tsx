@@ -8,7 +8,7 @@ type PropType = {
     itemsName: string
 }
 
-function SettingsList({ itemsName }: PropType) {
+function SettingsList({ itemsName }: Readonly<PropType>) {
     const { t } = useTranslation();
 
     const [items, setItems] = useState<string[]>([])

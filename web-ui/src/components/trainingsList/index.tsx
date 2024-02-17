@@ -11,7 +11,7 @@ type PropType = {
     trainings: TrainingDTO[]
 }
 
-function TrainingsList({ trainings }: PropType) {
+function TrainingsList({ trainings }: Readonly<PropType>) {
     const { t } = useTranslation();
     const location = useLocation()
 

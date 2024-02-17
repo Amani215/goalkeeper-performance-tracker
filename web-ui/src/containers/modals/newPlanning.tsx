@@ -16,15 +16,13 @@ type PropType = {
     categoryID: string,
     modalProp: ModalProp
 }
-function NewPlanning({ categoryID, modalProp }: PropType) {
+function NewPlanning({ categoryID, modalProp }: Readonly<PropType>) {
     const { t, i18n } = useTranslation()
     dayjs.locale(i18n.language);
 
     const [types, setTypes] = useState<string[]>([])
     const [error, setError] = useState<string>("")
-    const [planningDate,] = useState<Dayjs>(
-        dayjs(),
-    );
+    const planningDate = dayjs()
 
     const newPlanning = useNewPlanning()
     const paramsContext = useParams()

@@ -7,7 +7,6 @@ import { style } from './style';
 import { useTranslation } from 'react-i18next';
 import 'dayjs/locale/fr'
 import { useAddCalendarItemError, useNewCalendarItem } from '../../contexts/calendarContext';
-import { CalendarDTO } from '../../DTOs/CalendarDTO';
 
 
 type PropType = {

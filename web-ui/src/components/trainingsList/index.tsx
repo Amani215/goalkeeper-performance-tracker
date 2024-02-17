@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography } from '@mui/material';
 import { Navigate, useLocation } from 'react-router-dom';
 import { MdDelete } from 'react-icons/md';
 import { useState } from 'react';
@@ -101,8 +101,10 @@ function TrainingsList({ trainings }: PropType) {
                         <DataGrid
                             rows={trainings || []}
                             columns={columns}
-                            pageSize={10}
-                            rowsPerPageOptions={[10]}
+                            pageSizeOptions={[10, 50, 100]}
+                            initialState={{
+                                pagination: { paginationModel: { pageSize: 10 } },
+                            }}
                             onCellClick={(params) => {
                                 const columnId = params.field;
                                 if (columnId !== "actions") {

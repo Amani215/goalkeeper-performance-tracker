@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Paper, Typography } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material'
 import { MdExpandMore } from 'react-icons/md'
 import { useAuth } from '../contexts/authContext'
 import SettingsList from './settingsList'

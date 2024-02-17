@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography } from '@mui/material';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useState } from 'react';
 import { PlanningDTO } from '../../DTOs/PlanningDTO';
@@ -198,8 +198,10 @@ function PlanningList({ categoryID, archived, planningList }: PropType) {
                         <DataGrid
                             rows={planningList || []}
                             columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
+                            pageSizeOptions={[10, 50, 100]}
+                            initialState={{
+                                pagination: { paginationModel: { pageSize: 10 } },
+                            }}
                         />
                     </div>
                 </div> :

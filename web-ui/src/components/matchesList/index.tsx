@@ -1,7 +1,7 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { MatchDTO } from "../../DTOs/MatchDTO";
-import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
-import { Navigate, Link as RouterLink, useLocation } from 'react-router-dom';
+import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography } from '@mui/material';
+import { Navigate, useLocation } from 'react-router-dom';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useState } from 'react';
 import { useDeleteMatch, useDeleteMatchError } from '../../contexts/matchesContext';
@@ -131,8 +131,10 @@ function MatchesList({ matches }: PropType) {
                         <DataGrid
                             rows={matches || []}
                             columns={columns}
-                            pageSize={10}
-                            rowsPerPageOptions={[10]}
+                            pageSizeOptions={[10, 50, 100]}
+                            initialState={{
+                                pagination: { paginationModel: { pageSize: 10 } },
+                            }}
                             onCellClick={(params) => {
                                 const columnId = params.field;
                                 if (columnId !== "actions") {

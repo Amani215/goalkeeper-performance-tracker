@@ -4,7 +4,7 @@ import { IoFootball } from 'react-icons/io5';
 import { useParams, Link as RouterLink } from 'react-router-dom';
 import MatchFeedback from '../components/matchFeedback'
 import { useGoalkeeperCategories, useGoalkeeperCategoriesReady } from '../contexts/goalkeeperContext';
-import { useGetMatchPerformance, useGetMatchSequences, useMatchPerformanceError, useMatchPerformanceReady, useMatchSequences, useMatchSequencesReady, useMatchSequencesUpdated } from '../contexts/matchPerformanceContext';
+import { useGetMatchPerformance, useGetMatchSequences, useMatchPerformanceError, useMatchPerformanceReady, useMatchSequencesReady, useMatchSequencesUpdated } from '../contexts/matchPerformanceContext';
 import { CategoryDTO } from '../DTOs';
 import { MatchMonitoringDTO } from '../DTOs/MatchMonitoringDTO';
 import { ModalProp } from '../interfaces/modalProp';

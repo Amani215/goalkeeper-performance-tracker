@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, PropsWithChildren, useCallback, useContext, useState } from 'react'
 import { CategoryDTO, UserDTO } from '../DTOs';
 import { errorResponse } from '../interfaces/errorResponse';
 import { useAuth } from './authContext';

@@ -1,10 +1,9 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material'
 import { FormikValues, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useParams } from '../../contexts/paramsContext';
 import { ModalProp } from '../../interfaces/modalProp'
 import { style } from './style';
-import { useUpdateMatch } from '../../contexts/matchContext';
 import { MatchSequenceDTO } from '../../DTOs/MatchSequenceDTO';
 import { useUpdateMatchSequence } from '../../contexts/matchPerformanceContext';
 import { useTranslation } from 'react-i18next'

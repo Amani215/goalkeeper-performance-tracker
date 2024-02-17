@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography } from '@mui/material';
 import { MdAdd, MdDelete } from 'react-icons/md';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -180,8 +180,10 @@ function CalendarList({ categoryID, archived, calendarList }: PropType) {
                                 <DataGrid
                                     rows={calendar.items || []}
                                     columns={columns}
-                                    pageSize={5}
-                                    rowsPerPageOptions={[5]}
+                                    pageSizeOptions={[10, 50, 100]}
+                                    initialState={{
+                                        pagination: { paginationModel: { pageSize: 10 } },
+                                    }}
                                 />
                             </Box>
                         ))}

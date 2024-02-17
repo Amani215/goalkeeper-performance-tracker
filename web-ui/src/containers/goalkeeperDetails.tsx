@@ -409,7 +409,7 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
                     </Grid>
 
                     {/* GROWTH */}
-                    <GrowthList goalkeeperID={id ? id : ""} growthList={growthRows} />
+                    <GrowthList goalkeeperID={id ?? ""} growthList={growthRows} />
 
                     {/* MATCHES */}
                     <Typography fontWeight="bold" mt={2} mb={1}>{t("match_performances")}</Typography>
@@ -417,8 +417,10 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
                         < DataGrid
                             rows={matchRows || []}
                             columns={matchColumns}
-                            pageSize={3}
-                            rowsPerPageOptions={[3]}
+                            pageSizeOptions={[5, 10, 50]}
+                            initialState={{
+                                pagination: { paginationModel: { pageSize: 5 } },
+                            }}
                         /> : <></>
                     }
 
@@ -428,8 +430,10 @@ function GoalkeeperDetails({ setModalIsOpen }: ModalProp) {
                         < DataGrid
                             rows={trainingRows || []}
                             columns={trainingColumns}
-                            pageSize={3}
-                            rowsPerPageOptions={[3]}
+                            pageSizeOptions={[5, 10, 50]}
+                            initialState={{
+                                pagination: { paginationModel: { pageSize: 5 } },
+                            }}
                         /> : <></>
                     }
 

@@ -10,7 +10,7 @@ import { useArchiveCategory, useArchivedCategories, useCategoriesReady, useCateg
 import { CategoryDTO } from '../DTOs'
 import { ModalProp } from '../interfaces/modalProp'
 import { Link as RouterLink } from 'react-router-dom';
-import { Accordion, AccordionDetails, AccordionSummary, Alert, CardActions, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from '@mui/material'
 import { MdArchive, MdClose, MdExpandMore, MdUnarchive } from 'react-icons/md'
 import { useTranslation } from 'react-i18next'
 

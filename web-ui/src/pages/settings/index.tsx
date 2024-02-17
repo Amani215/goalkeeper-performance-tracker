@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PortalPage from '../../containers/portalPage'
 import SettingsView from '../../containers/settingsView'
 import ParamsProvider from '../../contexts/paramsContext'

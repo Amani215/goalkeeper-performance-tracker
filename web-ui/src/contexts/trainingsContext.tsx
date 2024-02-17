@@ -1,8 +1,7 @@
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { errorResponse } from "../interfaces/errorResponse";
 import { useAuth } from "./authContext";
-import { TrainingDTO } from "../DTOs/TrainingDTO"
-import { json } from "stream/consumers";
+import { TrainingDTO } from "../DTOs/TrainingDTO";
 import { useTranslation } from "react-i18next";
 
 // GET TRAININGS CONTEXT

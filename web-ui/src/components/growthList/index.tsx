@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Typography } from '@mui/material';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useState } from 'react';
 import { GrowthDTO } from '../../DTOs/GrowthDTO';
@@ -183,8 +183,10 @@ function GrowthList({ goalkeeperID, growthList }: PropType) {
                         <DataGrid
                             rows={growthList || []}
                             columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
+                            pageSizeOptions={[10, 50, 100]}
+                            initialState={{
+                                pagination: { paginationModel: { pageSize: 10 } },
+                            }}
                         />
                     </div>
                 </div> :

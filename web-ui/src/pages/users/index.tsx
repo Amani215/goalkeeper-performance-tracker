@@ -2,7 +2,6 @@ import { useState } from 'react'
 import NewUser from '../../containers/modals/newUser'
 import PortalPage from '../../containers/portalPage'
 import UsersList from '../../containers/usersList'
-import UserProvider from '../../contexts/userContext'
 import UsersProvider from '../../contexts/usersContext'
 
 const Users = () => {

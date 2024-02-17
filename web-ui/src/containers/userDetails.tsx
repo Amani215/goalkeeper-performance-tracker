@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import { useParams, Link as RouterLink } from 'react-router-dom'
 import { Chip, Link, Typography, Box, Button, Card, Grid } from '@mui/material'
 import { IoFootball } from "react-icons/io5"

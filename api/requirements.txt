@@ -1,5 +1,5 @@
 # Framework
-Flask==2.3.3
+Flask==3.0.2
 
 # For protection from CSRF attacks
 Flask-WTF==1.2.1
@@ -12,20 +12,20 @@ Flask-SQLAlchemy==3.1.1
 redis==4.3.4
 
 # For S3
-boto3==1.34.4
+boto3==1.34.44
 
 # For dealing with the database
 flask-migrate==4.0.5
 
 # For authentication and authorization
 bcrypt==4.1.2
-PyJWT==1.7.1
+PyJWT==2.8.0
 
 # For environment variables
-python-dotenv==1.0.0
+python-dotenv==1.0.1
 
 # For testing
-pytest==7.4.3
+pytest==8.0.1
 flask-testing==0.8.1
 pytest-cov==4.1.0
 

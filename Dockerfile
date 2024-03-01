@@ -1,4 +1,4 @@
-FROM node:16.17.0-alpine3.15 as webui
+FROM node:21.6.2-alpine3.19 as webui
 WORKDIR /app
 COPY web-ui/package*.json .
 COPY web-ui/yarn.lock .

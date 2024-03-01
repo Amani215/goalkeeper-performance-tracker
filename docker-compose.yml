@@ -9,7 +9,7 @@ volumes:
 services:
   web-ui:
     container_name: web-ui
-    image: node:16.17.0-alpine3.15
+    image: node:21.6.2-alpine3.19
     depends_on:
       - backend
     working_dir: /var/www/app

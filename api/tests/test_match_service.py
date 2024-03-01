@@ -7,6 +7,8 @@ import service.match_monitoring as match_monitoring_service
 import service.goalkeeper as goalkeeper_service
 from helper import random_string, random_date
 
+DATE_FORMAT = '%d/%m/%Y'
+
 
 def test_add_match(app, category):
     ''' Test adding match '''
@@ -15,7 +17,7 @@ def test_add_match(app, category):
     match_count = len([i.serialize for i in matches])
     date = random_date.generate()
     match = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4)
@@ -38,7 +40,7 @@ def test_get_by_date(app, category):
     '''Test get matches before or after a certain date'''
     date = random_date.generate(start='01/01/1970', end='31/12/1999')
     match = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4)
@@ -48,7 +50,7 @@ def test_get_by_date(app, category):
 
     date = random_date.generate(start='01/01/2000', end='01/01/2000')
     match = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4)
@@ -58,7 +60,7 @@ def test_get_by_date(app, category):
 
     date = random_date.generate(start='02/01/2000')
     match = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4)
@@ -138,9 +140,9 @@ def test_set_date(app, match):
 
     # Set valid date
     date = random_date.generate()
-    new_date = date.strftime('%d/%m/%Y')
+    new_date = date.strftime(DATE_FORMAT)
     response = match_service.set_date(match, new_date)
-    assert response.date.strftime('%d/%m/%Y') == new_date
+    assert response.date.strftime(DATE_FORMAT) == new_date
 
 
 def test_set_match_type(app, match):

@@ -9,11 +9,12 @@ import service.category as category_service
 import service.match_monitoring as match_monitoring_service
 import service.goalkeeper as goalkeeper_service
 
+DATE_FORMAT = '%d/%m/%Y'
 
 def add_match(date: str, local: str, visitor: str, match_type: str,
               category_id: str):
     '''Add a new match to the database'''
-    match_date = datetime.strptime(date, '%d/%m/%Y')
+    match_date = datetime.strptime(date, DATE_FORMAT)
     category = category_service.get_by_id(category_id)
 
     match = Match(match_date, local, visitor, match_type, category)
@@ -40,13 +41,13 @@ def get_by_id(id):
 
 def get_by_date_before(date: str):
     '''Get matches with a date before the given date'''
-    given_date = datetime.strptime(date, '%d/%m/%Y')
+    given_date = datetime.strptime(date, DATE_FORMAT)
     return Match.query.filter(Match.date <= given_date)
 
 
 def get_by_date_after(date: str):
     '''Get matches with a date after the given date'''
-    given_date = datetime.strptime(date, '%d/%m/%Y')
+    given_date = datetime.strptime(date, DATE_FORMAT)
     return Match.query.filter(Match.date >= given_date)
 
 
@@ -74,7 +75,7 @@ def set_teams(match: Match, local: str = None, visitor: str = None) -> Match:
 def set_date(match: Match, date: str = None) -> Match:
     '''Set the date of the match'''
     if (date is not None and date != ''):
-        match.date = datetime.strptime(date, '%d/%m/%Y')
+        match.date = datetime.strptime(date, DATE_FORMAT)
     db.session.commit()
     return match
 

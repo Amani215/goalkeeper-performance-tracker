@@ -7,6 +7,7 @@ import service.category as category_service
 import service.goalkeeper as goalkeeper_service
 from helper import random_string, random_date
 
+DATE_FORMAT = '%d/%m/%Y'
 
 def test_add_goalkeeper(app):
     ''' Test adding goalkeeper '''
@@ -96,6 +97,6 @@ def test_update_params(app, goalkeeper):
 
     rand = random_date.generate()
     response = goalkeeper_service.update_param(_goalkeeper.id, 'birthday',
-                                               str(rand.strftime('%d/%m/%Y')))
-    assert response.birthday.strftime('%d/%m/%Y') == str(
-        rand.strftime('%d/%m/%Y'))
+                                               str(rand.strftime(DATE_FORMAT)))
+    assert response.birthday.strftime(DATE_FORMAT) == str(
+        rand.strftime(DATE_FORMAT))

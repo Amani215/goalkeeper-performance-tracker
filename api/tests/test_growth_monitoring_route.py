@@ -11,6 +11,7 @@ import service.user as user_service
 
 URL = '/growth_monitoring'
 ID_URL = '/growth_monitoring?id='
+DATE_FORMAT = '%d/%m/%Y'
 
 
 def test_no_token(client):
@@ -42,7 +43,7 @@ def test_get_growth_monitorings(client, json_headers):
     date = random_date.generate()
     test_json = {
         'goalkeeper_id': goalkeeper.json['id'],
-        'date': date.strftime('%d/%m/%Y')
+        'date': date.strftime(DATE_FORMAT)
     }
     growth_monitoring = client.post(URL,
                                     data=json.dumps(test_json),
@@ -71,7 +72,7 @@ def test_get_growth_monitorings(client, json_headers):
     date = random_date.generate()
     test_json = {
         'goalkeeper_id': goalkeeper_2.json['id'],
-        'date': date.strftime('%d/%m/%Y')
+        'date': date.strftime(DATE_FORMAT)
     }
     client.post(URL, data=json.dumps(test_json), headers=json_headers)
 
@@ -103,7 +104,7 @@ def test_add_growth_monitoring(client, authenticated_user, goalkeeper,
     date = random_date.generate()
     test_json = {
         'goalkeeper_id': str(_goalkeeper.id),
-        'date': date.strftime('%d/%m/%Y')
+        'date': date.strftime(DATE_FORMAT)
     }
 
     response = client.post(URL, data=json.dumps(test_json), headers=headers)
@@ -141,7 +142,7 @@ def test_set_param(client, authenticated_user, goalkeeper, category):
     date = random_date.generate()
     test_json = {
         'goalkeeper_id': str(_goalkeeper.id),
-        'date': date.strftime('%d/%m/%Y')
+        'date': date.strftime(DATE_FORMAT)
     }
     growth_monitoring_obj = client.post(URL,
                                         data=json.dumps(test_json),
@@ -151,7 +152,7 @@ def test_set_param(client, authenticated_user, goalkeeper, category):
     ### USER FROM SAME CATEGORY
     rand_int1 = random.randint(60, 90)
     rand_int2 = random.randint(0, 30)
-    rand_date = random_date.generate().strftime('%d/%m/%Y')
+    rand_date = random_date.generate().strftime(DATE_FORMAT)
     test_data = {
         'weight': rand_int1,
         'annual_growth': rand_int2,

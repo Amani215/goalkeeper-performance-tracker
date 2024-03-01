@@ -22,6 +22,7 @@ from service.calendar import add_calendar, add_calendar_item
 
 content_type = 'application/json'
 AUTH_ROUTE = '/auth'
+DATE_FORMAT = '%d/%m/%Y'
 
 
 @pytest.fixture()
@@ -110,7 +111,7 @@ def goalkeeper():
 def planning(category):
     '''Create a mock planning record'''
     return add_planning(category.id,
-                        random_date.generate().strftime('%d/%m/%Y'),
+                        random_date.generate().strftime(DATE_FORMAT),
                         random_string.generate(4))
 
 
@@ -132,7 +133,7 @@ def match(category):
     ''' Create a mock match '''
     date = random_date.generate()
     match_credentials = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4)
@@ -151,7 +152,7 @@ def growth(goalkeeper):
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
     date = random_date.generate()
     growth_credentials = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'goalkeeper_id': str(_goalkeeper.id)
     }
     return growth_monitoring_service.add_growth_monitoring(
@@ -197,7 +198,7 @@ def training_session(category):
 
     date = random_date.generate_with_time()
     training_session_credentials = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'duration': random.randint(0, 500),
         'category_id': category.id
     }
@@ -239,7 +240,7 @@ def growth_monitoring(goalkeeper):
     date = random_date.generate()
 
     growth_monitoring_obj = growth_monitoring_service.add_growth_monitoring(
-        _goalkeeper.id, date.strftime('%d/%m/%Y'))
+        _goalkeeper.id, date.strftime(DATE_FORMAT))
 
     return growth_monitoring_obj
 

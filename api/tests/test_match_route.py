@@ -16,6 +16,8 @@ ID_URL = '/match?id='
 PERFORMANCES_URL = '/match/performances?id='
 SCORE_URL = '/match/score?id='
 
+DATE_FORMAT = '%d/%m/%Y'
+
 
 def test_no_token(client):
     '''Test protected routes when no token is provided'''
@@ -36,7 +38,7 @@ def test_get_matches(client, json_headers, category):
     ### GET BY ID
     date = random_date.generate(end='31/12/1999')
     test_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4),
@@ -55,7 +57,7 @@ def test_get_matches(client, json_headers, category):
     ### GET BY DATE BEFORE
     date = random_date.generate(start='01/01/2000', end='01/01/2000')
     test_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4),
@@ -65,7 +67,7 @@ def test_get_matches(client, json_headers, category):
 
     date = random_date.generate(start='02/01/2000')
     test_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4),
@@ -88,7 +90,7 @@ def test_add_match(client, json_headers, category):
 
     date = random_date.generate()
     test_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4),
@@ -124,7 +126,7 @@ def test_add_match(client, json_headers, category):
 
     date = random_date.generate()
     test_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local_team': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4),
@@ -138,7 +140,7 @@ def test_add_match(client, json_headers, category):
 
     date = random_date.generate()
     test_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor_team': random_string.generate(4),
         'match_type': random_string.generate(4),
@@ -152,7 +154,7 @@ def test_add_match(client, json_headers, category):
 
     date = random_date.generate()
     test_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'type': random_string.generate(4),
@@ -171,7 +173,7 @@ def test_set_get_category(client, json_headers, category):
     '''Test setting a category to a match'''
     date = random_date.generate()
     test_json = {
-        'date': date.strftime('%d/%m/%Y'),
+        'date': date.strftime(DATE_FORMAT),
         'local': random_string.generate(4),
         'visitor': random_string.generate(4),
         'match_type': random_string.generate(4),
@@ -274,7 +276,7 @@ def test_set_date_bad_json(client, json_headers):
     assert response.status_code == 400
 
     # NO MATCH ID
-    test_json = {"date": random_date.generate().strftime('%d/%m/%Y')}
+    test_json = {"date": random_date.generate().strftime(DATE_FORMAT)}
     response = client.put(URL,
                           data=json.dumps(test_json),
                           headers=json_headers)

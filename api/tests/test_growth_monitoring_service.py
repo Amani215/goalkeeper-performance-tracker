@@ -6,6 +6,7 @@ import service.growth_monitoring as growth_monitoring_service
 import service.goalkeeper as goalkeeper_service
 from helper import random_date, random_string
 
+DATE_FORMAT = '%d/%m/%Y'
 
 def test_add_growth_monitoring(app, goalkeeper):
     ''' Test adding growth monitoring'''
@@ -16,7 +17,7 @@ def test_add_growth_monitoring(app, goalkeeper):
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
     date = random_date.generate_with_time()
     growth_monitoring_service.add_growth_monitoring(_goalkeeper.id,
-                                                    date.strftime('%d/%m/%Y'))
+                                                    date.strftime(DATE_FORMAT))
 
     growth_monitorings = growth_monitoring_service.get_growth_monitorings()
     assert len([i.serialize
@@ -24,7 +25,7 @@ def test_add_growth_monitoring(app, goalkeeper):
     # DUPLICATE
     with pytest.raises(Exception):
         growth_monitoring_service.add_growth_monitoring(
-            _goalkeeper.id, date.strftime('%d/%m/%Y'))
+            _goalkeeper.id, date.strftime(DATE_FORMAT))
 
 
 def test_get_growth_monitorings(app):
@@ -53,7 +54,7 @@ def test_update_params(app, goalkeeper):
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
     date = random_date.generate_with_time()
     growth_monitoring_obj = growth_monitoring_service.add_growth_monitoring(
-        _goalkeeper.id, date.strftime('%d/%m/%Y'))
+        _goalkeeper.id, date.strftime(DATE_FORMAT))
 
     rand = random.randint(0, 100)
     response = growth_monitoring_service.update_param(growth_monitoring_obj.id,
@@ -95,5 +96,5 @@ def test_delete(app, growth):
 def test_set_date(app, growth):
     '''Test setting the date for a growth monitoring object'''
     new_date = random_date.generate()
-    growth_monitoring_service.set_date(growth, new_date.strftime('%d/%m/%Y'))
+    growth_monitoring_service.set_date(growth, new_date.strftime(DATE_FORMAT))
     assert growth.date == new_date.date()

@@ -9,6 +9,7 @@ URL = '/planning'
 ID_URL = '/planning?id='
 
 NOT_ALLOWED_MESSAGE = 'User is not allowed'
+DATE_FORMAT = '%d/%m/%Y'
 
 
 @pytest.mark.parametrize(['admin'], [[False]])
@@ -16,7 +17,7 @@ def test_add_planning_unauthorized(client, json_headers, category):
     '''Test add a planning record without being in the same category'''
     test_json = {
         'category_id': str(category.id),
-        'date': random_date.generate().strftime('%d/%m/%Y'),
+        'date': random_date.generate().strftime(DATE_FORMAT),
         'type': random_string.generate(5)
     }
     response = client.post(URL,
@@ -43,7 +44,7 @@ def test_add_planning_authorized(client, json_headers, authenticated_user,
 
     test_json = {
         'category_id': str(category.id),
-        'date': random_date.generate().strftime('%d/%m/%Y'),
+        'date': random_date.generate().strftime(DATE_FORMAT),
         'type': random_string.generate(5)
     }
     response = client.post(URL,
@@ -70,7 +71,7 @@ def test_get_planning(client, json_headers, planning):
 def test_update_planning_unauthorized(client, json_headers, planning):
     '''Test update different params of a planning without authorization'''
     new_type = random_string.generate(6)
-    new_date = random_date.generate().strftime('%d/%m/%Y')
+    new_date = random_date.generate().strftime(DATE_FORMAT)
     new_tactics = random_string.generate(8)
     test_json = {'type': new_type, 'date': new_date, 'tactics': new_tactics}
     response = client.put(ID_URL + planning.id,
@@ -88,7 +89,7 @@ def test_update_planning_authorized(client, json_headers, authenticated_user,
     user_service.add_category(user, planning.category)
 
     new_type = random_string.generate(6)
-    new_date = random_date.generate().strftime('%d/%m/%Y')
+    new_date = random_date.generate().strftime(DATE_FORMAT)
     new_tactics = random_string.generate(8)
     test_json = {'type': new_type, 'date': new_date, 'tactics': new_tactics}
     response = client.put(ID_URL + planning.id,

@@ -2,6 +2,7 @@
 import service.planning as planning_service
 from helper import random_date, random_string
 
+DATE_FORMAT = '%d/%m/%Y'
 
 def test_add_planning(app, category):
     '''Test adding a planning for an existing category'''
@@ -9,7 +10,7 @@ def test_add_planning(app, category):
     planning_count = len([i.serialize for i in plannings])
 
     date = random_date.generate()
-    planning_service.add_planning(category.id, date.strftime('%d/%m/%Y'),
+    planning_service.add_planning(category.id, date.strftime(DATE_FORMAT),
                                   random_string.generate(4))
 
     plannings = category.plannings
@@ -28,11 +29,11 @@ def test_get_by_id(app, planning):
 
 def test_set_date(app, planning):
     '''Test setting a new date for the planning'''
-    new_date = random_date.generate().strftime('%d/%m/%Y')
+    new_date = random_date.generate().strftime(DATE_FORMAT)
     planning_service.set_date(planning.id, new_date)
 
     _planning = planning_service.get_by_id(planning.id)
-    assert _planning.date.strftime('%d/%m/%Y') == new_date
+    assert _planning.date.strftime(DATE_FORMAT) == new_date
 
 
 def test_update_param(app, planning):

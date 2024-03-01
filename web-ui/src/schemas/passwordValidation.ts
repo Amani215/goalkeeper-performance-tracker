@@ -7,7 +7,7 @@ const passwordValidation = yup.object({
     .min(5, "Your password is too short."),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
+    .oneOf([yup.ref("password"), ""], "Passwords must match"),
 });
 
 export default passwordValidation;

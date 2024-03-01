@@ -74,11 +74,10 @@ function NewGoalkeeper({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) {
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label={t("birthdate")}
-                                inputFormat="MM/DD/YYYY"
+                                format="DD/MM/YYYY"
                                 value={formik.values.birthday}
                                 onChange={v => formik.setFieldValue("birthday", v)}
                                 maxDate={dayjs()}
-                                renderInput={(params) => <TextField {...params} />}
                             />
                         </Stack>
                     </LocalizationProvider>

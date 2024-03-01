@@ -75,10 +75,9 @@ function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) 
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label={t("birthdate")}
-                                inputFormat="DD/MM/YYYY"
+                                format="DD/MM/YYYY"
                                 value={formik.values.birthday}
                                 onChange={v => formik.setFieldValue("birthday", v)}
-                                renderInput={(params) => <TextField {...params} />}
                             />
                         </Stack>
                     </LocalizationProvider>

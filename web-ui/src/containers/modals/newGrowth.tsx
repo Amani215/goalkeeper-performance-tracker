@@ -60,10 +60,9 @@ function NewGrowth({ goalkeeperID, modalProp }: Readonly<PropType>) {
                         <Stack spacing={3}>
                             <DesktopDatePicker
                                 label="Date"
-                                inputFormat="DD/MM/YYYY"
+                                format="DD/MM/YYYY"
                                 value={formik.values.date}
                                 onChange={v => formik.setFieldValue("date", v)}
-                                renderInput={(params) => <TextField {...params} />}
                             />
                         </Stack>
                     </LocalizationProvider>

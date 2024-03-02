@@ -14,7 +14,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     volumes:
-      - sqlite:/var/www/app/db
+      - sqlite:/var/www/app/db:rw
     env_file:
       - .env
     environment:

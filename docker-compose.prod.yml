@@ -2,7 +2,7 @@
 version: '3'
 
 volumes:
-  pg-data: {}
+  sqlite: {}
   redis-data: {}
   minio-data: {}
 
@@ -14,52 +14,39 @@ services:
       dockerfile: Dockerfile
     restart: always
     volumes:
-      - ./api/db:/var/www/app/db
-    depends_on:
-      - db
+      - sqlite:/var/www/app/db
     env_file:
       - .env
-    command: python3 -m flask run --host=0.0.0.0
+    environment:
+      - SQLITE_HOST=//var/www/app/db/dev.db
+    labels:
+      - "traefik.http.routers.app.rule=Host(`docker.localhost`)"
 
-  nginx:
-    image: nginx:stable-alpine
-    container_name: nginx
+  traefik:
+    image: traefik:v2.11.0
+    container_name: traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $PWD/configs/traefik:/etc/traefik:ro
+    command:
+      - --providers.docker=true
+      - --api.insecure=true
     ports:
-      - 80:80
-    volumes:
-      - ./nginx/test:/etc/nginx/conf.d
-    depends_on:
-      - app
-    restart: always
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
 
-  db:
-    image: postgres:14-alpine3.16
-    container_name: db
-    restart: always
-    env_file:
-      - .env
-    volumes:
-      - pg-data:/var/lib/postgresql/data
-
-  db-test:
-    image: postgres:14-alpine3.16
-    container_name: db-test
-    restart: always
-    env_file:
-      - .env
-    ports:
-      - 5432:5432
-
-  adminer:
-    image: michalhosna/adminer
-    container_name: adminer
-    restart: always
-    links:
-      - db
-    depends_on:
-      - db
-    volumes:
-      - ./api/db:/api_db
+  # nginx:
+  #   image: nginx:stable-alpine
+  #   container_name: nginx
+  #   ports:
+  #     - 80:80
+  #   volumes:
+  #     - ./nginx/test:/etc/nginx/conf.d
+  #   depends_on:
+  #     - app
+  #   restart: always
 
   redis:
     image: redis:7-alpine3.16

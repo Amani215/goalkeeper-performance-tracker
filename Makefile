@@ -45,3 +45,7 @@ api/db/%.db:
 
 .PHONY: create-db
 create-db: api/db/dev.db api/db/test.db
+
+.PHONY: upp
+upp:
+	docker compose -f docker-compose.prod.yml up -d --build

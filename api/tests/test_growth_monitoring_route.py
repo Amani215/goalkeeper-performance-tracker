@@ -37,7 +37,7 @@ def test_get_growth_monitorings(client, json_headers):
         'month': date.month,
         'year': date.year
     }
-    goalkeeper = client.post('/goalkeeper',
+    goalkeeper = client.post(URL_PREFIX + '/goalkeeper',
                              data=json.dumps(test_json),
                              headers=json_headers)
 
@@ -66,7 +66,7 @@ def test_get_growth_monitorings(client, json_headers):
         'month': date.month,
         'year': date.year
     }
-    goalkeeper_2 = client.post('/goalkeeper',
+    goalkeeper_2 = client.post(URL_PREFIX + '/goalkeeper',
                                data=json.dumps(test_json),
                                headers=json_headers)
 
@@ -77,12 +77,12 @@ def test_get_growth_monitorings(client, json_headers):
     }
     client.post(URL, data=json.dumps(test_json), headers=json_headers)
 
-    response = client.get('/growth_monitoring?gid=' + goalkeeper_2.json['id'],
+    response = client.get(URL_PREFIX + '/growth_monitoring?gid=' + goalkeeper_2.json['id'],
                           headers=json_headers)
     assert response.status_code == 200
     assert sum(1 for _ in range(len(response.json))) == 1
 
-    response = client.get('/growth_monitoring?gid=' + str(uuid.uuid4),
+    response = client.get(URL_PREFIX + '/growth_monitoring?gid=' + str(uuid.uuid4),
                           headers=json_headers)
     assert response.status_code == 200
     assert sum(1 for _ in range(len(response.json))) == 0

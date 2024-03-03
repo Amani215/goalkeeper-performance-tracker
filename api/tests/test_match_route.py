@@ -330,7 +330,7 @@ def test_get_match_performances(client, json_headers, match, goalkeeper):
     assert len(performances.json) == 0
 
     test_json = {'goalkeeper_id': _goalkeeper.id, 'match_id': mid}
-    client.post('match_monitoring',
+    client.post(URL_PREFIX + '/match_monitoring',
                 data=json.dumps(test_json),
                 headers=json_headers)
     performances = client.get(PERFORMANCES_URL + mid, headers=json_headers)
@@ -388,7 +388,7 @@ def test_delete_with_relationship(client, json_headers, match, goalkeeper):
     _goalkeeper = goalkeeper_service.get_by_name(goalkeeper['name'])
     test_json = {"goalkeeper_id": _goalkeeper.id, "match_id": match.id}
 
-    client.post('/match_monitoring',
+    client.post(URL_PREFIX + '/match_monitoring',
                 data=json.dumps(test_json),
                 headers=json_headers)
 

@@ -333,7 +333,7 @@ def test_set_password(client, json_headers, authenticated_user):
         'username': authenticated_user['username'],
         'password': password,
     }
-    response = client.post('/auth',
+    response = client.post(URL_PREFIX + '/auth',
                            data=json.dumps(test_data),
                            headers=json_headers)
     assert response.status_code == 200

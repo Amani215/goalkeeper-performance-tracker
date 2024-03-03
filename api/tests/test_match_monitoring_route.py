@@ -37,7 +37,7 @@ def test_get_matches(client, json_headers, category):
         'month': date.month,
         'year': date.year
     }
-    goalkeeper = client.post('/goalkeeper',
+    goalkeeper = client.post(URL_PREFIX + '/goalkeeper',
                              data=json.dumps(test_json),
                              headers=json_headers)
 
@@ -49,7 +49,7 @@ def test_get_matches(client, json_headers, category):
         'match_type': random_string.generate(4),
         'category_id': category_id
     }
-    match = client.post('/match',
+    match = client.post(URL_PREFIX + '/match',
                         data=json.dumps(test_json),
                         headers=json_headers)
     test_json = {

@@ -39,7 +39,7 @@ def test_get_training_monitorings(client, json_headers):
         'month': date.month,
         'year': date.year
     }
-    goalkeeper = client.post('/goalkeeper',
+    goalkeeper = client.post(URL_PREFIX + '/goalkeeper',
                              data=json.dumps(test_json),
                              headers=json_headers)
 
@@ -56,7 +56,7 @@ def test_get_training_monitorings(client, json_headers):
         'duration': random.randint(0, 500),
         'category_id': category.id
     }
-    training_session = client.post('/training_session',
+    training_session = client.post(URL_PREFIX + '/training_session',
                                    data=json.dumps(test_json),
                                    headers=json_headers)
 

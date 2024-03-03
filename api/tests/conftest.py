@@ -21,7 +21,7 @@ from service.planning import add_planning
 from service.calendar import add_calendar, add_calendar_item
 
 content_type = 'application/json'
-AUTH_ROUTE = '/auth'
+AUTH_ROUTE = '/api/auth'
 DATE_FORMAT = '%d/%m/%Y'
 
 
@@ -278,7 +278,7 @@ def authenticated_user(client, admin: bool):
         'password': random_string.generate(12),
         'admin': admin
     }
-    client.post('/user', data=json.dumps(test_json), headers=headers)
+    client.post('/api/user', data=json.dumps(test_json), headers=headers)
     response = client.post(AUTH_ROUTE,
                            data=json.dumps(test_json),
                            headers=headers)

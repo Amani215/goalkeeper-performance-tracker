@@ -59,7 +59,7 @@ def test_get_training_sessions(client, json_headers):
     assert response.json['id'] == training_session_obj.json['id']
 
     # GET BY CATEGORY ID
-    response = client.get('/training_session?category_id=' + category.id,
+    response = client.get(URL_PREFIX + '/training_session?category_id=' + category.id,
                           headers=json_headers)
     assert response.status_code == 200
     assert len(response.json) == 1
@@ -240,7 +240,7 @@ def test_get_goalkeepers(client, json_headers):
                            headers=json_headers)
 
     # NO ID
-    goalkeepers = client.get('/training_session/performances',
+    goalkeepers = client.get(URL_PREFIX + '/training_session/performances',
                              headers=json_headers)
     assert goalkeepers.status_code == 400
 
@@ -278,7 +278,7 @@ def test_remove_goalkeepers(client, json_headers, goalkeeper):
         'goalkeeper_id': _goalkeeper.id,
         'session_id': response.json['id']
     }
-    tp = client.post('/training_monitoring',
+    tp = client.post(URL_PREFIX + '/training_monitoring',
                      data=json.dumps(test_json),
                      headers=json_headers)
     goalkeepers = client.get(PERFORMANCE_URL + response.json['id'],
@@ -288,7 +288,7 @@ def test_remove_goalkeepers(client, json_headers, goalkeeper):
 
     test_json = {'goalkeeper_performance_id': tp.json['id']}
     # NO ID
-    delete_response = client.delete('/training_session/performances',
+    delete_response = client.delete(URL_PREFIX + '/training_session/performances',
                                     data=json.dumps(test_json),
                                     headers=json_headers)
     assert delete_response.status_code == 400
@@ -337,7 +337,7 @@ def test_delete_with_relationship(client, json_headers, training_session,
         "session_id": training_session.id
     }
 
-    client.post('/training_monitoring',
+    client.post(URL_PREFIX + '/training_monitoring',
                 data=json.dumps(test_json),
                 headers=json_headers)
 

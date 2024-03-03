@@ -162,7 +162,7 @@ def test_delete_with_relationship(client, authenticated_user, category):
         "trainer_id": authenticated_user['id'],
         "category_id": category.id
     }
-    client.put('/user/category', data=json.dumps(test_json), headers=headers)
+    client.put(URL_PREFIX + '/user/category', data=json.dumps(test_json), headers=headers)
 
     response = client.delete(URL + '?id=' + category.id, headers=headers)
     assert response.status_code == 401
@@ -193,7 +193,7 @@ def test_get_trainers(client, json_headers, user):
     assert len(trainers.json) == 0
 
     test_json = {'trainer_id': user_id, 'category_id': category.json['id']}
-    client.put('/user/category',
+    client.put(URL_PREFIX + '/user/category',
                data=json.dumps(test_json),
                headers=json_headers)
     trainers = client.get(TRAINERS_URL + category.json['id'],
@@ -224,13 +224,13 @@ def test_get_goalkeepers(client, goalkeeper, json_headers):
     assert goalkeepers.status_code == 200
     assert len(goalkeepers.json) == 0
 
-    _goalkeeper = client.get('/goalkeeper?name=' + goalkeeper['name'],
+    _goalkeeper = client.get(URL_PREFIX + '/goalkeeper?name=' + goalkeeper['name'],
                              headers=json_headers)
     test_json = {
         'goalkeeper_id': _goalkeeper.json['id'],
         'category_id': category.json['id']
     }
-    client.put('/goalkeeper/category',
+    client.put(URL_PREFIX + '/goalkeeper/category',
                data=json.dumps(test_json),
                headers=json_headers)
     goalkeepers = client.get(GOALKEEPERS_URL + category.json['id'],
@@ -261,7 +261,7 @@ def test_get_plannings(client, json_headers, authenticated_user, category):
         'date': random_date.generate().strftime('%d/%m/%Y'),
         'type': random_string.generate(5)
     }
-    client.post('/planning', data=json.dumps(test_json), headers=json_headers)
+    client.post(URL_PREFIX + '/planning', data=json.dumps(test_json), headers=json_headers)
     plannings = client.get(PLANNINGS_URL + cid, headers=json_headers)
     assert plannings.status_code == 200
     assert len(plannings.json) == 1
@@ -291,7 +291,7 @@ def test_get_calendars(client, json_headers, authenticated_user, category):
         'local': random_string.generate(5),
         'visitor': random_string.generate(5)
     }
-    client.post('/calendar', data=json.dumps(test_json), headers=json_headers)
+    client.post(URL_PREFIX + '/calendar', data=json.dumps(test_json), headers=json_headers)
     calendars = client.get(CALENDARS_URL + cid, headers=json_headers)
     assert calendars.status_code == 200
     assert len(calendars.json) == 1

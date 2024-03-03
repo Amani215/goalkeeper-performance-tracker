@@ -9,8 +9,9 @@ from tests.conftest import content_type
 import service.goalkeeper as goalkeeper_service
 import service.user as user_service
 
-URL = '/growth_monitoring'
-ID_URL = '/growth_monitoring?id='
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/growth_monitoring'
+ID_URL = URL_PREFIX + '/growth_monitoring?id='
 DATE_FORMAT = '%d/%m/%Y'
 
 

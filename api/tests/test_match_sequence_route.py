@@ -7,9 +7,10 @@ from random import randint
 from helper import random_string
 from tests.conftest import content_type
 
-URL = '/match_sequence'
-ID_URL = '/match_sequence?id='
-MMID_URL = '/match_sequence?mmid='
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/match_sequence'
+ID_URL = URL_PREFIX + '/match_sequence?id='
+MMID_URL = URL_PREFIX + '/match_sequence?mmid='
 
 NO_DATA_PROVIDED = 'No data was provided'
 

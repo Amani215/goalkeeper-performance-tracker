@@ -4,7 +4,8 @@ import pytest
 from helper import random_string
 from service.user import add_user
 
-URL = '/auth'
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/auth'
 
 
 @pytest.mark.parametrize(['admin'], [[False]])

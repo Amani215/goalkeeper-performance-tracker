@@ -5,8 +5,9 @@ import pytest
 from helper import random_string, random_date
 import service.user as user_service
 
-URL = '/planning'
-ID_URL = '/planning?id='
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/planning'
+ID_URL = URL_PREFIX + '/planning?id='
 
 NOT_ALLOWED_MESSAGE = 'User is not allowed'
 DATE_FORMAT = '%d/%m/%Y'

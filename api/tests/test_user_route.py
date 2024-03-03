@@ -10,12 +10,13 @@ from helper import random_string
 import service.category as category_service
 from tests.conftest import content_type
 
-URL = '/user'
-PROFILE_PIC_URL = '/user/profile_pic'
-ADMIN_URL = '/user/admin'
-CATEGORY_URL = '/user/category'
-USERNAME_URL = '/user?username='
-ARCHIVED_URL = '/user/archived'
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/user'
+PROFILE_PIC_URL = URL_PREFIX + '/user/profile_pic'
+ADMIN_URL = URL_PREFIX + '/user/admin'
+CATEGORY_URL = URL_PREFIX + '/user/category'
+USERNAME_URL = URL_PREFIX + '/user?username='
+ARCHIVED_URL = URL_PREFIX + '/user/archived'
 
 
 def test_no_token(client):

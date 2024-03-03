@@ -11,14 +11,15 @@ import service.goalkeeper as goalkeeper_service
 import service.user as user_service
 from tests.conftest import content_type
 
-URL = '/goalkeeper'
-ID_URL = '/goalkeeper?id='
-PICTURE_URL = '/goalkeeper/picture'
-CATEGORY_URL = '/goalkeeper/category'
-MATCH_URL = '/goalkeeper/match_performances'
-TRAINING_URL = '/goalkeeper/training_performances'
-NAME_URL = '/goalkeeper?name='
-PIC = 'tests/assets/image.jpeg'
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/goalkeeper'
+ID_URL = URL_PREFIX + '/goalkeeper?id='
+PICTURE_URL = URL_PREFIX + '/goalkeeper/picture'
+CATEGORY_URL = URL_PREFIX + '/goalkeeper/category'
+MATCH_URL = URL_PREFIX + '/goalkeeper/match_performances'
+TRAINING_URL = URL_PREFIX + '/goalkeeper/training_performances'
+NAME_URL = URL_PREFIX + '/goalkeeper?name='
+PIC = URL_PREFIX + 'tests/assets/image.jpeg'
 
 
 def test_no_token(client):

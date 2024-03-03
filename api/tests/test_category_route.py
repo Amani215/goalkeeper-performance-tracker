@@ -6,12 +6,13 @@ from helper import random_date, random_string
 from tests.conftest import content_type
 import service.user as user_service
 
-URL = '/category'
-TRAINERS_URL = '/category/trainers?id='
-GOALKEEPERS_URL = '/category/goalkeepers?id='
-PLANNINGS_URL = '/category/plannings?id='
-CALENDARS_URL = '/category/calendars?id='
-ID_URL = '/category?id='
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/category'
+TRAINERS_URL = URL_PREFIX + '/category/trainers?id='
+GOALKEEPERS_URL = URL_PREFIX + '/category/goalkeepers?id='
+PLANNINGS_URL = URL_PREFIX + '/category/plannings?id='
+CALENDARS_URL = URL_PREFIX + '/category/calendars?id='
+ID_URL = URL_PREFIX + '/category?id='
 
 
 @pytest.mark.parametrize(['admin'], [[True]])

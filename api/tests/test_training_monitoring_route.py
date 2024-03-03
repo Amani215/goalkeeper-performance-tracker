@@ -11,8 +11,9 @@ import service.category as category_service
 import service.goalkeeper as goalkeeper_service
 import service.user as user_service
 
-URL = '/training_monitoring'
-ID_URL = '/training_monitoring?id='
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/training_monitoring'
+ID_URL = URL_PREFIX + '/training_monitoring?id='
 IMAGE_URL = 'tests/assets/image.jpeg'
 
 

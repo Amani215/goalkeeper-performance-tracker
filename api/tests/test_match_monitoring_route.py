@@ -9,8 +9,9 @@ from tests.conftest import content_type
 import service.goalkeeper as goalkeeper_service
 import service.user as user_service
 
-URL = '/match_monitoring'
-ID_URL = '/match_monitoring?id='
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/match_monitoring'
+ID_URL = URL_PREFIX + '/match_monitoring?id='
 
 
 def test_no_token(client):

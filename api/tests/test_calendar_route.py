@@ -5,10 +5,11 @@ import pytest
 from helper import random_string, random_date
 import service.user as user_service
 
-URL = '/calendar'
-ID_URL = '/calendar?id='
-ITEM_URL = '/calendar/item'
-ID_ITEM_URL = '/calendar/item?id='
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/calendar'
+ID_URL = URL_PREFIX + '/calendar?id='
+ITEM_URL = URL_PREFIX + '/calendar/item'
+ID_ITEM_URL = URL_PREFIX + '/calendar/item?id='
 
 NOT_ALLOWED_MESSAGE = 'User is not allowed'
 NO_DATA_PROVIDED = 'No data was provided'

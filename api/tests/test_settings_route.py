@@ -4,7 +4,8 @@ import pytest
 import init.redis_init as redis_db
 from helper import random_string
 
-URL = '/settings'
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/settings'
 
 NO_SUCH_KEY_EXISTS = 'No such key exists'
 NO_DATA = 'No data was provided'

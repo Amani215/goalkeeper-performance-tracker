@@ -9,13 +9,14 @@ from helper import random_string, random_date
 import service.category as category_service
 import service.goalkeeper as goalkeeper_service
 
-URL = '/training_session'
-ID_URL = '/training_session?id='
-SESSION_CATEGORY_URL = '/training_session/category'
-PERFORMANCE_URL = '/training_session/performances?id='
-FORM_URL = '/training_session/form?id='
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/training_session'
+ID_URL = URL_PREFIX + '/training_session?id='
+SESSION_CATEGORY_URL = URL_PREFIX + '/training_session/category'
+PERFORMANCE_URL = URL_PREFIX + '/training_session/performances?id='
+FORM_URL = URL_PREFIX + '/training_session/form?id='
 IMAGE_URL = 'tests/assets/image.jpeg'
-CATEGORY_URL = '/category'
+CATEGORY_URL = URL_PREFIX + '/category'
 
 NO_DATA = 'No data was provided'
 DATE_FORMAT = '%d/%m/%Y'

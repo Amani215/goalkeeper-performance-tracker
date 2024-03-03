@@ -8,13 +8,14 @@ from helper import random_string, random_date
 import service.category as category_service
 import service.goalkeeper as goalkeeper_service
 
-URL = '/match'
-CATEGORY_URL = '/match/category'
-TEAMS_URL = '/match/teams'
-DATE_URL = '/match/date'
-ID_URL = '/match?id='
-PERFORMANCES_URL = '/match/performances?id='
-SCORE_URL = '/match/score?id='
+URL_PREFIX = '/api'
+URL = URL_PREFIX + '/match'
+CATEGORY_URL = URL_PREFIX + '/match/category'
+TEAMS_URL = URL_PREFIX + '/match/teams'
+DATE_URL = URL_PREFIX + '/match/date'
+ID_URL = URL_PREFIX + '/match?id='
+PERFORMANCES_URL = URL_PREFIX + '/match/performances?id='
+SCORE_URL = URL_PREFIX + '/match/score?id='
 
 DATE_FORMAT = '%d/%m/%Y'
 

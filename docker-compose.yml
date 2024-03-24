@@ -7,6 +7,21 @@ volumes:
   minio-data: {}
 
 services:
+  traefik:
+    image: traefik:v2.11.0
+    container_name: traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $PWD/configs/traefik:/etc/traefik:ro
+    command:
+      - --providers.docker=true
+      - --api.insecure=true
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+
   web-ui:
     container_name: web-ui
     image: node:21.6.2-alpine3.19
@@ -17,6 +32,9 @@ services:
       - ./web-ui:/var/www/app
     command: yarn start
     restart: always
+    labels:
+      - "traefik.http.routers.web-ui.rule=Host(`gpt.localhost`)"
+      - traefik.http.services.web-ui.loadbalancer.server.port=3000
 
   backend:
     container_name: backend
@@ -24,8 +42,6 @@ services:
       context: api
       dockerfile: Dockerfile
     restart: always
-    depends_on:
-      - db
     user: ${UID}:${GID}
     working_dir: /var/www/app
     volumes:
@@ -33,47 +49,14 @@ services:
     env_file:
       - .env
     command: python3 -m flask run --host=0.0.0.0
-
-  nginx:
-    image: nginx:stable-alpine
-    container_name: nginx
-    ports:
-      - 80:80
-    volumes:
-      - ./nginx/dev:/etc/nginx/conf.d
-    depends_on:
-      - web-ui
-      - backend
-    restart: always
-
-  db:
-    image: postgres:14-alpine3.16
-    container_name: db
-    restart: always
-    env_file:
-      - .env
-    volumes:
-      - pg-data:/var/lib/postgresql/data
-
-  db-test:
-    image: postgres:14-alpine3.16
-    container_name: db-test
-    restart: always
-    env_file:
-      - .env
-    ports:
-      - 5432:5432
-
-  adminer:
-    image: michalhosna/adminer
-    container_name: adminer
-    restart: always
-    links:
-      - db
-    depends_on:
-      - db
-    volumes:
-      - ./api/db:/api_db
+    labels:
+      - "traefik.http.routers.backend.rule=Host(`gpt.localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=http://gpt.localhost/*"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolallowmethods=GET,OPTIONS,PUT,POST,DELETE"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolallowheaders=*"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolmaxage=100"
+      - "traefik.http.middlewares.testheader.headers.addvaryheader=true"
+      - traefik.http.services.backend.loadbalancer.server.port=5000
 
   redis:
     image: redis:7-alpine3.16
@@ -101,6 +84,9 @@ services:
       - redis
     environment:
       - REDIS_HOSTS=redis:6379
+    labels:
+      - "traefik.http.routers.redis-commander.rule=Host(`commander.localhost`)"
+      - traefik.http.services.redis-commander.loadbalancer.server.port=8081
 
   minio:
     image: minio/minio:RELEASE.2022-09-25T15-44-53Z.fips
@@ -118,6 +104,9 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     command: server --console-address ":9001" /data
+    labels:
+      - "traefik.http.routers.minio.rule=Host(`minio.localhost`)"
+      - traefik.http.services.minio.loadbalancer.server.port=9000
 
   grafana:
     image: grafana/grafana:9.2.5-ubuntu
@@ -132,3 +121,6 @@ services:
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./api/db:/api_db
+    labels:
+      - "traefik.http.routers.grafana.rule=Host(`grafana.localhost`)"
+      - traefik.http.services.grafana.loadbalancer.server.port=3000

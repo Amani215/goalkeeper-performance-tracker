@@ -1,5 +1,5 @@
 FROM surnet/alpine-wkhtmltopdf:3.15.0-0.12.6-full AS wkhtmltopdf
-FROM python:3.9-alpine3.15
+FROM python:3.10.12-alpine3.18
 
 RUN apk add --no-cache \
     libstdc++=10.3.1_git20211027-r0 \

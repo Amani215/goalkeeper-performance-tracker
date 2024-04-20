@@ -23,21 +23,20 @@ datasources:
     secureJsonData:
     version: 1
     editable: true
-  - name: PostgreSQL
+  - name: prometheus
     access: proxy
-    type: postgres
-    url: db
-    user: db
-    database: db
+    type: prometheus
+    url: http://prometheus:9090
+    user: ""
+    database: ""
     basicAuth: false
     basicAuthUser:
     basicAuthPassword:
     withCredentials: false
     isDefault: false
     jsonData:
-      postgresVersion: 1400
-      sslmode: disable
+      httpMethod: POST
+      prometheusType: Prometheus
     secureJsonData:
-      password: pass
     version: 1
     editable: true

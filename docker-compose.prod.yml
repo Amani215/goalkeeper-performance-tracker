@@ -103,5 +103,5 @@ services:
       - GF_USERS_DEFAULT_THEME=light
       - GF_AUTH_ANONYMOUS_ENABLED=true
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning
+      - $PWD/configs/grafana/provisioning:/etc/grafana/provisioning
       - ./api/db:/api_db

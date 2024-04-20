@@ -5,6 +5,7 @@ volumes:
   pg-data: {}
   redis-data: {}
   minio-data: {}
+  prometheus-data: {}
 
 services:
   traefik:
@@ -16,6 +17,10 @@ services:
     command:
       - --providers.docker=true
       - --api.insecure=true
+      - --metrics=true
+      - --metrics.prometheus=true
+      - --metrics.prometheus.addEntryPointsLabels=true
+      - --metrics.prometheus.addrouterslabels=true
     ports:
       # The HTTP port
       - "80:80"
@@ -119,8 +124,27 @@ services:
       - GF_USERS_DEFAULT_THEME=light
       - GF_AUTH_ANONYMOUS_ENABLED=true
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning
+      - $PWD/configs/grafana/provisioning:/etc/grafana/provisioning
       - ./api/db:/api_db
     labels:
       - "traefik.http.routers.grafana.rule=Host(`grafana.localhost`)"
       - traefik.http.services.grafana.loadbalancer.server.port=3000
+
+  prometheus:
+    image: prom/prometheus:v2.51.2
+    container_name: prometheus
+    restart: always
+    volumes:
+      - $PWD/configs/prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    expose:
+      - 9090
+    labels:
+      - traefik.http.routers.prometheus.rule=Host(`prometheus.localhost`)
+      - traefik.http.services.prometheus.loadbalancer.server.port=9090

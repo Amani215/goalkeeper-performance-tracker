@@ -94,7 +94,7 @@ services:
       - traefik.http.services.redis-commander.loadbalancer.server.port=8081
 
   minio:
-    image: minio/minio:RELEASE.2022-09-25T15-44-53Z.fips
+    image: minio/minio:RELEASE.2024-04-18T19-09-19Z.fips
     container_name: minio
     restart: always
     ports:
@@ -108,6 +108,7 @@ services:
     environment:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_PROMETHEUS_AUTH_TYPE=public
     command: server --console-address ":9001" /data
     labels:
       - "traefik.http.routers.minio.rule=Host(`minio.localhost`)"

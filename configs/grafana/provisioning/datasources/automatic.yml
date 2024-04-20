@@ -16,14 +16,15 @@ datasources:
     basicAuthUser:
     basicAuthPassword:
     withCredentials: false
-    isDefault: true
+    isDefault: false
     jsonData:
       path: /api_db/dev.db
       pathPrefix: "file:"
     secureJsonData:
     version: 1
     editable: true
-  - name: prometheus
+  - uid: prometheusdatasource
+    name: prometheus
     access: proxy
     type: prometheus
     url: http://prometheus:9090
@@ -33,7 +34,7 @@ datasources:
     basicAuthUser:
     basicAuthPassword:
     withCredentials: false
-    isDefault: false
+    isDefault: true
     jsonData:
       httpMethod: POST
       prometheusType: Prometheus

@@ -49,3 +49,7 @@ create-db: api/db/dev.db api/db/test.db
 .PHONY: upp
 upp:
 	docker compose -f docker-compose.prod.yml up -d --build
+
+.PHONY: downp
+downp:
+	docker compose -f docker-compose.prod.yml down -v

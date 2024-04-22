@@ -64,34 +64,26 @@ services:
       - traefik.http.services.backend.loadbalancer.server.port=5000
 
   redis:
-    image: redis:7-alpine3.16
+    image: redis/redis-stack:7.2.0-v10
     container_name: redis
     hostname: redis
     restart: always
     ports:
       - 6379:6379
-    command:
-      - redis-server
-      - --appendonly
-      - "yes"
+    expose:
+      - '8001'
     volumes:
-      - redis-data:/var/lib/redis/data
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    container_name: redis-commander
-    restart: always
-    links:
-      - redis
-    depends_on:
-      - redis
-    environment:
-      - REDIS_HOSTS=redis:6379
+      - redis-data:/data
     labels:
-      - "traefik.http.routers.redis-commander.rule=Host(`commander.localhost`)"
-      - traefik.http.services.redis-commander.loadbalancer.server.port=8081
+      - "traefik.http.routers.redis.rule=Host(`redis.localhost`)"
+      - traefik.http.services.redis.loadbalancer.server.port=8001
+
+  redis-exporter:
+    image: bitnami/redis-exporter:1.58.0
+    container_name: redis-exporter
+    restart: always
+    environment:
+      - REDIS_ADDR=redis://redis:6379
 
   minio:
     image: minio/minio:RELEASE.2024-04-18T19-09-19Z.fips

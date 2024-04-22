@@ -149,7 +149,6 @@ jobs:
           yamllint_file_or_dir: "."
           yamllint_strict: false
           yamllint_comment: true
-          yamllint_config_datapath: '{extends:relaxed, rules:{line-length: {max: 120}}}'
 
   build:
     runs-on: ubuntu-latest

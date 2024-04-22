@@ -9,7 +9,7 @@ RUN yarn build
 
 FROM python:3.10.12-alpine3.18 as mkdocs
 WORKDIR /app
-RUN pip install mkdocs
+RUN pip install --no-cache-dir mkdocs==1.4.3
 COPY ./docs/ ./docs/
 COPY mkdocs.yml .
 RUN python -m mkdocs build -d ./build

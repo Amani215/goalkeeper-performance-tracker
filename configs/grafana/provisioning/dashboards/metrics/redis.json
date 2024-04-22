@@ -117,10 +117,7 @@
             "type": "stat"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -189,11 +186,13 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "sum(redis_connected_clients{})",
                     "format": "time_series",
                     "intervalFactor": 2,
                     "legendFormat": "",
                     "metric": "",
+                    "range": true,
                     "refId": "A",
                     "step": 2
                 }
@@ -203,10 +202,7 @@
             "type": "stat"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -279,11 +275,13 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "sum(100 * (redis_memory_used_bytes{}  / redis_memory_max_bytes{}))",
                     "format": "time_series",
                     "intervalFactor": 2,
                     "legendFormat": "",
                     "metric": "",
+                    "range": true,
                     "refId": "A",
                     "step": 2
                 }
@@ -293,10 +291,7 @@
             "type": "gauge"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -378,12 +373,14 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "sum(rate(redis_commands_total{} [1m])) by (cmd)",
                     "format": "time_series",
                     "interval": "",
                     "intervalFactor": 2,
                     "legendFormat": "{{ cmd }}",
                     "metric": "redis_command_calls_total",
+                    "range": true,
                     "refId": "A",
                     "step": 240
                 }
@@ -392,10 +389,7 @@
             "type": "timeseries"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -478,6 +472,7 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "irate(redis_keyspace_hits_total{}[5m])",
                     "format": "time_series",
                     "hide": false,
@@ -485,6 +480,7 @@
                     "intervalFactor": 2,
                     "legendFormat": "hits, {{ instance }}",
                     "metric": "",
+                    "range": true,
                     "refId": "A",
                     "step": 240,
                     "target": ""
@@ -510,10 +506,7 @@
             "type": "timeseries"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -612,11 +605,13 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "redis_memory_used_bytes{}",
                     "format": "time_series",
                     "intervalFactor": 2,
                     "legendFormat": "used, {{ instance }}",
                     "metric": "",
+                    "range": true,
                     "refId": "A",
                     "step": 240,
                     "target": ""
@@ -639,10 +634,7 @@
             "type": "timeseries"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -724,10 +716,12 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "sum(rate(redis_net_input_bytes_total{}[5m]))",
                     "format": "time_series",
                     "intervalFactor": 2,
                     "legendFormat": "{{ input }}",
+                    "range": true,
                     "refId": "A",
                     "step": 240
                 },
@@ -751,7 +745,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROM}"
+                "uid": "prometheusdatasource"
             },
             "fieldConfig": {
                 "defaults": {
@@ -765,7 +759,7 @@
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "drawStyle": "line",
-                        "fillOpacity": 70,
+                        "fillOpacity": 0,
                         "gradientMode": "none",
                         "hideFrom": {
                             "legend": false,
@@ -773,22 +767,21 @@
                             "viz": false
                         },
                         "lineInterpolation": "linear",
-                        "lineWidth": 2,
+                        "lineWidth": 1,
                         "pointSize": 5,
                         "scaleDistribution": {
                             "type": "linear"
                         },
-                        "showPoints": "never",
-                        "spanNulls": true,
+                        "showPoints": "auto",
+                        "spanNulls": false,
                         "stacking": {
                             "group": "A",
-                            "mode": "normal"
+                            "mode": "none"
                         },
                         "thresholdsStyle": {
                             "mode": "off"
                         }
                     },
-                    "links": [],
                     "mappings": [],
                     "thresholds": {
                         "mode": "absolute",
@@ -802,31 +795,9 @@
                                 "value": 80
                             }
                         ]
-                    },
-                    "unit": "none"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byValue",
-                            "options": {
-                                "op": "gte",
-                                "reducer": "allIsZero",
-                                "value": 0
-                            }
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.hideFrom",
-                                "value": {
-                                    "legend": true,
-                                    "tooltip": true,
-                                    "viz": false
-                                }
-                            }
-                        ]
                     }
-                ]
+                },
+                "overrides": []
             },
             "gridPos": {
                 "h": 7,
@@ -834,47 +805,37 @@
                 "x": 0,
                 "y": 14
             },
-            "id": 5,
-            "links": [],
+            "id": 24,
             "options": {
                 "legend": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
+                    "calcs": [],
                     "displayMode": "list",
                     "placement": "bottom",
                     "showLegend": true
                 },
                 "tooltip": {
-                    "mode": "multi",
+                    "mode": "single",
                     "sort": "none"
                 }
             },
-            "pluginVersion": "10.3.3",
             "targets": [
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "${DS_PROM}"
+                        "uid": "prometheusdatasource"
                     },
-                    "expr": "sum (redis_db_keys{}) by (db, instance)",
-                    "format": "time_series",
-                    "interval": "",
-                    "intervalFactor": 2,
-                    "legendFormat": "{{ db }}, {{ instance }}",
-                    "refId": "A",
-                    "step": 240,
-                    "target": ""
+                    "editorMode": "code",
+                    "expr": "sum (redis_db_keys{}) by (db)",
+                    "legendFormat": "__auto",
+                    "range": true,
+                    "refId": "A"
                 }
             ],
-            "title": "Total Items per DB",
+            "title": "Total items per DB",
             "type": "timeseries"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -956,11 +917,13 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "sum (redis_db_keys{}) by (instance) - sum (redis_db_keys_expiring{}) by (instance)",
                     "format": "time_series",
                     "interval": "",
                     "intervalFactor": 2,
                     "legendFormat": "not expiring, {{ instance }}",
+                    "range": true,
                     "refId": "A",
                     "step": 240,
                     "target": ""
@@ -984,10 +947,7 @@
             "type": "timeseries"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -1115,6 +1075,7 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "sum(rate(redis_expired_keys_total{}[5m])) by (instance)",
                     "format": "time_series",
                     "hide": false,
@@ -1122,6 +1083,7 @@
                     "intervalFactor": 2,
                     "legendFormat": "expired, {{ instance }}",
                     "metric": "",
+                    "range": true,
                     "refId": "A",
                     "step": 240,
                     "target": ""
@@ -1144,10 +1106,7 @@
             "type": "timeseries"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -1229,10 +1188,12 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "sum(redis_connected_clients{})",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "legendFormat": "connected",
+                    "range": true,
                     "refId": "A"
                 },
                 {
@@ -1253,7 +1214,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROM}"
+                "uid": "prometheusdatasource"
             },
             "fieldConfig": {
                 "defaults": {
@@ -1280,8 +1241,8 @@
                         "scaleDistribution": {
                             "type": "linear"
                         },
-                        "showPoints": "never",
-                        "spanNulls": true,
+                        "showPoints": "auto",
+                        "spanNulls": false,
                         "stacking": {
                             "group": "A",
                             "mode": "none"
@@ -1290,7 +1251,6 @@
                             "mode": "off"
                         }
                     },
-                    "links": [],
                     "mappings": [],
                     "thresholds": {
                         "mode": "absolute",
@@ -1304,31 +1264,9 @@
                                 "value": 80
                             }
                         ]
-                    },
-                    "unit": "s"
-                },
-                "overrides": [
-                    {
-                        "matcher": {
-                            "id": "byValue",
-                            "options": {
-                                "op": "gte",
-                                "reducer": "allIsZero",
-                                "value": 0
-                            }
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.hideFrom",
-                                "value": {
-                                    "legend": true,
-                                    "tooltip": true,
-                                    "viz": false
-                                }
-                            }
-                        ]
                     }
-                ]
+                },
+                "overrides": []
             },
             "gridPos": {
                 "h": 7,
@@ -1336,8 +1274,7 @@
                 "x": 0,
                 "y": 28
             },
-            "id": 20,
-            "links": [],
+            "id": 22,
             "options": {
                 "legend": {
                     "calcs": [],
@@ -1346,35 +1283,28 @@
                     "showLegend": true
                 },
                 "tooltip": {
-                    "mode": "multi",
-                    "sort": "desc"
+                    "mode": "single",
+                    "sort": "none"
                 }
             },
-            "pluginVersion": "10.3.3",
             "targets": [
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "${DS_PROM}"
+                        "uid": "prometheusdatasource"
                     },
-                    "expr": "sum(irate(redis_commands_duration_seconds_total{instance =~ \"$instance\"}[1m])) by (cmd)\n  /\nsum(irate(redis_commands_total{instance =~ \"$instance\"}[1m])) by (cmd)\n",
-                    "format": "time_series",
-                    "interval": "",
-                    "intervalFactor": 2,
-                    "legendFormat": "{{ cmd }}",
-                    "metric": "redis_command_calls_total",
-                    "refId": "A",
-                    "step": 240
+                    "editorMode": "code",
+                    "expr": "sum(irate(redis_commands_duration_seconds_total{}[1m])) by (cmd)/sum(irate(redis_commands_total{}[1m])) by (cmd)",
+                    "legendFormat": "__auto",
+                    "range": true,
+                    "refId": "A"
                 }
             ],
-            "title": "Average Time Spent by Command / sec",
+            "title": "Command calls per Second",
             "type": "timeseries"
         },
         {
-            "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_PROM}"
-            },
+            "datasource": {},
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -1456,12 +1386,14 @@
                         "type": "prometheus",
                         "uid": "${DS_PROM}"
                     },
+                    "editorMode": "code",
                     "expr": "sum(irate(redis_commands_duration_seconds_total{}[1m])) by (cmd) != 0",
                     "format": "time_series",
                     "interval": "",
                     "intervalFactor": 2,
                     "legendFormat": "{{ cmd }}",
                     "metric": "redis_command_calls_total",
+                    "range": true,
                     "refId": "A",
                     "step": 240
                 }
@@ -1477,8 +1409,11 @@
         "prometheus",
         "redis"
     ],
+    "templating": {
+        "list": []
+    },
     "time": {
-        "from": "now-24h",
+        "from": "now-5m",
         "to": "now"
     },
     "timepicker": {
@@ -1509,6 +1444,6 @@
     "timezone": "browser",
     "title": "Redis Dashboard for Prometheus Redis Exporter 1.x",
     "uid": "e008bc3f-81a2-40f9-baf2-a33fd8dec7ec",
-    "version": 1,
+    "version": 12,
     "weekStart": ""
 }

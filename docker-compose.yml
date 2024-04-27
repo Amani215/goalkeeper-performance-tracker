@@ -6,6 +6,7 @@ volumes:
   redis-data: {}
   minio-data: {}
   prometheus-data: {}
+  loki-data: {}
 
 services:
   traefik:
@@ -14,6 +15,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - $PWD/configs/traefik:/etc/traefik:ro
+      - $PWD/logs/traefik:/var/log/traefik:rw
     command:
       - --providers.docker=true
       - --api.insecure=true
@@ -21,6 +23,9 @@ services:
       - --metrics.prometheus=true
       - --metrics.prometheus.addEntryPointsLabels=true
       - --metrics.prometheus.addrouterslabels=true
+      - --log.filePath=/var/log/traefik/traefik.log
+      - --log.format=json
+      - --log.level=INFO
     ports:
       # The HTTP port
       - "80:80"
@@ -143,3 +148,22 @@ services:
     labels:
       - traefik.http.routers.prometheus.rule=Host(`prometheus.localhost`)
       - traefik.http.services.prometheus.loadbalancer.server.port=9090
+
+  loki:
+    image: grafana/loki:2.9.7
+    volumes:
+      - loki-data:/loki
+      - $PWD/configs/loki:/etc/loki:ro
+    expose:
+      - 3100
+    labels:
+      - "traefik.http.routers.loki.rule=Host(`loki.localhost`)"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  fluentbit:
+    image: grafana/fluent-bit-plugin-loki:3.0.0
+    container_name: fluentbit
+    volumes:
+      - $PWD/configs/fluentbit:/etc/fluentbit:ro
+      - $PWD/configs/fluentbit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - $PWD/logs:/var/log/logs:ro

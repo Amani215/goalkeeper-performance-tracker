@@ -106,6 +106,8 @@ services:
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - MINIO_PROMETHEUS_AUTH_TYPE=public
+      - MINIO_LOGGER_WEBHOOK_ENABLE_FLUENTBIT=on
+      - MINIO_LOGGER_WEBHOOK_ENDPOINT_FLUENTBIT=fluentbit:8888
     command: server --console-address ":9001" /data
     labels:
       - "traefik.http.routers.minio.rule=Host(`minio.localhost`)"
@@ -164,6 +166,6 @@ services:
     image: grafana/fluent-bit-plugin-loki:3.0.0
     container_name: fluentbit
     volumes:
-      - $PWD/configs/fluentbit:/etc/fluentbit:ro
-      - $PWD/configs/fluentbit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - $PWD/configs/fluentbit:/fluent-bit/etc:ro
       - $PWD/logs:/var/log/logs:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro

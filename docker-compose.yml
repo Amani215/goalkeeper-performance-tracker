@@ -61,8 +61,8 @@ services:
     command: python3 -m flask run --host=0.0.0.0
     labels:
       - traefik.http.routers.backend.rule=Host(`gpt.localhost`) && PathPrefix(`/api`)
-      - traefik.http.middlewares.testheader.headers. accesscontrolalloworiginlist=http://gpt.localhost/*
-      - traefik.http.middlewares.testheader.headers. accesscontrolallowmethods=GET,OPTIONS,PUT,POST,DELETE
+      - traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=http://gpt.localhost/*
+      - traefik.http.middlewares.testheader.headers.accesscontrolallowmethods=GET,OPTIONS,PUT,POST,DELETE
       - traefik.http.middlewares.testheader.headers.accesscontrolallowheaders=*
       - traefik.http.middlewares.testheader.headers.accesscontrolmaxage=100
       - traefik.http.middlewares.testheader.headers.addvaryheader=true

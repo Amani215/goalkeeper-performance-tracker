@@ -55,4 +55,4 @@ datasources:
     jsonData: {}
     secureJsonData:
     version: 1
-    editable: true
+    editable:

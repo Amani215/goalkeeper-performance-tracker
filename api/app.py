@@ -29,6 +29,7 @@ def create_app():
         scheduler.start()
 
     # Import routes
+    from route.health import health
     from route.user import user_api
     from route.auth import auth_api
     from route.category import category_api
@@ -45,6 +46,7 @@ def create_app():
     from route.calendar import calendar_api
 
     # Register routes as blueprints
+    app.register_blueprint(health, url_prefix='/api')
     app.register_blueprint(user_api, url_prefix='/api')
     app.register_blueprint(auth_api, url_prefix='/api')
     app.register_blueprint(category_api, url_prefix='/api')

@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: "ghcr.io"   # GitHub Container Registry
+  REGISTRY: "ghcr.io" # GitHub Container Registry
   POSTGRES_USER: db
   POSTGRES_PASSWORD: pass
   POSTGRES_HOST: localhost
@@ -95,17 +95,11 @@ jobs:
         id: api-quality-gate-response
         uses: fjogeleit/http-request-action@v1
         with:
-          url: "https://sonarcloud.io/api/\
-            qualitygates/project_status?\
-            projectKey=amani215_goalkeeper\
-            -performance-tracker-api"
+          url: "https://sonarcloud.io/api/qualitygates/project_status?projectKey=amani215_goalkeeper-performance-tracker-api"
           method: GET
       - name: Fail If Quality Gate Is Not Met
         run: exit 1
-        if: "${{contains(fromJson(\
-          steps.api-quality-gate-\
-          response.outputs.response)\
-          .projectStatus.status,'ERROR')}}"
+        if: "${{contains(fromJson(steps.api-quality-gate-response.outputs.response).projectStatus.status,'ERROR')}}"
 
   test-web-ui:
     runs-on: ubuntu-latest
@@ -167,30 +161,14 @@ jobs:
         id: api-meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}-api
+          images: ${{ env.REGISTRY }}/${{ github.repository }}
 
-      - name: Build and Push API Image
+      - name: Build and Push Image
         uses: docker/build-push-action@v3
         with:
-          context: api
+          context: .
           push: true
           tags: |
             ${{ steps.api-meta.outputs.tags }}-alpine,
             ${{ steps.api-meta.outputs.tags }}-alpine3.15
           labels: ${{ steps.api-meta.outputs.labels }}
-          file: api/Dockerfile
-      ###### UI ######
-      - name: Extract Metadata (tags, labels) for Web-UI
-        id: web-ui-meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}-web-ui
-
-      - name: Build and Push Web-UI Image
-        uses: docker/build-push-action@v3
-        with:
-          context: web-ui
-          push: true
-          tags: ${{ steps.web-ui-meta.outputs.tags }}-alpine
-          labels: ${{ steps.web-ui-meta.outputs.labels }}
-          file: web-ui/Dockerfile

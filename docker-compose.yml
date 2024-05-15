@@ -26,6 +26,9 @@ services:
       - --log.filePath=/var/log/traefik/traefik.log
       - --log.format=json
       - --log.level=INFO
+    labels:
+      - traefik.http.routers.traefik.rule=Host(`traefik.localhost`)
+      - traefik.http.services.traefik.loadbalancer.server.port=8080
     ports:
       # The HTTP port
       - "80:80"

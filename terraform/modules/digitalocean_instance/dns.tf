@@ -3,22 +3,25 @@ data "digitalocean_domain" "gpt" {
 }
 
 resource "digitalocean_record" "A" {
-  domain = digitalocean_domain.gpt.id
+  domain = data.digitalocean_domain.gpt.id
   type   = "A"
   name   = var.droplet
   value  = digitalocean_droplet.gpt.ipv4_address
+  ttl    = 3600
 }
 
 resource "digitalocean_record" "AAAA" {
-  domain = digitalocean_domain.gpt.id
+  domain = data.digitalocean_domain.gpt.id
   type   = "AAAA"
   name   = var.droplet
   value  = digitalocean_droplet.gpt.ipv6_address
+  ttl    = 3600
 }
 
 resource "digitalocean_record" "CNAME" {
-  domain = digitalocean_domain.gpt.id
+  domain = data.digitalocean_domain.gpt.id
   type   = "CNAME"
   name   = "*.${var.droplet}"
-  value  = var.droplet
+  value  = "${var.droplet}.${data.digitalocean_domain.gpt.id}."
+  ttl    = 3600
 }

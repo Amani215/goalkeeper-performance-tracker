@@ -4,14 +4,14 @@ resource "digitalocean_vpc" "gpt" {
 }
 
 resource "digitalocean_droplet" "gpt" {
-  image  = var.image
-  name   = var.droplet
-  region = var.region
-  size   = var.size
-  ipv6 = true
+  image     = var.image
+  name      = var.droplet
+  region    = var.region
+  size      = var.size
+  ipv6      = true
   user_data = file("${path.module}/cloud-init.yaml")
-  vpc_uuid = digitalocean_vpc.gpt.id
-  ssh_keys = [for v in digitalocean_ssh_key.ssh: v.fingerprint]
+  vpc_uuid  = digitalocean_vpc.gpt.id
+  ssh_keys  = [for v in digitalocean_ssh_key.ssh : v.fingerprint]
 }
 
 resource "digitalocean_volume" "gpt" {

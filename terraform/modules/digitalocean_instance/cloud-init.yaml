@@ -13,3 +13,7 @@ package_upgrade: true
 packages:
   - git
   - make
+
+runcmd:
+  - ["ufw", "allow", "80"]
+  - ["ufw", "allow", "443"]

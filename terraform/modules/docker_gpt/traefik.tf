@@ -8,17 +8,18 @@ resource "docker_image" "traefik" {
 }
 
 resource "docker_container" "traefik" {
-  name  = "traefik"
-  image = docker_image.traefik.image_id
+  name    = "traefik"
+  image   = docker_image.traefik.image_id
   restart = "always"
 
   networks_advanced {
-    name = docker_network.gpt.id
+    name = data.docker_network.gpt.id
   }
 
   command = [
     "--providers.docker=true",
-    "--api.insecure=true",
+    "--api.dashboard=true",
+    "--api.debug=true",
     "--metrics=true",
     "--metrics.prometheus=true",
     "--metrics.prometheus.addEntryPointsLabels=true",
@@ -33,14 +34,14 @@ resource "docker_container" "traefik" {
 
   volumes {
     container_path = "/var/run/docker.sock"
-    host_path = "/var/run/docker.sock"
-    read_only = true
+    host_path      = "/var/run/docker.sock"
+    read_only      = true
   }
 
   volumes {
     container_path = "/var/log/traefik"
-    host_path = "/var/logs/traefik"
-    read_only = false
+    host_path      = "/var/logs/traefik"
+    read_only      = false
   }
 
   ports {
@@ -54,8 +55,8 @@ resource "docker_container" "traefik" {
   }
 
   labels {
-    label= "traefik.http.routers.traefik.rule"
-    value="Host(`traefik.${var.domain}`)"
+    label = "traefik.http.routers.traefik.rule"
+    value = "Host(`traefik.${var.domain}`)"
   }
 
   labels {
@@ -65,12 +66,12 @@ resource "docker_container" "traefik" {
 
   labels {
     label = "traefik.http.middlewares.basicauth.basicauth.users"
-    value = "${var.username}:${replace(bcrypt(var.password),"$","$$")}"
+    value = "${var.traefik_username}:${bcrypt(var.traefik_password)}"
   }
 
 
   labels {
-    label = "traefik.http.routers.router1.middlewares"
+    label = "traefik.http.routers.traefik.middlewares"
     value = "basicauth@docker"
   }
 }

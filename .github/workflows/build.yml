@@ -101,33 +101,8 @@ jobs:
         run: exit 1
         if: "${{contains(fromJson(steps.api-quality-gate-response.outputs.response).projectStatus.status,'ERROR')}}"
 
-  test-web-ui:
-    runs-on: ubuntu-latest
-    needs: test-api
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install Modules
-        working-directory: ./web-ui
-        run: yarn install
-
-      - name: SonarCloud Scan API
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: web-ui
-          args: >
-            -Dsonar.organization=amani215
-            -Dsonar.projectKey=amani215_goalkeeper-performance-tracker-webui
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-            -Dsonar.sources=.
-            -Dsonar.verbose=true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_WEBUI }}
-
   test-config:
     runs-on: ubuntu-latest
-    needs: test-web-ui
     steps:
       - uses: actions/checkout@v3
       - name: dockerfiles lint
@@ -146,7 +121,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: test-config
+    needs: ["test-config", "test-api"]
     steps:
       - uses: actions/checkout@v3
 
@@ -156,8 +131,8 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      ###### API ######
-      - name: Extract Metadata (tags, labels) for API
+
+      - name: Extract Metadata (tags, labels)
         id: api-meta
         uses: docker/metadata-action@v4
         with:

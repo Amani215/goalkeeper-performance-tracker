@@ -10,7 +10,7 @@ variable "do_droplet" {
 
 variable "do_size" {
   type    = string
-  default = "s-1vcpu-1gb"
+  default = "s-2vcpu-2gb"
 }
 
 variable "do_region" {
@@ -41,5 +41,21 @@ variable "traefik_username" {
 variable "traefik_password" {
   type      = string
   default   = "amani"
+  sensitive = true
+}
+
+
+variable "traefik_email" {
+  type    = string
+  default = "amani@example.com"
+}
+
+variable "traefik_ca_resolver" {
+  type    = string
+  default = "prod"
+}
+
+variable "do_dns_token" {
+  type      = string
   sensitive = true
 }

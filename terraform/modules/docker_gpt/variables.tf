@@ -33,3 +33,8 @@ variable "docker_network" {
   type    = string
   default = "gpt"
 }
+
+variable "docker_volumes" {
+  type    = string
+  default = "/mnt/staging"
+}

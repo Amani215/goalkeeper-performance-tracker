@@ -8,6 +8,14 @@ users:
     ssh_import_id:
       - "gh:Amani215"
 
+  - name: ansible
+    groups: sudo, docker
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh_authorized_keys:
+%{ for ssh_key in ssh_keys ~}
+      - ${ssh_key}
+%{ endfor ~}
 package_update: true
 package_upgrade: true
 packages:

@@ -49,7 +49,7 @@ jobs:
       - name: run ansible
         run: |
           pip install ansible docker
-          nslookup google.com | awk '/^Address: / { print $2 }' | xargs ssh-keyscan -f ~/.ssh/known_hosts -H 
+          nslookup ${{ github.event.inputs.environment }}.${{ vars.domain }} | awk '/^Address: / { print $2 }' | xargs ssh-keyscan -f ~/.ssh/known_hosts -H 
           ansible-playbook -i ansible/inventory/${{ github.event.inputs.environment }}.yml -i ansible/inventory/digitalocean.yml ansible/site.yml
         env:
           DO_API_KEY: ${{ secrets.DIGITALOCEAN_TOKEN }}

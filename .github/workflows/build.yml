@@ -36,6 +36,7 @@ env:
   ADMIN_USERNAME: build
   ADMIN_PASSWORD: buildbuild
   TF_MODULES_DIR: $GITHUB_WORKSPACE/terraform/modules
+  GRAFANA_ENDPOINT_PROD: ${vars.GRAFANA_ENDPOINT_PROD}
 
 jobs:
   test-api:

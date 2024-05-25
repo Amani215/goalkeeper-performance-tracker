@@ -5,6 +5,7 @@ COPY web-ui/yarn.lock .
 RUN yarn install --production
 COPY web-ui .
 ENV DISABLE_ESLINT_PLUGIN=true
+ENV REACT_APP_GRAFANA_ENDPOINT=${GRAFANA_ENDPOINT_PROD}
 RUN yarn build
 
 FROM python:3.10.12-alpine3.18 as mkdocs

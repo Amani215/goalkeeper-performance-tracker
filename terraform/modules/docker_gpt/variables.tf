@@ -38,3 +38,16 @@ variable "docker_volumes" {
   type    = string
   default = "/mnt/staging"
 }
+
+variable "minio_username" {
+  type      = string
+  default   = "myminioadmin"
+  sensitive = true
+}
+
+variable "minio_password" {
+  type      = string
+  default   = "minio-secret-key-change-me"
+  sensitive = true
+}
+

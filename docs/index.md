@@ -1,17 +1,15 @@
-# Welcome to MkDocs
+# Welcome to BrikFoot
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Are you a soccer goalkeeper coach? This is the perfect platform for you. You can track your goalkeepers performance easily without worrying about your data not being accessible outside of your house. 
 
-## Commands
+## I'm a Goalkeeper Coach
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+To get started, you need to contact the developer for them to create a new admin user for you. You can, then, have full access to the app and even create other users for better collaboration.
 
-## Project layout
+Please go to the [User Guide](./user_guide.md) in order to get started!
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+## I'm a Contributor
+
+If you would like to see a feature added or a bug fixed, please create a PR with a good description in the relevant [repository](https://github.com/Amani215/goalkeeper-performance-tracker). Please understand that the app is developed by one person so reviews can be very slow. Thank you for your contribution!
+
+To get started, you can check this [developer guide](./developer_guide.md). 

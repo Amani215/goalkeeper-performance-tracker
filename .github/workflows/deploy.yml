@@ -2,28 +2,55 @@
 name: deploy
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Deploy environment (Staging/Prod)"
+        required: true
+        default: staging
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.ID_RSA_VULTR }}
+      - uses: actions/checkout@v4
+
       - uses: hashicorp/setup-terraform@v2
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-          terraform_version: 1.3.6
-      - name: terraform secrets
-        uses: timheuer/base64-to-file@v1.2
-        with:
-          fileName: 'secret.tfvars'
-          fileDir: './terraform/environments/prod'
-          encodedString: ${{ secrets.SECRET_TFVARS }}
+          terraform_version: 1.8.4
+
       - name: terraform init
         run: terraform init --upgrade
-        working-directory: ./terraform/environments/prod
+        working-directory: ./terraform/environments/${{ github.event.inputs.environment }}
+
       - name: terraform apply
-        run: terraform apply -var-file="secret.tfvars" -auto-approve
-        working-directory: ./terraform/environments/prod
+        run: terraform apply -auto-approve
+        working-directory: ./terraform/environments/${{ github.event.inputs.environment }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+  configure:
+    runs-on: ubuntu-latest
+    needs: ["deploy"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets[join('do_ssh_',github.event.inputs.environment)] }}
+
+      - name: run ansible
+        run: |
+          pip install ansible docker
+          nslookup google.com | awk '/^Address: / { print $2 }' | xargs ssh-keyscan -f ~/.ssh/known_hosts -H 
+          ansible-playbook -i ansible/inventory/${{ github.event.inputs.environment }}.yml -i ansible/inventory/digitalocean.yml ansible/site.yml
+        env:
+          DO_API_KEY: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          DO_DNS_TOKEN: ${{ secrets.DIGITALOCEAN_DNS_TOKEN }}
+          TRAEFIK_PASSWORD: ${{ secrets.TRAEFIK_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,57 @@
+---
+- name: Docker Network
+  community.docker.docker_network:
+    name: "{{ docker_traefik_network }}"
+
+- name: Traefik
+  community.docker.docker_container:
+    name: traefik
+    image: traefik:v3.0
+    restart_policy: always
+    networks:
+      - name: "{{ docker_traefik_network }}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/traefik/certs:/etc/traefik/certs:rw
+      - /var/log/traefik:/var/log/traefik:rw
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.traefik.rule: "Host(`traefik.{{ docker_traefik_domain }}`)"
+      traefik.http.routers.traefik.service: api@internal
+      traefik.http.services.traefik.loadbalancer.server.port: "8080"
+      traefik.http.middlewares.basicauth.basicauth.users: |-
+        {{ docker_traefik_username }}:{{ docker_traefik_password | password_hash(hashtype="blowfish") }}
+      traefik.http.routers.traefik.middlewares: basicauth@docker
+    env:
+      DO_AUTH_TOKEN: "{{ docker_traefik_do_dns_token }}"
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+      - --api.dashboard=true
+      - --api.debug=true
+      - --metrics=true
+      - --metrics.prometheus=true
+      - --metrics.prometheus.addEntryPointsLabels=true
+      - --metrics.prometheus.addrouterslabels=true
+      - --log.filePath=/var/log/traefik/traefik.log
+      - --log.format=json
+      - --log.level=WARN
+      - --accesslog=true
+      - --accesslog.filepath=/var/log/traefik/traefik_access.log
+      - --accesslog.format=json
+      - --certificatesresolvers.letsencrypt.acme.email={{ docker_traefik_email }}
+      - --certificatesresolvers.letsencrypt.acme.storage=/etc/traefik/certs/letsencrypt.json
+      - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=digitalocean
+      - --entryPoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entryPoints.web.http.redirections.entrypoint.scheme=https
+      - --entryPoints.websecure.address=:443
+      - --entrypoints.websecure.asDefault=true
+      - --entrypoints.websecure.http.tls.certresolver=letsencrypt
+      - --entrypoints.websecure.http.tls.domains[0].main={{ docker_traefik_domain }}
+      - --entrypoints.websecure.http.tls.domains[0].sans=*.{{ docker_traefik_domain }}

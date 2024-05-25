@@ -1,0 +1,16 @@
+---
+- name: Configure Instance
+  hosts: instance
+  pre_tasks:
+    - name: Wait  # ~ 10 minutes for server to be ready, Try every 10 sec
+      ansible.builtin.wait_for_connection:
+        sleep: 30
+        timeout: 600
+      become: true
+
+    - name: Ping Instance  # Root
+      ansible.builtin.ping:
+      become: true
+
+  roles:
+    - docker_traefik

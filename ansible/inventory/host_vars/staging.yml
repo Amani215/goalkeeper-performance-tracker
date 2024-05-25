@@ -1,0 +1,16 @@
+---
+github_user_info: |-
+  {{
+    lookup('ansible.builtin.url','https://api.github.com/user',
+    headers={
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Authorization': 'Bearer '+lookup('ansible.builtin.env','GITHUB_TOKEN')
+    },split_lines=False)
+  }}
+docker_traefik_email: "{{ github_user_info.email }}"
+docker_traefik_username: "{{ github_user_info.login }}"
+docker_traefik_password: "{{ lookup('ansible.builtin.env', 'TRAEFIK_PASSWORD') }}"
+docker_traefik_do_dns_token: "{{ lookup('ansible.builtin.env', 'DO_DNS_TOKEN') }}"
+docker_traefik_domain: staging.brikfoot.xyz
+docker_traefik_network: proxy

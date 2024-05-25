@@ -27,3 +27,8 @@ variable "vpc" {
   type    = string
   default = "staging"
 }
+
+variable "ssh_keys" {
+  type    = set(string)
+  default = []
+}

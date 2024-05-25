@@ -28,34 +28,7 @@ variable "do_vpc" {
   default = "staging"
 }
 
-variable "docker_network" {
+variable "gh_repository" {
   type    = string
-  default = "gpt"
-}
-
-variable "traefik_username" {
-  type    = string
-  default = "amani"
-}
-
-variable "traefik_password" {
-  type      = string
-  default   = "amani"
-  sensitive = true
-}
-
-
-variable "traefik_email" {
-  type    = string
-  default = "amani@example.com"
-}
-
-variable "traefik_ca_resolver" {
-  type    = string
-  default = "prod"
-}
-
-variable "do_dns_token" {
-  type      = string
-  sensitive = true
+  default = "goalkeeper-performance-tracker"
 }

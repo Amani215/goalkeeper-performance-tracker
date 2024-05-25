@@ -1,0 +1,2 @@
+---
+terraform_environment: "{{ git_root_dir }}/terraform/environments/prod"

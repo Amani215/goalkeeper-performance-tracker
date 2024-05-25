@@ -1,0 +1,7 @@
+---
+docker_traefik_network: proxy
+docker_traefik_email: amani@example.com
+docker_traefik_domain: staging.brikfoot.xyz
+docker_traefik_username: amani
+docker_traefik_password: amani
+docker_traefik_do_dns_token: dop_v1_*

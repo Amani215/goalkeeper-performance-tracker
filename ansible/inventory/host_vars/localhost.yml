@@ -1,0 +1,3 @@
+---
+ansible_connection: local
+deploy_environment: staging

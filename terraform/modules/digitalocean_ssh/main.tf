@@ -27,9 +27,10 @@ resource "github_repository_deploy_key" "droplet_public_key" {
   read_only  = true
 }
 
-resource "github_actions_secret" "droplet_private_key" {
+resource "github_actions_environment_secret" "droplet_private_key" {
   repository      = var.repository
-  secret_name     = "do_ssh_${var.droplet}"
+  environment     = var.droplet
+  secret_name     = "DO_SSH_KEY"
   plaintext_value = tls_private_key.droplet_key_pair.private_key_openssh
 }
 

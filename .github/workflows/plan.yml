@@ -12,6 +12,7 @@ jobs:
   plan:
     runs-on: ubuntu-latest
     permissions: write-all
+    environment: ${{ github.event.inputs.environment }}
     steps:
       - uses: actions/checkout@v3
 

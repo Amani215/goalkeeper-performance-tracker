@@ -9,7 +9,7 @@ resource "digitalocean_droplet" "gpt" {
   region    = var.region
   size      = var.size
   ipv6      = true
-  user_data = templatefile("${path.module}/cloud-init.yaml", { ssh_keys = var.ssh_keys })
+  user_data = templatefile("${path.module}/cloud-init.yaml", { ssh_key = var.ssh_public_key })
   vpc_uuid  = digitalocean_vpc.gpt.id
-  ssh_keys  = var.ssh_keys
+  ssh_keys  = var.ssh_fingerprints
 }

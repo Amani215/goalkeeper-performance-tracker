@@ -28,12 +28,13 @@ module "ssh" {
   repository = var.gh_repository
 }
 module "instance" {
-  source   = "github.com/Amani215/goalkeeper-performance-tracker//terraform/modules/digitalocean_instance"
-  domain   = var.do_domain
-  droplet  = var.do_droplet
-  size     = var.do_size
-  region   = var.do_region
-  image    = var.do_image
-  vpc      = var.do_vpc
-  ssh_keys = module.ssh.ssh_public_keys
+  source           = "github.com/Amani215/goalkeeper-performance-tracker//terraform/modules/digitalocean_instance"
+  domain           = var.do_domain
+  droplet          = var.do_droplet
+  size             = var.do_size
+  region           = var.do_region
+  image            = var.do_image
+  vpc              = var.do_vpc
+  ssh_fingerprints = module.ssh.ssh_public_fingerprints
+  ssh_public_key   = module.ssh.ssh_public_key
 }

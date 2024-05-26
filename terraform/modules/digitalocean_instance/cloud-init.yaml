@@ -13,9 +13,8 @@ users:
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     ssh_authorized_keys:
-%{ for ssh_key in ssh_keys ~}
       - ${ssh_key}
-%{ endfor ~}
+
 package_update: true
 package_upgrade: true
 packages:

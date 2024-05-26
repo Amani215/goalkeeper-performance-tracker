@@ -28,7 +28,11 @@ variable "vpc" {
   default = "staging"
 }
 
-variable "ssh_keys" {
+variable "ssh_fingerprints" {
   type    = set(string)
   default = []
+}
+
+variable "ssh_public_key" {
+  type = string
 }

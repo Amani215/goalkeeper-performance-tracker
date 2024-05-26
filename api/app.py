@@ -67,7 +67,10 @@ def create_app():
         return app.send_static_file('index.html')
 
     @app.route('/docs/')
-    def docs():
+    @app.route('/docs/<path:p1>/')
+    def docs(p1 = None):
+        if p1 != None:
+            return app.send_static_file(f'docs/{p1}.md')
         return app.send_static_file('docs/index.html')
 
     @app.errorhandler(404)   

@@ -46,7 +46,7 @@ services:
     command: yarn start
     restart: always
     environment:
-      - REACT_APP_GRAFANA_ENDPOINT=http://grafana.localhost
+      - REACT_APP_GRAFANA_ENDPOINT=http://grafana.localhost/grafana
     labels:
       - "traefik.http.routers.web-ui.rule=Host(`gpt.localhost`)"
       - traefik.http.services.web-ui.loadbalancer.server.port=3000

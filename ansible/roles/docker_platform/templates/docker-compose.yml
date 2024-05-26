@@ -5,7 +5,7 @@ services:
     container_name: app
     restart: always
     volumes:
-      - app:/var/www/app/db"
+      - app:/var/www/app/db
     user: 100:100
     environment:
       - SQLITE_HOST=//var/www/app/db/dev.db

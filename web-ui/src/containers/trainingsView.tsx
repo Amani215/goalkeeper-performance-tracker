@@ -67,7 +67,7 @@ function TrainingsView({ setModalIsOpen }: Readonly<ModalProp>) {
                         </Box> : <></>
                     }
                     <TrainingsList trainings={trainings} />
-                    {/* <GrafanaPanel src={`http://localhost/grafana/d-solo/trainLite/trainings?from=${Math.floor(new Date(date.year().toString() + "." + (date.month() + 1).toString() + ".01").getTime())}&to=${Math.floor(new Date(date.year().toString() + "." + (date.month() + 1).toString() + "." + date.daysInMonth()).getTime())}&orgId=1&panelId=12`} xs={12} height={600} /> */}
+                    {/* <GrafanaPanel src={`${process.env.REACT_APP_GRAFANA_ENDPOINT}/d-solo/trainLite/trainings?from=${Math.floor(new Date(date.year().toString() + "." + (date.month() + 1).toString() + ".01").getTime())}&to=${Math.floor(new Date(date.year().toString() + "." + (date.month() + 1).toString() + "." + date.daysInMonth()).getTime())}&orgId=1&panelId=12`} xs={12} height={600} /> */}
                 </>
             }</>
     )

@@ -21,7 +21,7 @@ function MatchFeedback({ matchPerformance, setModalIsOpen }: Readonly<PropType>)
                     onClick={() => { setModalIsOpen() }}>{t("update_feedback")}</Button>
             </Box>
 
-            <GrafanaPanel src={`http://localhost/grafana/d/UbYK1obVk/match-performance?orgId=1&var-mpid=${matchPerformance?.id}&kiosk`} xs={12} height={700} />
+            <GrafanaPanel src={`${process.env.REACT_APP_GRAFANA_ENDPOINT}/d/UbYK1obVk/match-performance?orgId=1&var-mpid=${matchPerformance?.id}&kiosk`} xs={12} height={700} />
         </>
     )
 }

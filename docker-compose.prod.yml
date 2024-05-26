@@ -12,6 +12,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        GRAFANA_ENDPOINT_PROD: http://grafana.localhost/grafana
     restart: always
     volumes:
       - sqlite:/var/www/app/db:rw
@@ -105,6 +107,11 @@ services:
       - GF_INSTALL_PLUGINS=marcusolsson-calendar-panel,frser-sqlite-datasource
       - GF_USERS_DEFAULT_THEME=light
       - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_SECURITY_ALLOW_EMBEDDING=true
     volumes:
       - $PWD/configs/grafana/provisioning:/etc/grafana/provisioning
       - ./api/db:/api_db
+    labels:
+      - "traefik.http.routers.grafana.rule=Host(`grafana.localhost`)"
+      - traefik.http.services.grafana.loadbalancer.server.port=3000
+      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=http://docker.localhost/*"

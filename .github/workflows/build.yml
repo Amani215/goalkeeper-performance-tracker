@@ -148,3 +148,5 @@ jobs:
             ${{ steps.api-meta.outputs.tags }}-alpine,
             ${{ steps.api-meta.outputs.tags }}-alpine3.15
           labels: ${{ steps.api-meta.outputs.labels }}
+          build-args: |
+            GRAFANA_ENDPOINT_PROD=${vars.GRAFANA_ENDPOINT_PROD}

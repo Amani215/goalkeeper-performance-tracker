@@ -66,12 +66,20 @@ def create_app():
     def index():
         return app.send_static_file('index.html')
 
+    @app.route('/docs')
+    def docs_redirect():
+        return app.redirect("/docs/", code=302)
+    
     @app.route('/docs/')
-    @app.route('/docs/<path:p1>/')
-    def docs(p1 = None):
-        if p1 != None:
-            return app.send_static_file(f'docs/{p1}.md')
+    def docs_index():
         return app.send_static_file('docs/index.html')
+
+    @app.route('/docs/<path:path>')
+    def docs(path):
+        if(path[-1]=='/'):
+            return app.send_static_file(f'docs/{path}index.html')
+        return app.send_static_file(f'docs/{path}')
+ 
 
     @app.errorhandler(404)   
     def not_found(e):   

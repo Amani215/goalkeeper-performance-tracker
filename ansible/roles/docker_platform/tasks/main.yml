@@ -13,6 +13,11 @@
     group: "{{ ansible_user }}"
     mode: '0644'
 
+- name: Pull Docker Compose
+  community.docker.docker_compose_v2_pull:
+    project_name: platform
+    project_src: /tmp
+
 - name: Run Docker Compose
   community.docker.docker_compose_v2:
     project_name: platform

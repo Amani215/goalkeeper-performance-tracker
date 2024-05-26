@@ -1,5 +1,4 @@
----
-# cloud-config
+#cloud-config
 
 users:
   - name: amani

@@ -1,0 +1,30 @@
+---
+- name: Add Container Registry
+  community.docker.docker_login:
+    registry_url: ghcr.io
+    username: "{{ github_username }}"
+    password: "{{ lookup('ansible.builtin.env','GITHUB_TOKEN') }}"
+
+- name: Template Docker Compose
+  ansible.builtin.template:
+    src: docker-compose.yml
+    dest: /tmp/docker-compose.yml
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+
+- name: Run Docker Compose
+  community.docker.docker_compose_v2:
+    project_name: platform
+    project_src: /tmp
+  environment:
+    MINIO_ROOT_USER: "{{ docker_platform_minio_root_user }}"
+    MINIO_ROOT_PASSWORD: "{{ docker_platform_minio_root_password }}"
+    SECRET_KEY: "{{ docker_platform_jwt_secret }}"
+    WTF_CSRF_SECRET_KEY: "{{ docker_platform_jwt_secret }}"
+    PROFILE_PICS_BUCKET: "{{ docker_platform_s3_bucket }}"
+    GOALKEEPER_PICS_BUCKET: "{{ docker_platform_s3_bucket }}"
+    TRAINING_FORMS_BUCKET: "{{ docker_platform_s3_bucket }}"
+    DOCUMENTS_BUCKET: "{{ docker_platform_s3_bucket }}"
+    ADMIN_USERNAME: "{{ docker_platform_minio_root_user }}"
+    ADMIN_PASSWORD: "{{ docker_platform_minio_root_password }}"

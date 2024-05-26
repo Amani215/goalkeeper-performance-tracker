@@ -14,3 +14,4 @@
 
   roles:
     - docker_traefik
+    - docker_platform

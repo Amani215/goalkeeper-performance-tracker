@@ -91,7 +91,7 @@ def update_training_form(training_id: str, pic: FieldStorage):
     '''Set or change the link to the training form of the training monitoring object'''
     training_obj = get_by_id(training_id)
 
-    form_url = upload_file(pic, os.getenv('TRAINING_FORMS_BUCKET'))
+    form_url = upload_file(pic, os.getenv('TRAINING_FORMS_BUCKET'), f'training_{training_id}')
     training_obj.training_form = form_url
 
     db.session.commit()

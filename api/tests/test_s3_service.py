@@ -6,6 +6,6 @@ def test_file_upload(bucket):
     """Test if the file gets uploaded successfully"""
     
     with open('tests/assets/image.jpeg', 'rb')as f:
-        upload_file(FileStorage(f), bucket.name)
+        upload_file(FileStorage(f), bucket.name, 'test')
         
     assert sum(1 for _ in bucket.objects.all()) == 1

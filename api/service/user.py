@@ -158,7 +158,7 @@ def remove_category(user: User, category: Category):
 
 def update_profile_pic(user: User, pic: FileStorage):
     '''Set or change the link to the profile pic of the user'''
-    pic_url = upload_file(pic, os.getenv('PROFILE_PICS_BUCKET'))
+    pic_url = upload_file(pic, os.getenv('PROFILE_PICS_BUCKET'), f'user_{user.id}')
     user.profile_pic = pic_url
     db.session.commit()
     return pic_url

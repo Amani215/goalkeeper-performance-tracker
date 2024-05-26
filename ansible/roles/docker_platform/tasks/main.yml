@@ -5,6 +5,13 @@
     username: "{{ github_username }}"
     password: "{{ lookup('ansible.builtin.env','GITHUB_TOKEN') }}"
 
+- name: Clone/Checkout Repo
+  ansible.builtin.git:
+    repo: https://{{ github_username }}:{{ lookup('ansible.builtin.env','GITHUB_TOKEN') }}@github.com/{{ github_repository }}
+    dest: /var/gitrepo/
+  become: true
+  no_log: true
+
 - name: Template Docker Compose
   ansible.builtin.template:
     src: docker-compose.yml
@@ -33,3 +40,5 @@
     DOCUMENTS_BUCKET: "{{ docker_platform_s3_bucket }}"
     ADMIN_USERNAME: "{{ docker_platform_minio_root_user }}"
     ADMIN_PASSWORD: "{{ docker_platform_minio_root_password }}"
+    GRAFANA_USERNAME: "{{ docker_platform_minio_root_user }}"
+    GRAFANA_PASSWORD: "{{ docker_platform_minio_root_password }}"

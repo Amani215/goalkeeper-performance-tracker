@@ -65,6 +65,29 @@ services:
       - "traefik.http.routers.minio.service=minio@docker"
       - "traefik.http.services.minio.loadbalancer.server.port=9000"
 
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: grafana
+    restart: always
+    volumes:
+      - app:/api_db
+      - /var/gitrepo/configs/grafana/provisioning:/etc/grafana/provisioning:ro
+    environment:
+      - GF_SERVER_DOMAIN={{ docker_platform_domain }}
+      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s:%(http_port)s/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_INSTALL_PLUGINS=marcusolsson-calendar-panel,frser-sqlite-datasource
+      - GF_USERS_DEFAULT_THEME=light
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`{{ docker_platform_domain }}`) && PathPrefix(`/grafana/`)"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.http.middlewares.grafana.headers.accesscontrolalloworiginlist=https://{{ docker_platform_domain }}/*"
+
 volumes:
   app: {}
   minio: {}

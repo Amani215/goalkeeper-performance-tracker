@@ -9,6 +9,7 @@ github_user_info: |-
     },split_lines=False)
   }}
 github_username: "{{ github_user_info.login }}"
+github_repository: "{{ github_user_info.login }}/goalkeeper-performance-tracker"
 docker_traefik_email: "{{ github_user_info.email }}"
 docker_traefik_username: "{{ github_user_info.login }}"
 docker_traefik_password: "{{ lookup('ansible.builtin.env', 'TRAEFIK_PASSWORD') }}"

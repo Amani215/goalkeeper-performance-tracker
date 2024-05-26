@@ -6,4 +6,3 @@ docker_platform_minio_root_user: ROOTNAME
 docker_platform_minio_root_password: CHANGEME123
 docker_platform_jwt_secret: jwtsecret
 docker_platform_s3_bucket: mybucket
-

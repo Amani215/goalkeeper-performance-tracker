@@ -11,7 +11,7 @@ attributes:
   - image
   - networks
   - volume_ids
-  - tags
+  - tags\
   - region
 keyed_groups:
   - key: do_region.slug

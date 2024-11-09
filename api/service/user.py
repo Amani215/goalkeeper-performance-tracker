@@ -1,6 +1,7 @@
 '''User services (add, update, etc.)'''
 import os
 from bcrypt import checkpw, gensalt, hashpw
+from sqlalchemy import func
 from sqlalchemy.exc import SQLAlchemyError
 from werkzeug.datastructures import FileStorage
 from model.category import Category
@@ -42,7 +43,7 @@ def get_by_username(name: str):
     
     Possible exceptions: SQLAlchemyError
     '''
-    user: User = User.query.filter_by(username=name).one()
+    user: User = User.query.filter(func.upper(User.username) == func.upper(name)).one()
     return user
 
 

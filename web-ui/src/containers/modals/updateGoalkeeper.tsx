@@ -76,7 +76,7 @@ function UpdateGoalkeeper({ modalIsOpen, setModalIsOpen }: Readonly<ModalProp>) 
                             <DesktopDatePicker
                                 label={t("birthdate")}
                                 format="DD/MM/YYYY"
-                                value={formik.values.birthday}
+                                value={dayjs(formik.values.birthday)}
                                 onChange={v => formik.setFieldValue("birthday", v)}
                             />
                         </Stack>

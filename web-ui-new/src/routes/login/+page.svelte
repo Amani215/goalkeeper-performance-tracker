@@ -13,7 +13,7 @@
 				>
 					<CircleGauge class="size-4" />
 				</div>
-				FootTracer.
+				FootTrack.
 			</a>
 		</div>
 		<div class="flex flex-1 items-center justify-center">

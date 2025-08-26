@@ -26,13 +26,7 @@
 				title: 'Dashboard',
 				url: '#',
 				icon: LayoutDashboard,
-				isActive: true,
-				items: [
-					{
-						title: 'Example sub menu',
-						url: '#'
-					}
-				]
+				isActive: true
 			},
 			{
 				title: 'Categories',
@@ -71,7 +65,7 @@
 		],
 		admin: [
 			{
-				name: 'Parameters',
+				title: 'Parameters',
 				url: '#',
 				icon: FrameIcon
 			}
@@ -81,7 +75,6 @@
 
 <script lang="ts">
 	import NavMain from './nav-main.svelte';
-	import NavProjects from './nav-projects.svelte';
 	import NavUser from './nav-user.svelte';
 	import TeamSwitcher from './team-switcher.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
@@ -99,8 +92,8 @@
 		<TeamSwitcher teams={data.teams} />
 	</Sidebar.Header>
 	<Sidebar.Content>
-		<NavMain items={data.navMain} />
-		<NavProjects items={data.admin} />
+		<NavMain title="Platform" items={data.navMain} />
+		<NavMain title="Admin" items={data.admin} />
 	</Sidebar.Content>
 	<Sidebar.Footer>
 		<NavUser user={data.user} />

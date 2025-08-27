@@ -29,11 +29,6 @@
 				isActive: true
 			},
 			{
-				title: 'Categories',
-				url: '#',
-				icon: Boxes
-			},
-			{
 				title: 'People',
 				url: '#',
 				icon: Users,
@@ -51,6 +46,11 @@
 						url: '#'
 					}
 				]
+			},
+			{
+				title: 'Categories',
+				url: '/categories',
+				icon: Boxes
 			},
 			{
 				title: 'Trainings',

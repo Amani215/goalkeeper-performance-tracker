@@ -5,19 +5,26 @@
 	import CategoryCard from '$lib/components/category-card.svelte';
 </script>
 
-<div class="m-8 justify-center">
-	<Button class="w-50 mb-4 self-end">Add Category</Button>
-	<div class="flex flex-wrap justify-start gap-4">
-		<CategoryCard category={{ name: 'Seniors', season: '2024-2025' }} />
-		<CategoryCard category={{ name: 'Juniors', season: '2024-2025' }} />
-		<CategoryCard category={{ name: 'Cadets A', season: '2024-2025' }} />
-		<CategoryCard category={{ name: 'Cadets B', season: '2024-2025' }} />
-		<CategoryCard category={{ name: 'Minimes A', season: '2024-2025' }} />
-	</div>
+<div class="mb-4 flex w-full justify-end">
+	<Button class="w-50 mr-4 lg:mr-8">Add Category</Button>
+</div>
+<div class="flex flex-wrap justify-center gap-4 px-8">
+	<CategoryCard category={{ name: 'Seniors', season: '2024-2025' }} />
+	<CategoryCard category={{ name: 'Juniors', season: '2024-2025' }} />
+	<CategoryCard category={{ name: 'Cadets A', season: '2024-2025' }} />
+	<CategoryCard category={{ name: 'Cadets B', season: '2024-2025' }} />
+	<CategoryCard category={{ name: 'Minimes A', season: '2024-2025' }} />
 
-	<Collapsible.Root class="w-260 m-8 space-y-2 self-center">
-		<Collapsible.Trigger class={buttonVariants({ variant: 'ghost' })}>
-			<div class="w-240 flex justify-between space-x-4 px-4">
+	<CategoryCard category={{ name: 'Juniors', season: '2024-2025' }} />
+	<CategoryCard category={{ name: 'Cadets A', season: '2024-2025' }} />
+	<CategoryCard category={{ name: 'Cadets B', season: '2024-2025' }} />
+	<CategoryCard category={{ name: 'Minimes A', season: '2024-2025' }} />
+</div>
+
+<div class="flex w-full justify-center">
+	<Collapsible.Root class="m-8 w-full">
+		<Collapsible.Trigger class="w-full {buttonVariants({ variant: 'ghost' })}">
+			<div class="flex w-full justify-between px-4">
 				<h4 class="text-sm font-semibold">Archived Categories</h4>
 				<div>
 					<ChevronsUpDownIcon />
@@ -25,8 +32,8 @@
 				</div>
 			</div>
 		</Collapsible.Trigger>
-		<Collapsible.Content class="space-y-2">
-			<div class="flex flex-wrap justify-center">
+		<Collapsible.Content class="mt-4">
+			<div class="flex flex-wrap justify-center gap-4">
 				<CategoryCard category={{ name: 'Seniors', season: '2023-2024' }} />
 			</div>
 		</Collapsible.Content>

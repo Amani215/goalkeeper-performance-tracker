@@ -12,7 +12,7 @@
 	} = $props();
 </script>
 
-<Card.Root class="w-60">
+<Card.Root class="w-full lg:w-1/5 xl:w-1/6">
 	<Card.Header>
 		<Card.Title>{category.name}</Card.Title>
 		<Card.Description>{category.season}</Card.Description>

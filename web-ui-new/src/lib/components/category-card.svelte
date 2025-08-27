@@ -8,6 +8,7 @@
 		category: {
 			name: string;
 			season: string;
+			archived?: boolean;
 		};
 	} = $props();
 </script>
@@ -19,6 +20,10 @@
 	</Card.Header>
 	<Card.Content>
 		<Button class="mb-2 w-full">View Category</Button>
-		<Button variant="secondary" class="w-full">Archive Category</Button>
+		{#if category.archived}
+			<Button variant="secondary" class="w-full">Unarchive</Button>
+		{:else}
+			<Button variant="secondary" class="w-full">Archive Category</Button>
+		{/if}
 	</Card.Content>
 </Card.Root>

@@ -34,7 +34,7 @@
 		</Collapsible.Trigger>
 		<Collapsible.Content class="mt-4">
 			<div class="flex flex-wrap justify-center gap-4">
-				<CategoryCard category={{ name: 'Seniors', season: '2023-2024' }} />
+				<CategoryCard category={{ name: 'Seniors', season: '2023-2024', archived: true }} />
 			</div>
 		</Collapsible.Content>
 	</Collapsible.Root>

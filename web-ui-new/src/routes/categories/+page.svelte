@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
+	import { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import * as Collapsible from '$lib/components/ui/collapsible';
 	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
-	import CategoryCard from '$lib/components/category-card.svelte';
+	import CategoryCard from '$lib/components/category-utils/category-card.svelte';
 	import AddDialog from '$lib/components/category-utils/add-dialog.svelte';
 </script>
 

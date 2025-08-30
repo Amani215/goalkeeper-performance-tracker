@@ -3,10 +3,11 @@
 	import * as Collapsible from '$lib/components/ui/collapsible';
 	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
 	import CategoryCard from '$lib/components/category-card.svelte';
+	import AddDialog from '$lib/components/category-utils/add-dialog.svelte';
 </script>
 
 <div class="mb-4 flex w-full justify-end">
-	<Button class="w-50 mr-4 lg:mr-8">Add Category</Button>
+	<AddDialog />
 </div>
 <div class="flex flex-wrap justify-center gap-4 px-8">
 	<CategoryCard category={{ name: 'Seniors', season: '2024-2025' }} />

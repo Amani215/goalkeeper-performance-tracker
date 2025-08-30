@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AddDialog from '$lib/components/match-utils/add-dialog.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
 
@@ -29,7 +30,7 @@
 
 <div class="p-8">
 	<div class="mb-4 flex w-full justify-end">
-		<Button variant="default" class="w-1/7">Add Match</Button>
+		<AddDialog />
 	</div>
 	<Table.Root>
 		<Table.Caption>A list of your recent matches.</Table.Caption>

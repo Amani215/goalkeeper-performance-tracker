@@ -24,7 +24,7 @@
 		navMain: [
 			{
 				title: 'Dashboard',
-				url: '#',
+				url: '/#',
 				icon: LayoutDashboard,
 				isActive: true
 			},
@@ -59,7 +59,7 @@
 			},
 			{
 				title: 'Matches',
-				url: '#',
+				url: '/matches',
 				icon: LandPlot
 			}
 		],

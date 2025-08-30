@@ -5,8 +5,14 @@
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import { page } from '$app/state';
 
 	let { children } = $props();
+
+	const humanReadablePath = () => {
+		const path = page.url.pathname.split('/')[1];
+		return path.length ? path.charAt(0).toUpperCase() + path.slice(1) : 'Home';
+	};
 </script>
 
 <svelte:head>
@@ -25,7 +31,7 @@
 				<Breadcrumb.Root>
 					<Breadcrumb.List>
 						<Breadcrumb.Item class="hidden md:block">
-							<Breadcrumb.Link href="#">Dashboard</Breadcrumb.Link>
+							<Breadcrumb.Link href={page.url.pathname}>{humanReadablePath()}</Breadcrumb.Link>
 						</Breadcrumb.Item>
 					</Breadcrumb.List>
 				</Breadcrumb.Root>

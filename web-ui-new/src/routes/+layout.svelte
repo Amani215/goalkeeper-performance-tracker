@@ -37,6 +37,8 @@
 				</Breadcrumb.Root>
 			</div>
 		</header>
-		{@render children?.()}
+		<div class="p-8">
+			{@render children?.()}
+		</div>
 	</Sidebar.Inset>
 </Sidebar.Provider>

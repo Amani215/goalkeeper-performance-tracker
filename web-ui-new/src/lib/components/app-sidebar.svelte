@@ -39,7 +39,7 @@
 					},
 					{
 						title: 'Coaches',
-						url: '#'
+						url: '/people/coaches'
 					},
 					{
 						title: 'Goalkeepers',

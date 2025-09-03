@@ -9,7 +9,7 @@
 <div class="mb-4 flex w-full justify-end">
 	<AddDialog />
 </div>
-<div class="flex flex-wrap justify-center gap-4 px-8">
+<div class="flex flex-wrap justify-center gap-4">
 	<CategoryCard category={{ name: 'Seniors', season: '2024-2025' }} />
 	<CategoryCard category={{ name: 'Juniors', season: '2024-2025' }} />
 	<CategoryCard category={{ name: 'Cadets A', season: '2024-2025' }} />
@@ -23,7 +23,7 @@
 </div>
 
 <div class="flex w-full justify-center">
-	<Collapsible.Root class="m-8 w-full">
+	<Collapsible.Root class="mt-8 w-full">
 		<Collapsible.Trigger class="w-full {buttonVariants({ variant: 'ghost' })}">
 			<div class="flex w-full justify-between px-4">
 				<h4 class="text-sm font-semibold">Archived Categories</h4>

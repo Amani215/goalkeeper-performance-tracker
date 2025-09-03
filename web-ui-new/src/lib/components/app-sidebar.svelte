@@ -43,7 +43,7 @@
 					},
 					{
 						title: 'Goalkeepers',
-						url: '#'
+						url: '/people/goalkeepers'
 					}
 				]
 			},

@@ -36,9 +36,5 @@ export const columns: ColumnDef<Coach>[] = [
 	{
 		accessorKey: 'name',
 		header: 'Name'
-	},
-	{
-		accessorKey: 'admin',
-		header: 'Admin'
 	}
 ];

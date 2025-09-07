@@ -8,6 +8,7 @@
 	import { cn } from '$lib/utils.js';
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
+	import { Input } from '../ui/input';
 
 	const df = new DateFormatter('en-US', {
 		dateStyle: 'long'

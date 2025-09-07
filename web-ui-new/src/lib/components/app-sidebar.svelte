@@ -54,7 +54,7 @@
 			},
 			{
 				title: 'Trainings',
-				url: '#',
+				url: '/trainings',
 				icon: CalendarDays
 			},
 			{

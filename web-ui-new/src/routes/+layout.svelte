@@ -13,6 +13,14 @@
 		const path = page.url.pathname.split('/')[1];
 		return path.length ? path.charAt(0).toUpperCase() + path.slice(1) : 'Home';
 	};
+
+	const humanReadableSubPath = () => {
+		console.log('calling ...');
+		const path = page.url.pathname.split('/')[2];
+		return path ? path.charAt(0).toUpperCase() + path.slice(1) : null;
+	};
+
+	let subPath = $derived(humanReadableSubPath());
 </script>
 
 <svelte:head>
@@ -33,6 +41,12 @@
 						<Breadcrumb.Item class="hidden md:block">
 							<Breadcrumb.Link href={page.url.pathname}>{humanReadablePath()}</Breadcrumb.Link>
 						</Breadcrumb.Item>
+						{#if subPath !== null}
+							<Breadcrumb.Separator class="hidden md:block" />
+							<Breadcrumb.Item class="hidden md:block">
+								<Breadcrumb.Link href={page.url.pathname}>{subPath}</Breadcrumb.Link>
+							</Breadcrumb.Item>
+						{/if}
 					</Breadcrumb.List>
 				</Breadcrumb.Root>
 			</div>

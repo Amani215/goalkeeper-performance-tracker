@@ -35,7 +35,7 @@
 				items: [
 					{
 						title: 'Admins',
-						url: '#'
+						url: '/people/admins'
 					},
 					{
 						title: 'Coaches',

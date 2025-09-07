@@ -24,7 +24,7 @@
 			</div>
 
 			<div class="grid grid-cols-4 items-center gap-4">
-				<Label for="season" class="text-right">Season</Label>
+				<Label for="password" class="text-right">Password</Label>
 				<Input type="password" id="password" bind:value={password} class="col-span-3" />
 			</div>
 

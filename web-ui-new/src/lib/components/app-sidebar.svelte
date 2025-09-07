@@ -66,8 +66,22 @@
 		admin: [
 			{
 				title: 'Parameters',
-				url: '#',
-				icon: FrameIcon
+				url: '/parameters',
+				icon: FrameIcon,
+				items: [
+					{
+						title: 'General',
+						url: '/parameters/general'
+					},
+					{
+						title: 'Matches',
+						url: '/parameters/matches'
+					},
+					{
+						title: 'Plannings',
+						url: '/parameters/plannings'
+					}
+				]
 			}
 		]
 	};

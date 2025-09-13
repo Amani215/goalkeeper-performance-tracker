@@ -58,7 +58,7 @@
 				<DropdownMenu.Group>
 					<DropdownMenu.Item>
 						<User />
-						Profile
+						<a href="/profile/1"> Profile </a>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item>
 						<BookType />

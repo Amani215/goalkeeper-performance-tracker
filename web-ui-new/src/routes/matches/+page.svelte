@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import AddDialog from '$lib/components/match-utils/add-dialog.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
 
 	const matches = [
@@ -44,7 +44,7 @@
 	</Table.Header>
 	<Table.Body>
 		{#each matches as match (match)}
-			<Table.Row>
+			<Table.Row onclick={() => goto(`/matches/1`)} class="hover:bg-muted/50 cursor-pointer">
 				<Table.Cell class="font-medium">{match.date}</Table.Cell>
 				<Table.Cell>{match.category}</Table.Cell>
 				<Table.Cell>{match.localTeam}</Table.Cell>

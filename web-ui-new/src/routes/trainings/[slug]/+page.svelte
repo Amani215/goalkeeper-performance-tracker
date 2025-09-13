@@ -2,8 +2,9 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Trash2 from '@lucide/svelte/icons/trash-2';
-	import PenLine from '@lucide/svelte/icons/pen-line';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import AddGoalkeeperDialog from '$lib/components/training-utils/add-goalkeeper-dialog.svelte';
+	import UpdateAttendanceDialog from '$lib/components/training-utils/update-attendance-dialog.svelte';
 
 	let goalkeepers = [{ name: 'John Doe', status: 'Present', duration: 90 }];
 </script>
@@ -20,7 +21,7 @@
 
 	<Card class="mt-6 w-full p-4">
 		<div class="flex w-full justify-end">
-			<Button>Add Goalkeeper</Button>
+			<AddGoalkeeperDialog />
 		</div>
 
 		{#if goalkeepers.length > 0}
@@ -38,7 +39,7 @@
 						</div>
 					</div>
 					<div class="content-end">
-						<Button size="icon" variant="ghost"><PenLine /></Button>
+						<UpdateAttendanceDialog />
 						<Button size="icon" variant="ghost"><Trash2 /></Button>
 					</div>
 				</div>

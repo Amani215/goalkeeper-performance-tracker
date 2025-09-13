@@ -3,7 +3,6 @@
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 
 	let { data } = $props();
-	console.log(data);
 </script>
 
 <Tabs.Root value={data.tabs?.tabs[0].value} class="w-full">

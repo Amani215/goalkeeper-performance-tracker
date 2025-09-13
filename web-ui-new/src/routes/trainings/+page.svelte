@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import AddDialog from '$lib/components/training-utils/add-dialog.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
 
@@ -35,7 +36,7 @@
 	</Table.Header>
 	<Table.Body>
 		{#each trainingSessions as session (session)}
-			<Table.Row>
+			<Table.Row onclick={() => goto(`/trainings/1`)} class="hover:bg-muted/50 cursor-pointer">
 				<Table.Cell class="font-medium">{session.date}</Table.Cell>
 				<Table.Cell>{session.category}</Table.Cell>
 				<Table.Cell>{session.duration}</Table.Cell>

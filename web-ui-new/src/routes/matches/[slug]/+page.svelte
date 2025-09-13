@@ -1,6 +1,12 @@
 <script>
 	import AddGoalkeeperDialog from '$lib/components/match-utils/add-goalkeeper-dialog.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
 	import Card from '$lib/components/ui/card/card.svelte';
+	import { Separator } from '$lib/components/ui/separator';
+	import Trash2 from '@lucide/svelte/icons/trash-2';
+	import FileChartPie from '@lucide/svelte/icons/file-chart-pie';
+
+	let goalkeepers = [{ name: 'John Doe' }, { name: 'Jane Smith' }];
 </script>
 
 <div class="mb-6 flex flex-col items-center gap-2">
@@ -24,5 +30,18 @@
 	<div class="flex w-full justify-end">
 		<AddGoalkeeperDialog />
 	</div>
-	<p class="mt-2 text-center text-sm">No goalkeepers added yet...</p>
+	{#if goalkeepers.length === 0}
+		<p class="mt-2 text-center text-sm">No goalkeepers added yet...</p>
+	{:else}
+		{#each goalkeepers as goalkeeper}
+			<div class="flex flex-row justify-between">
+				<p>{goalkeeper.name}</p>
+				<div class="flex flex-row">
+					<Button size="icon" variant="ghost"><FileChartPie /></Button>
+					<Button size="icon" variant="ghost"><Trash2 /></Button>
+				</div>
+			</div>
+			<Separator class="-mt-4" />
+		{/each}
+	{/if}
 </Card>

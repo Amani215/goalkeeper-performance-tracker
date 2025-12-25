@@ -5,9 +5,14 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import Trash2 from '@lucide/svelte/icons/trash-2';
 	import FileChartPie from '@lucide/svelte/icons/file-chart-pie';
+	import EditMatchDialog from '$lib/components/match-utils/edit-dialog.svelte';
 
 	let goalkeepers = [{ name: 'John Doe' }, { name: 'Jane Smith' }];
 </script>
+
+<div class="flex w-full justify-end">
+	<EditMatchDialog />
+</div>
 
 <div class="mb-6 flex flex-col items-center gap-2">
 	<p class="text-3xl font-bold">Tournament (Draw)</p>

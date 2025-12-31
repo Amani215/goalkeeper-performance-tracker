@@ -8,13 +8,15 @@
 	import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table/index.js';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import { Button } from './button';
+	import { goto } from '$app/navigation';
 
 	type DataTableProps<TData, TValue> = {
 		columns: ColumnDef<TData, TValue>[];
 		data: TData[];
+		rowLink?: (id: string | number) => string;
 	};
 
-	let { data, columns }: DataTableProps<TData, TValue> = $props();
+	let { data, columns, rowLink }: DataTableProps<TData, TValue> = $props();
 	let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
 
 	const table = createSvelteTable({
@@ -59,7 +61,10 @@
 		</Table.Header>
 		<Table.Body>
 			{#each table.getRowModel().rows as row (row.id)}
-				<Table.Row data-state={row.getIsSelected() && 'selected'}>
+				<Table.Row
+					data-state={row.getIsSelected() && 'selected'}
+					onclick={() => rowLink && goto(rowLink(row.original.id))}
+				>
 					{#each row.getVisibleCells() as cell (cell.id)}
 						<Table.Cell>
 							<FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />

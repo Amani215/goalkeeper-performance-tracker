@@ -10,4 +10,4 @@
 	<AddDialog />
 </div>
 
-<DataTable data={data.admins} {columns} />
+<DataTable data={data.admins} {columns} rowLink={(id) => `/profile/${id}`} />

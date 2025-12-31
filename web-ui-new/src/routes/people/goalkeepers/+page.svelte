@@ -10,4 +10,4 @@
 	<AddGoalkeeperDialog />
 </div>
 
-<DataTable data={data.goalkeepers} {columns} />
+<DataTable data={data.goalkeepers} {columns} rowLink={(id) => `/people/goalkeepers/${id}`} />

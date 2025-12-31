@@ -15,7 +15,7 @@
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import Input from '../ui/input/input.svelte';
-	import { Field, FieldDescription, FieldLabel } from '$lib/components/ui/field';
+	import { Field, FieldLabel } from '$lib/components/ui/field';
 
 	const df = new DateFormatter('en-US', {
 		dateStyle: 'long'

@@ -5,6 +5,7 @@
 
 	const matches = [
 		{
+			id: 1,
 			date: '2023-01-01',
 			category: 'Seniors 2021-2022',
 			localTeam: 'EST',
@@ -12,6 +13,7 @@
 			type: 'Tournament'
 		},
 		{
+			id: 2,
 			date: '2023-01-02',
 			category: 'Seniors 2021-2022',
 			localTeam: 'CA',
@@ -19,6 +21,7 @@
 			type: 'Friendly'
 		},
 		{
+			id: 3,
 			date: '2023-01-03',
 			category: 'Seniors 2021-2022',
 			localTeam: 'ASM',
@@ -44,7 +47,10 @@
 	</Table.Header>
 	<Table.Body>
 		{#each matches as match (match)}
-			<Table.Row onclick={() => goto(`/matches/1`)} class="hover:bg-muted/50 cursor-pointer">
+			<Table.Row
+				onclick={() => goto(`/matches/${match.id}`)}
+				class="hover:bg-muted/50 cursor-pointer"
+			>
 				<Table.Cell class="font-medium">{match.date}</Table.Cell>
 				<Table.Cell>{match.category}</Table.Cell>
 				<Table.Cell>{match.localTeam}</Table.Cell>

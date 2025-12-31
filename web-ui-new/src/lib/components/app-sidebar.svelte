@@ -10,6 +10,7 @@
 
 	const data = {
 		user: {
+			id: '1',
 			name: 'John Doe',
 			title: 'Admin',
 			avatar: avatar

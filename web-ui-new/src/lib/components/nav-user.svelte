@@ -9,8 +9,9 @@
 	import ArrowRightLeft from '@lucide/svelte/icons/arrow-right-left';
 	import LogOutIcon from '@lucide/svelte/icons/log-out';
 	import BookType from '@lucide/svelte/icons/book-type';
+	import { goto } from '$app/navigation';
 
-	let { user }: { user: { name: string; title: string; avatar: string } } = $props();
+	let { user }: { user: { id: string; name: string; title: string; avatar: string } } = $props();
 	const sidebar = useSidebar();
 </script>
 
@@ -56,9 +57,8 @@
 				</DropdownMenu.Label>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Group>
-					<DropdownMenu.Item>
-						<User />
-						<a href="/profile/1"> Profile </a>
+					<DropdownMenu.Item onclick={() => goto('/profile/' + user.id)}>
+						<User /> Profile
 					</DropdownMenu.Item>
 					<DropdownMenu.Item>
 						<BookType />

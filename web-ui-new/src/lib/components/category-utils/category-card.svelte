@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 
@@ -6,6 +7,7 @@
 		category
 	}: {
 		category: {
+			id: string;
 			name: string;
 			season: string;
 			archived?: boolean;
@@ -19,7 +21,9 @@
 		<Card.Description>{category.season}</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		<Button class="mb-2 w-full">View Category</Button>
+		<Button class="mb-2 w-full" onclick={() => goto('/categories/' + category.id)}
+			>View Category</Button
+		>
 		{#if category.archived}
 			<Button variant="secondary" class="w-full">Unarchive</Button>
 		{:else}

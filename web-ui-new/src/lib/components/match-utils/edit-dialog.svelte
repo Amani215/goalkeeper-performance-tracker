@@ -5,7 +5,12 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
 	import PencilLine from '@lucide/svelte/icons/pencil-line';
-	import { DateFormatter, type DateValue, getLocalTimeZone } from '@internationalized/date';
+	import {
+		DateFormatter,
+		type DateValue,
+		getLocalTimeZone,
+		fromDate
+	} from '@internationalized/date';
 	import { cn } from '$lib/utils.js';
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
@@ -31,15 +36,13 @@
 		{ value: 'seniors2023_2024', label: 'Seniors 2023-2024' }
 	];
 
-	let date = $state<DateValue | undefined>();
-	let contentRef = $state<HTMLElement | null>(null);
+	let { localTeam, visitorTeam, type, category, matchDate, localTeamScore, visitorTeamScore } =
+		$props();
 
-	let localTeam = $state('');
-	let visitorTeam = $state('');
-	let type = $state('');
-	let category = $state('');
-	let localTeamScore = $state(1);
-	let visitorTeamScore = $state(2);
+	let date = $state<DateValue | undefined>(
+		matchDate ? fromDate(new Date(matchDate), getLocalTimeZone()) : undefined
+	);
+	let contentRef = $state<HTMLElement | null>(null);
 
 	const triggerLocalTeamContent = $derived(
 		teams.find((t) => t.value === localTeam)?.label ?? 'Select a local team'

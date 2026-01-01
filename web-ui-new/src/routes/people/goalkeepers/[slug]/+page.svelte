@@ -47,7 +47,7 @@
 		<img
 			src={profilePic}
 			alt="Profile Pic"
-			class="h-38 w-38 col-span-1 row-span-1 justify-self-center rounded-full"
+			class="col-span-1 row-span-1 justify-self-center rounded-full"
 		/>
 		<Button variant="outline" size="sm" class="mt-4 w-full">Change Picture</Button>
 	</Card>

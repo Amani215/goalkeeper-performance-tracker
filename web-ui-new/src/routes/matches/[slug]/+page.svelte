@@ -6,8 +6,12 @@
 	import Trash2 from '@lucide/svelte/icons/trash-2';
 	import FileChartPie from '@lucide/svelte/icons/file-chart-pie';
 	import EditMatchDialog from '$lib/components/match-utils/edit-dialog.svelte';
+	import * as Avatar from '$lib/components/ui/avatar/index.js';
 
-	let goalkeepers = [{ name: 'John Doe' }, { name: 'Jane Smith' }];
+	let goalkeepers = [
+		{ id: 1, name: 'John Doe' },
+		{ id: 2, name: 'Jane Smith' }
+	];
 
 	let match = {
 		localTeam: 'EST',
@@ -59,22 +63,31 @@
 	</Card>
 </div>
 
-<Card class="mt-6 w-full p-4">
-	<div class="flex w-full justify-end">
+<Card class="mt-6 w-full gap-1 p-4">
+	<div class="mb-2 flex w-full justify-end">
 		<AddGoalkeeperDialog />
 	</div>
 	{#if goalkeepers.length === 0}
 		<p class="mt-2 text-center text-sm">No goalkeepers added yet...</p>
 	{:else}
 		{#each goalkeepers as goalkeeper}
-			<div class="flex flex-row justify-between">
-				<p>{goalkeeper.name}</p>
+			<div class="flex flex-row items-center justify-between">
+				<a
+					class="flex w-full items-center gap-2 rounded-sm p-2 hover:bg-gray-100"
+					href={`/people/goalkeepers/${goalkeeper.id}`}
+				>
+					<Avatar.Root class="size-10">
+						<Avatar.Image src={undefined} alt={goalkeeper.name} />
+						<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
+					</Avatar.Root>
+					<p>{goalkeeper.name}</p>
+				</a>
 				<div class="flex flex-row">
 					<Button size="icon" variant="ghost"><FileChartPie /></Button>
 					<Button size="icon" variant="ghost"><Trash2 /></Button>
 				</div>
 			</div>
-			<Separator class="-mt-4" />
+			<Separator />
 		{/each}
 	{/if}
 </Card>

@@ -35,7 +35,7 @@
 						class="flex w-full items-center gap-2 rounded-sm p-2 hover:bg-gray-100"
 						href={`/profile/${coach.id}`}
 					>
-						<Avatar.Root class="size-8 rounded-lg">
+						<Avatar.Root class="size-10">
 							<Avatar.Image src={undefined} alt={coach.name} />
 							<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
 						</Avatar.Root>
@@ -60,7 +60,7 @@
 						class="flex w-full items-center gap-2 rounded-sm p-2 hover:bg-gray-100"
 						href={`/people/goalkeepers/${goalkeeper.id}`}
 					>
-						<Avatar.Root class="size-8 rounded-lg">
+						<Avatar.Root class="size-10">
 							<Avatar.Image src={undefined} alt={goalkeeper.name} />
 							<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
 						</Avatar.Root>

@@ -25,7 +25,7 @@
 						class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 						{...props}
 					>
-						<Avatar.Root class="size-8 rounded-lg">
+						<Avatar.Root class="size-10">
 							<Avatar.Image src={user.avatar} alt={user.name} />
 							<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
 						</Avatar.Root>
@@ -45,7 +45,7 @@
 			>
 				<DropdownMenu.Label class="p-0 font-normal">
 					<div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-						<Avatar.Root class="size-8 rounded-lg">
+						<Avatar.Root class="size-10">
 							<Avatar.Image src={user.avatar} alt={user.name} />
 							<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
 						</Avatar.Root>

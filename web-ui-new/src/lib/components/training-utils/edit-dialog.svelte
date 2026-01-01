@@ -6,7 +6,7 @@
 		fromDate
 	} from '@internationalized/date';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import { buttonVariants } from '../ui/button';
+	import { Button, buttonVariants } from '$lib/components/ui/button/index.js';
 	import PencilLine from '@lucide/svelte/icons/pencil-line';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
@@ -100,5 +100,9 @@
 				<Input id="duration" type="number" bind:value={duration} />
 			</Field>
 		</div>
+
+		<Dialog.Footer>
+			<Button type="submit">Save changes</Button>
+		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

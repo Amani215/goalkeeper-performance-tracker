@@ -6,9 +6,14 @@
 	import AddGoalkeeperDialog from '$lib/components/training-utils/add-goalkeeper-dialog.svelte';
 	import UpdateAttendanceDialog from '$lib/components/training-utils/update-attendance-dialog.svelte';
 	import { Avatar } from 'bits-ui';
+	import EditDialog from '$lib/components/training-utils/edit-dialog.svelte';
 
 	let goalkeepers = [{ id: 1, name: 'John Doe', status: 'Absent', duration: 90 }];
 </script>
+
+<div class="mb-2 flex w-full justify-end">
+	<EditDialog category="seniors2021_2022" trainingDate="2021-10-22T10:00:00Z" duration={90} />
+</div>
 
 <div class="mb-6 flex flex-col items-center gap-2">
 	<p class="text-3xl font-bold">Training Senior 2021-2022</p>

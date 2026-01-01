@@ -5,8 +5,9 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import AddGoalkeeperDialog from '$lib/components/training-utils/add-goalkeeper-dialog.svelte';
 	import UpdateAttendanceDialog from '$lib/components/training-utils/update-attendance-dialog.svelte';
+	import { Avatar } from 'bits-ui';
 
-	let goalkeepers = [{ name: 'John Doe', status: 'Present', duration: 90 }];
+	let goalkeepers = [{ id: 1, name: 'John Doe', status: 'Present', duration: 90 }];
 </script>
 
 <div class="mb-6 flex flex-col items-center gap-2">
@@ -26,19 +27,27 @@
 
 		{#if goalkeepers.length > 0}
 			{#each goalkeepers as goalkeeper}
-				<div class="flex flex-row justify-between">
-					<div class="grid grid-cols-2">
-						<img
-							class="h-10 w-10 place-self-center rounded-full"
-							src="https://avatars.githubusercontent.com/u/194400?v=4"
-							alt="Avatar"
-						/>
-						<div class="content-center">
-							<p class="font-bold">{goalkeeper.name}</p>
-							<p class="text-gray-500">{goalkeeper.status} - {goalkeeper.duration}</p>
-						</div>
+				<div class="flex flex-row items-center">
+					<div class="flex w-full items-center gap-2">
+						<a
+							class="flex w-full items-center gap-2 rounded-sm p-2 hover:bg-gray-100"
+							href={`/people/goalkeepers/${goalkeeper.id}`}
+						>
+							<Avatar.Root class="size-10">
+								<Avatar.Image
+									class="rounded-full"
+									src={'https://avatars.githubusercontent.com/u/194400?v=4'}
+									alt={goalkeeper.name}
+								/>
+								<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
+							</Avatar.Root>
+							<div class="content-center">
+								<p class="font-bold">{goalkeeper.name}</p>
+								<p class="text-gray-500">{goalkeeper.status} - {goalkeeper.duration}</p>
+							</div>
+						</a>
 					</div>
-					<div class="content-end">
+					<div class="ml-auto flex flex-row items-center gap-2">
 						<UpdateAttendanceDialog />
 						<Button size="icon" variant="ghost"><Trash2 /></Button>
 					</div>

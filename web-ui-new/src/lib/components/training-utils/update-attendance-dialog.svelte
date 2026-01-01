@@ -9,11 +9,10 @@
 
 	const attendanceList = [{ label: 'Present' }, { label: 'Absent' }, { label: 'Hurt' }];
 
-	let attendance = $state(attendanceList[0].label);
-	let duration = $state(0);
+	let { attendance, duration } = $props();
 
 	const triggerAttendanceContent = $derived(
-		attendanceList.find((n) => n.label === attendance)?.label ?? 'Select an attendance status'
+		attendanceList.find((n) => n.label === attendance)?.label ?? 'Select a status'
 	);
 </script>
 
@@ -32,7 +31,7 @@
 		<div class="grid gap-4 py-4">
 			<!-- Attendance Select -->
 			<div class="grid grid-cols-4 items-center gap-4">
-				<Label for="duration" class="col-span-2 text-right">Attendance</Label>
+				<Label for="attendance" class="col-span-2 text-right">Attendance</Label>
 				<Select.Root type="single" name="goalkeeper" bind:value={attendance}>
 					<Select.Trigger class="col-span-2 w-full">
 						{triggerAttendanceContent}

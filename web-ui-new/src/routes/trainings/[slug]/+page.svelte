@@ -7,7 +7,7 @@
 	import UpdateAttendanceDialog from '$lib/components/training-utils/update-attendance-dialog.svelte';
 	import { Avatar } from 'bits-ui';
 
-	let goalkeepers = [{ id: 1, name: 'John Doe', status: 'Present', duration: 90 }];
+	let goalkeepers = [{ id: 1, name: 'John Doe', status: 'Absent', duration: 90 }];
 </script>
 
 <div class="mb-6 flex flex-col items-center gap-2">
@@ -48,7 +48,7 @@
 						</a>
 					</div>
 					<div class="ml-auto flex flex-row items-center gap-2">
-						<UpdateAttendanceDialog />
+						<UpdateAttendanceDialog attendance={goalkeeper.status} duration={goalkeeper.duration} />
 						<Button size="icon" variant="ghost"><Trash2 /></Button>
 					</div>
 				</div>

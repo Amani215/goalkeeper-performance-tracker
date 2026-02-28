@@ -3,10 +3,11 @@
 	import profilePic from '$lib/assets/placeholder.png';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
+	import CategoryBadges from '$lib/components/category-utils/category-badges.svelte';
 
 	let associatedCategories: any[] = [
-		{ name: 'Seniors 2024-2025', archived: false },
-		{ name: 'Juniors 2023-2024', archived: true }
+		{ id: '1', name: 'Seniors 2024-2025', season: '2024-2025', archived: false },
+		{ id: '2', name: 'Juniors 2023-2024', season: '2023-2024', archived: true }
 	];
 </script>
 
@@ -29,21 +30,7 @@
 			<p class="col-span-3">(123) 456-7890</p>
 		</div>
 		<p class="font-semibold">Associated Categories</p>
-		{#if associatedCategories.length === 0}
-			<p>No categories yet...</p>
-		{:else}
-			<div class="flex flex-wrap gap-1">
-				{#each associatedCategories as category}
-					{#if category.archived}
-						<Badge variant="secondary" href="/categories/{category.id}"
-							>{category.name} (Archived)</Badge
-						>
-					{:else}
-						<Badge href="/categories/{category.id}">{category.name}</Badge>
-					{/if}
-				{/each}
-			</div>
-		{/if}
+		<CategoryBadges categories={associatedCategories} />
 	</Card>
 	<Card class="col-span-2 row-span-1 p-4">
 		<img

@@ -5,12 +5,13 @@
 	import { Switch } from '$lib/components/ui/switch';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import { Badge } from '$lib/components/ui/badge';
+	import CategoryBadges from '$lib/components/category-utils/category-badges.svelte';
 
 	let admin = true;
 	let archived = false;
 	let associatedCategories = [
-		{ id: 1, name: 'Seniors 2021-2022', archived: false },
-		{ id: 2, name: 'Seniors 2022-2023', archived: true }
+		{ id: '1', name: 'Seniors 2021-2022', season: '2021-2022', archived: false },
+		{ id: '2', name: 'Seniors 2022-2023', season: '2022-2023', archived: true }
 	];
 </script>
 
@@ -43,21 +44,7 @@
 
 			<div class="mt-6">
 				<h3 class="text-l font-semibold">Associated Categories:</h3>
-				{#if associatedCategories.length === 0}
-					<p>No categories yet...</p>
-				{:else}
-					<div class="flex flex-wrap gap-1">
-						{#each associatedCategories as category}
-							{#if category.archived}
-								<Badge variant="secondary" href="/categories/{category.id}"
-									>{category.name} (Archived)</Badge
-								>
-							{:else}
-								<Badge href="/categories/{category.id}">{category.name}</Badge>
-							{/if}
-						{/each}
-					</div>
-				{/if}
+				<CategoryBadges categories={associatedCategories} />
 			</div>
 		</div>
 	</div>

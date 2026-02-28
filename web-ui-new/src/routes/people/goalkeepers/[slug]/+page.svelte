@@ -2,8 +2,15 @@
 	import { Card } from '$lib/components/ui/card';
 	import profilePic from '$lib/assets/placeholder.png';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import CategoryBadges from '$lib/components/category-utils/category-badges.svelte';
+	import EditGoalkeeperDialog from '$lib/components/people-utils/edit-goalkeeper-dialog.svelte';
+
+	let goalkeeper = {
+		id: '1',
+		name: 'John Doe',
+		birthday: new Date('1996-01-01'),
+		phone: '(123) 456-7890'
+	};
 
 	let associatedCategories: any[] = [
 		{ id: '1', name: 'Seniors 2024-2025', season: '2024-2025', archived: false },
@@ -14,11 +21,15 @@
 <div class="grid grid-cols-6 gap-6">
 	<Card class="col-span-4 row-span-1 gap-2 p-4">
 		<div class="mb-4 flex items-center justify-end">
-			<Button variant="ghost" size="sm" class="mb-4">Edit</Button>
+			<EditGoalkeeperDialog
+				name={goalkeeper.name}
+				birthday={goalkeeper.birthday}
+				phone={goalkeeper.phone}
+			/>
 		</div>
 		<div class="grid grid-cols-4 gap-1">
 			<p class="col-span-1 font-semibold">Name</p>
-			<p class="col-span-3">John Doe</p>
+			<p class="col-span-3">{goalkeeper.name}</p>
 
 			<p class="col-span-1 font-semibold">Age</p>
 			<p class="col-span-3">28</p>
@@ -27,7 +38,7 @@
 			<p class="col-span-3">January 1, 1996</p>
 
 			<p class="col-span-1 font-semibold">Phone Number</p>
-			<p class="col-span-3">(123) 456-7890</p>
+			<p class="col-span-3">{goalkeeper.phone}</p>
 		</div>
 		<p class="font-semibold">Associated Categories</p>
 		<CategoryBadges categories={associatedCategories} />

@@ -9,8 +9,8 @@
 	let admin = true;
 	let archived = false;
 	let associatedCategories = [
-		{ name: 'Seniors 2021-2022', archived: false },
-		{ name: 'Seniors 2022-2023', archived: true }
+		{ id: 1, name: 'Seniors 2021-2022', archived: false },
+		{ id: 2, name: 'Seniors 2022-2023', archived: true }
 	];
 </script>
 
@@ -49,9 +49,11 @@
 					<div class="flex flex-wrap gap-1">
 						{#each associatedCategories as category}
 							{#if category.archived}
-								<Badge variant="secondary">{category.name} (Archived)</Badge>
+								<Badge variant="secondary" href="/categories/{category.id}"
+									>{category.name} (Archived)</Badge
+								>
 							{:else}
-								<Badge>{category.name}</Badge>
+								<Badge href="/categories/{category.id}">{category.name}</Badge>
 							{/if}
 						{/each}
 					</div>

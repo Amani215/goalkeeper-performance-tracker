@@ -4,9 +4,14 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Switch } from '$lib/components/ui/switch';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import { Badge } from '$lib/components/ui/badge';
 
 	let admin = true;
 	let archived = false;
+	let associatedCategories = [
+		{ name: 'Seniors 2021-2022', archived: false },
+		{ name: 'Seniors 2022-2023', archived: true }
+	];
 </script>
 
 <Card class="p-8 ">
@@ -38,7 +43,19 @@
 
 			<div class="mt-6">
 				<h3 class="text-l font-semibold">Associated Categories:</h3>
-				<p class="mb-4">No categories yet</p>
+				{#if associatedCategories.length === 0}
+					<p>No categories yet...</p>
+				{:else}
+					<div class="flex flex-wrap gap-1">
+						{#each associatedCategories as category}
+							{#if category.archived}
+								<Badge variant="secondary">{category.name} (Archived)</Badge>
+							{:else}
+								<Badge>{category.name}</Badge>
+							{/if}
+						{/each}
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>

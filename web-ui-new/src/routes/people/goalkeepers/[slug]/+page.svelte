@@ -14,6 +14,7 @@
 		TableRow
 	} from '$lib/components/ui/table';
 	import UpdateGrowthDialog from '$lib/components/people-utils/goalkeepers/update-growth-dialog.svelte';
+	import AddGrowthDialog from '$lib/components/people-utils/goalkeepers/add-growth-dialog.svelte';
 
 	let goalkeeper = {
 		id: '1',
@@ -32,6 +33,13 @@
 			date: new Date('2026-01-01'),
 			height: 170,
 			weight: 80,
+			torsoHeight: 45,
+			thoracicPerimeter: 38
+		},
+		{
+			date: new Date('2026-02-01'),
+			height: 170,
+			weight: 81,
 			torsoHeight: 45,
 			thoracicPerimeter: 38
 		}
@@ -73,9 +81,9 @@
 	</Card>
 </div>
 
-<div class="mt-8 flex flex-row">
+<div class="mt-8 mb-2 flex flex-row justify-between">
 	<h2 class="text-xl font-semibold">Growth</h2>
-	<Button size="sm" class="ml-auto">Add New Entry</Button>
+	<AddGrowthDialog />
 </div>
 <Table>
 	<TableHeader>

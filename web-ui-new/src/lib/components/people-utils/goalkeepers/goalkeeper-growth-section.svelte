@@ -8,7 +8,7 @@
 		TableBody,
 		TableCell
 	} from '$lib/components/ui/table';
-	import Trash from '@lucide/svelte/icons/trash';
+	import Trash2 from '@lucide/svelte/icons/trash-2';
 	import AddGrowthDialog from './add-growth-dialog.svelte';
 	import UpdateGrowthDialog from './update-growth-dialog.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
@@ -71,7 +71,7 @@
 							<AlertDialog.Root>
 								<AlertDialog.Trigger class={buttonVariants({ variant: 'ghost' })}>
 									<Button variant="ghost" size="icon" aria-label="Submit">
-										<Trash />
+										<Trash2 />
 									</Button>
 								</AlertDialog.Trigger>
 								<AlertDialog.Content>

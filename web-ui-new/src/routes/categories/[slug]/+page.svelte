@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AddCoachDialog from '$lib/components/category-utils/add-coach-dialog.svelte';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Card } from '$lib/components/ui/card';
@@ -25,7 +26,7 @@
 <div class=" mt-4 flex w-full flex-row justify-center gap-4">
 	<Card class="w-full gap-1 p-4">
 		<div class="mb-2 flex w-full justify-end">
-			<Button variant="ghost">Add Coach</Button>
+			<AddCoachDialog />
 		</div>
 
 		{#if coaches.length > 0}

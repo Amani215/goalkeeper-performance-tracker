@@ -3,7 +3,17 @@
 	import profilePic from '$lib/assets/placeholder.png';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CategoryBadges from '$lib/components/category-utils/category-badges.svelte';
+	import Pencil from '@lucide/svelte/icons/pencil';
+	import Trash from '@lucide/svelte/icons/trash';
 	import EditGoalkeeperDialog from '$lib/components/people-utils/edit-goalkeeper-dialog.svelte';
+	import {
+		Table,
+		TableBody,
+		TableCell,
+		TableHead,
+		TableHeader,
+		TableRow
+	} from '$lib/components/ui/table';
 
 	let goalkeeper = {
 		id: '1',
@@ -57,6 +67,39 @@
 	<h2 class="text-xl font-semibold">Growth</h2>
 	<Button size="sm" class="ml-auto">Add New Entry</Button>
 </div>
+<Table>
+	<TableHeader>
+		<TableRow>
+			<TableHead>Date</TableHead>
+			<TableHead>Height</TableHead>
+			<TableHead>Weight</TableHead>
+			<TableHead>Torso Height</TableHead>
+			<TableHead>Thoracic Perimeter</TableHead>
+			<TableHead>Annual Growth</TableHead>
+			<TableHead class="text-center">Actions</TableHead>
+		</TableRow>
+	</TableHeader>
+	<TableBody>
+		<TableRow>
+			<TableCell>2024-01-15</TableCell>
+			<TableCell>185 cm</TableCell>
+			<TableCell>82 kg</TableCell>
+			<TableCell>62 cm</TableCell>
+			<TableCell>98 cm</TableCell>
+			<TableCell>2 cm</TableCell>
+			<TableCell>
+				<div class="flex justify-center gap-2">
+					<Button variant="ghost" size="icon" aria-label="Submit">
+						<Pencil />
+					</Button>
+					<Button variant="ghost" size="icon" aria-label="Submit">
+						<Trash />
+					</Button>
+				</div>
+			</TableCell>
+		</TableRow>
+	</TableBody>
+</Table>
 
 <div class="mt-4 flex flex-row">
 	<h2 class="text-xl font-semibold">Match Performances</h2>

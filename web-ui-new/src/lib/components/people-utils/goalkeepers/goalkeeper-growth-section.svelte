@@ -36,59 +36,61 @@
 	<h2 class="text-xl font-semibold">Growth</h2>
 	<AddGrowthDialog />
 </div>
-<Table>
-	<TableHeader>
-		<TableRow>
-			<TableHead>Date</TableHead>
-			<TableHead>Height</TableHead>
-			<TableHead>Weight</TableHead>
-			<TableHead>Torso Height</TableHead>
-			<TableHead>Thoracic Perimeter</TableHead>
-			<TableHead>Annual Growth</TableHead>
-			<TableHead class="text-center">Actions</TableHead>
-		</TableRow>
-	</TableHeader>
-	<TableBody>
-		{#each growthRecords as growth}
+<div class="rounded-md border">
+	<Table>
+		<TableHeader class="bg-gray-100">
 			<TableRow>
-				<TableCell>2026-01-01</TableCell>
-				<TableCell>{growth.height} cm</TableCell>
-				<TableCell>{growth.weight} kg</TableCell>
-				<TableCell>{growth.torsoHeight} cm</TableCell>
-				<TableCell>{growth.thoracicPerimeter} cm</TableCell>
-				<TableCell>2 cm</TableCell>
-				<TableCell>
-					<div class="flex justify-center gap-2">
-						<UpdateGrowthDialog
-							date={growth.date}
-							height={growth.height}
-							weight={growth.weight}
-							torsoHeight={growth.torsoHeight}
-							thoracicPerimeter={growth.thoracicPerimeter}
-						/>
-
-						<AlertDialog.Root>
-							<AlertDialog.Trigger class={buttonVariants({ variant: 'ghost' })}>
-								<Button variant="ghost" size="icon" aria-label="Submit">
-									<Trash />
-								</Button>
-							</AlertDialog.Trigger>
-							<AlertDialog.Content>
-								<AlertDialog.Header>
-									<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
-									<AlertDialog.Description>
-										This action cannot be undone. This will permanently delete the record.
-									</AlertDialog.Description>
-								</AlertDialog.Header>
-								<AlertDialog.Footer>
-									<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-									<AlertDialog.Action>Continue</AlertDialog.Action>
-								</AlertDialog.Footer>
-							</AlertDialog.Content>
-						</AlertDialog.Root>
-					</div>
-				</TableCell>
+				<TableHead>Date</TableHead>
+				<TableHead>Height</TableHead>
+				<TableHead>Weight</TableHead>
+				<TableHead>Torso Height</TableHead>
+				<TableHead>Thoracic Perimeter</TableHead>
+				<TableHead>Annual Growth</TableHead>
+				<TableHead class="text-center">Actions</TableHead>
 			</TableRow>
-		{/each}
-	</TableBody>
-</Table>
+		</TableHeader>
+		<TableBody>
+			{#each growthRecords as growth}
+				<TableRow>
+					<TableCell>2026-01-01</TableCell>
+					<TableCell>{growth.height} cm</TableCell>
+					<TableCell>{growth.weight} kg</TableCell>
+					<TableCell>{growth.torsoHeight} cm</TableCell>
+					<TableCell>{growth.thoracicPerimeter} cm</TableCell>
+					<TableCell>2 cm</TableCell>
+					<TableCell>
+						<div class="flex justify-center gap-2">
+							<UpdateGrowthDialog
+								date={growth.date}
+								height={growth.height}
+								weight={growth.weight}
+								torsoHeight={growth.torsoHeight}
+								thoracicPerimeter={growth.thoracicPerimeter}
+							/>
+
+							<AlertDialog.Root>
+								<AlertDialog.Trigger class={buttonVariants({ variant: 'ghost' })}>
+									<Button variant="ghost" size="icon" aria-label="Submit">
+										<Trash />
+									</Button>
+								</AlertDialog.Trigger>
+								<AlertDialog.Content>
+									<AlertDialog.Header>
+										<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+										<AlertDialog.Description>
+											This action cannot be undone. This will permanently delete the record.
+										</AlertDialog.Description>
+									</AlertDialog.Header>
+									<AlertDialog.Footer>
+										<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+										<AlertDialog.Action>Continue</AlertDialog.Action>
+									</AlertDialog.Footer>
+								</AlertDialog.Content>
+							</AlertDialog.Root>
+						</div>
+					</TableCell>
+				</TableRow>
+			{/each}
+		</TableBody>
+	</Table>
+</div>

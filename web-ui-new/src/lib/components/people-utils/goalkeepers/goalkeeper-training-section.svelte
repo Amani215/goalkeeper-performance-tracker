@@ -13,29 +13,30 @@
 	];
 </script>
 
-<div class="mt-4 flex flex-row">
+<div class="mt-4 mb-2 flex flex-row">
 	<h2 class="text-xl font-semibold">Training Attendance</h2>
 </div>
 {#if trainingRecords.length == 0}
 	<p class="text-center">No Training records are available...</p>
 {:else}
-	<Table>
-		<TableHeader>
-			<TableRow>
-				<TableHead>Date</TableHead>
-				<TableHead>Training</TableHead>
-				<TableHead>Attendance</TableHead>
-			</TableRow>
-		</TableHeader>
-		<TableBody>
-			{#each trainingRecords as training}
+	<div class="rounded-md border">
+		<Table>
+			<TableHeader class="bg-gray-100">
 				<TableRow>
-					<TableCell>{training.date}</TableCell>
-					<TableCell>2026-01-01</TableCell>
-					<TableCell>{training.attendance}</TableCell>
-					<TableCell>2 cm</TableCell>
+					<TableHead>Training</TableHead>
+					<TableHead>Date</TableHead>
+					<TableHead>Attendance</TableHead>
 				</TableRow>
-			{/each}
-		</TableBody>
-	</Table>
+			</TableHeader>
+			<TableBody>
+				{#each trainingRecords as training}
+					<TableRow>
+						<TableCell>{training.id}</TableCell>
+						<TableCell>2026-01-01</TableCell>
+						<TableCell>{training.attendance}</TableCell>
+					</TableRow>
+				{/each}
+			</TableBody>
+		</Table>
+	</div>
 {/if}

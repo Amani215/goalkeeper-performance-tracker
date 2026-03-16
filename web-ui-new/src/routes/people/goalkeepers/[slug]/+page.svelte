@@ -90,28 +90,30 @@
 		</TableRow>
 	</TableHeader>
 	<TableBody>
-		<TableRow>
-			<TableCell>'2026-01-01'</TableCell>
-			<TableCell>{growthRecords[0].height} cm</TableCell>
-			<TableCell>{growthRecords[0].weight} kg</TableCell>
-			<TableCell>{growthRecords[0].torsoHeight} cm</TableCell>
-			<TableCell>{growthRecords[0].thoracicPerimeter} cm</TableCell>
-			<TableCell>2 cm</TableCell>
-			<TableCell>
-				<div class="flex justify-center gap-2">
-					<UpdateGrowthDialog
-						date={growthRecords[0].date}
-						height={growthRecords[0].height}
-						weight={growthRecords[0].weight}
-						torsoHeight={growthRecords[0].torsoHeight}
-						thoracicPerimeter={growthRecords[0].thoracicPerimeter}
-					/>
-					<Button variant="ghost" size="icon" aria-label="Submit">
-						<Trash />
-					</Button>
-				</div>
-			</TableCell>
-		</TableRow>
+		{#each growthRecords as growth}
+			<TableRow>
+				<TableCell>2026-01-01</TableCell>
+				<TableCell>{growth.height} cm</TableCell>
+				<TableCell>{growth.weight} kg</TableCell>
+				<TableCell>{growth.torsoHeight} cm</TableCell>
+				<TableCell>{growth.thoracicPerimeter} cm</TableCell>
+				<TableCell>2 cm</TableCell>
+				<TableCell>
+					<div class="flex justify-center gap-2">
+						<UpdateGrowthDialog
+							date={growth.date}
+							height={growth.height}
+							weight={growth.weight}
+							torsoHeight={growth.torsoHeight}
+							thoracicPerimeter={growth.thoracicPerimeter}
+						/>
+						<Button variant="ghost" size="icon" aria-label="Submit">
+							<Trash />
+						</Button>
+					</div>
+				</TableCell>
+			</TableRow>
+		{/each}
 	</TableBody>
 </Table>
 

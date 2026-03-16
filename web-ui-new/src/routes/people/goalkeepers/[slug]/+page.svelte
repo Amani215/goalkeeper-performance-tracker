@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '$lib/components/ui/card';
 	import profilePic from '$lib/assets/placeholder.png';
-	import Button from '$lib/components/ui/button/button.svelte';
+	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import CategoryBadges from '$lib/components/category-utils/category-badges.svelte';
 	import Trash from '@lucide/svelte/icons/trash';
 	import EditGoalkeeperDialog from '$lib/components/people-utils/edit-goalkeeper-dialog.svelte';
@@ -15,6 +15,7 @@
 	} from '$lib/components/ui/table';
 	import UpdateGrowthDialog from '$lib/components/people-utils/goalkeepers/update-growth-dialog.svelte';
 	import AddGrowthDialog from '$lib/components/people-utils/goalkeepers/add-growth-dialog.svelte';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 
 	let goalkeeper = {
 		id: '1',
@@ -115,9 +116,26 @@
 							torsoHeight={growth.torsoHeight}
 							thoracicPerimeter={growth.thoracicPerimeter}
 						/>
-						<Button variant="ghost" size="icon" aria-label="Submit">
-							<Trash />
-						</Button>
+
+						<AlertDialog.Root>
+							<AlertDialog.Trigger class={buttonVariants({ variant: 'ghost' })}>
+								<Button variant="ghost" size="icon" aria-label="Submit">
+									<Trash />
+								</Button>
+							</AlertDialog.Trigger>
+							<AlertDialog.Content>
+								<AlertDialog.Header>
+									<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+									<AlertDialog.Description>
+										This action cannot be undone. This will permanently delete the record.
+									</AlertDialog.Description>
+								</AlertDialog.Header>
+								<AlertDialog.Footer>
+									<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+									<AlertDialog.Action>Continue</AlertDialog.Action>
+								</AlertDialog.Footer>
+							</AlertDialog.Content>
+						</AlertDialog.Root>
 					</div>
 				</TableCell>
 			</TableRow>

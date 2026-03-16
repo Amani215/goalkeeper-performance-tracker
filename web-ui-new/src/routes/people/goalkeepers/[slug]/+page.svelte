@@ -3,7 +3,6 @@
 	import profilePic from '$lib/assets/placeholder.png';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CategoryBadges from '$lib/components/category-utils/category-badges.svelte';
-	import Pencil from '@lucide/svelte/icons/pencil';
 	import Trash from '@lucide/svelte/icons/trash';
 	import EditGoalkeeperDialog from '$lib/components/people-utils/edit-goalkeeper-dialog.svelte';
 	import {
@@ -14,6 +13,7 @@
 		TableHeader,
 		TableRow
 	} from '$lib/components/ui/table';
+	import UpdateGrowthDialog from '$lib/components/people-utils/goalkeepers/update-growth-dialog.svelte';
 
 	let goalkeeper = {
 		id: '1',
@@ -25,6 +25,16 @@
 	let associatedCategories: any[] = [
 		{ id: '1', name: 'Seniors 2024-2025', season: '2024-2025', archived: false },
 		{ id: '2', name: 'Juniors 2023-2024', season: '2023-2024', archived: true }
+	];
+
+	let growthRecords = [
+		{
+			date: new Date('2026-01-01'),
+			height: 170,
+			weight: 80,
+			torsoHeight: 45,
+			thoracicPerimeter: 38
+		}
 	];
 </script>
 
@@ -81,17 +91,21 @@
 	</TableHeader>
 	<TableBody>
 		<TableRow>
-			<TableCell>2024-01-15</TableCell>
-			<TableCell>185 cm</TableCell>
-			<TableCell>82 kg</TableCell>
-			<TableCell>62 cm</TableCell>
-			<TableCell>98 cm</TableCell>
+			<TableCell>'2026-01-01'</TableCell>
+			<TableCell>{growthRecords[0].height} cm</TableCell>
+			<TableCell>{growthRecords[0].weight} kg</TableCell>
+			<TableCell>{growthRecords[0].torsoHeight} cm</TableCell>
+			<TableCell>{growthRecords[0].thoracicPerimeter} cm</TableCell>
 			<TableCell>2 cm</TableCell>
 			<TableCell>
 				<div class="flex justify-center gap-2">
-					<Button variant="ghost" size="icon" aria-label="Submit">
-						<Pencil />
-					</Button>
+					<UpdateGrowthDialog
+						date={growthRecords[0].date}
+						height={growthRecords[0].height}
+						weight={growthRecords[0].weight}
+						torsoHeight={growthRecords[0].torsoHeight}
+						thoracicPerimeter={growthRecords[0].thoracicPerimeter}
+					/>
 					<Button variant="ghost" size="icon" aria-label="Submit">
 						<Trash />
 					</Button>

@@ -5,6 +5,14 @@
 	import CategoryBadges from '$lib/components/category-utils/category-badges.svelte';
 	import EditGoalkeeperDialog from '$lib/components/people-utils/edit-goalkeeper-dialog.svelte';
 	import GoalkeeperGrowthSection from '$lib/components/people-utils/goalkeepers/goalkeeper-growth-section.svelte';
+	import {
+		Table,
+		TableHeader,
+		TableRow,
+		TableHead,
+		TableBody,
+		TableCell
+	} from '$lib/components/ui/table';
 
 	let goalkeeper = {
 		id: '1',
@@ -16,6 +24,10 @@
 	let associatedCategories: any[] = [
 		{ id: '1', name: 'Seniors 2024-2025', season: '2024-2025', archived: false },
 		{ id: '2', name: 'Juniors 2023-2024', season: '2023-2024', archived: true }
+	];
+
+	let trainingRecords = [
+		{ id: 'Seniors 2025-2026 Training', date: '2026-01-02', attendance: 'Present' }
 	];
 </script>
 
@@ -63,3 +75,26 @@
 <div class="mt-4 flex flex-row">
 	<h2 class="text-xl font-semibold">Training Attendance</h2>
 </div>
+{#if trainingRecords.length == 0}
+	<p class="text-center">No Training records are available...</p>
+{:else}
+	<Table>
+		<TableHeader>
+			<TableRow>
+				<TableHead>Date</TableHead>
+				<TableHead>Training</TableHead>
+				<TableHead>Attendance</TableHead>
+			</TableRow>
+		</TableHeader>
+		<TableBody>
+			{#each trainingRecords as training}
+				<TableRow>
+					<TableCell>{training.date}</TableCell>
+					<TableCell>2026-01-01</TableCell>
+					<TableCell>{training.attendance}</TableCell>
+					<TableCell>2 cm</TableCell>
+				</TableRow>
+			{/each}
+		</TableBody>
+	</Table>
+{/if}

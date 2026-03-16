@@ -21,38 +21,38 @@
 	];
 </script>
 
-<div class="grid grid-cols-6 gap-6">
-	<Card class="col-span-4 row-span-1 gap-2 p-4">
-		<div class="mb-4 flex items-center justify-end">
-			<EditGoalkeeperDialog
-				name={goalkeeper.name}
-				birthday={goalkeeper.birthday}
-				phone={goalkeeper.phone}
-			/>
-		</div>
-		<div class="grid grid-cols-4 gap-1">
-			<p class="col-span-1 font-semibold">Name</p>
-			<p class="col-span-3">{goalkeeper.name}</p>
-
-			<p class="col-span-1 font-semibold">Age</p>
-			<p class="col-span-3">28</p>
-
-			<p class="col-span-1 font-semibold">Birthdate</p>
-			<p class="col-span-3">January 1, 1996</p>
-
-			<p class="col-span-1 font-semibold">Phone Number</p>
-			<p class="col-span-3">{goalkeeper.phone}</p>
-		</div>
-		<p class="font-semibold">Associated Categories</p>
-		<CategoryBadges categories={associatedCategories} />
-	</Card>
-	<Card class="col-span-2 row-span-1 p-4">
+<div class="grid md:grid-cols-6 md:gap-6">
+	<Card class="p-4 md:order-2 md:col-span-2 md:row-span-1">
 		<img
 			src={profilePic}
 			alt="Profile Pic"
 			class="col-span-1 row-span-1 justify-self-center rounded-full"
 		/>
 		<Button variant="outline" size="sm" class="mt-4 w-full">Change Picture</Button>
+	</Card>
+	<Card class="mt-2 gap-2 p-4 md:order-1 md:col-span-4 md:row-span-1">
+		<div class="mb-4 flex items-center justify-center md:justify-end">
+			<EditGoalkeeperDialog
+				name={goalkeeper.name}
+				birthday={goalkeeper.birthday}
+				phone={goalkeeper.phone}
+			/>
+		</div>
+		<div class="space-between grid grid-cols-4 gap-1">
+			<p class="col-span-1 font-semibold">Name</p>
+			<p class="col-span-3 flex justify-end pr-3 md:justify-start">{goalkeeper.name}</p>
+
+			<p class="col-span-1 font-semibold">Age</p>
+			<p class="col-span-3 flex justify-end pr-3 md:justify-start">28</p>
+
+			<p class="col-span-1 font-semibold">Birthdate</p>
+			<p class="col-span-3 flex justify-end pr-3 md:justify-start">January 1, 1996</p>
+
+			<p class="col-span-1 font-semibold">Phone Number</p>
+			<p class="col-span-3 flex justify-end pr-3 md:justify-start">{goalkeeper.phone}</p>
+		</div>
+		<p class="font-semibold">Associated Categories</p>
+		<CategoryBadges categories={associatedCategories} />
 	</Card>
 </div>
 

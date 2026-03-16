@@ -6,14 +6,7 @@
 	import EditGoalkeeperDialog from '$lib/components/people-utils/edit-goalkeeper-dialog.svelte';
 	import GoalkeeperGrowthSection from '$lib/components/people-utils/goalkeepers/goalkeeper-growth-section.svelte';
 	import GoalkeeperTrainingSection from '$lib/components/people-utils/goalkeepers/goalkeeper-training-section.svelte';
-	import {
-		Table,
-		TableHeader,
-		TableRow,
-		TableHead,
-		TableBody,
-		TableCell
-	} from '$lib/components/ui/table';
+	import GoalkeeperMatchSection from '$lib/components/people-utils/goalkeepers/goalkeeper-match-section.svelte';
 
 	let goalkeeper = {
 		id: '1',
@@ -25,15 +18,6 @@
 	let associatedCategories: any[] = [
 		{ id: '1', name: 'Seniors 2024-2025', season: '2024-2025', archived: false },
 		{ id: '2', name: 'Juniors 2023-2024', season: '2023-2024', archived: true }
-	];
-
-	let matchPerformances = [
-		{
-			id: 'Friendly CA-CA',
-			date: new Date('2026-03-01'),
-			category: 'Seniors2025-2026',
-			performanceSheet: 'https://google.com'
-		}
 	];
 </script>
 
@@ -74,30 +58,6 @@
 
 <GoalkeeperGrowthSection />
 
-<div class="mt-4 mb-2 flex flex-row">
-	<h2 class="text-xl font-semibold">Match Performances</h2>
-</div>
-<div class="rounded-md border">
-	<Table>
-		<TableHeader class="bg-gray-100">
-			<TableRow>
-				<TableHead>Match</TableHead>
-				<TableHead>Date</TableHead>
-				<TableHead>Category</TableHead>
-				<TableHead>Performance Sheet</TableHead>
-			</TableRow>
-		</TableHeader>
-		<TableBody>
-			{#each matchPerformances as match}
-				<TableRow>
-					<TableCell>{match.id}</TableCell>
-					<TableCell>2026-01-01</TableCell>
-					<TableCell>{match.category}</TableCell>
-					<TableCell><a href={match.performanceSheet} class="underline">Link</a></TableCell>
-				</TableRow>
-			{/each}
-		</TableBody>
-	</Table>
-</div>
+<GoalkeeperMatchSection />
 
 <GoalkeeperTrainingSection />

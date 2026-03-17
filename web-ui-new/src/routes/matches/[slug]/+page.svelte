@@ -83,7 +83,11 @@
 					<p>{goalkeeper.name}</p>
 				</a>
 				<div class="flex flex-row">
-					<Button size="icon" variant="ghost"><FileChartPie /></Button>
+					<Button size="icon" variant="ghost">
+						<a href={`/match-performances/${goalkeeper.id}`}>
+							<FileChartPie />
+						</a>
+					</Button>
 					<Button size="icon" variant="ghost"><Trash2 /></Button>
 				</div>
 			</div>

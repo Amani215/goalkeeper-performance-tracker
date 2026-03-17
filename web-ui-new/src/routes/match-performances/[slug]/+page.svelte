@@ -38,22 +38,74 @@
 			reaction: 'reaction',
 			result: 'good',
 			comment: ''
+		},
+		{
+			num: 2,
+			action: 'action',
+			reaction: 'reaction',
+			result: 'good',
+			comment: ''
+		},
+		{
+			num: 3,
+			action: 'action',
+			reaction: 'reaction',
+			result: 'good',
+			comment: ''
+		},
+		{
+			num: 4,
+			action: 'action',
+			reaction: 'reaction',
+			result: 'good',
+			comment: ''
+		},
+		{
+			num: 5,
+			action: 'action',
+			reaction: 'reaction',
+			result: 'good',
+			comment: ''
+		},
+		{
+			num: 6,
+			action: 'action',
+			reaction: 'reaction',
+			result: 'good',
+			comment: ''
+		},
+		{
+			num: 7,
+			action: 'action',
+			reaction: 'reaction',
+			result: 'good',
+			comment: ''
+		},
+		{
+			num: 8,
+			action: 'action',
+			reaction: 'reaction',
+			result: 'good',
+			comment: ''
 		}
 	];
 </script>
 
-<div class="mb-6 flex flex-col items-center gap-2">
-	<p class="text-xl font-bold">Tournament {match.matchDate}</p>
-	<p class="text-l font-semibold">{categoryLabel()}</p>
-	<p class="text-m font-bold">
-		{match.localTeam}
-		{match.localTeamScore} - {match.visitorTeamScore}
-		{match.visitorTeam}
-	</p>
+<div class="mb-6">
+	<div class="flex flex-col gap-2  items-center">
+		<p class="text-xl font-bold">Tournament {match.matchDate}</p>
+		<p class="text-l font-semibold">{categoryLabel()}</p>
+		<p class="text-m font-bold">
+			{match.localTeam}
+			{match.localTeamScore} - {match.visitorTeamScore}
+			{match.visitorTeam}
+		</p>
+	</div>
 </div>
 
-<div class="grid md:grid-cols-5 md:gap-4">
-	<div class="grid justify-items-center gap-2 p-4 md:order-2 md:col-span-1 md:row-span-1">
+<div class="grid grid-cols-5 md:gap-4">
+	<div class="p-4 col-span-5 md:order-2 md:col-span-1 md:row-span-1">
+		<div  class="grid justify-items-center gap-2">
 		<img
 			src={profilePic}
 			alt="Profile Pic"
@@ -61,11 +113,12 @@
 		/>
 		<h4 class="text-xl font-bold">{goalkeeper.name} ({goalkeeper.order})</h4>
 		<CategoryBadges categories={goalkeeper.categories} />
+		</div>
 	</div>
-	<Card class="gap-1 p-4 md:order-2 md:col-span-4 md:row-span-1">
+	<Card class="gap-1 p-4 col-span-5 md:order-2 md:col-span-4 md:row-span-1">
 		<div class="mb-4 flex items-center justify-center md:justify-end">
 			<Button>Add Sequence</Button>
 		</div>
-		<DataTable data={sequences} {columns} />
+		<DataTable data={sequences} {columns} pageSize={3}/>
 	</Card>
 </div>

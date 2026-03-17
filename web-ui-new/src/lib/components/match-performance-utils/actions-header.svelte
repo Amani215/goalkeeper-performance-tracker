@@ -1,4 +1,3 @@
-<!-- ActionsHeader.svelte -->
 <script lang="ts">
 	export let text: string;
 </script>

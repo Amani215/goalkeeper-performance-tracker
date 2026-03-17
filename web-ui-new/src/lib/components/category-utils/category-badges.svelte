@@ -19,11 +19,11 @@
 	<div class="flex flex-wrap gap-1">
 		{#each categories as category}
 			{#if category.archived}
-				<Badge variant="secondary" href="/categories/{category.id}"
+				<Badge variant="secondary" href="/categories/{category.id}" class="h-8"
 					>{category.name} (Archived)</Badge
 				>
 			{:else}
-				<Badge href="/categories/{category.id}">{category.name}</Badge>
+				<Badge href="/categories/{category.id}" class="h-8">{category.name}</Badge>
 			{/if}
 		{/each}
 	</div>

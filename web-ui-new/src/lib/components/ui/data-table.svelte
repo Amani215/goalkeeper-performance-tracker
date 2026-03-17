@@ -14,10 +14,11 @@
 		columns: ColumnDef<TData, TValue>[];
 		data: TData[];
 		rowLink?: (id: string | number) => string;
+		pageSize?: number;
 	};
 
-	let { data, columns, rowLink }: DataTableProps<TData, TValue> = $props();
-	let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
+	let { data, columns, rowLink, pageSize }: DataTableProps<TData, TValue> = $props();
+	let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: pageSize ?? 10 });
 
 	const table = createSvelteTable({
 		get data() {

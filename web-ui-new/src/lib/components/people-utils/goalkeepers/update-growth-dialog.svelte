@@ -37,7 +37,7 @@
 </script>
 
 <Dialog.Root>
-	<Dialog.Trigger class=" {buttonVariants({ variant: 'ghost' })}"
+	<Dialog.Trigger class="w-10 {buttonVariants({ variant: 'ghost' })}"
 		><Button variant="ghost" size="icon" aria-label="Submit">
 			<Pencil />
 		</Button></Dialog.Trigger

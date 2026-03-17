@@ -20,7 +20,7 @@
 	/>
 
 	<AlertDialog.Root>
-		<AlertDialog.Trigger class={buttonVariants({ variant: 'ghost' })}>
+		<AlertDialog.Trigger class="w-10 {buttonVariants({ variant: 'ghost' })}">
 			<Button variant="ghost" size="icon" aria-label="Submit">
 				<Trash2 />
 			</Button>

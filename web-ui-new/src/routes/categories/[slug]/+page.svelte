@@ -20,11 +20,11 @@
 	<h1 class="text-2xl font-bold">Seniors 2021-2022</h1>
 </div>
 
-<div class="flex w-full justify-end">
+<div class="flex w-full justify-center md:justify-end">
 	<Button variant="outline">Download Documents</Button>
 </div>
 
-<div class=" mt-4 flex w-full flex-row justify-center gap-4">
+<div class=" mt-4 flex w-full flex-col md:flex-row justify-center gap-4">
 	<Card class="w-full gap-1 p-4">
 		<div class="mb-2 flex w-full justify-end">
 			<AddCoachDialog />

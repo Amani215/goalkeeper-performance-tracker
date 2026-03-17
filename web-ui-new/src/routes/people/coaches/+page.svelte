@@ -6,7 +6,7 @@
 	let { data } = $props();
 </script>
 
-<div class="mb-4 flex w-full justify-end">
+<div class="mb-4 flex w-full md:justify-end justify-center">
 	<AddDialog />
 </div>
 

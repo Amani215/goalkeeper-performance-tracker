@@ -42,7 +42,7 @@
 	};
 </script>
 
-<div class="flex w-full justify-end">
+<div class="flex w-full justify-center md:justify-end mb-4">
 	<EditMatchDialog {...match} />
 </div>
 
@@ -64,7 +64,7 @@
 </div>
 
 <Card class="mt-6 w-full gap-1 p-4">
-	<div class="mb-2 flex w-full justify-end">
+	<div class="mb-2 flex w-full justify-center md:justify-end">
 		<AddGoalkeeperDialog />
 	</div>
 	{#if goalkeepers.length === 0}

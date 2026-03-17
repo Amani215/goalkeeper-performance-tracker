@@ -11,14 +11,14 @@
 	let goalkeepers = [{ id: 1, name: 'John Doe', status: 'Absent', duration: 90 }];
 </script>
 
-<div class="mb-2 flex w-full justify-end">
+<div class="mb-4 flex w-full justify-center md:justify-end">
 	<EditDialog category="seniors2021_2022" trainingDate="2021-10-22T10:00:00Z" duration={90} />
 </div>
 
 <div class="mb-6 flex flex-col items-center gap-2">
-	<p class="text-3xl font-bold">Training Senior 2021-2022</p>
-	<p class="text-xl font-semibold">22/10/2021</p>
-	<p class="text-xl font-semibold">90 min</p>
+	<p class="text-3xl font-bold text-center">Training Seniors 2021-2022</p>
+	<p class="text-xl font-semibold text-center">22/10/2021</p>
+	<p class="text-xl font-semibold text-center">90 min</p>
 
 	<div class="mt-4 flex flex-row gap-2">
 		<Button>Add Form</Button>
@@ -26,7 +26,7 @@
 	</div>
 
 	<Card class="mt-6 w-full p-4">
-		<div class="flex w-full justify-end">
+		<div class="flex w-full justify-center md:justify-end">
 			<AddGoalkeeperDialog />
 		</div>
 

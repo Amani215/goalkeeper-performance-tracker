@@ -4,7 +4,6 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { Switch } from '$lib/components/ui/switch';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import { Badge } from '$lib/components/ui/badge';
 	import CategoryBadges from '$lib/components/category-utils/category-badges.svelte';
 
 	let admin = true;
@@ -16,22 +15,22 @@
 </script>
 
 <Card class="p-8 ">
-	<div class="grid grid-cols-6 grid-rows-2 gap-6">
+	<div class="grid grid-cols-1 lg:grid-cols-6 lg:grid-rows-2 gap-6">
 		<img
 			src={profilePic}
 			alt="Profile Pic"
-			class="col-span-1 row-span-1 h-32 w-32 justify-self-center rounded-full"
+			class="order-2 lg:order-1 col-span-1 lg:row-span-1 h-32 w-32 justify-self-center rounded-full"
 		/>
 
-		<div class="col-span-5 row-span-1 content-center">
+		<div class="order-1 lg:order-2 col-span-1 lg:col-span-5 lg:row-span-1 content-center justify-self-center lg:justify-self-start text-center lg:text-left">
 			<h2 class="mb-4 text-xl font-bold {archived ? 'italic text-gray-500' : ''}">
 				John Doe {archived ? '(Archived)' : ''}
 			</h2>
 			<h3 class="text-l -mt-4 mb-2 text-gray-500">{admin ? 'Admin' : 'Coach'}</h3>
 		</div>
 
-		<Button variant="outline" size="sm">Change Picture</Button>
-		<div class="col-start-2 col-end-7 row-span-5 space-y-4">
+		<Button variant="outline" size="sm" class="order-3">Change Picture</Button>
+		<div class="order-4 col-span-1 lg:col-start-2 lg:col-end-7 lg:row-span-5 space-y-4">
 			<div class="flex items-center space-x-2">
 				<Switch bind:checked={archived} />
 				<Label for="admin-switch">{archived ? 'Unarchive' : 'Archive'}</Label>
@@ -48,5 +47,4 @@
 			</div>
 		</div>
 	</div>
-	<div class="flex flex-row gap-6"></div>
 </Card>

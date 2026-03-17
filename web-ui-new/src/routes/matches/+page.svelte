@@ -31,7 +31,7 @@
 	];
 </script>
 
-<div class="mb-4 flex w-full justify-end">
+<div class="mb-4 flex w-full justify-center md:justify-end">
 	<AddDialog />
 </div>
 <Table.Root>

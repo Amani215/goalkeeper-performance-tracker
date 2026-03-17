@@ -6,7 +6,7 @@
 	import AddDialog from '$lib/components/category-utils/add-dialog.svelte';
 </script>
 
-<div class="mb-4 flex w-full justify-end">
+<div class="mb-4 flex w-full justify-center md:justify-end">
 	<AddDialog />
 </div>
 <div class="flex flex-wrap justify-center gap-4">
